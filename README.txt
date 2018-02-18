@@ -38,13 +38,13 @@
 //*********************************UPGRADE LOGS************************************//
 
 //Finish in 2017.11.20 V_1.0 支持pinMode,digitalWrite,digitalRead,delay等基础Arduino API
-//Upgrade 			    11.21 V_1.1 改用C++编写程序，可以兼容部分Arduino函数库，只需将库拖入Library文件夹下即可
-//Upgrade 			    11.23 V_1.2 移植Print、Stream、WString等class
-//Upgrade 			    12.12 V_1.3 支持millis、micros、Wire class、部分Serial class
+//Upgrade        11.21 V_1.1 改用C++编写程序，可以兼容部分Arduino函数库，只需将库拖入Library文件夹下即可
+//Upgrade        11.23 V_1.2 移植Print、Stream、WString等class
+//Upgrade        12.12 V_1.3 支持millis、micros、Wire class、部分Serial class
 //Upgrade   2018.1.10  V_1.4 全面支持Serial class，编写了定时器库
-//Upgrade 			    1.12  V_1.5 尝试加入SD卡支持
-//Upgrade 			    1.21  V_1.6 支持analogRead(方式：DMA/No DMA)、analogWrite(频率和占空比可调)
-//Upgrade 			    1.23  V_1.7 支持attachInterrupt，所有GPIO都可以配置外部中断
-//Upgrade 			    1.31  V_1.8 TIM2~TIM4以可以正常输出PWM
-//Upgrade 			    2.1 	 V_1.9 HardwareSerial class加入end()、attachInterrupt()
-//Upgrade 			    2.10  V_2.0 修改函数指针定义方式
+//Upgrade        1.12  V_1.5 尝试加入SD卡支持
+//Upgrade        1.21  V_1.6 支持analogRead(方式：DMA/No DMA)、analogWrite(频率和占空比可调)
+//Upgrade        1.23  V_1.7 支持attachInterrupt，所有GPIO都可以配置外部中断
+//Upgrade        1.31  V_1.8 TIM2~TIM4以可以正常输出PWM
+//Upgrade        2.1   V_1.9 HardwareSerial class加入end()、attachInterrupt()
+//Upgrade        2.10  V_2.0 修改函数指针定义方式
