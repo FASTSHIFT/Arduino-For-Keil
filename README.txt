@@ -34,7 +34,8 @@
       Wire class
       SPI class(Unsupport)
 
-//**********************************************************UPGRADE LOGS***********************************************************//
+
+//*********************************UPGRADE LOGS************************************//
 
 //Finish in 2017.11.20 V_1.0 支持pinMode,digitalWrite,digitalRead,delay等基础Arduino API
 //Upgrade 			    11.21 V_1.1 改用C++编写程序，可以兼容部分Arduino函数库，只需将库拖入Library文件夹下即可
