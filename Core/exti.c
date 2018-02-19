@@ -1,58 +1,16 @@
 #include "exti.h"
-#include "GPIO.h"
-#include "Arduino.h"
 
 void_func_point EXIT_func[16]={null_func, null_func, null_func, null_func, null_func, null_func, null_func, null_func, 
 															 null_func, null_func, null_func, null_func, null_func, null_func, null_func, null_func};
 
-//外部中断初始化函数
-void EXTIX_Init(void)
-{
- 	EXTI_InitTypeDef EXTI_InitStructure;
-	NVIC_InitTypeDef NVIC_InitStructure;
 
-  	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);//外部中断，需要使能AFIO时钟
-
-/******************************EXIT配置初始化***********************************************/
-		//GPIOE.5 中断线以及中断初始化配置
-/*1*/  	GPIO_EXTILineConfig(GPIO_PortSourceGPIOE,GPIO_PinSource3);		//选择GPIO作为外部中断线路
-
-/*2*/  	EXTI_InitStructure.EXTI_Line=EXTI_Line3;						//设置中断线
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;				//设置触发模式，中断触发（事件触发）
-/*3*/ 	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;			//设置触发方式，上升沿触发
-		EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-		EXTI_Init(&EXTI_InitStructure);	 	//根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
-
-    //GPIOC.3	  中断线以及中断初始化配置
-  	GPIO_EXTILineConfig(GPIO_PortSourceGPIOC ,GPIO_PinSource5);
-
-  	EXTI_InitStructure.EXTI_Line=EXTI_Line5;
-  	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;	
-  	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
-  	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-  	EXTI_Init(&EXTI_InitStructure);	  	//根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
-
-/******************************NVIC配置初始化***********************************************/
- 
-/*4*/  	NVIC_InitStructure.NVIC_IRQChannel = EXTI3_IRQn;					//使能按键所在的外部中断通道
-/*5*/		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02;		//抢占优先级2 
-/*5*/		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x02;				//子优先级2
-		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;						//使能外部中断通道
-		NVIC_Init(&NVIC_InitStructure);  	  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
-		
-	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;					//使能按键所在的外部中断通道
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02;		//抢占优先级2， 
-  	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;				//子优先级1
-  	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;						//使能外部中断通道
-  	NVIC_Init(&NVIC_InitStructure); 
-}
-
-void attachInterrupt(int Pin,void_func_point f,EXTITrigger_TypeDef Trigger_Mode,uint8_t SubPriority)
+void attachInterrupt(uint8_t Pin,void_func_point f,EXTITrigger_TypeDef Trigger_Mode,uint8_t SubPriority)
 {
 	EXTI_InitTypeDef EXTI_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 	IRQn_Type EXTIx_IRQn;
-	uint8_t Pinx = Get_Pinx(Pin);
+	uint8_t Pinx = PIN_MAP[Pin].GPIO_Pin_x;
+	
 	if(Pinx>15)return;
 	EXIT_func[Pinx] = f;
 
@@ -61,7 +19,7 @@ void attachInterrupt(int Pin,void_func_point f,EXTITrigger_TypeDef Trigger_Mode,
 	//GPIO中断线以及中断初始化配置
 	GPIO_EXTILineConfig(Get_GPIOx(Pin),Pinx);		//选择GPIO作为外部中断线路
 
-	EXTI_InitStructure.EXTI_Line=1 << Pinx;						//设置中断线
+	EXTI_InitStructure.EXTI_Line = 1 << Pinx;						//设置中断线
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;				//设置触发模式，中断触发（事件触发）
 	EXTI_InitStructure.EXTI_Trigger = Trigger_Mode;			//设置触发方式
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;

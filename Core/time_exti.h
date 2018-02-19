@@ -1,6 +1,6 @@
 #ifndef __TIMER_H
 #define __TIMER_H
-#include "sys.h"
+#include "stm32f10x.h"
 
 #define TIM3_start() TIM_Cmd(TIM3, ENABLE)
 #define TIM3_stop() TIM_Cmd(TIM3, DISABLE)

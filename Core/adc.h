@@ -3,13 +3,6 @@
 
 #include "stm32f10x.h"
 
-/*****************************************************************
-**开启六通道ADC
-**IO为 PC0~PC5
-*******************************************************************/
-
-
-
 // 注意：用作ADC采集的IO必须没有复用，否则采集电压会有影响
 /********************ADC1输入通道（引脚）配置**************************/
 #define    ADC_APBxClock_FUN             RCC_APB2PeriphClockCmd
@@ -57,8 +50,10 @@
 /**************************函数声明********************************/
 void ADCx_DMA_Init(void);
 void ADCx_Init(void);
-uint16_t ADC_Pin_Read(int Pin);
-uint16_t Get_DMA_ADC(u8 channel);
+
+uint16_t Get_DMA_ADC(uint8_t channel);
+uint16_t Get_ADC(uint16_t channel);
+uint16_t ADC_Pin_Read(uint8_t Pin);
 
 
 #endif /* __ADC_H */

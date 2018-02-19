@@ -1,17 +1,15 @@
 #include "pwm.h"
 #include "Arduino.h"
 
-const int PWM_Pin[4][4] ={{PA8,PA9,PA10,PA11},
-													{PA0,PA1,PA2,PA3},
-													{PA6,PA7,PB0,PB1},
-													{PB6,PB7,PB8,PB9}};
-
-TIM_TypeDef* TIMx[4]={TIM1,TIM2,TIM3,TIM4};
+//const int PWM_Pin[4][4] ={{PA8,PA9,PA10,PA11},
+//													{PA0,PA1,PA2,PA3},
+//													{PA6,PA7,PB0,PB1},
+//													{PB6,PB7,PB8,PB9}};
 
 //PWM输出初始化
 //arr：自动重装值
 //psc：时钟预分频数
-void TIMx_Init(TIM_TypeDef* TIMx,u16 arr,u16 psc,u8 CHx)//f=72MHz/arr/psc,最大占空比=arr
+void TIMx_Init(TIM_TypeDef* TIMx,u16 arr,u16 psc,uint8_t CHx)//f=72MHz/arr/psc,最大占空比=arr
 {  
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef  TIM_OCInitStructure;
@@ -73,32 +71,11 @@ void TIMx_Init(TIM_TypeDef* TIMx,u16 arr,u16 psc,u8 CHx)//f=72MHz/arr/psc,最大占
 //	TIM_Cmd(TIMx, ENABLE);  //使能TIMx
 }
 
-uint8_t GetPWM_TIMx_CHx(int Pin)
-{
-	uint8_t i,j;
-	for(i=0;i<4;i++)
-	{
-		for(j=0;j<4;j++)
-		{
-			if(Pin==PWM_Pin[i][j])
-			{
-				i++,j++;
-				return (i*10+j);
-			}
-		}
-	}	
-	return 0;
-}
-
-uint8_t PWM_Init(int Pin)
+uint8_t PWM_Init(uint8_t Pin)
 {
 	uint32_t arr,psc;
-	uint8_t PWM_TIMx,PWM_CHx;
-	uint8_t PWM_TIMx_CHx = GetPWM_TIMx_CHx(Pin);
-	if(PWM_TIMx_CHx==0)return 0;
 	
-	PWM_TIMx=PWM_TIMx_CHx/10%10;
-	PWM_CHx=PWM_TIMx_CHx/1%10;
+	if(!IS_PWM_PIN(Pin))return 0;
 	
 	pinMode(Pin,GPIO_Mode_AF_PP);
 	
@@ -107,36 +84,32 @@ uint8_t PWM_Init(int Pin)
 //	else psc = 72000000/PWM_DutyCycle/PWM_Frequency;
 	psc = 72000000/PWM_DutyCycle/PWM_Frequency;
 	
-	TIM_Cmd(TIMx[PWM_TIMx-1], DISABLE);
-	TIMx_Init(TIMx[PWM_TIMx-1],arr-1,psc-1,PWM_CHx);
+	TIM_Cmd(PIN_MAP[Pin].TIMx, DISABLE);
+	TIMx_Init(PIN_MAP[Pin].TIMx,arr-1,psc-1,PIN_MAP[Pin].TimerChannel);
 	return 1;
 }
 
-uint16_t pwmWrite(int pin,u16 val)
+uint16_t pwmWrite(uint8_t Pin,uint16_t val)
 {
-	uint8_t PWM_TIMx,PWM_CHx;
-	uint8_t PWM_TIMx_CHx = GetPWM_TIMx_CHx(pin);
-	if(PWM_TIMx_CHx==0)return 0;
+	if(!IS_PWM_PIN(Pin))return 0;
+	
 	if(val==0)
 	{
-		digitalWrite(pin,LOW);
+		digitalWrite(Pin,LOW);
 		return 0;
 	}
 	else if(val>=PWM_DutyCycle)
 	{
-		digitalWrite(pin,HIGH);
+		digitalWrite(Pin,HIGH);
 		return val;
 	}
 	
-	PWM_TIMx=PWM_TIMx_CHx/10%10;
-	PWM_CHx=PWM_TIMx_CHx/1%10;
-	
-	switch(PWM_CHx)
+	switch(PIN_MAP[Pin].TimerChannel)
 	{
-		case 1: TIM_SetCompare1(TIMx[PWM_TIMx-1], val);break;
-		case 2: TIM_SetCompare2(TIMx[PWM_TIMx-1], val);break;
-		case 3: TIM_SetCompare3(TIMx[PWM_TIMx-1], val);break;
-		case 4: TIM_SetCompare4(TIMx[PWM_TIMx-1], val);break;
+		case 1: PIN_MAP[Pin].TIMx->CCR1 = val;break;
+		case 2: PIN_MAP[Pin].TIMx->CCR2 = val;break;
+		case 3: PIN_MAP[Pin].TIMx->CCR3 = val;break;
+		case 4: PIN_MAP[Pin].TIMx->CCR4 = val;break;
 	}
 	return val;
 }

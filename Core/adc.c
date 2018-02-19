@@ -2,9 +2,7 @@
 #include "ADC.h"
 #include "Arduino.h"
 
-const int ADC_Pin[10]={PA0,PA1,PA2,PA3,PA4,PA5,PA6,PA7,PB0,PB1};
-
-__IO uint16_t ADC_ConvertedValue[NOFCHANEL]={0,0,0,0};
+__IO uint16_t ADC_ConvertedValue[NOFCHANEL];
 
 /**
   * @brief  ADC GPIO 初始化
@@ -195,12 +193,12 @@ void ADCx_Init(void)
 }				  
 
 
-u16 Get_Adc(u8 ch)   
+uint16_t Get_ADC(uint16_t channel)   
 {
 	unsigned int result=0;
 	unsigned char i;
 
-	ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_239Cycles5 );
+	ADC_RegularChannelConfig(ADC1, channel, 1, ADC_SampleTime_239Cycles5 );
   for(i=0;i<8;i++)
 	{
 		ADC_SoftwareStartConvCmd(ADC1, ENABLE);
@@ -211,15 +209,11 @@ u16 Get_Adc(u8 ch)
 	return result;
 }
 
-uint16_t ADC_Pin_Read(int Pin)
+uint16_t ADC_Pin_Read(uint8_t Pin)
 {
-	u8 i;
-	for(i=0;i<10;i++)
+	if(IS_ADC_PIN(Pin))
 	{
-		if(Pin == ADC_Pin[i])
-		{
-			return Get_Adc(i);   
-		}
+		return Get_ADC(PIN_MAP[Pin].ADC_Channel);
 	}
-	return 0;
+	else return 0;
 }

@@ -1,6 +1,6 @@
 #ifndef __USART_H
 #define __USART_H	
-#include "sys.h" 
+#include "stm32f10x.h"
 
 #define SERIAL_RX_BUFFER_SIZE 128
 
