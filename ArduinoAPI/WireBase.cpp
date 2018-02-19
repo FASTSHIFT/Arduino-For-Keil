@@ -39,7 +39,6 @@
  */
 
 #include "WireBase.h"
-//#include "wirish.h"
 
 void WireBase::begin(uint8_t self_addr) {
     tx_buf_idx = 0;

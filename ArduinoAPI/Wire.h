@@ -66,8 +66,8 @@
 class TwoWire : public WireBase {
  public:
     uint8_t 		i2c_delay;
-    int       scl_pin;
-    int       sda_pin;
+    uint8_t       scl_pin;
+    uint8_t       sda_pin;
 
     /*
      * Sets the SCL line to HIGH/LOW and allow for clock stretching by slave
@@ -125,7 +125,7 @@ class TwoWire : public WireBase {
      * Accept pin numbers for SCL and SDA lines. Set the delay needed
      * to create the timing for I2C's Standard Mode and Fast Mode.
      */
-    TwoWire(int scl=SCL, int sda=SDA, uint8_t delay=SOFT_STANDARD);
+    TwoWire(uint8_t scl=SCL, uint8_t sda=SDA, uint8_t delay=SOFT_STANDARD);
 
     /*
      * Sets pins SDA and SCL to OUPTUT_OPEN_DRAIN, joining I2C bus as

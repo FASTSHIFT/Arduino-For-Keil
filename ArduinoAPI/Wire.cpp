@@ -168,7 +168,7 @@ uint8_t TwoWire::process(void) {
 
 // TODO: Add in Error Handling if pins is out of range for other Maples
 // TODO: Make delays more capable
-TwoWire::TwoWire(int scl, int sda, uint8_t delay) : i2c_delay(delay) {
+TwoWire::TwoWire(uint8_t scl, uint8_t sda, uint8_t delay) : i2c_delay(delay) {
     this->scl_pin=scl;
     this->sda_pin=sda;
 }
