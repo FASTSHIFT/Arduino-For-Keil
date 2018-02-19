@@ -2,11 +2,11 @@
 
     这个项目可以使你在Keil MDK5环境下也可以使用Arduino的函数对STM32F103系列单片机进行编程。它可以兼容Arduino函数库，只需将函数库的文件夹拖入 "Library" 文件夹下即可，使用时可以直接复制Arduino的源代码，注意include的时候要加入完整的路径，例如在Arduino IDE下：#include"SD.h"，在Keil中就要写成：#include"SD/SD.h"。有的函数库可能要进行修改才能正常运行，具体修改方式请按照编译器的提示。
     
-    它的底层是基于STM32标准外设库(3.5版本)二次封装。因为本人目前还在学习阶段，所以这个移植工程还有不少BUG，目前只是成功测试了部分的函数。
+    它的底层是基于STM32标准外设库(3.5版本)二次封装，部分源代码来自 STM32duino。因为本人目前还在学习阶段，所以这个移植工程还有不少BUG，目前只是成功测试了部分的函数。
 目前在STM32F103C8T6上测试函数有：
   基本：
     时间：delay(),delayMicroseconds(),millis(),micros();
-    输入输出：pinMode(),digitalWrite(),digitalRead(),analogRead(), analogWrite(),shiftOut(),shiftIn();
+    输入输出：pinMode(),digitalWrite(),digitalRead(),analogRead(), analogWrite(),shiftOut(),shiftIn(); 
     Print类
     String类
     Stream类
@@ -19,7 +19,7 @@
 
   This project allows you to program the STM32F103 series of microcontrollers using the functions of Arduino in Keil MDK5 environment as well. It can be compatible with Arduino function library, simply drag the library folder into the Library folder, you can directly copy the Arduino source code, be careful when include the full path, for example, in the Arduino IDE: #include "SD.h", in Keil it should be written as: #include "SD/SD.h". Some library may need to be modified to work properly, Please follow the compiler prompts to modify the program.
   
-  It is based on the STM32 Standard Peripheral Library (V 3.5) encapsulation. because I am still in the learning, so this transplant project still has many BUGs. At present, I have successfully tested some of the functions.
+  It is based on the STM32 Standard Peripheral Library (V 3.5) encapsulation, Part of the source code comes from STM32duino. because I am still in the learning, so this transplant project still has many BUGs. At present, I have successfully tested some of the functions.
   
   Currently on the STM32F103C8T6 test functions are:            
     Basic:
