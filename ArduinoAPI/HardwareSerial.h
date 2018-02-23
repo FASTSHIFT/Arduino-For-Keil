@@ -27,7 +27,7 @@ class HardwareSerial : public Stream
     using Print::write; // pull in write(str) and write(buf, size) from Print
 	
 	private:
-		USART_TypeDef *_USARTx;
+		USART_TypeDef *USARTx;
 		u8 USART_Num;
 };
 
