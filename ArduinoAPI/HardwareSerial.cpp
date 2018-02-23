@@ -1,8 +1,5 @@
 #include "HardwareSerial.h"
 
-USART_TypeDef *USARTx;
-u8 USART_Num;
-
 HardwareSerial::HardwareSerial(USART_TypeDef *_USARTx)
 {
 	USARTx = _USARTx;
