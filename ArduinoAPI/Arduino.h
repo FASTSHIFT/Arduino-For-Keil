@@ -1,6 +1,10 @@
 #ifndef __ARDUINO_H
 #define	__ARDUINO_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 #include "gpio.h"
 #include "pwm.h"
 #include "adc.h"
@@ -50,6 +54,8 @@
 #define interrupts() __set_PRIMASK(0)
 #define noInterrupts() __set_PRIMASK(1)
 
+#define analogInPinToBit(P) (P)
+
 enum{LOW, HIGH};
 
 enum{
@@ -79,5 +85,10 @@ void flimit(double *data, double MIN, double MAX);
 
 typedef void(*void_func_point)(void);
 void null_func(void);
+
+#ifdef __cplusplus
+}// extern "C"
+#endif
+
 
 #endif
