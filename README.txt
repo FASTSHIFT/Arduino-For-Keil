@@ -49,3 +49,5 @@
 //Upgrade        2.1   V_1.9 HardwareSerial class加入end()、attachInterrupt()
 //Upgrade        2.10  V_2.0 修改函数指针定义方式
 //Upgrade        2.19  V_2.1 移除sys.h、sys.c，移植STM32duino的PIN_MAP[]，uint8_t类型的变量即可表示一个引脚，加入enum，优化IO操作函数提升效率
+//Upgrade        2.27  V_2.2 调用Arduino.h时已不用声明extern"C"{},加入WProgram.h以兼容某些库函数
+
