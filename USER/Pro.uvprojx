@@ -476,11 +476,6 @@
               <FilePath>..\CORE\delay.c</FilePath>
             </File>
             <File>
-              <FileName>sys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CORE\sys.c</FilePath>
-            </File>
-            <File>
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CORE\usart.c</FilePath>
