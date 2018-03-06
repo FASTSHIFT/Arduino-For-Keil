@@ -57,6 +57,7 @@ extern "C"{
 #define analogInPinToBit(P) (P)
 
 enum{LOW, HIGH};
+enum{Off, On};
 
 enum{
 	INPUT = GPIO_Mode_IN_FLOATING,
