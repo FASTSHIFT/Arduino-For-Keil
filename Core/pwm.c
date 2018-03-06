@@ -1,11 +1,6 @@
 #include "pwm.h"
 #include "Arduino.h"
 
-//const int PWM_Pin[4][4] ={{PA8,PA9,PA10,PA11},
-//													{PA0,PA1,PA2,PA3},
-//													{PA6,PA7,PB0,PB1},
-//													{PB6,PB7,PB8,PB9}};
-
 //PWMÊä³ö³õÊ¼»¯
 //arr£º×Ô¶¯ÖØ×°Öµ
 //psc£ºÊ±ÖÓÔ¤·ÖÆµÊý
@@ -49,26 +44,6 @@ void TIMx_Init(TIM_TypeDef* TIMx,u16 arr,u16 psc,uint8_t CHx)//f=72MHz/arr/psc,×
 	}
 	
 	TIM_Cmd(TIMx, ENABLE);
-//	TIM_TimeBaseStructure.TIM_Period = arr-1; //ÉèÖÃÔÚÏÂÒ»¸ö¸üÐÂÊÂ¼þ×°Èë»î¶¯µÄ×Ô¶¯ÖØ×°ÔØ¼Ä´æÆ÷ÖÜÆÚµÄÖµ	 80K
-//	TIM_TimeBaseStructure.TIM_Prescaler =psc-1; //ÉèÖÃÓÃÀ´×÷ÎªTIMxÊ±ÖÓÆµÂÊ³ýÊýµÄÔ¤·ÖÆµÖµ  ²»·ÖÆµ
-//	TIM_TimeBaseStructure.TIM_ClockDivision = 0; //ÉèÖÃÊ±ÖÓ·Ö¸î:TDTS = Tck_tim
-//	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //TIMÏòÉÏ¼ÆÊýÄ£Ê½
-//	TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure); //¸ù¾ÝTIM_TimeBaseInitStructÖÐÖ¸¶¨µÄ²ÎÊý³õÊ¼»¯TIMxµÄÊ±¼ä»ùÊýµ¥Î»
-
-// 
-//	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; //Ñ¡Ôñ¶¨Ê±Æ÷Ä£Ê½:TIMÂö³å¿í¶Èµ÷ÖÆÄ£Ê½1
-//	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable; //±È½ÏÊä³öÊ¹ÄÜ
-//	TIM_OCInitStructure.TIM_Pulse = arr-1-300; //ÉèÖÃ´ý×°Èë²¶»ñ±È½Ï¼Ä´æÆ÷µÄÂö³åÖµ
-//	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High; //Êä³ö¼«ÐÔ:TIMÊä³ö±È½Ï¼«ÐÔ¸ß
-//	TIM_OC1Init(TIMx, &TIM_OCInitStructure);  //¸ù¾ÝTIM_OCInitStructÖÐÖ¸¶¨µÄ²ÎÊý³õÊ¼»¯ÍâÉèTIMx
-
-//  TIM_CtrlPWMOutputs(TIMx,ENABLE);	//MOE Ö÷Êä³öÊ¹ÄÜ	
-
-//	TIM_OC1PreloadConfig(TIMx, TIM_OCPreload_Enable);  //CHxÔ¤×°ÔØÊ¹ÄÜ	 
-//	
-//	TIM_ARRPreloadConfig(TIMx, ENABLE); //Ê¹ÄÜTIMxÔÚARRÉÏµÄÔ¤×°ÔØ¼Ä´æÆ÷
-//	
-//	TIM_Cmd(TIMx, ENABLE);  //Ê¹ÄÜTIMx
 }
 
 uint8_t PWM_Init(uint8_t Pin)
@@ -91,19 +66,7 @@ uint8_t PWM_Init(uint8_t Pin)
 
 uint16_t pwmWrite(uint8_t Pin,uint16_t val)
 {
-	if(!IS_PWM_PIN(Pin))return 0;
-	
-	if(val==0)
-	{
-		digitalWrite(Pin,LOW);
-		return 0;
-	}
-	else if(val>=PWM_DutyCycle)
-	{
-		digitalWrite(Pin,HIGH);
-		return val;
-	}
-	
+	if(val>=PWM_DutyCycle) val = PWM_DutyCycle;	
 	switch(PIN_MAP[Pin].TimerChannel)
 	{
 		case 1: PIN_MAP[Pin].TIMx->CCR1 = val;break;
