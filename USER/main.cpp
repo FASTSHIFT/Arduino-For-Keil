@@ -24,7 +24,7 @@ void loop()
 int main(void)
 {
 	delay_init();
-	//ADCx_Init();
+	//ADCx_Init();//If use ADC
 	//ADCx_DMA_Init();
 	setup();
 	for(;;)loop();
