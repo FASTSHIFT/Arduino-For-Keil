@@ -119,7 +119,7 @@ class TwoWire : public WireBase {
      * Processes the incoming I2C message defined by WireBase
      */
 
-    uint8_t process();
+    virtual uint8_t process();
  public:
     /*
      * Accept pin numbers for SCL and SDA lines. Set the delay needed
@@ -133,7 +133,7 @@ class TwoWire : public WireBase {
      * .begin(uint8_t) in WireBase
      */
     //void begin(uint8_t self_addr);
-		void begin(uint8_t = 0x00);
+		virtual void begin(uint8_t = 0x00);
     /*
      * If object is destroyed, set pin numbers to 0.
      */
