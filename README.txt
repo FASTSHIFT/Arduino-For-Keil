@@ -51,5 +51,5 @@
 //Upgrade        2.19  V_2.1 移除sys.h、sys.c，移植STM32duino的PIN_MAP[]，uint8_t类型的变量即可表示一个引脚，加入enum，优化IO操作函数提升效率
 //Upgrade        2.27  V_2.2 调用Arduino.h时已不用声明extern"C"{},加入WProgram.h以兼容某些库函数
 //Upgrade        2.28  V_2.3 修复EXTI的BUG
-//Upgrade	       3.5   V_2.4 修复Wire.h的警告BUG
+//Upgrade        3.5   V_2.4 修复Wire.h的警告BUG
 
