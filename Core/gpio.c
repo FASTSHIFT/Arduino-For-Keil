@@ -104,3 +104,16 @@ uint8_t Get_GPIOx(uint8_t Pin)
 	else if(PIN_MAP[Pin].GPIOx == GPIOG)return 6;
 	else return 0xFF;
 }
+
+uint8_t Get_Pinx(uint8_t Pin)
+{
+	uint8_t digit = 0;
+	uint16_t GPIO_Pin_x = PIN_MAP[Pin].GPIO_Pin_x;
+	
+	while(GPIO_Pin_x > 1)
+	{
+		GPIO_Pin_x >>= 1;
+		digit++;
+	}
+	return digit;
+}

@@ -3,13 +3,12 @@
 void_func_point EXIT_func[16]={null_func, null_func, null_func, null_func, null_func, null_func, null_func, null_func, 
 															 null_func, null_func, null_func, null_func, null_func, null_func, null_func, null_func};
 
-
-void attachInterrupt(uint8_t Pin,void_func_point f,EXTITrigger_TypeDef Trigger_Mode,uint8_t SubPriority)
+void attach_EXTI(uint8_t Pin, void_func_point f, EXTITrigger_TypeDef Trigger_Mode, uint8_t PreemptionPriority, uint8_t SubPriority)
 {
 	EXTI_InitTypeDef EXTI_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 	IRQn_Type EXTIx_IRQn;
-	uint8_t Pinx = PIN_MAP[Pin].GPIO_Pin_x;
+	uint8_t Pinx = Get_Pinx(Pin);
 	
 	if(Pinx>15)return;
 	EXIT_func[Pinx] = f;
@@ -40,13 +39,17 @@ void attachInterrupt(uint8_t Pin,void_func_point f,EXTITrigger_TypeDef Trigger_M
 	else if(Pinx >=10 && Pinx <=15) EXTIx_IRQn = EXTI15_10_IRQn;
 	
 	NVIC_InitStructure.NVIC_IRQChannel = EXTIx_IRQn;					//使能所在的外部中断通道
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02;		//抢占优先级2， 
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;		//抢占优先级
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;				//子优先级
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;						//使能外部中断通道
 	NVIC_Init(&NVIC_InitStructure); 
 }
 
-/**********************************配置中断函数***************************/
+void attachInterrupt(uint8_t Pin,void_func_point f,EXTITrigger_TypeDef Trigger_Mode)
+{
+	attach_EXTI(Pin,f,Trigger_Mode,0x02,0x01);
+}
+
 
 void EXTI0_IRQHandler(void)
 {

@@ -4,7 +4,7 @@
 #include "stm32f10x_exti.h"
 #include "Arduino.h"
 
-void EXTIX_Init(void);//IO初始化
-void attachInterrupt(uint8_t Pin,void (*f)(),EXTITrigger_TypeDef Trigger_Mode,uint8_t SubPriority);		 					    
+void attach_EXTI(uint8_t Pin, void_func_point f, EXTITrigger_TypeDef Trigger_Mode, uint8_t PreemptionPriority, uint8_t SubPriority);
+void attachInterrupt(uint8_t Pin, void_func_point f, EXTITrigger_TypeDef Trigger_Mode);		 					    
 #endif
 

@@ -41,5 +41,6 @@ void GPIO_Config(void);
 void GPIO_begin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin,GPIOMode_TypeDef GPIOMode,GPIOSpeed_TypeDef GPIOSpeed);
 void GPIO_ToggleBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
 uint8_t Get_GPIOx(uint8_t Pin);
+uint8_t Get_Pinx(uint8_t Pin);
 
 #endif 
