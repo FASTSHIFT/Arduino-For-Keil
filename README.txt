@@ -52,6 +52,6 @@
 //Upgrade        2.27  V_2.2 调用Arduino.h时已不用声明extern"C"{},加入WProgram.h以兼容某些库函数
 //Upgrade        2.28  V_2.3 修复EXTI的BUG
 //Upgrade        3.5   V_2.4 修复Wire.h的警告BUG
-//Upgrade	       3.6   V_2.5 移植舵机库
-//Upgrade	       3.7   V_2.6 TIM1已支持中断和输出PWM，转移main.cpp创建的对象
+//Upgrade        3.6   V_2.5 移植Servo舵机库
+//Upgrade        3.7   V_2.6 TIM1已支持中断和输出PWM，转移main.cpp创建的对象
 
