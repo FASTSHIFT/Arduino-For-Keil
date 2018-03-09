@@ -41,12 +41,8 @@
 #ifndef _WIREBASE_H_
 #define _WIREBASE_H_
 
-extern "C"
-{
-	#include "Arduino.h"
-}
-//#include "wirish.h"
-//#include <libmaple/i2c.h>
+
+#include "Arduino.h"
 
 #define WIRE_BUFSIZ 32
 
