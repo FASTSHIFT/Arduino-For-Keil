@@ -44,6 +44,7 @@ void TIMx_Init(TIM_TypeDef* TIMx,u16 arr,u16 psc,uint8_t CHx)//f=72MHz/arr/psc,×
 	}
 	
 	TIM_Cmd(TIMx, ENABLE);
+	if(TIMx==TIM1 || TIMx==TIM8)TIM_CtrlPWMOutputs(TIMx, ENABLE);
 }
 
 uint8_t PWM_Init(uint8_t Pin)
@@ -66,7 +67,7 @@ uint8_t PWM_Init(uint8_t Pin)
 
 uint16_t pwmWrite(uint8_t Pin,uint16_t val)
 {
-	if(val>=PWM_DutyCycle) val = PWM_DutyCycle;	
+	//if(val>=PWM_DutyCycle) val = PWM_DutyCycle;	
 	switch(PIN_MAP[Pin].TimerChannel)
 	{
 		case 1: PIN_MAP[Pin].TIMx->CCR1 = val;break;
@@ -75,4 +76,34 @@ uint16_t pwmWrite(uint8_t Pin,uint16_t val)
 		case 4: PIN_MAP[Pin].TIMx->CCR4 = val;break;
 	}
 	return val;
+}
+
+//*************************//
+
+uint16_t timer_get_compare(TIM_TypeDef* TIMx,u8 TimerChannel)
+{
+	u16 compare=0;
+	switch(TimerChannel)
+	{
+		case 1: compare = TIMx->CCR1;break;
+		case 2: compare = TIMx->CCR2;break;
+		case 3: compare = TIMx->CCR3;break;
+		case 4: compare = TIMx->CCR4;break;
+	}
+	return compare;
+}
+
+void timer_set_prescaler(TIM_TypeDef* TIMx,uint16_t psc)
+{
+   TIMx->PSC = psc;
+}
+
+void timer_set_reload(TIM_TypeDef* TIMx,uint16_t arr)
+{
+  TIMx->ARR = arr;
+}
+
+void timer_generate_update(TIM_TypeDef* TIMx)
+{
+	TIMx->EGR = TIM_PSCReloadMode_Immediate; 
 }

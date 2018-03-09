@@ -1,6 +1,8 @@
 #include "spi.h"
 #include "Arduino.h"
 
+SPI_InitTypeDef  SPI_InitStructure;
+
 void SPI_begin(SPI_TypeDef* SPIx)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -8,14 +10,10 @@ void SPI_begin(SPI_TypeDef* SPIx)
 	{
 		case (int)SPI1:
 			RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOA|RCC_APB2Periph_SPI1, ENABLE);
-//			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
-//			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //复用推挽输出	
-//			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-//			GPIO_Init(GPIOA, &GPIO_InitStructure);
-//			GPIO_SetBits(GPIOA,GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7);
-			pinMode(PA5,GPIO_Mode_AF_PP);
-			pinMode(PA6,GPIO_Mode_AF_PP);
-			pinMode(PA7,GPIO_Mode_AF_OD);
+			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //复用推挽输出	
+			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+			GPIO_Init(GPIOA, &GPIO_InitStructure);
 			break;
 		case (int)SPI2:
 			RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
@@ -24,7 +22,6 @@ void SPI_begin(SPI_TypeDef* SPIx)
 			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //复用推挽输出
 			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 			GPIO_Init(GPIOB, &GPIO_InitStructure);
-			GPIO_SetBits(GPIOB,GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15);
 			break;
 	}
 }
@@ -37,7 +34,6 @@ void SPI_Settings(	SPI_TypeDef* SPIx,
 										u16 SPI_BaudRatePrescaler,
 										u16 SPI_FirstBit)
 {
-	SPI_InitTypeDef  SPI_InitStructure;
 	u16 SPI_CPOL,SPI_CPHA;
 	SPI_Cmd(SPIx,DISABLE);
 	
@@ -81,26 +77,18 @@ void SPI_Settings(	SPI_TypeDef* SPIx,
 
 void SPI_setBitOrder(SPI_TypeDef* SPIx,u16 SPI_FirstBit)
 {
-	SPI_InitTypeDef  SPI_InitStructure;
-	SPI_Cmd(SPIx,DISABLE);
 	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit;
 	SPI_Init(SPIx, &SPI_InitStructure);
-	SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPI_setDataSize(SPI_TypeDef* SPIx,u16 datasize)
 {
-	SPI_InitTypeDef  SPI_InitStructure;
-	SPI_Cmd(SPIx,DISABLE);
-	SPI_InitStructure.SPI_FirstBit = datasize;
+	SPI_InitStructure.SPI_DataSize = datasize;
 	SPI_Init(SPIx, &SPI_InitStructure);
-	SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPI_setDataMode(SPI_TypeDef* SPIx,uint8_t dataMode)
-{
-	SPI_InitTypeDef  SPI_InitStructure;
-	
+{	
 	u16 SPI_CPOL,SPI_CPHA;
 	SPI_Cmd(SPIx,DISABLE);
 	
@@ -127,7 +115,6 @@ void SPI_setDataMode(SPI_TypeDef* SPIx,uint8_t dataMode)
 	SPI_InitStructure.SPI_CPOL = SPI_CPOL;		//选择了串行时钟的稳态:时钟悬空高
 	SPI_InitStructure.SPI_CPHA = SPI_CPHA;	//数据捕获于第二个时钟沿
 	SPI_Init(SPIx, &SPI_InitStructure);
-	SPI_Cmd(SPIx, ENABLE);
 }
 
 
@@ -140,11 +127,8 @@ void SPI_setDataMode(SPI_TypeDef* SPIx,uint8_t dataMode)
 
 void SPI_setClockDivider(SPI_TypeDef* SPIx,u16 clockDivider)
 {
-	SPI_InitTypeDef  SPI_InitStructure;
-	SPI_Cmd(SPIx,DISABLE);
 	SPI_InitStructure.SPI_BaudRatePrescaler = clockDivider;
 	SPI_Init(SPIx, &SPI_InitStructure);
-	SPI_Cmd(SPIx,ENABLE);
 	//SPIx->CR1&=0XFFC7; 
 	//SPIx->CR1|=SpeedSet;	//设置SPI速度  
 	//SPIx->CR1|=1<<6; 		//SPI设备使能 

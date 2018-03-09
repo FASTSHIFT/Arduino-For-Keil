@@ -8,9 +8,7 @@
 #define TIM2_start() TIM_Cmd(TIM2, ENABLE)
 #define TIM2_stop() TIM_Cmd(TIM2, DISABLE)
 
-#define TIMER2 2
-#define TIMER3 3
-#define TIMER4 4
+enum{TIMER1,TIMER2,TIMER3,TIMER4,TIMER5,TIMER6,TIMER7,TIMER8};
 
 void TimerSet(u8 TimerNum,u32 us,void (*f)());
  
