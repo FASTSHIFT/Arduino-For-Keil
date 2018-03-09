@@ -31,4 +31,8 @@ class HardwareSerial : public Stream
 		u8 USART_Num;
 };
 
+extern HardwareSerial Serial;
+extern HardwareSerial Serial2;
+extern HardwareSerial Serial3;
+
 #endif

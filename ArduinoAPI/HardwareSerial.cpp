@@ -65,3 +65,7 @@ size_t HardwareSerial::write(uint8_t n)
 	usart_putc(USARTx,n);
 	return n;
 }
+
+HardwareSerial Serial(USART1);//TX-PA9 RX-PA10
+HardwareSerial Serial2(USART2);//TX-PA2 RX-PA3
+HardwareSerial Serial3(USART3);//TX-PB10 RX-PB11
