@@ -23,12 +23,4 @@ extern"C"{
 #include "WString.h"
 #include "Stream.h"
 
-//*************Object**************//
-extern HardwareSerial Serial;
-extern HardwareSerial Serial2;
-extern HardwareSerial Serial3;
-extern HardwareSPI SPI;
-extern HardwareSPI SPI_2;
-extern TwoWire Wire;
-
 #endif
