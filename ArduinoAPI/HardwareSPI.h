@@ -4,6 +4,7 @@
 extern "C"{
 #include "spi.h"
 }
+#include "Arduino.h"
 
 // SPI_HAS_TRANSACTION means SPI has
 //   - beginTransaction()
@@ -31,10 +32,73 @@ extern "C"{
 
 #define SPI_RETRY_TIMES 500
 
-class HardwareSPI
+#define BitOrder uint16_t
+#define spi_dev SPI_TypeDef
+
+typedef enum{
+	SPI_STATE_IDLE,
+	SPI_STATE_READY,
+	SPI_STATE_RECEIVE,
+	SPI_STATE_TRANSMIT,
+	SPI_STATE_TRANSFER
+}spi_mode_t;
+
+//class SPISettings
+//{
+//public:
+//	SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode) {
+//		if (__builtin_constant_p(clock)) {
+//			init_AlwaysInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
+//		} else {
+//			init_MightInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
+//		}
+//	}
+//	SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode, uint32_t dataSize) {
+//		if (__builtin_constant_p(clock)) {
+//			init_AlwaysInline(clock, bitOrder, dataMode, dataSize);
+//		} else {
+//			init_MightInline(clock, bitOrder, dataMode, dataSize);
+//		}
+//	}
+//	SPISettings(uint32_t clock) {
+//		if (__builtin_constant_p(clock)) {
+//			init_AlwaysInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
+//		} else {
+//			init_MightInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
+//		}
+//	}
+//	SPISettings() { init_AlwaysInline(4000000, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT); }
+//private:
+//	void init_MightInline(uint32_t clock, BitOrder bitOrder, uint8_t dataMode, uint32_t dataSize) {
+//		init_AlwaysInline(clock, bitOrder, dataMode, dataSize);
+//	}
+//	void init_AlwaysInline(uint32_t clock, BitOrder bitOrder, uint8_t dataMode, uint32_t dataSize) __attribute__((__always_inline__)) {
+//		this->clock = clock;
+//		this->bitOrder = bitOrder;
+//		this->dataMode = dataMode;
+//		this->dataSize = dataSize;
+//	}
+//	uint32_t clock;
+//  uint32_t dataSize;
+//  uint32_t clockDivider;
+//	BitOrder bitOrder;
+//	uint8_t dataMode;
+//  uint8_t _SSPin;
+//	volatile spi_mode_t state;
+//	spi_dev *spi_d;
+//	//dma_channel spiRxDmaChannel, spiTxDmaChannel;
+//	//dma_dev* spiDmaDev;
+//  void (*receiveCallback)(void) = NULL;
+//  void (*transmitCallback)(void) = NULL;
+//	
+//	friend class SPIClass;
+//};
+
+
+class SPIClass
 {
 	public:
-		HardwareSPI(SPI_TypeDef* _SPIx);
+		SPIClass(SPI_TypeDef* _SPIx);
 		/**
 		 * @brief Equivalent to begin(SPI_1_125MHZ, MSBFIRST, 0).
 		 */
@@ -155,4 +219,8 @@ class HardwareSPI
 	private:
 		SPI_TypeDef* SPIx;
 };
+
+extern SPIClass SPI;
+extern SPIClass SPI_2;
+
 #endif

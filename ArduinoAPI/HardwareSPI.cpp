@@ -1,13 +1,11 @@
 #include "HardwareSPI.h"
 
-SPI_TypeDef* SPIx;
-
-HardwareSPI::HardwareSPI(SPI_TypeDef* _SPIx)
+SPIClass::SPIClass(SPI_TypeDef* _SPIx)
 {
 	SPIx = _SPIx;
 }
 
-void HardwareSPI::begin(void) 
+void SPIClass::begin(void) 
 {
 	SPI_begin(SPIx);
 	SPI_Settings(	SPIx,
@@ -19,13 +17,13 @@ void HardwareSPI::begin(void)
 								SPI_FirstBit_MSB);
 }
 
-void HardwareSPI::begin(uint32_t speedMaximum,uint16_t dataOrder,uint16_t dataMode)
+void SPIClass::begin(uint32_t speedMaximum,uint16_t dataOrder,uint16_t dataMode)
 {	
 	begin();
 	Settings(speedMaximum,dataOrder,dataMode);
 }
 
-void HardwareSPI::beginSlave(void)
+void SPIClass::beginSlave(void)
 {
   SPI_begin(SPIx);
 	SPI_Settings(	SPIx,
@@ -37,7 +35,7 @@ void HardwareSPI::beginSlave(void)
 								SPI_FirstBit_MSB);
 }
 
-void HardwareSPI::Settings(uint32_t speedMaximum,uint16_t dataOrder,uint16_t dataMode)
+void SPIClass::Settings(uint32_t speedMaximum,uint16_t dataOrder,uint16_t dataMode)
 {
 	uint16_t SPI_BaudRatePrescaler;
 	speedMaximum = 72000000 / speedMaximum;
@@ -55,17 +53,17 @@ void HardwareSPI::Settings(uint32_t speedMaximum,uint16_t dataOrder,uint16_t dat
 	setDataMode(dataMode);
 }
 
-void HardwareSPI::end(void)
+void SPIClass::end(void)
 {
   SPI_Cmd(SPIx, DISABLE);
 }
 
-void HardwareSPI::setClockDivider(uint16_t clockDivider)
+void SPIClass::setClockDivider(uint16_t clockDivider)
 {
 	SPI_setClockDivider(SPIx,clockDivider);
 }
 
-void HardwareSPI::setBitOrder(uint16_t bitOrder)
+void SPIClass::setBitOrder(uint16_t bitOrder)
 {
 	if(bitOrder)SPI_setBitOrder(SPIx,SPI_FirstBit_MSB);//MSBFIRST 1
 	else SPI_setBitOrder(SPIx,SPI_FirstBit_LSB);
@@ -75,12 +73,12 @@ void HardwareSPI::setBitOrder(uint16_t bitOrder)
 *	Input parameter should be SPI_CR1_DFF set to 0 or 1 on a 32bit word.
 *	
 */
-void HardwareSPI::setDataSize(uint16_t datasize)
+void SPIClass::setDataSize(uint16_t datasize)
 {
 	SPI_setDataSize(SPIx,datasize);
 }
 
-void HardwareSPI::setDataMode(uint8_t dataMode)
+void SPIClass::setDataMode(uint8_t dataMode)
 {
 /* Notes.  As far as I can tell, the AVR numbers for dataMode appear to match the numbers required by the STM32
 
@@ -110,7 +108,7 @@ If someone finds this is not the case or sees a logic error with this let me kno
 	SPI_setDataMode(SPIx,dataMode);
 }
 
-void HardwareSPI::beginTransaction(void)
+void SPIClass::beginTransaction(void)
 {
 //	setBitOrder(settings.bitOrder);
 //	setDataMode(settings.dataMode);
@@ -119,7 +117,7 @@ void HardwareSPI::beginTransaction(void)
 	SPI_begin(SPIx);
 }
 
-void HardwareSPI::beginTransactionSlave(void)
+void SPIClass::beginTransactionSlave(void)
 {
 //	setBitOrder(settings.bitOrder);
 //	setDataMode(settings.dataMode);
@@ -127,20 +125,20 @@ void HardwareSPI::beginTransactionSlave(void)
 	beginSlave();
 }
 
-void HardwareSPI::endTransaction(void)
+void SPIClass::endTransaction(void)
 {
-	SPI_Cmd(SPIx, DISABLE);
+	
 }
 
 
-uint8_t HardwareSPI::read(void) 
+uint8_t SPIClass::read(void) 
 {
     uint8_t buf[1];
     this->read(buf, 1);
     return buf[0];
 }
 
-void HardwareSPI::read(uint8_t *buf, uint32_t len)
+void SPIClass::read(uint8_t *buf, uint32_t len)
 {
   uint32_t rxed = 0;
 	uint16_t retry=0;
@@ -156,7 +154,7 @@ void HardwareSPI::read(uint8_t *buf, uint32_t len)
 	}
 }
 
-void HardwareSPI::write(uint16_t data)
+void SPIClass::write(uint16_t data)
 {
 	uint16_t retry=0;
 	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET) //检查指定的SPI标志位设置与否:发送缓存空标志位
@@ -178,7 +176,7 @@ void HardwareSPI::write(uint16_t data)
 //	while (spi_is_busy(_currentSetting->spi_d) != 0); // "... and then wait until BSY=0 before disabling the SPI." 
 }
 
-void HardwareSPI::write(const uint8_t *data, uint32_t length)
+void SPIClass::write(const uint8_t *data, uint32_t length)
 {
 	uint32_t txed = 0;
 	uint16_t retry=0;
@@ -202,7 +200,7 @@ void HardwareSPI::write(const uint8_t *data, uint32_t length)
 //	}
 }
 
-uint16_t HardwareSPI::transfer16(uint16_t wr_data) const
+uint16_t SPIClass::transfer16(uint16_t wr_data) const
 {
 	u16 retry=0;
 	u16 rd_data;		
@@ -229,7 +227,7 @@ uint16_t HardwareSPI::transfer16(uint16_t wr_data) const
 	return rd_data;
 }
 
-uint8_t HardwareSPI::transfer(uint8_t wr_data) const
+uint8_t SPIClass::transfer(uint8_t wr_data) const
 {
 	u16 retry=0;
 	u8 rd_data;		
@@ -257,13 +255,13 @@ uint8_t HardwareSPI::transfer(uint8_t wr_data) const
 //    return b;
 }
 
-uint8_t HardwareSPI::send(uint8_t data)
+uint8_t SPIClass::send(uint8_t data)
 {
 	uint8_t buf[] = {data};
 	return this->send(buf, 1);
 }
 
-uint8_t HardwareSPI::send(uint8_t *buf, uint32_t len)
+uint8_t SPIClass::send(uint8_t *buf, uint32_t len)
 {
 	uint32_t txed = 0;
 	uint8_t ret = 0;
@@ -275,12 +273,10 @@ uint8_t HardwareSPI::send(uint8_t *buf, uint32_t len)
 	return ret;
 }
 
-uint8_t HardwareSPI::recv(void)
+uint8_t SPIClass::recv(void)
 {
     return this->read();
 }
-	
-	
 	
 //--------------------------DMA----------------------------------------//
 ///*  Roger Clark and Victor Perez, 2015
@@ -542,4 +538,5 @@ uint8_t HardwareSPI::recv(void)
 //	return baud_rates[i];
 //}
 
-//HardwareSPI SPI(1);
+SPIClass SPI(SPI1);//SCK-PA5 MISO-PA6 MOSI-PA7
+SPIClass SPI_2(SPI2);//SCK-PB13 MISO-PB14 MOSI-PB15
