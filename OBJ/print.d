@@ -1,0 +1,16 @@
+..\obj\print.o: ..\ArduinoAPI\Print.cpp
+..\obj\print.o: ..\ArduinoAPI\Print.h
+..\obj\print.o: ..\ArduinoAPI\libmaple_types.h
+..\obj\print.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+..\obj\print.o: ..\ArduinoAPI\WString.h
+..\obj\print.o: ..\ArduinoAPI\dtostrf.h
+..\obj\print.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\stdio.h
+..\obj\print.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
+..\obj\print.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\string.h
+..\obj\print.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\ctype.h
+..\obj\print.o: ..\ArduinoAPI\itoa.h
+..\obj\print.o: ..\ArduinoAPI\Printable.h
+..\obj\print.o: ..\ArduinoAPI\wirish_math.h
+..\obj\print.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\math.h
+..\obj\print.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\limits.h
+..\obj\print.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\stdarg.h
