@@ -48,7 +48,11 @@
           <OutputName>Pro</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
+<<<<<<< HEAD
           <CreateHexFile>0</CreateHexFile>
+=======
+          <CreateHexFile>1</CreateHexFile>
+>>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>..\LIST\</ListingPath>
@@ -466,6 +470,7 @@
           <GroupName>Core</GroupName>
           <Files>
             <File>
+<<<<<<< HEAD
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CORE\delay.c</FilePath>
@@ -484,11 +489,35 @@
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\adc.c</FilePath>
+=======
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CORE\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>sys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CORE\sys.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CORE\usart.c</FilePath>
+>>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
             </File>
             <File>
               <FileName>pwm.c</FileName>
               <FileType>1</FileType>
+<<<<<<< HEAD
               <FilePath>..\Core\pwm.c</FilePath>
+=======
+              <FilePath>..\CORE\pwm.c</FilePath>
+>>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
             </File>
             <File>
               <FileName>spi.c</FileName>
@@ -496,15 +525,29 @@
               <FilePath>..\Core\spi.c</FilePath>
             </File>
             <File>
+<<<<<<< HEAD
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\usart.c</FilePath>
+=======
+              <FileName>exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\exti.c</FilePath>
+>>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
             </File>
             <File>
               <FileName>time_exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\time_exti.c</FilePath>
             </File>
+<<<<<<< HEAD
+=======
+            <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\gpio.c</FilePath>
+            </File>
+>>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
           </Files>
         </Group>
         <Group>
