@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿# Arduino_For_Keil
+# Arduino_For_Keil
 
     这个项目可以使你在Keil MDK5环境下也可以使用Arduino的函数对STM32F10x系列单片机进行编程。它可以兼容Arduino函数库，只需将函数库的文件夹拖入 "Library" 文件夹下即可，使用时可以直接复制Arduino的源代码，注意include的时候要加入完整的路径，例如在Arduino IDE下：#include"SD.h"，在Keil中就要写成：#include"SD/SD.h"。有的函数库可能要进行修改才能正常运行，具体修改方式请按照编译器的提示。
     
@@ -123,5 +122,7 @@
 //Upgrade        3.5   V_2.4 修复Wire.h的警告BUG
 //Upgrade        3.6   V_2.5 移植Servo舵机库
 //Upgrade        3.7   V_2.6 TIM1已支持中断和输出PWM，转移main.cpp创建的对象
+//Upgrade        3.15  V_2.7 支持pulseIn(),完善ADC_DMA
+//Upgrade        3.16  V_2.8 定时器库已支持配置中断优先级，去除Stream.h的警告,Core文件夹内的头文件已支持被C++直接调用
+//Upgrade        3.18  V_2.9 PWM库支持修改频率和占空比最大值，重新整理Arduino.h
 
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
