@@ -39,7 +39,7 @@
       
    Peripheral related:
      Serial class
-     Wire category
+     Wire class
      SPI class (Not fully tested)
 
 //*********************************UPGRADE LOGS************************************//
