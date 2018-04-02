@@ -1,8 +1,5 @@
 #include "FileGroup.h"
 
-uint32_t LED1_TimePoint;
-uint32_t LED2_TimePoint;
-
 void setup()
 {
 	Serial.begin(115200);
