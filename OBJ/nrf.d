@@ -1,8 +1,7 @@
 ..\obj\nrf.o: ..\Libraries\NRF\NRF.cpp
 ..\obj\nrf.o: ..\Libraries\NRF\NRF.h
 ..\obj\nrf.o: ..\ArduinoAPI\Arduino.h
-..\obj\nrf.o: ..\Core\GPIO.h
-..\obj\nrf.o: ..\Core\sys.h
+..\obj\nrf.o: ..\Core\gpio.h
 ..\obj\nrf.o: D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include\stm32f10x.h
 ..\obj\nrf.o: .\RTE\RTE_Components.h
 ..\obj\nrf.o: D:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include\core_cm3.h
@@ -21,5 +20,8 @@
 ..\obj\nrf.o: D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\StdPeriph_Driver\inc\stm32f10x_tim.h
 ..\obj\nrf.o: D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\StdPeriph_Driver\inc\stm32f10x_usart.h
 ..\obj\nrf.o: D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\StdPeriph_Driver\inc\misc.h
+..\obj\nrf.o: ..\Core\pwm.h
+..\obj\nrf.o: ..\ArduinoAPI\Arduino.h
+..\obj\nrf.o: ..\Core\adc.h
 ..\obj\nrf.o: ..\ArduinoAPI\binary.h
 ..\obj\nrf.o: ..\Core\delay.h

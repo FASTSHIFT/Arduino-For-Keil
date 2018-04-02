@@ -25,7 +25,7 @@
     <ToolsetNumber>0x4</ToolsetNumber>
     <ToolsetName>ARM-ADS</ToolsetName>
     <TargetOption>
-      <CLKADS>8000000</CLKADS>
+      <CLKADS>72000000</CLKADS>
       <OPTTT>
         <gFlags>1</gFlags>
         <BeepAtEnd>1</BeepAtEnd>
@@ -99,13 +99,8 @@
         </Book>
       </Books>
       <DebugOpt>
-<<<<<<< HEAD
-        <uSim>1</uSim>
-        <uTrg>0</uTrg>
-=======
         <uSim>0</uSim>
         <uTrg>1</uTrg>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
         <sLdApp>1</sLdApp>
         <sGomain>1</sGomain>
         <sRbreak>1</sRbreak>
@@ -126,11 +121,7 @@
         <tPdscDbg>1</tPdscDbg>
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
-<<<<<<< HEAD
-        <nTsel>8</nTsel>
-=======
         <nTsel>11</nTsel>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -172,16 +163,12 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>ST-LINKIII-KEIL_SWO</Key>
-<<<<<<< HEAD
           <Name>-U-O206 -O206 -S0 -C0 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8004 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
-=======
-          <Name>-U -O206 -S0 -C0 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8004 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>UL2CM3</Key>
-          <Name>-U -O14 -S0 -C0 -P00 -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
+          <Name>-U -O14 -S0 -C0 -P00 -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7  -FN1 -FC1000 -FD20000000 -FF0STM32F10x_128 -FL020000 -FS08000000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint/>
@@ -228,7 +215,7 @@
 
   <Group>
     <GroupName>ArduinoAPI</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -374,11 +361,7 @@
 
   <Group>
     <GroupName>Core</GroupName>
-<<<<<<< HEAD
-    <tvExp>0</tvExp>
-=======
     <tvExp>1</tvExp>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -390,13 +373,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\CORE\delay.c</PathWithFileName>
       <FilenameWithoutPath>delay.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\Core\adc.c</PathWithFileName>
-      <FilenameWithoutPath>adc.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -408,13 +386,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\exti.c</PathWithFileName>
       <FilenameWithoutPath>exti.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\CORE\delay.c</PathWithFileName>
-      <FilenameWithoutPath>delay.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -426,13 +399,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\gpio.c</PathWithFileName>
       <FilenameWithoutPath>gpio.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\CORE\usart.c</PathWithFileName>
-      <FilenameWithoutPath>usart.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -444,13 +412,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\adc.c</PathWithFileName>
       <FilenameWithoutPath>adc.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\CORE\pwm.c</PathWithFileName>
-      <FilenameWithoutPath>pwm.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -462,13 +425,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\pwm.c</PathWithFileName>
       <FilenameWithoutPath>pwm.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\Core\spi.c</PathWithFileName>
-      <FilenameWithoutPath>spi.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -480,13 +438,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\spi.c</PathWithFileName>
       <FilenameWithoutPath>spi.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\Core\exti.c</PathWithFileName>
-      <FilenameWithoutPath>exti.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -498,13 +451,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\usart.c</PathWithFileName>
       <FilenameWithoutPath>usart.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\Core\time_exti.c</PathWithFileName>
-      <FilenameWithoutPath>time_exti.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -516,13 +464,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\time_exti.c</PathWithFileName>
       <FilenameWithoutPath>time_exti.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\Core\gpio.c</PathWithFileName>
-      <FilenameWithoutPath>gpio.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

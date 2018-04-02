@@ -1,7 +1,5 @@
-..\obj\servo.o: ..\Libraries\Servo\Servo.cpp
-..\obj\servo.o: ..\Libraries\Servo\Servo.h
-..\obj\servo.o: ..\ArduinoAPI\Arduino.h
-..\obj\servo.o: ..\Core\gpio.h
+..\obj\servo.o: ..\Libraries\SimpleServo\Servo.c
+..\obj\servo.o: ..\Libraries\SimpleServo\Servo.h
 ..\obj\servo.o: D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include\stm32f10x.h
 ..\obj\servo.o: .\RTE\RTE_Components.h
 ..\obj\servo.o: D:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include\core_cm3.h
@@ -20,11 +18,3 @@
 ..\obj\servo.o: D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\StdPeriph_Driver\inc\stm32f10x_tim.h
 ..\obj\servo.o: D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\StdPeriph_Driver\inc\stm32f10x_usart.h
 ..\obj\servo.o: D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\StdPeriph_Driver\inc\misc.h
-..\obj\servo.o: ..\Core\pwm.h
-..\obj\servo.o: ..\ArduinoAPI\Arduino.h
-..\obj\servo.o: ..\Core\adc.h
-..\obj\servo.o: ..\ArduinoAPI\binary.h
-..\obj\servo.o: ..\Core\delay.h
-..\obj\servo.o: ..\ArduinoAPI\libmaple_types.h
-..\obj\servo.o: ..\ArduinoAPI\wirish_math.h
-..\obj\servo.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\math.h

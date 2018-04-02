@@ -25,7 +25,7 @@
     <ToolsetNumber>0x4</ToolsetNumber>
     <ToolsetName>ARM-ADS</ToolsetName>
     <TargetOption>
-      <CLKADS>8000000</CLKADS>
+      <CLKADS>72000000</CLKADS>
       <OPTTT>
         <gFlags>1</gFlags>
         <BeepAtEnd>1</BeepAtEnd>
@@ -99,13 +99,8 @@
         </Book>
       </Books>
       <DebugOpt>
-<<<<<<< HEAD
         <uSim>1</uSim>
         <uTrg>0</uTrg>
-=======
-        <uSim>0</uSim>
-        <uTrg>1</uTrg>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
         <sLdApp>1</sLdApp>
         <sGomain>1</sGomain>
         <sRbreak>1</sRbreak>
@@ -126,11 +121,7 @@
         <tPdscDbg>1</tPdscDbg>
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
-<<<<<<< HEAD
-        <nTsel>8</nTsel>
-=======
-        <nTsel>11</nTsel>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
+        <nTsel>1</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -141,7 +132,7 @@
         <tDlgDll></tDlgDll>
         <tDlgPa></tDlgPa>
         <tIfile></tIfile>
-        <pMon>STLink\ST-LINKIII-KEIL_SWO.dll</pMon>
+        <pMon>BIN\UL2CM3.DLL</pMon>
       </DebugOpt>
       <TargetDriverDllRegistry>
         <SetRegEntry>
@@ -172,16 +163,12 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>ST-LINKIII-KEIL_SWO</Key>
-<<<<<<< HEAD
           <Name>-U-O206 -O206 -S0 -C0 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8004 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
-=======
-          <Name>-U -O206 -S0 -C0 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8004 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>UL2CM3</Key>
-          <Name>-U -O14 -S0 -C0 -P00 -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
+          <Name>-U -O14 -S0 -C0 -P00 -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7  -FN1 -FC1000 -FD20000000 -FF0STM32F10x_128 -FL020000 -FS08000000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint/>
@@ -228,7 +215,7 @@
 
   <Group>
     <GroupName>ArduinoAPI</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -374,11 +361,7 @@
 
   <Group>
     <GroupName>Core</GroupName>
-<<<<<<< HEAD
     <tvExp>1</tvExp>
-=======
-    <tvExp>0</tvExp>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -390,13 +373,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\CORE\delay.c</PathWithFileName>
       <FilenameWithoutPath>delay.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\Core\adc.c</PathWithFileName>
-      <FilenameWithoutPath>adc.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -408,13 +386,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\exti.c</PathWithFileName>
       <FilenameWithoutPath>exti.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\CORE\delay.c</PathWithFileName>
-      <FilenameWithoutPath>delay.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -426,13 +399,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\gpio.c</PathWithFileName>
       <FilenameWithoutPath>gpio.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\CORE\sys.c</PathWithFileName>
-      <FilenameWithoutPath>sys.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -444,13 +412,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\adc.c</PathWithFileName>
       <FilenameWithoutPath>adc.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\CORE\usart.c</PathWithFileName>
-      <FilenameWithoutPath>usart.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -462,11 +425,7 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\pwm.c</PathWithFileName>
-=======
-      <PathWithFileName>..\CORE\pwm.c</PathWithFileName>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FilenameWithoutPath>pwm.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -492,13 +451,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>..\Core\usart.c</PathWithFileName>
       <FilenameWithoutPath>usart.c</FilenameWithoutPath>
-=======
-      <PathWithFileName>..\Core\exti.c</PathWithFileName>
-      <FilenameWithoutPath>exti.c</FilenameWithoutPath>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -515,22 +469,6 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
-<<<<<<< HEAD
-=======
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>19</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\Core\gpio.c</PathWithFileName>
-      <FilenameWithoutPath>gpio.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
   </Group>
 
   <Group>
@@ -541,11 +479,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>4</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>19</FileNumber>
-=======
-      <FileNumber>20</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>8</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -574,11 +508,7 @@
     <RteFlg>1</RteFlg>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>20</FileNumber>
-=======
-      <FileNumber>21</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -591,11 +521,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>21</FileNumber>
-=======
-      <FileNumber>22</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -608,11 +534,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>22</FileNumber>
-=======
-      <FileNumber>23</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -625,11 +547,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>23</FileNumber>
-=======
-      <FileNumber>24</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -642,11 +560,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>24</FileNumber>
-=======
-      <FileNumber>25</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -659,11 +573,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>25</FileNumber>
-=======
-      <FileNumber>26</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -676,11 +586,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>26</FileNumber>
-=======
-      <FileNumber>27</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -693,11 +599,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>27</FileNumber>
-=======
-      <FileNumber>28</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -710,11 +612,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>28</FileNumber>
-=======
-      <FileNumber>29</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -727,11 +625,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>29</FileNumber>
-=======
-      <FileNumber>30</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -744,11 +638,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>30</FileNumber>
-=======
-      <FileNumber>31</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -761,11 +651,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>31</FileNumber>
-=======
-      <FileNumber>32</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -778,11 +664,7 @@
     </File>
     <File>
       <GroupNumber>6</GroupNumber>
-<<<<<<< HEAD
       <FileNumber>32</FileNumber>
-=======
-      <FileNumber>33</FileNumber>
->>>>>>> 301cbab54594d1de84f6a7e456407b3a84e8d255
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>

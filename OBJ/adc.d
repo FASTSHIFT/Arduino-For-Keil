@@ -1,5 +1,5 @@
 ..\obj\adc.o: ..\Core\adc.c
-..\obj\adc.o: ..\Core\ADC.h
+..\obj\adc.o: ..\Core\adc.h
 ..\obj\adc.o: D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include\stm32f10x.h
 ..\obj\adc.o: .\RTE\RTE_Components.h
 ..\obj\adc.o: D:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include\core_cm3.h
