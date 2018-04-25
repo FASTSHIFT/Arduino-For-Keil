@@ -12,9 +12,9 @@ void pinMode(uint8_t Pin,uint8_t GPIO_Mode_x)
 	else return;
 }
 
-void digitalWrite(uint8_t Pin,uint8_t BitVal)
+void digitalWrite(uint8_t Pin,uint8_t val)
 {
-  if(BitVal)
+  if(val)
   {
     PIN_MAP[Pin].GPIOx->BSRR = PIN_MAP[Pin].GPIO_Pin_x;
   }
@@ -39,7 +39,7 @@ uint8_t digitalRead(uint8_t Pin)
   return bitstatus;
 }
 
-uint16_t analogWrite(uint8_t Pin,u16 val)
+uint16_t analogWrite(uint8_t Pin,uint16_t val)
 {
 	return pwmWrite(Pin,val);
 }
@@ -49,6 +49,15 @@ uint16_t analogRead(uint8_t Pin)
 	if(IS_ADC_PIN(Pin))
 	{
 		return Get_ADC(PIN_MAP[Pin].ADCx, PIN_MAP[Pin].ADC_Channel);
+	}
+	else return 0;
+}
+
+uint16_t analogRead_DMA(uint8_t Pin)
+{
+	if(IS_ADC_PIN(Pin))
+	{
+		return Get_DMA_ADC(PIN_MAP[Pin].ADC_Channel);
 	}
 	else return 0;
 }
