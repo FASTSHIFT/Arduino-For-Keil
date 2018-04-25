@@ -1,4 +1,4 @@
-﻿# Arduino_For_Keil @FASTSHIFT
+# Arduino_For_Keil @FASTSHIFT
 
      这个项目可以使你在Keil MDK5环境下也可以使用Arduino的函数对STM32F10x系列单片机进行编程。它本质上是一个建立好的Keil工程，然后在它的基础上写了一套类似于Arduino的底层函数库，可以像在Arduino IDE一样直接调用写好的API，只需将函数库的文件夹拖入 "Library" 文件夹下即可，然后打开"USER"文件夹启动keil工程，在"main.cpp"这个文件下进行编写程序，使用时可以直接复制Arduino的源代码。
 
@@ -70,3 +70,5 @@
 //Upgrade        3.18  V_2.9 PWM库支持修改频率和占空比最大值，重新整理Arduino.h
 //Upgrade        3.27  V_3.0 支持自行选择ADCx进行配置，整理 "FileGroup.h"，PIN_MAP[] 添加 GPIOD~GPIOG 支持
 //Upgrade        3.28  V_3.1 完善定时器库，全面支持TIM1~TIM8快速配置定时器中断
+//Upgrade        4.25  V_3.2 支持使用analogRead_DMA()函数读取PA0~PA7的ADC值(需使用ADCx_DMA_Init()函数进行DMA初始化)
+
