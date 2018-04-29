@@ -18,8 +18,8 @@
       
    外设相关： 
      Serial类 
-     Wire类 
-     SPI类（未完全测试） 
+     Wire类      
+     SPI类
       
  
    This project allows you to use the Arduino functions to program STM32F10x devices in the Keil MDK5 environment. It is essentially a well-established Keil project, and then it writes a set of low-level libraries similar to Arduino. It can call the written API directly just like the Arduino IDE, just by putting the library folder. Drag in the "Library" folder, and then open the "USER" folder to start the keil project, in the "main.cpp" file to write the program, you can directly copy the Arduino source code.
@@ -42,7 +42,7 @@
      Peripherals: 
        Serial class 
        Wire class 
-       SPI class(Not fully tested)
+       SPI class
 
 
 
@@ -71,4 +71,5 @@
 //Upgrade        3.27  V_3.0 支持自行选择ADCx进行配置，整理 "FileGroup.h"，PIN_MAP[] 添加 GPIOD~GPIOG 支持
 //Upgrade        3.28  V_3.1 完善定时器库，全面支持TIM1~TIM8快速配置定时器中断
 //Upgrade        4.25  V_3.2 支持使用analogRead_DMA()函数读取PA0~PA7的ADC值(需使用ADCx_DMA_Init()函数进行DMA初始化)
-
+//Upgrade        4.28  V_3.3 移除旧版的 spi.c 和 HardwareSPI.c , SPI class已支持
+//Upgrade        4.29  V_3.4 SD文件系统移植完成
