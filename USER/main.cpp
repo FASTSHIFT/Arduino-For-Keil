@@ -4,6 +4,7 @@
 void setup()
 {
 	Serial.begin(115200);
+	Serial.printf("C++ Version:%s\r\n",__cplusplus);
 	Serial.printf("Compiling Time: %s %s\r\n",__DATE__,__TIME__);
 	pinMode(PC13,OUTPUT);
 	pinMode(PA0,PWM);
