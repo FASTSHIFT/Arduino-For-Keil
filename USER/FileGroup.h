@@ -11,12 +11,11 @@
 #include "adc.h"
 #include "pwm.h"
 #include "usart.h"
-#include "spi.h"
 #include "time_exti.h"
 #include "math.h"
 
 #include "HardwareSerial.h"
-#include "HardwareSPI.h"
+#include "SPI.h"
 #include "Wire.h"
 #include "WString.h"
 #include "Stream.h"

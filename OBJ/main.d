@@ -27,7 +27,6 @@
 ..\obj\main.o: ..\Core\delay.h
 ..\obj\main.o: ..\Core\exti.h
 ..\obj\main.o: ..\Core\usart.h
-..\obj\main.o: ..\Core\spi.h
 ..\obj\main.o: ..\Core\time_exti.h
 ..\obj\main.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\math.h
 ..\obj\main.o: ..\ArduinoAPI\HardwareSerial.h
@@ -43,7 +42,7 @@
 ..\obj\main.o: ..\ArduinoAPI\Printable.h
 ..\obj\main.o: ..\ArduinoAPI\Stream.h
 ..\obj\main.o: D:\Keil_v5\ARM\ARMCC\bin\..\include\inttypes.h
-..\obj\main.o: ..\ArduinoAPI\HardwareSPI.h
+..\obj\main.o: ..\ArduinoAPI\SPI.h
 ..\obj\main.o: ..\ArduinoAPI\Wire.h
 ..\obj\main.o: ..\ArduinoAPI\WireBase.h
 ..\obj\main.o: C_call_CPP.h

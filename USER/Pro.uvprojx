@@ -443,11 +443,6 @@
               <FilePath>..\ArduinoAPI\WString.cpp</FilePath>
             </File>
             <File>
-              <FileName>HardwareSPI.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\ArduinoAPI\HardwareSPI.cpp</FilePath>
-            </File>
-            <File>
               <FileName>Wire.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\ArduinoAPI\Wire.cpp</FilePath>
@@ -456,6 +451,11 @@
               <FileName>WireBase.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\ArduinoAPI\WireBase.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SPI.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\ArduinoAPI\SPI.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -489,11 +489,6 @@
               <FileName>pwm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\pwm.c</FilePath>
-            </File>
-            <File>
-              <FileName>spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\spi.c</FilePath>
             </File>
             <File>
               <FileName>usart.c</FileName>

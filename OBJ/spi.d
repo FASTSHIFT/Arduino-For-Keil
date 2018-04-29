@@ -1,5 +1,5 @@
-..\obj\spi.o: ..\Core\spi.c
-..\obj\spi.o: ..\Core\spi.h
+..\obj\spi.o: ..\ArduinoAPI\SPI.cpp
+..\obj\spi.o: ..\ArduinoAPI\SPI.h
 ..\obj\spi.o: D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include\stm32f10x.h
 ..\obj\spi.o: .\RTE\RTE_Components.h
 ..\obj\spi.o: D:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include\core_cm3.h
