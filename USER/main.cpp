@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include "FileGroup.h"
 
 void setup()
@@ -123,4 +122,3 @@ int main(void)
 	setup();
 	for(;;)loop();
 }
->>>>>>> a991e299a4c56e26da2cf737f55e8847a98fee71
