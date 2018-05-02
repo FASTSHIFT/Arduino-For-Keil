@@ -18,7 +18,7 @@
           TimerSet(TIMx,InterruptTime_us,Callback_function)
      输入输出：
           pinMode(Pin,Mode)
-          attachInterrrupt(Pin,Trigger,Callback_function)
+          attachInterrrupt(Pin,Trigger_Mode,Callback_function)
           digitalWrite(Pin,State)
           digitalRead(Pin)
           analogRead(Pin)
@@ -55,7 +55,7 @@
           TimerSet(TIMx,InterruptTime_us,Callback_function)
      Input Output:
           pinMode(Pin, Mode)
-          attachInterrrupt(Pin,Trigger,Callback_func)
+          attachInterrrupt(Pin,Trigger_Mode,Callback_function)
           digitalWrite(Pin,State)
           digitalRead(Pin)
           analogRead(Pin)
