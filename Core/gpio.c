@@ -1,6 +1,6 @@
 #include "gpio.h"
 
-const STM32_PinInfo PIN_MAP[]={
+const PinInfo_TypeDef PIN_MAP[]={
 /*GPIO_TypeDef* GPIOx;
 	TIM_TypeDef* TIMx;
 	ADC_TypeDef* ADCx;
