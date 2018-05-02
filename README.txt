@@ -15,7 +15,7 @@
           delayMicroseconds(Time_us)
           millis()
           micros()
-          TimerSet(TIMx,Callback_function)
+          TimerSet(TIMx,InterruptTime_us,Callback_function)
      输入输出：
           pinMode(Pin,Mode)
           attachInterrrupt(Pin,Trigger,Callback_function)
@@ -52,6 +52,7 @@
           delayMicroseconds(Time_us)
           millis()
           micros()
+          TimerSet(TIMx,InterruptTime_us,Callback_function)
      Input Output:
           pinMode(Pin, Mode)
           attachInterrrupt(Pin,Trigger,Callback_func)
@@ -61,7 +62,7 @@
           analogWrite(Pin,DutyCycle)
           shiftOut(dataPin, clockPin, bitOrder, value)
           shiftIn(dataPin, clockPin, bitOrder)
-          Tone(Pin,Frequency,Time_ms)
+          tone(Pin,Frequency,Time_ms)
           
      Print class // printf is supported
      String class
