@@ -1,6 +1,6 @@
 # Arduino_For_Keil @FASTSHIFT
 
-     这个项目可以使你在Keil MDK5环境下也可以使用Arduino的函数对STM32F10x系列单片机进行编程。它本质上是一个建立好的Keil工程，然后在它的基础上写了一套类似于Arduino的底层函数库，可以像在Arduino IDE一样直接调用写好的API，只需将函数库的文件夹拖入 "Library" 文件夹下即可，然后打开"USER"文件夹启动keil工程，在"main.cpp"这个文件下进行编写程序，使用时可以直接复制Arduino的源代码。
+     这个项目可以使你在Keil MDK5环境下也可以使用Arduino的函数对STM32F10x系列单片机进行编程。它本质上是一个建立好的Keil工程，然后在它的基础上写了一套类似于Arduino的底层函数库，可以像在Arduino IDE一样直接调用写好的API，只需将函数库的文件夹拖入 "Libraries" 文件夹下即可，然后打开"USER"文件夹启动keil工程，在"main.cpp"这个文件下进行编写程序，使用时可以直接复制Arduino的源代码。
 
      注意： 
      1.请不要删除"main.cpp"中的FileGroup.h和main函数。 
@@ -36,7 +36,7 @@
      SPI类
       
  
-   This project allows you to use the Arduino functions to program STM32F10x devices in the Keil MDK5 environment. It is essentially a well-established Keil project, and then it writes a set of low-level libraries similar to Arduino. It can call the written API directly just like the Arduino IDE, just by putting the library folder. Drag in the "Library" folder, and then open the "USER" folder to start the keil project, under the "main.cpp" file to write the program, you can directly copy the Arduino source code.
+   This project allows you to use the Arduino functions to program STM32F10x devices in the Keil MDK5 environment. It is essentially a well-established Keil project, and then it writes a set of low-level libraries similar to Arduino. It can call the written API directly just like the Arduino IDE, just by putting the library folder. Drag in the "Libraries" folder, and then open the "USER" folder to start the keil project, under the "main.cpp" file to write the program, you can directly copy the Arduino source code.
 
      Note:
      1. Please do not delete the FileGroup.h and main functions in "main.cpp".
