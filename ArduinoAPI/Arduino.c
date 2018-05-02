@@ -41,7 +41,11 @@ uint8_t digitalRead(uint8_t Pin)
 
 uint16_t analogWrite(uint8_t Pin,uint16_t val)
 {
-	return pwmWrite(Pin,val);
+	if(IS_PWM_PIN(Pin))
+	{
+		return pwmWrite(Pin,val);
+	}
+	else return 0;
 }
 
 uint16_t analogRead(uint8_t Pin)
@@ -80,7 +84,7 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value
 	}
 }
 
-uint32_t shiftIn(uint8_t DataPin, uint8_t ClockPin, uint32_t BitOrder)
+uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
 {
   uint8_t value = 0 ;
   uint8_t i ;
@@ -88,28 +92,28 @@ uint32_t shiftIn(uint8_t DataPin, uint8_t ClockPin, uint32_t BitOrder)
   
   for ( i=0 ; i < 8 ; ++i )
   {
-    digitalWrite(ClockPin, HIGH) ;
+    digitalWrite(clockPin, HIGH) ;
 
-    if (BitOrder == LSBFIRST )
+    if (bitOrder == LSBFIRST )
     {
-      value |= digitalRead(DataPin) << i ;
+      value |= digitalRead(dataPin) << i ;
     }
     else
     {
-      value |= digitalRead(DataPin) << (7 - i) ;
+      value |= digitalRead(dataPin) << (7 - i) ;
     }
 
-    digitalWrite(ClockPin, LOW) ;
+    digitalWrite(clockPin, LOW) ;
   }
 
   return value ;
 }
 
-void tone(uint8_t Pin,unsigned int freq,unsigned long time)
+void tone(uint8_t Pin,unsigned int freq,unsigned long Time_ms)
 {
-	unsigned long ring_time = millis() + time;
+	unsigned long ring_time = millis() + Time_ms;
 	unsigned int dlyus = 500000/freq;
-	if(freq == 0 && time == 0)return;
+	if(freq == 0 && Time_ms == 0)return;
 	while(millis() <= ring_time)
 	{
 		digitalWrite(Pin,HIGH);
