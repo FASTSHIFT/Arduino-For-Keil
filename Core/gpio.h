@@ -25,30 +25,20 @@ enum{
 };
 
 typedef struct STM32_PinInfo{
-    GPIO_TypeDef* GPIOx;
-		TIM_TypeDef* TIMx;
-		ADC_TypeDef* ADCx;
-	
-		uint16_t GPIO_Pin_x;	
-		uint8_t TimerChannel;	
-    uint8_t ADC_Channel;
+	GPIO_TypeDef* GPIOx;
+	TIM_TypeDef* TIMx;
+	ADC_TypeDef* ADCx;
+
+	uint16_t GPIO_Pin_x;	
+	uint8_t TimerChannel;	
+	uint8_t ADC_Channel;
 }STM32_PinInfo;
 
 extern const STM32_PinInfo PIN_MAP[];
 
-#define IS_ADC_PIN(Pin) (((Pin)==PA0) || ((Pin)==PA1) || ((Pin)==PA2) || ((Pin)==PA3) || \
-												 ((Pin)==PA4) || ((Pin)==PA5) || ((Pin)==PA6) || ((Pin)==PA7) || \
-												 ((Pin)==PB0) || ((Pin)==PB1) || \
-												 ((Pin)==PC0) || ((Pin)==PC1) || ((Pin)==PC2) || ((Pin)==PC3) || \
-												 ((Pin)==PC4) || ((Pin)==PC5) || \
-												 ((Pin)==PF6) || ((Pin)==PF7) || ((Pin)==PF8) || ((Pin)==PF9) || \
-												 ((Pin)==PF10))
+#define IS_ADC_PIN(Pin) (PIN_MAP[Pin].ADC_Channel != xADC)
 
-#define IS_PWM_PIN(Pin) (((Pin)==PA8) || ((Pin)==PA9) || ((Pin)==PA10) || ((Pin)==PA11) || \
-												 ((Pin)==PA0) || ((Pin)==PA1) || ((Pin)==PA2) || ((Pin)==PA3)   || \
-												 ((Pin)==PA6) || ((Pin)==PA7) || ((Pin)==PB0) || ((Pin)==PB1) 	|| \
-												 ((Pin)==PB6) || ((Pin)==PB7) || ((Pin)==PB8) || ((Pin)==PB9) 	|| \
-												 ((Pin)==PC6) || ((Pin)==PC7) || ((Pin)==PC8) || ((Pin)==PC9))
+#define IS_PWM_PIN(Pin) (PIN_MAP[Pin].TIMx != NULL)
 
 void GPIO_Config(void);
 void GPIO_begin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x,GPIOMode_TypeDef GPIO_Mode_x,GPIOSpeed_TypeDef GPIO_Speed_x);
