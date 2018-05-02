@@ -12,7 +12,7 @@ extern "C"{
 #include "delay.h"
 
 #define __STM32F1__
-#define ARDUINO 123
+#define ARDUINO 111
 #define F_CPU 72000000U
 #define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
 
@@ -81,7 +81,7 @@ uint16_t analogRead(uint8_t Pin);
 uint16_t analogRead_DMA(uint8_t Pin);
 void togglePin(uint8_t Pin);
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value);
-uint32_t shiftIn(uint8_t DataPin, uint8_t ClockPin, uint32_t BitOrder);
+uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder);
 uint32_t pulseIn(uint32_t Pin, uint32_t State, uint32_t Timeout);
 
 void tone(uint8_t Pin,unsigned int freq,unsigned long time);
