@@ -48,7 +48,7 @@
      The APIs that are successfully ported on STM32F103C8T6/ZET6 are:
    Basic:
      Time:
-          Delay(Time_ms)
+          delay(Time_ms)
           delayMicroseconds(Time_us)
           millis()
           micros()
@@ -102,3 +102,5 @@
 //Upgrade        4.25  V_3.2 支持使用analogRead_DMA()函数读取PA0~PA7的ADC值(需使用ADCx_DMA_Init()函数进行DMA初始化)
 //Upgrade        4.28  V_3.3 移除旧版的 spi.c 和 HardwareSPI.c , SPI class已支持
 //Upgrade        4.29  V_3.4 SD文件系统移植完成
+//Upgrade        5.3   V_3.5 加入更严格的引脚作用检查
+
