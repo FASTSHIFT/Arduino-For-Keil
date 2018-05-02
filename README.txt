@@ -15,9 +15,10 @@
           delayMicroseconds(Time_us)
           millis()
           micros()
+          TimerSet(TIMx,Callback_function)
      输入输出：
           pinMode(Pin,Mode)
-          attachInterrrupt(Pin,Trigger,Callback_func)
+          attachInterrrupt(Pin,Trigger,Callback_function)
           digitalWrite(Pin,State)
           digitalRead(Pin)
           analogRead(Pin)
