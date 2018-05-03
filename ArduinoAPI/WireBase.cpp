@@ -1,3 +1,5 @@
+
+
 /******************************************************************************
  * The MIT License
  *
@@ -45,6 +47,11 @@ void WireBase::begin(uint8_t self_addr) {
     tx_buf_overflow = false;
     rx_buf_idx = 0;
     rx_buf_len = 0;
+}
+
+void WireBase::setClock(uint32_t clock)
+{
+    
 }
 
 void WireBase::beginTransmission(uint8_t slave_address) {
