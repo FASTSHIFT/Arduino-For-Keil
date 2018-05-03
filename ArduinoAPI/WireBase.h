@@ -93,6 +93,8 @@ public:
      */
     // Allow derived classes to overwrite begin function
     virtual void begin(uint8_t = 0x00);
+    
+    void setClock(uint32_t);
 
     /*
      * Sets up the transmission message to be processed
