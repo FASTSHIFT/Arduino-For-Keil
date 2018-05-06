@@ -103,4 +103,4 @@
 //Upgrade        4.28  V_3.3 移除旧版的 spi.c 和 HardwareSPI.c , SPI class已支持
 //Upgrade        4.29  V_3.4 SD文件系统移植完成
 //Upgrade        5.3   V_3.5 加入更严格的引脚作用检查
-
+//Upgrade        5.7   V_3.6 添加示例代码，位于Example文件夹中
