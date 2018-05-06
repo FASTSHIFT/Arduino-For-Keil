@@ -1,7 +1,7 @@
 #include "gpio.h"
 
 const PinInfo_TypeDef PIN_MAP[]={
-/*GPIO_TypeDef* GPIOx;
+	/*GPIO_TypeDef* GPIOx;
 	TIM_TypeDef* TIMx;
 	ADC_TypeDef* ADCx;
 
