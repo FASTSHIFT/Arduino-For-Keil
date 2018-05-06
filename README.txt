@@ -7,8 +7,9 @@
      2.include第三方库函数的时候要加入完整的路径，例如在Arduino IDE下：#include"SD.h"，在Keil中就要写成：#include"SD/SD.h"。 
      3.不能保证兼容所有的Arduino第三方库函数，有的函数库可能要进行修改才能正常运行，具体修改方式请按照编译器的提示，或者可以提交Issues。 
       
-     它的底层是基于STM32标准外设库(3.5版本)二次封装，部分源代码来自 STM32duino，用法与Arduino基本一致。
-     目前在STM32F103C8T6/ZET6上成功移植的API有： 
+     它的底层是基于STM32标准外设库(3.5版本)二次封装，部分源代码来自 STM32duino，用法与Arduino基本一致，支持与寄存器和标准外设库的函数混用。
+     
+     目前在STM32F103C8T6/ZET6上成功移植的API有： 
    基本： 
      时间:
           delay(Time_ms)
