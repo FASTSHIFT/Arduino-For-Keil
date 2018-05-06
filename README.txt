@@ -1,13 +1,13 @@
 # Arduino_For_Keil @FASTSHIFT
 
-     这个项目可以使你在Keil MDK5环境下也可以使用Arduino的函数对STM32F10x系列单片机进行编程。它本质上是一个建立好的Keil工程，然后在它的基础上写了一套类似于Arduino的底层函数库，可以像在Arduino IDE一样直接调用写好的API，只需将函数库的文件夹拖入 "Libraries" 文件夹下即可，然后打开"USER"文件夹启动keil工程，在"main.cpp"这个文件下进行编写程序，使用时可以直接复制Arduino的源代码。
+     这是一个跨平台移植的项目，可以在Keil MDK5环境下使用Arduino的函数对STM32F10x系列单片机进行编程。它本质上是一个建立好的Keil工程，然后在它的基础上封装一套类似于Arduino的底层函数库，可以像在Arduino IDE一样直接调用写好的API，只需将Arduino支持的第三方库的文件夹加入 "Libraries" 文件夹下即可，然后打开"USER"文件夹启动keil工程，在"main.cpp"这个文件下进行编写程序，可以直接使用Arduino的示例源代码。
 
      注意： 
      1.请不要删除"main.cpp"中的FileGroup.h和main函数。 
      2.include第三方库函数的时候要加入完整的路径，例如在Arduino IDE下：#include"SD.h"，在Keil中就要写成：#include"SD/SD.h"。 
      3.不能保证兼容所有的Arduino第三方库函数，有的函数库可能要进行修改才能正常运行，具体修改方式请按照编译器的提示，或者可以提交Issues。 
       
-     它的底层是基于STM32标准外设库(3.5版本)二次封装，部分源代码来自 STM32duino，用法与Arduino基本一致，支持与寄存器和标准外设库的函数混用。
+     它的底层是基于STM32标准外设库(3.5版本)二次封装，部分源代码来自 stm32duino，用法与Arduino基本一致，支持与寄存器和标准外设库的函数混用。
      
      目前在STM32F103C8T6/ZET6上成功移植的API有： 
    基本： 
@@ -38,15 +38,16 @@
      SPI类
       
  
-   This project allows you to use the Arduino functions to program STM32F10x devices in the Keil MDK5 environment. It is essentially a well-established Keil project, and then it writes a set of low-level libraries similar to Arduino. It can call the written API directly just like the Arduino IDE, just by putting the library folder. Drag in the "Libraries" folder, and then open the "USER" folder to start the keil project, under the "main.cpp" file to write the program, you can directly copy the Arduino source code.
+   This is a cross-platform porting project. You can use Arduino's functions to program STM32F10x microcontrollers in the Keil MDK5 environment. It is essentially a well-established Keil project, and then it encapsulates a set of low-level libraries similar to Arduino. It can directly call the written APIs just like the Arduino IDE. It only needs to support third-party libraries supported by Arduino. The folder can be added under the "Libraries" folder, and then open the "USER" folder to start the keil project, under the "main.cpp" file to write the program, you can directly use the Arduino example source code.
 
-     Note:
-     1. Please do not delete the FileGroup.h and main functions in "main.cpp".
-     2. Include a complete path when including third-party library functions. For example, under the Arduino IDE: #include "SD.h". In Keil, write: #include "SD/SD.h".
-     3. It is not guaranteed to be compatible with all Arduino third-party library functions. Some libraries may need to be modified to operate normally. For specific modification methods, follow the compiler's prompts or submit the issues.
-      
-     Its bottom layer is based on the STM32 standard peripheral library (version 3.5) secondary packaging, part of the source code from the STM32duino, usage is basically the same with Arduino.
-     The APIs that are successfully ported on STM32F103C8T6/ZET6 are:
+     Note:
+     1. Please do not delete the FileGroup.h and main functions in "main.cpp".
+     2. Include a complete path when including third-party library functions. For example, under the Arduino IDE: #include "SD.h". In Keil, write: #include "SD/SD.h".
+     3. It is not guaranteed to be compatible with all Arduino third-party library functions. Some libraries may need to be modified to operate normally. For specific modification methods, follow the compiler's prompts or submit the issues.
+      
+     Its is based on the STM32 Standard Peripheral Library (3.5 version) secondary package, part of the source code from the stm32duino, usage is basically the same as the Arduino, supports mixed use of Registers and Standard Peripheral Library functions.
+     
+     The APIs that are successfully ported on STM32F103C8T6/ZET6:
    Basic:
      Time:
           delay(Time_ms)
