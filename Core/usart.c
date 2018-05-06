@@ -2,7 +2,7 @@
 
 volatile uint16_t _rx_buffer_head[SERIAL_NUM];
 volatile uint16_t _rx_buffer_tail[SERIAL_NUM];		
-u8 _rx_buffer[SERIAL_NUM][SERIAL_RX_BUFFER_SIZE];
+uint8_t _rx_buffer[SERIAL_NUM][SERIAL_RX_BUFFER_SIZE];
 
 void_func_point USART_func[SERIAL_NUM]={null_func, null_func, null_func};
   
