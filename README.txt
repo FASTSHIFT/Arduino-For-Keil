@@ -106,3 +106,4 @@
 //Upgrade        4.29  V_3.4 SD文件系统移植完成
 //Upgrade        5.3   V_3.5 加入更严格的引脚作用检查
 //Upgrade        5.7   V_3.6 添加示例代码，位于Example文件夹中
+//Upgrade        5.14  V_3.7 支持修改ADC求平均次数
