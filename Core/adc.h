@@ -8,6 +8,7 @@ extern "C"{
 #include "stm32f10x.h"
 #include "Arduino.h"
 
+#define ADC_AverageTimes 8 //ADC求平均次数
 
 // 注意：用作ADC采集的IO必须没有复用，否则采集电压会有影响
 
