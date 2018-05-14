@@ -15,11 +15,6 @@ void ADCx_GPIO_Config(void)
 	pinMode(PA7,INPUT_ANALOG);
 }
 
-/**
-  * @brief  配置ADC工作模式
-  * @param  无
-  * @retval 无
-  */
 void ADCx_DMA_Config(void)
 {
 	DMA_InitTypeDef DMA_InitStructure;
@@ -128,30 +123,16 @@ void ADCx_DMA_Config(void)
 	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
 }
 
-/**
-  * @brief  ADC初始化
-  * @param  无
-  * @retval 无
-  */
 void ADCx_DMA_Init(void)
 {
 	ADCx_GPIO_Config();
 	ADCx_DMA_Config();
 }
  
-/**********************************************************
-** 函数名:	 GetADC(u8 channel)
-** 功能描述: 获取ADC数值
-** 输入参数: 通道号
-** 输出参数: ADC读取值
-***********************************************************/
 uint16_t Get_DMA_ADC(uint8_t Channel)
 {
 	return ADC_ConvertedValue[Channel];
 }
-
-
-/*********************************ADC No DMA**********************************/
 
 void ADCx_Init(ADC_TypeDef* ADCx)
 { 	
@@ -189,8 +170,8 @@ uint16_t Get_ADC(ADC_TypeDef* ADCx,uint16_t ADC_Channel)
 	{
 		ADC_SoftwareStartConvCmd(ADCx, ENABLE);
 		while(!ADC_GetFlagStatus(ADCx, ADC_FLAG_EOC));
-		result+=ADC_GetConversionValue(ADCx);
+		result += ADC_GetConversionValue(ADCx);
 	}
-	result=result / ADC_AverageTimes;
+	result = result / ADC_AverageTimes;
 	return result;
 }
