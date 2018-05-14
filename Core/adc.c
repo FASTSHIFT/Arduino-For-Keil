@@ -181,7 +181,7 @@ void ADCx_Init(ADC_TypeDef* ADCx)
 
 uint16_t Get_ADC(ADC_TypeDef* ADCx,uint16_t ADC_Channel)   
 {
-	uint16_t result=0;
+	uint32_t result=0;
 	uint16_t i;
 
 	ADC_RegularChannelConfig(ADCx, ADC_Channel, 1, ADC_SampleTime_239Cycles5 );
