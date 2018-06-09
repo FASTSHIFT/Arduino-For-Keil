@@ -26,17 +26,7 @@ void digitalWrite(uint8_t Pin,uint8_t val)
 
 uint8_t digitalRead(uint8_t Pin)
 {
-	uint8_t bitstatus = 0x00;
-  
-  if ((PIN_MAP[Pin].GPIOx->IDR & PIN_MAP[Pin].GPIO_Pin_x) != (uint32_t)Bit_RESET)
-  {
-    bitstatus = (uint8_t)Bit_SET;
-  }
-  else
-  {
-    bitstatus = (uint8_t)Bit_RESET;
-  }
-  return bitstatus;
+	return (PIN_MAP[Pin].GPIOx->IDR & PIN_MAP[Pin].GPIO_Pin_x);
 }
 
 uint16_t analogWrite(uint8_t Pin,uint16_t val)
@@ -73,8 +63,8 @@ void togglePin(uint8_t Pin)
 
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value)
 {
-	int i;
-	digitalWrite(clockPin, LOW);
+	uint8_t i;
+	digitalWrite_LOW(clockPin);
 	for (i = 0; i < 8; i++) 
 	{
 		int bit = bitOrder == LSBFIRST ? i : (7 - i);
@@ -88,12 +78,9 @@ uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
 {
   uint8_t value = 0 ;
   uint8_t i ;
-
-  
   for ( i=0 ; i < 8 ; ++i )
   {
-    digitalWrite(clockPin, HIGH) ;
-
+    digitalWrite_HIGH(clockPin) ;
     if (bitOrder == LSBFIRST )
     {
       value |= digitalRead(dataPin) << i ;
@@ -102,8 +89,7 @@ uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
     {
       value |= digitalRead(dataPin) << (7 - i) ;
     }
-
-    digitalWrite(clockPin, LOW) ;
+    digitalWrite_LOW(clockPin);
   }
 
   return value ;
@@ -116,9 +102,9 @@ void tone(uint8_t Pin,unsigned int freq,unsigned long Time_ms)
 	if(freq == 0 && Time_ms == 0)return;
 	while(millis() <= ring_time)
 	{
-		digitalWrite(Pin,HIGH);
+		digitalWrite_HIGH(Pin);
 		delayMicroseconds(dlyus);
-		digitalWrite(Pin,LOW);
+		digitalWrite_LOW(Pin);
 		delayMicroseconds(dlyus);
 	}
 }
