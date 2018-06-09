@@ -49,11 +49,15 @@ extern "C"{
 
 #define interrupts() __set_PRIMASK(0)
 #define noInterrupts() __set_PRIMASK(1)
+#define sei() __set_PRIMASK(0)
+#define cli() __set_PRIMASK(1)
 
 #define analogInPinToBit(P) (P)
 
+#define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRR = PIN_MAP[Pin].GPIO_Pin_x)
+#define digitalWrite_LOW(Pin)  (PIN_MAP[Pin].GPIOx->BRR  = PIN_MAP[Pin].GPIO_Pin_x)
+
 #define boolean bool
-//typedef bool boolean;
 typedef unsigned char byte;
 
 typedef enum {LOW = 0, HIGH = !LOW} GPIO_State_Type;
