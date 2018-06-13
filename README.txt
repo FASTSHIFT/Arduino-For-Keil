@@ -108,4 +108,4 @@
 //Upgrade        5.7   V_3.6 添加示例代码，位于Example文件夹中
 //Upgrade        5.14  V_3.7 支持修改ADC求平均次数
 //Upgrade        6.9   V_3.8 更高速的digitalRead(Pin), digitalWrite(使用digitalWrite_HIGH(Pin)和digitalWrite_LOW(Pin))
-
+//Upgrade        6.13  V_3.9 修复digitalRead的BUG
