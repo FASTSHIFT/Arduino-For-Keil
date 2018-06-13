@@ -76,7 +76,7 @@ byte NRF::SPI_RW(unsigned char Byte)
 
     digitalWrite(_SCK,1);
     Byte<<=1;
-    if(digitalRead(_MISO)==1) Byte|=1;
+    if(digitalRead(_MISO)) Byte|=1;
     digitalWrite(_SCK,0);
   }
 
