@@ -26,7 +26,7 @@ void digitalWrite(uint8_t Pin,uint8_t val)
 
 uint8_t digitalRead(uint8_t Pin)
 {
-	return (PIN_MAP[Pin].GPIOx->IDR & PIN_MAP[Pin].GPIO_Pin_x);
+	return !!(PIN_MAP[Pin].GPIOx->IDR & PIN_MAP[Pin].GPIO_Pin_x);
 }
 
 uint16_t analogWrite(uint8_t Pin,uint16_t val)
