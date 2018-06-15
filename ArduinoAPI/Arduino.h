@@ -75,12 +75,6 @@ typedef enum
 	PWM
 }pinMode_Type;
 
-typedef enum{
-	CHANGE = EXTI_Trigger_Rising_Falling,
-	FALLING = EXTI_Trigger_Falling,
-	RISING = EXTI_Trigger_Rising
-}Interrupt_Type;
-
 void pinMode(uint8_t Pin,uint8_t GPIO_Mode_x);
 void digitalWrite(uint8_t Pin,uint8_t val);
 uint8_t digitalRead(uint8_t Pin);
