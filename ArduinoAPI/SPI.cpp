@@ -106,10 +106,10 @@ void SPIClass::end(void)
   SPI_Cmd(SPIx, DISABLE);
 }
 
-void SPIClass::setClock(uint16_t clock)
+void SPIClass::setClock(uint32_t clock)
 {
 	uint16_t SPI_BaudRatePrescaler_x;
-	uint16_t clock_div = 72000000 / clock;
+	uint16_t clock_div = F_CPU / clock;
 			 if(clock_div <= 2)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_2;
 	else if(clock_div <= 4)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_4;
 	else if(clock_div <= 8)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_8;
@@ -124,7 +124,7 @@ void SPIClass::setClock(uint16_t clock)
 
 void SPIClass::setBitOrder(uint16_t bitOrder)
 {
-	if(bitOrder)SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;//MSBFIRST 1
+	if(bitOrder == MSBFIRST)SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;//MSBFIRST 1
 	else SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_LSB;
 	SPI_Init(SPIx, &SPI_InitStructure);
 }
@@ -171,19 +171,19 @@ If someone finds this is not the case or sees a logic error with this let me kno
 	
 	switch(dataMode)
 	{
-		case 0:
+		case SPI_MODE0:
 			SPI_CPOL_x = SPI_CPOL_Low;
 			SPI_CPHA_x = SPI_CPHA_1Edge;
 			break;
-		case 1:
+		case SPI_MODE1:
 			SPI_CPOL_x = SPI_CPOL_Low;
 			SPI_CPHA_x = SPI_CPHA_2Edge;
 			break;
-		case 2:
+		case SPI_MODE2:
 			SPI_CPOL_x = SPI_CPOL_High;
 			SPI_CPHA_x = SPI_CPHA_1Edge;
 			break;
-		case 3:
+		case SPI_MODE3:
 			SPI_CPOL_x = SPI_CPOL_High;
 			SPI_CPHA_x = SPI_CPHA_2Edge;
 			break;

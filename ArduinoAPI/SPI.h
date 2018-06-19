@@ -4,14 +4,24 @@
 #include "stm32f10x.h"
 #include "stm32f10x_spi.h"
 #include "Arduino.h"
+
 #define __builtin_constant_p(x) 1
 
-enum{ 
+#ifndef LSBFIRST
+#define LSBFIRST 0
+#endif
+#ifndef MSBFIRST
+#define MSBFIRST 1
+#endif
+
+
+typedef enum
+{ 
 	SPI_MODE0,
 	SPI_MODE1,
 	SPI_MODE2,
 	SPI_MODE3
-};
+}SPI_MODE_TypeDef;
 
 #define DATA_SIZE_8BIT SPI_DataSize_8b
 #define DATA_SIZE_16BIT SPI_DataSize_16b
@@ -100,7 +110,7 @@ class SPIClass
 		void endTransaction(void);
 		void end(void);
 		
-		void setClock(uint16_t clock);
+		void setClock(uint32_t clock);
 		void setBitOrder(uint16_t bitOrder);
 		void setDataMode(uint8_t dataMode);
 		void setDataSize(uint16_t datasize);
