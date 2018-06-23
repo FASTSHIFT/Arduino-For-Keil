@@ -24,7 +24,7 @@ uint32_t millis(void)
 
 uint32_t micros(void)
 {
-	return System_ms*1000 + (72000 - SysTick->VAL) / 72;
+	return System_ms*1000 + (72000U - SysTick->VAL) / 72;
 }
 
 void delay_ms(uint32_t ms)
@@ -35,8 +35,26 @@ void delay_ms(uint32_t ms)
 
 void delay_us(uint32_t us)
 {
-	uint32_t start = micros();
-	while((micros() - start) <= us);
+	uint32_t total = 0;
+	uint32_t target = 72 * us;
+	int last = SysTick->VAL;
+	int now = last;
+	int diff = 0;
+start:
+	now = SysTick->VAL;
+	diff = last - now;
+	if(diff > 0)
+	{
+		total += diff;
+	}
+	else
+	{
+		total += diff + 72000;
+	}
+	if(total > target)
+	{
+		return;
+	}
+	last = now;
+	goto start;
 }
-
-/*********************************************END OF FILE**********************/
