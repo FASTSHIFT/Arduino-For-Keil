@@ -1,6 +1,6 @@
 #include "delay.h"
 
-static uint32_t System_ms=0;
+volatile uint32_t System_ms=0;
 
 void Delay_Init(void)
 {
