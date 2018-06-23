@@ -111,3 +111,4 @@
 //Upgrade        6.13  V_3.9 修复digitalRead的BUG
 //Upgrade        6.15  V_4.0 修复attachInterrupt触发类型设置的BUG
 //Upgrade        6.19  V_4.1 SPI库中"uint16_t clock" 改为 "uint32_t clock"
+//Upgrade        6.23  V_4.2 System_ms 改为 volatile
