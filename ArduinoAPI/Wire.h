@@ -47,16 +47,21 @@
  * On the Maple, let the default pins be in the same location as the Arduino
  * pins
  */
-#define SDA PB7
-#define SCL PB6
+#define SDA_Pin PB7
+#define SCL_Pin PB6
 
 #define SOFT_STANDARD 27
 #define SOFT_FAST 0
 
+#define FULL_SPEED_I2C
 
 //#define I2C_DELAY(x) {uint32 time=micros(); while(time>(micros()+x));}
 //#define I2C_DELAY(x) do{for(int i=0;i<x;i++) {asm volatile("nop");}}while(0)
-#define I2C_DELAY(x) {delay_us(x);}
+#ifdef FULL_SPEED_I2C
+	#define I2C_DELAY(x) {}
+#else
+	#define I2C_DELAY(x) {delay_us(x);}
+#endif
 
 #define BUFFER_LENGTH 32
 
@@ -125,7 +130,7 @@ class TwoWire : public WireBase {
      * Accept pin numbers for SCL and SDA lines. Set the delay needed
      * to create the timing for I2C's Standard Mode and Fast Mode.
      */
-    TwoWire(uint8_t scl=SCL, uint8_t sda=SDA, uint8_t delay=SOFT_STANDARD);
+    TwoWire(uint8_t scl = SCL_Pin, uint8_t sda = SDA_Pin, uint8_t delay = SOFT_STANDARD);
 
     /*
      * Sets pins SDA and SCL to OUPTUT_OPEN_DRAIN, joining I2C bus as

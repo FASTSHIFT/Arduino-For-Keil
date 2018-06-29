@@ -66,58 +66,106 @@ void TwoWire::set_sda(bool state) {
 }
 
 void TwoWire::i2c_start() {
-    set_sda(LOW);
-    set_scl(LOW);
+#ifdef FULL_SPEED_I2C
+	digitalWrite_LOW(this->sda_pin);
+	digitalWrite_LOW(this->scl_pin);
+#else
+	set_sda(LOW);
+  set_scl(LOW);
+#endif	
 }
 
 void TwoWire::i2c_stop() {
-    set_sda(LOW);
+#ifdef FULL_SPEED_I2C
+	digitalWrite_LOW(this->sda_pin);
+	digitalWrite_HIGH(this->scl_pin);
+	digitalWrite_HIGH(this->sda_pin);
+#else
+	  set_sda(LOW);
     set_scl(HIGH);
     set_sda(HIGH);
+#endif
 }
 
 bool TwoWire::i2c_get_ack() {
-    set_scl(LOW);
-    set_sda(HIGH);
-    set_scl(HIGH);
-
+#ifdef FULL_SPEED_I2C
+	digitalWrite_LOW(this->scl_pin);
+	digitalWrite_HIGH(this->sda_pin);
+	digitalWrite_HIGH(this->scl_pin);
+#else
+	set_scl(LOW);
+  set_sda(HIGH);
+  set_scl(HIGH);
+#endif
+	
     bool ret = !digitalRead(this->sda_pin);
-    set_scl(LOW);
-    return ret;
+#ifdef FULL_SPEED_I2C
+	digitalWrite_LOW(this->scl_pin);
+#else
+  set_scl(LOW);
+#endif
+   return ret;
 }
 
 void TwoWire::i2c_send_ack() {
-    set_sda(LOW);
-    set_scl(HIGH);
-    set_scl(LOW);
+#ifdef FULL_SPEED_I2C
+	digitalWrite_LOW(this->sda_pin);
+	digitalWrite_HIGH(this->scl_pin);
+	digitalWrite_LOW(this->scl_pin);
+#else
+	set_sda(LOW);
+  set_scl(HIGH);
+  set_scl(LOW);
+#endif
 }
 
 void TwoWire::i2c_send_nack() {
-    set_sda(HIGH);
-    set_scl(HIGH);
-    set_scl(LOW);
+#ifdef FULL_SPEED_I2C
+	digitalWrite_HIGH(this->sda_pin);
+	digitalWrite_HIGH(this->scl_pin);
+	digitalWrite_LOW(this->scl_pin);
+#else
+  set_sda(HIGH);
+  set_scl(HIGH);
+  set_scl(LOW);
+#endif
 }
 
 uint8_t TwoWire::i2c_shift_in() {
     uint8_t data = 0;
-    set_sda(HIGH);
+#ifdef FULL_SPEED_I2C
+	digitalWrite_HIGH(this->sda_pin);
+#else
+	set_sda(HIGH);
+#endif
+  int i;
+  for (i = 0; i < 8; i++)
+	{
+#ifdef FULL_SPEED_I2C
+		digitalWrite_HIGH(this->scl_pin);
+		data |= digitalRead(this->sda_pin) << (7-i);
+		digitalWrite_LOW(this->scl_pin);
+#else
+		set_scl(HIGH);
+		data |= digitalRead(this->sda_pin) << (7-i);
+		set_scl(LOW);
+#endif	
+  }
 
-    int i;
-    for (i = 0; i < 8; i++) {
-        set_scl(HIGH);
-        data |= digitalRead(this->sda_pin) << (7-i);
-        set_scl(LOW);
-    }
-
-    return data;
+  return data;
 }
 
 void TwoWire::i2c_shift_out(uint8_t val) {
     int i;
     for (i = 0; i < 8; i++) {
-        set_sda(!!(val & (1 << (7 - i)) ) );
-        set_scl(HIGH);
-        set_scl(LOW);
+        set_sda(!!(val & (1 << (7 - i)) ) );        
+#ifdef FULL_SPEED_I2C
+			digitalWrite_HIGH(this->scl_pin);
+			digitalWrite_LOW(this->scl_pin);
+#else
+			set_scl(HIGH);
+			set_scl(LOW);
+#endif
     }
 }
 
@@ -190,5 +238,5 @@ TwoWire::~TwoWire() {
 }
 
 // Declare the instance that the users of the library can use
-TwoWire Wire(SCL, SDA, SOFT_FAST);
+TwoWire Wire(SCL_Pin, SDA_Pin, SOFT_FAST);
 //TwoWire Wire(PB6, PB7, SOFT_STANDARD);
