@@ -236,23 +236,15 @@ extern "C"{
 int Print::printf (const char *__restrict __format, ...)
 {
 	char s[PRINTF_BUFFER_LENGTH];
-	int ret_status = 0;
-	
+
 	va_list args;
-  va_start(args,__format);
-	ret_status = vsprintf(s,__format, args);
+ 	va_start(args, __format);
+	int ret_status = vsnprintf(s, PRINTF_BUFFER_LENGTH, __format, args);
+	//int ret_status = vsprintf(s, __format, args);
 	va_end(args);
 	print(s);
 	
 	return ret_status;
-//FILE *__restrict __stream;
-//     int ret_status = 0;
-
-//     va_list args;
-//     va_start(args,__format);
-//     ret_status = vfprintf(__stream, __format, args); 
-//     va_end(args);
-//     return ret_status;
 }
 #endif
 
