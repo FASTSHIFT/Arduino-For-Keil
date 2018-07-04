@@ -113,3 +113,4 @@
 //Upgrade        6.19  V_4.1 SPI库中"uint16_t clock" 改为 "uint32_t clock"
 //Upgrade        6.23  V_4.2 System_ms 改为 volatile，改进微秒延时与tone相关函数
 //Upgrade        6.29  V_4.3 改进Wire库，I2C速度翻倍
+//Upgrade        7.4   V_4.4 Print库中，将 vsprintf 改成 vsnprintf 防止内存溢出
