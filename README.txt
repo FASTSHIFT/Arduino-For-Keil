@@ -114,3 +114,5 @@
 //Upgrade        6.23  V_4.2 System_ms 改为 volatile，改进微秒延时与tone相关函数
 //Upgrade        6.29  V_4.3 改进Wire库，I2C速度翻倍
 //Upgrade        7.4   V_4.4 Print库中，将 vsprintf 改成 vsnprintf 防止内存溢出
+//Upgrade        7.7   V_4.5 Print库中，重载 << 运算符，支持 Serial<<"Hello World"<<"\r\n" 流式操作
+//Upgrade        7.8   V_4.6 改进tone函数为非阻塞式(注意，tone会占用定时器，可以进入Tone.h进行更改，如无法避免冲突请使用Block_tone)，random()随机数已支持
