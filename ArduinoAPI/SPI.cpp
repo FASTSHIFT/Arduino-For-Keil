@@ -36,18 +36,18 @@ void SPIClass::SPI_Settings(	SPI_TypeDef* SPIx,
 			break;
 	}
 
-	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //ÉèÖÃSPIµ¥Ïò»òÕßË«ÏòµÄÊı¾İÄ£Ê½
-	SPI_InitStructure.SPI_Mode = SPI_Mode_x;		//ÉèÖÃSPI¹¤×÷Ä£Ê½:(SPI_Mode_Master,SPI_Mode_Slave)
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_x;		//ÉèÖÃSPIµÄÊı¾İ´óĞ¡:SPI·¢ËÍ½ÓÊÕxÎ»Ö¡½á¹¹
-	SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;		//Ñ¡ÔñÁË´®ĞĞÊ±ÖÓµÄÎÈÌ¬
-	SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;	//Êı¾İ²¶»ñÊ±ÖÓÑØ
-	SPI_InitStructure.SPI_NSS = SPI_NSS_x;		//NSSĞÅºÅÓÉÓ²¼ş£¨NSS¹Ü½Å£©»¹ÊÇÈí¼ş£¨Ê¹ÓÃSSIÎ»£©¹ÜÀí:ÄÚ²¿NSSĞÅºÅÓĞSSIÎ»¿ØÖÆ(SPI_NSS_Soft,SPI_NSS_Hard)
-	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;		//¶¨Òå²¨ÌØÂÊÔ¤·ÖÆµµÄÖµ
-	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_x;	//Ö¸¶¨Êı¾İ´«Êä´ÓMSBÎ»»¹ÊÇLSBÎ»¿ªÊ¼:Êı¾İ´«Êä´ÓMSBÎ»¿ªÊ¼(SPI_FirstBit_MSB,SPI_FirstBit_LSB)
-	SPI_InitStructure.SPI_CRCPolynomial = 3;	//CRCÖµ¼ÆËãµÄ¶àÏîÊ½
-	SPI_Init(SPIx, &SPI_InitStructure);  //¸ù¾İSPI_InitStructÖĞÖ¸¶¨µÄ²ÎÊı³õÊ¼»¯ÍâÉèSPIx¼Ä´æÆ÷
+	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //è®¾ç½®SPIå•å‘æˆ–è€…åŒå‘çš„æ•°æ®æ¨¡å¼
+	SPI_InitStructure.SPI_Mode = SPI_Mode_x;		//è®¾ç½®SPIå·¥ä½œæ¨¡å¼:(SPI_Mode_Master,SPI_Mode_Slave)
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_x;		//è®¾ç½®SPIçš„æ•°æ®å¤§å°:SPIå‘é€æ¥æ”¶xä½å¸§ç»“æ„
+	SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;		//é€‰æ‹©äº†ä¸²è¡Œæ—¶é’Ÿçš„ç¨³æ€
+	SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;	//æ•°æ®æ•è·æ—¶é’Ÿæ²¿
+	SPI_InitStructure.SPI_NSS = SPI_NSS_x;		//NSSä¿¡å·ç”±ç¡¬ä»¶ï¼ˆNSSç®¡è„šï¼‰è¿˜æ˜¯è½¯ä»¶ï¼ˆä½¿ç”¨SSIä½ï¼‰ç®¡ç†:å†…éƒ¨NSSä¿¡å·æœ‰SSIä½æ§åˆ¶(SPI_NSS_Soft,SPI_NSS_Hard)
+	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;		//å®šä¹‰æ³¢ç‰¹ç‡é¢„åˆ†é¢‘çš„å€¼
+	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_x;	//æŒ‡å®šæ•°æ®ä¼ è¾“ä»MSBä½è¿˜æ˜¯LSBä½å¼€å§‹:æ•°æ®ä¼ è¾“ä»MSBä½å¼€å§‹(SPI_FirstBit_MSB,SPI_FirstBit_LSB)
+	SPI_InitStructure.SPI_CRCPolynomial = 3;	//CRCå€¼è®¡ç®—çš„å¤šé¡¹å¼
+	SPI_Init(SPIx, &SPI_InitStructure);  //æ ¹æ®SPI_InitStructä¸­æŒ‡å®šçš„å‚æ•°åˆå§‹åŒ–å¤–è®¾SPIxå¯„å­˜å™¨
  
-	SPI_Cmd(SPIx, ENABLE); //Ê¹ÄÜSPIÍâÉè
+	SPI_Cmd(SPIx, ENABLE); //ä½¿èƒ½SPIå¤–è®¾
 }
 
 void SPIClass::begin(void) 
@@ -58,7 +58,7 @@ void SPIClass::begin(void)
 		case (int)SPI1:
 			RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOA|RCC_APB2Periph_SPI1, ENABLE);
 			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
-			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //¸´ÓÃÍÆÍìÊä³ö	
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //å¤ç”¨æ¨æŒ½è¾“å‡º	
 			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 			GPIO_Init(GPIOA, &GPIO_InitStructure);
 			break;
@@ -66,7 +66,7 @@ void SPIClass::begin(void)
 			RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
 			RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOB, ENABLE);
 			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //¸´ÓÃÍÆÍìÊä³ö
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //å¤ç”¨æ¨æŒ½è¾“å‡º
 			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 			GPIO_Init(GPIOB, &GPIO_InitStructure);
 			break;
@@ -122,9 +122,17 @@ void SPIClass::setClock(uint32_t clock)
 	SPI_Init(SPIx, &SPI_InitStructure);
 }
 
-void SPIClass::setClockDivider(uint32_t Div)
+void SPIClass::setClockDivider(uint32_t Div) //For AVR compatibility
 {
-	setClock(16000000 / Div);
+	// AVR:16MHz, STM32F1:72MHz
+	if(Div == 0)
+	{
+		setClock(16000000);
+	}
+	else
+	{
+		setClock(16000000 / Div);		
+	}
 }
 
 void SPIClass::setBitOrder(uint16_t bitOrder)
@@ -161,7 +169,7 @@ On the STM32 it appears to be
 
 bit 1 - CPOL : Clock polarity
     (This bit should not be changed when communication is ongoing)
-    0 : CLK to 0 when idle
+    0 : CLK to 0 when idle	
     1 : CLK to 1 when idle
  
 bit 0 - CPHA : Clock phase
@@ -229,15 +237,15 @@ void SPIClass::read(uint8_t *buf, uint32_t len)
 	
 	while (rxed < len)
 	{
-		while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:½ÓÊÜ»º´æ·Ç¿Õ±êÖ¾Î»
-		buf[rxed++] = (uint8_t)SPI_I2S_ReceiveData(SPIx); //·µ»ØÍ¨¹ıSPIx×î½ü½ÓÊÕµÄÊı¾İ	
+		while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:æ¥å—ç¼“å­˜éç©ºæ ‡å¿—ä½
+		buf[rxed++] = (uint8_t)SPI_I2S_ReceiveData(SPIx); //è¿”å›é€šè¿‡SPIxæœ€è¿‘æ¥æ”¶çš„æ•°æ®	
 	}
 }
 
 void SPIClass::write(uint16_t data)
 {
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:·¢ËÍ»º´æ¿Õ±êÖ¾Î»		  
-	SPI_I2S_SendData(SPIx, data); //Í¨¹ıÍâÉèSPIx·¢ËÍÒ»¸öÊı¾İ
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:å‘é€ç¼“å­˜ç©ºæ ‡å¿—ä½		  
+	SPI_I2S_SendData(SPIx, data); //é€šè¿‡å¤–è®¾SPIxå‘é€ä¸€ä¸ªæ•°æ®
 }
 
 void SPIClass::write(const uint8_t *data, uint32_t length)
@@ -245,7 +253,7 @@ void SPIClass::write(const uint8_t *data, uint32_t length)
 	uint32_t txed = 0;
 	while (txed < length)
 	{
-		while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:·¢ËÍ»º´æ¿Õ±êÖ¾Î»
+		while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:å‘é€ç¼“å­˜ç©ºæ ‡å¿—ä½
 		SPI_I2S_SendData(SPIx, data[txed]);
 		txed++;
 		//txed += spi_tx(_currentSetting->spi_d, data + txed, length - txed);
@@ -255,22 +263,22 @@ void SPIClass::write(const uint8_t *data, uint32_t length)
 uint16_t SPIClass::transfer16(uint16_t wr_data) const
 {
 	uint16_t rd_data;		
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:·¢ËÍ»º´æ¿Õ±êÖ¾Î»	  
-	SPI_I2S_SendData(SPIx, wr_data); //Í¨¹ıÍâÉèSPIx·¢ËÍÒ»¸öÊı¾İ
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:å‘é€ç¼“å­˜ç©ºæ ‡å¿—ä½	  
+	SPI_I2S_SendData(SPIx, wr_data); //é€šè¿‡å¤–è®¾SPIxå‘é€ä¸€ä¸ªæ•°æ®
 
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:½ÓÊÜ»º´æ·Ç¿Õ±êÖ¾Î»		
-	rd_data = SPI_I2S_ReceiveData(SPIx); //·µ»ØÍ¨¹ıSPIx×î½ü½ÓÊÕµÄÊı¾İ	
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:æ¥å—ç¼“å­˜éç©ºæ ‡å¿—ä½		
+	rd_data = SPI_I2S_ReceiveData(SPIx); //è¿”å›é€šè¿‡SPIxæœ€è¿‘æ¥æ”¶çš„æ•°æ®	
 	return rd_data;
 }
 
 uint8_t SPIClass::transfer(uint8_t wr_data) const
 {
 	uint8_t rd_data;		
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:·¢ËÍ»º´æ¿Õ±êÖ¾Î»		  
-	SPI_I2S_SendData(SPIx, wr_data); //Í¨¹ıÍâÉèSPIx·¢ËÍÒ»¸öÊı¾İ
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:å‘é€ç¼“å­˜ç©ºæ ‡å¿—ä½		  
+	SPI_I2S_SendData(SPIx, wr_data); //é€šè¿‡å¤–è®¾SPIxå‘é€ä¸€ä¸ªæ•°æ®
 
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:½ÓÊÜ»º´æ·Ç¿Õ±êÖ¾Î»	
-	rd_data = SPI_I2S_ReceiveData(SPIx); //·µ»ØÍ¨¹ıSPIx×î½ü½ÓÊÕµÄÊı¾İ
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:æ¥å—ç¼“å­˜éç©ºæ ‡å¿—ä½	
+	rd_data = SPI_I2S_ReceiveData(SPIx); //è¿”å›é€šè¿‡SPIxæœ€è¿‘æ¥æ”¶çš„æ•°æ®
 	return rd_data;
 }
 
