@@ -218,9 +218,9 @@ ARM Macro Assembler    Page 4
 ]
   131 00000000                 IMPORT           __main
   132 00000000                 IMPORT           SystemInit
-  133 00000000 4806            LDR              R0, =SystemInit
+  133 00000000 4809            LDR              R0, =SystemInit
   134 00000002 4780            BLX              R0
-  135 00000004 4806            LDR              R0, =__main
+  135 00000004 4809            LDR              R0, =__main
   136 00000006 4700            BX               R0
   137 00000008                 ENDP
   138 00000008         
@@ -446,31 +446,43 @@ ARM Macro Assembler    Page 7
   281 0000001C         ;*******************************************************
                        ************************
   282 0000001C                 IF               :DEF:__MICROLIB
-  283 0000001C         
-  284 0000001C                 EXPORT           __initial_sp
-  285 0000001C                 EXPORT           __heap_base
-  286 0000001C                 EXPORT           __heap_limit
-  287 0000001C         
-  288 0000001C                 ELSE
-  303                          ENDIF
+  289 0000001C         
+  290 0000001C                 IMPORT           __use_two_region_memory
+  291 0000001C                 EXPORT           __user_initial_stackheap
+  292 0000001C         
+  293 0000001C         __user_initial_stackheap
+  294 0000001C         
+  295 0000001C 4804            LDR              R0, =  Heap_Mem
 
 
 
 ARM Macro Assembler    Page 8 
 
 
-  304 0000001C         
-  305 0000001C                 END
+  296 0000001E 4905            LDR              R1, =(Stack_Mem + Stack_Size)
+  297 00000020 4A05            LDR              R2, = (Heap_Mem +  Heap_Size)
+  298 00000022 4B06            LDR              R3, = Stack_Mem
+  299 00000024 4770            BX               LR
+  300 00000026         
+  301 00000026 00 00           ALIGN
+  302 00000028         
+  303 00000028                 ENDIF
+  304 00000028         
+  305 00000028                 END
               00000000 
               00000000 
-Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=..\obj\s
-tartup_stm32f10x_md.d -o..\obj\startup_stm32f10x_md.o -I"T:\DESIGN\STM32 Projec
-t\_Keilduino\USER\RTE" -I"T:\DESIGN\STM32 Project\_Keilduino\USER\RTE\Device\ST
-M32F103C8" -ID:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include -ID:\Keil_v5\ARM
-\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include -ID:\Keil_v5\ARM\PACK\Keil\STM32F
-1xx_DFP\1.1.0\Device\StdPeriph_Driver\inc --predefine="__MICROLIB SETA 1" --lis
-t=..\list\startup_stm32f10x_md.lst RTE\Device\STM32F103C8\startup_stm32f10x_md.
-s
+              00000000 
+              00000400 
+              00000200 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=..\obj\startup_stm32f10x_md.d -o..\obj\startup_stm32f10x_md.o -I.\
+RTE\Device\STM32F103C8 -I.\RTE\_Project -ID:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\C
+MSIS\Include -ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include -ID:
+\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\StdPeriph_Driver\inc --predef
+ine="__UVISION_VERSION SETA 525" --predefine="_RTE_ SETA 1" --predefine="STM32F
+10X_MD SETA 1" --list=..\list\startup_stm32f10x_md.lst RTE\Device\STM32F103C8\s
+tartup_stm32f10x_md.s
 
 
 
@@ -491,8 +503,9 @@ Symbol: Stack_Mem
    Definitions
       At line 36 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
    Uses
-      None
-Comment: Stack_Mem unused
+      At line 296 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
+      At line 298 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
+
 __initial_sp 00000400
 
 Symbol: __initial_sp
@@ -500,8 +513,7 @@ Symbol: __initial_sp
       At line 37 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
    Uses
       At line 61 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
-      At line 284 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
-
+Comment: __initial_sp used once
 3 symbols
 
 
@@ -523,24 +535,25 @@ Symbol: Heap_Mem
    Definitions
       At line 48 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
    Uses
-      None
-Comment: Heap_Mem unused
+      At line 295 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
+      At line 297 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
+
 __heap_base 00000000
 
 Symbol: __heap_base
    Definitions
       At line 47 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
    Uses
-      At line 285 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
-Comment: __heap_base used once
+      None
+Comment: __heap_base unused
 __heap_limit 00000200
 
 Symbol: __heap_limit
    Definitions
       At line 49 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
    Uses
-      At line 286 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
-Comment: __heap_limit used once
+      None
+Comment: __heap_limit unused
 4 symbols
 
 
@@ -1122,7 +1135,15 @@ Symbol: WWDG_IRQHandler
       At line 79 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
       At line 185 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
 
-55 symbols
+__user_initial_stackheap 0000001C
+
+Symbol: __user_initial_stackheap
+   Definitions
+      At line 293 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
+   Uses
+      At line 291 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
+Comment: __user_initial_stackheap used once
+56 symbols
 
 
 
@@ -1136,7 +1157,8 @@ Symbol: Heap_Size
       At line 44 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
    Uses
       At line 48 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
-Comment: Heap_Size used once
+      At line 297 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
+
 Stack_Size 00000400
 
 Symbol: Stack_Size
@@ -1144,7 +1166,8 @@ Symbol: Stack_Size
       At line 33 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
    Uses
       At line 36 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
-Comment: Stack_Size used once
+      At line 296 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
+
 __Vectors_Size 000000EC
 
 Symbol: __Vectors_Size
@@ -1176,5 +1199,13 @@ Symbol: __main
    Uses
       At line 135 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
 Comment: __main used once
-2 symbols
-403 symbols in table
+__use_two_region_memory 00000000
+
+Symbol: __use_two_region_memory
+   Definitions
+      At line 290 in file RTE\Device\STM32F103C8\startup_stm32f10x_md.s
+   Uses
+      None
+Comment: __use_two_region_memory unused
+3 symbols
+409 symbols in table
