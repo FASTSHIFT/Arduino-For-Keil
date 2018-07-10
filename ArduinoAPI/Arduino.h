@@ -10,8 +10,11 @@ extern "C"{
 #include "adc.h"
 #include "binary.h"
 #include "delay.h"
+#include "stdlib.h"
+#include "avr/pgmspace.h"
 
 #define __STM32F1__
+#define __KEILDUINO_VERSION__ 460
 #define ARDUINO 111
 #define F_CPU 72000000U
 #define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
@@ -86,9 +89,6 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value
 uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder);
 uint32_t pulseIn(uint32_t Pin, uint32_t State, uint32_t Timeout);
 
-void tone(uint8_t Pin,uint32_t freq,uint32_t Time_ms);
-void toneVolumn(uint8_t Pin,uint32_t freq,uint32_t Time_ms,uint32_t vol);
-void tonePro(uint8_t Pin,uint32_t freq,uint32_t Time_us,uint32_t vol);
 long map(long x, long in_min, long in_max, long out_min, long out_max);
 double fmap(double x, double in_min, double in_max, double out_min, double out_max);
 

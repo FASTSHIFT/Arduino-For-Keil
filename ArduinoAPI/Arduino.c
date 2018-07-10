@@ -95,55 +95,6 @@ uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
   return value ;
 }
 
-void tone(uint8_t Pin,uint32_t freq,uint32_t Time_ms)
-{
-	uint32_t TimePoint = millis() + Time_ms;
-	uint32_t dlyus = 500000 / freq;
-	if(freq == 0)return;
-	do
-	{
-		digitalWrite_HIGH(Pin);
-		delayMicroseconds(dlyus);
-		digitalWrite_LOW(Pin);
-		delayMicroseconds(dlyus);
-	}while(millis() < TimePoint);
-	digitalWrite_LOW(Pin);
-}
-
-void toneVolumn(uint8_t Pin,uint32_t freq,uint32_t Time_ms,uint32_t vol)
-{
-	uint32_t TimePoint = millis() + Time_ms;
-	uint32_t dlyus = 500000 / freq;
-	uint32_t dlHigh = dlyus * vol / 100;
-	uint32_t dlLow = 2 * dlyus - dlHigh;
-	if(freq == 0)return;
-	do
-	{
-		digitalWrite_HIGH(Pin);
-		delayMicroseconds(dlHigh);
-		digitalWrite_LOW(Pin);
-		delayMicroseconds(dlLow);
-	}while(millis() < TimePoint);
-	digitalWrite_LOW(Pin);
-}
-
-void tonePro(uint8_t Pin,uint32_t freq,uint32_t Time_us,uint32_t vol)
-{
-	uint32_t TimePoint = micros() + Time_us;
-	uint32_t dlyus = 500000 / freq;
-	uint32_t dlHigh = dlyus * vol / 100;
-	uint32_t dlLow = 2 * dlyus - dlHigh;
-	if(freq == 0)return;
-	do
-	{
-		digitalWrite_HIGH(Pin);
-		delayMicroseconds(dlHigh);
-		digitalWrite_LOW(Pin);
-		delayMicroseconds(dlLow);
-	}while(micros() < TimePoint);
-	digitalWrite_LOW(Pin);
-}
-
 long map(long x, long in_min, long in_max, long out_min, long out_max)
 {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;

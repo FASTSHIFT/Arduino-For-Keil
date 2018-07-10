@@ -235,14 +235,14 @@ extern "C"{
 // Need to implement stream FILE to write individual chars to chosen serial port
 int Print::printf (const char *__restrict __format, ...)
 {
-	char s[PRINTF_BUFFER_LENGTH];
+	char printf_buff[PRINTF_BUFFER_LENGTH];
 
 	va_list args;
  	va_start(args, __format);
-	int ret_status = vsnprintf(s, PRINTF_BUFFER_LENGTH, __format, args);
-	//int ret_status = vsprintf(s, __format, args);
+	int ret_status = vsnprintf(printf_buff, sizeof(printf_buff), __format, args);
+	//int ret_status = vsprintf(printf_buff,__format, args);
 	va_end(args);
-	print(s);
+	print(printf_buff);
 	
 	return ret_status;
 }
@@ -341,4 +341,3 @@ size_t s=0;
     }
 	return s;
 }
-

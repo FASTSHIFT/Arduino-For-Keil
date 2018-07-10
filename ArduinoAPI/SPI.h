@@ -111,6 +111,7 @@ class SPIClass
 		void end(void);
 		
 		void setClock(uint32_t clock);
+		void setClockDivider(uint32_t Div);
 		void setBitOrder(uint16_t bitOrder);
 		void setDataMode(uint8_t dataMode);
 		void setDataSize(uint16_t datasize);

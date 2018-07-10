@@ -91,4 +91,6 @@ private:
     size_t printFloat(double, uint8);
 };
 
+template<class T> inline Print &operator << (Print &obj, T arg) { obj.print(arg); return obj; }
+
 #endif

@@ -122,6 +122,11 @@ void SPIClass::setClock(uint32_t clock)
 	SPI_Init(SPIx, &SPI_InitStructure);
 }
 
+void SPIClass::setClockDivider(uint32_t Div)
+{
+	setClock(16000000 / Div);
+}
+
 void SPIClass::setBitOrder(uint16_t bitOrder)
 {
 	if(bitOrder == MSBFIRST)SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;//MSBFIRST 1
