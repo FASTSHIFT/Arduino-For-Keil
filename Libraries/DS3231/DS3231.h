@@ -17,13 +17,8 @@
 #define DS3231_h
 
 // Changed the following to work on 1.0
-//#include "WProgram.h"
-//#include <Arduino.h>
 
-extern "C"
-{
-	#include "FileGroup.h"
-}
+#include "Arduino.h"
 #include "Wire.h"
 
 // DateTime (get everything at once) from JeeLabs / Adafruit
