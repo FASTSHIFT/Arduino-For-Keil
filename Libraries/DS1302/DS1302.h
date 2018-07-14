@@ -28,10 +28,7 @@ SUCH DAMAGE.
 #ifndef DS1302_h
 #define DS1302_h
 
-extern "C"
-{
-#include "FileGroup.h"
-}
+#include "Arduino.h"
 /**
  * Convenience register constants
  */
