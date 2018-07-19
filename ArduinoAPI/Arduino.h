@@ -64,8 +64,8 @@ extern "C"{
 typedef unsigned char byte;
 
 typedef enum {LOW = 0, HIGH = !LOW} GPIO_State_Type;
-typedef enum {Off = 0, On = !Off} Switch_Type;
-typedef enum {OFF = 0, ON = !OFF} SWITCH_Type;
+typedef enum {Off = 0, On = !Off} _Switch_Type;
+typedef enum {OFF = 0, ON = !OFF} _SWITCH_Type;
 
 typedef enum
 {
