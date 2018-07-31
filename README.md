@@ -7,6 +7,7 @@
 
 >   它的底层是基于 **STM32标准外设库** 二次封装，
 部分源代码移植于 [stm32duino](http://www.stm32duino.com/)，用法与[Arduino语法](https://www.arduino.cc/reference/en/)基本一致。
+
 支持与寄存器和标准外设库的函数混用，例如：
 ```C
 void setup()
@@ -24,6 +25,7 @@ void loop()
 ```
 
 [STM32F10x标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F1xx_DFP.1.1.0.pack)
+
 [STM32F0xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F0xx_DFP.1.0.1.pack)
 
 ## 注意： 
