@@ -57,7 +57,7 @@ void loop()
 	tone(Pin,Frequency,Time_ms);
 	tone(Pin,Frequency);
 ```          
- > Print (支持printf)
+ > Print
 ```C++
 	Serial.print("Hello STM32");
 	Serial.printf("Hello STM%d",32);
