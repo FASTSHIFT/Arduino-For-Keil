@@ -5,10 +5,26 @@
 只需将Arduino支持的第三方库的文件夹加入 "Libraries" 文件夹下即可，然后打开"USER"文件夹启动keil工程，在"main.cpp"这个文件下进行编写程序，
 可以直接使用Arduino的示例源代码。
 
->   它的底层是基于*STM32标准外设库*二次封装，
-部分源代码来自 *stm32duino*，用法与Arduino基本一致，支持与寄存器和标准外设库的函数混用。
+>   它的底层是基于 **STM32标准外设库** 二次封装，
+部分源代码移植于 [stm32duino](http://www.stm32duino.com/)，用法与[Arduino语法](https://www.arduino.cc/reference/en/)基本一致。
+支持与寄存器和标准外设库的函数混用，例如：
+```C
+void setup()
+{
+	pinMode(PA0,OUTPUT);
+}
 
-[STM32F10x固件库](https://keilpack.azureedge.net/pack/Keil.STM32F1xx_DFP.1.1.0.pack)
+void loop()
+{
+	GPIOA -> BSRR = GPIO_Pin_0;
+	delay(1000);
+	GPIO_ResetBits(GPIOA, GPIO_Pin_0);
+	delay(1000);
+}
+```
+
+[STM32F10x标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F1xx_DFP.1.1.0.pack)
+[STM32F0xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F0xx_DFP.1.0.1.pack)
 
 ## 注意： 
      1.请不要删除"main.cpp"中的FileGroup.h和main函数。 
@@ -38,11 +54,11 @@
   shiftIn(dataPin,clockPin,bitOrder)
   tone(Pin,Frequency,Time_ms)
 ```          
-  Print(支持printf)
-  String 
-  Stream 
+ > Print(支持printf)
+ > String 
+ > Stream 
    
 ### 外设相关： 
-  Serial
-  Wire
-  SPI
+ > Serial
+ > Wire
+ > SPI
