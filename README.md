@@ -4,7 +4,7 @@
 它本质上是一个建立好的Keil工程，然后在它的基础上封装一套类似于Arduino的底层函数库，可以像在Arduino IDE一样直接调用写好的API，
 只需将Arduino支持的第三方库的文件夹加入 "Libraries" 文件夹下即可，然后打开"USER"文件夹启动keil工程进行编写程序。
 
->   底层基于 **STM32标准外设库** 二次封装，下载链接在下方。
+>   底层基于 **STM32标准外设库** 二次封装，安装之后才能正常编译，下载链接位于下方。
 
 [STM32F10x标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F1xx_DFP.1.1.0.pack)
 
