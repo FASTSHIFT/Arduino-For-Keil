@@ -69,11 +69,15 @@ void loop()
 	String s2 = " STM32";
 	Serial.print(s1 + s2);
 ```
- > Stream 
-   if(Serial.available())
-	 {
-	 	String s = Serial.readString();
-	 }
+ > Stream
+ ```C++
+	Serial.begin(115200);
+ 	Serial.setTimeout(20);
+	if(Serial.available())
+	{
+		String s = Serial.readString();
+	}
+```
 ### 外设:
  > Serial
 ```C++
@@ -87,11 +91,11 @@ void loop()
 ```C++
 	Wire.begin();
 	Wire.beginTransmission(0xFF);
-  Wire.write(0x01);
-  Wire.endTransmission();
+	Wire.write(0x01);
+	Wire.endTransmission();
 ```
  > SPI
 ```C++
- 	SPI.begin();
+	SPI.begin();
 	SPI.transfer(0xFF);
 ```
