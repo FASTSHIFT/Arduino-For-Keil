@@ -55,8 +55,9 @@ void loop()
   shiftOut(dataPin,clockPin,bitOrder,value);
   shiftIn(dataPin,clockPin,bitOrder);
   tone(Pin,Frequency,Time_ms);
+  tone(Pin,Frequency);
 ```          
- > Print(支持printf)
+ > Print (支持printf)
  
  > String 
  
