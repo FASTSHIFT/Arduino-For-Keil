@@ -58,14 +58,40 @@ void loop()
   tone(Pin,Frequency);
 ```          
  > Print (支持printf)
- 
+```C++
+	Serial.print("Hello STM32");
+	Serial.printf("Hello STM%d",32);
+	Serial << "Hello STM32" << "\r\n";
+```
  > String 
- 
+```C++
+	String s1 = "Hello";
+	String s2 = " STM32";
+	Serial.print(s1 + s2);
+```
  > Stream 
-   
+   if(Serial.available())
+	 {
+	 	String s = Serial.readString();
+	 }
 ### 外设:
  > Serial
- 
+```C++
+ 	Serial.begin(115200);
+	while(Serial.available())
+	{
+		Serial.print(Serial.read());
+	}
+```
  > Wire
- 
+```C++
+	Wire.begin();
+	Wire.beginTransmission(0xFF);
+  Wire.write(0x01);
+  Wire.endTransmission();
+```
  > SPI
+```C++
+ 	SPI.begin();
+	SPI.transfer(0xFF);
+```
