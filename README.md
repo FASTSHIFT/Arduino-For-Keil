@@ -37,23 +37,23 @@ void loop()
 ### 基本:
 #### 时间:
 ```C
-  delay(Time_ms)
-  delayMicroseconds(Time_us)
-  millis()
-  micros()
-  TimerSet(TIMx,InterruptTime_us,Callback_function)
+  delay(Time_ms);
+  delayMicroseconds(Time_us);
+  millis();
+  micros();
+  TimerSet(TIMx,InterruptTime_us,Callback_function);
 ```
 #### 输入输出:
 ```C
-  pinMode(Pin,Mode)
-  attachInterrrupt(Pin,Trigger_Mode,Callback_function)
-  digitalWrite(Pin,State)
-  digitalRead(Pin)
-  analogRead(Pin)
-  analogWrite(Pin,DutyCycle)
-  shiftOut(dataPin,clockPin,bitOrder,value)
-  shiftIn(dataPin,clockPin,bitOrder)
-  tone(Pin,Frequency,Time_ms)
+  pinMode(Pin,Mode);
+  attachInterrrupt(Pin,Trigger_Mode,Callback_function);
+  digitalWrite(Pin,State);
+  digitalRead(Pin);
+  analogRead(Pin);
+  analogWrite(Pin,DutyCycle);
+  shiftOut(dataPin,clockPin,bitOrder,value);
+  shiftIn(dataPin,clockPin,bitOrder);
+  tone(Pin,Frequency,Time_ms);
 ```          
  > Print(支持printf)
  
