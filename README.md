@@ -72,7 +72,7 @@ void loop()
  > Stream
  ```C++
 	Serial.begin(115200);
- 	Serial.setTimeout(20);
+	Serial.setTimeout(20);
 	if(Serial.available())
 	{
 		String s = Serial.readString();
