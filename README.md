@@ -5,7 +5,7 @@
 只需将Arduino支持的第三方库的文件夹加入 "Libraries" 文件夹下即可，然后打开"USER"文件夹启动keil工程进行编写程序。
 
 >   它的底层是基于 **STM32标准外设库** 二次封装，下载链接在下方。
-部分源代码移植于 [stm32duino](http://www.stm32duino.com/)，用法请参照[Arduino语法](https://www.arduino.cc/reference/en/)。
+>	部分源代码移植于 [stm32duino](http://www.stm32duino.com/)，用法请参照[Arduino语法](https://www.arduino.cc/reference/en/)。
 
 支持与寄存器和标准外设库的函数混用，例如：
 ```C
@@ -46,7 +46,7 @@ void loop()
 #### 输入输出:
 ```C
   pinMode(Pin,Mode);
-  attachInterrrupt(Pin,Trigger_Mode,Callback_function);
+  attachInterrrupt(Pin,Trigger_Mode,Callback_function);	
   digitalWrite(Pin,State);
   digitalRead(Pin);
   analogRead(Pin);
