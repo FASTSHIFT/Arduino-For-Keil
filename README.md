@@ -6,9 +6,11 @@
 
 >   底层基于 **STM32标准外设库** 二次封装，安装之后才能正常编译，下载链接位于下方。
 
-[STM32F10x标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F1xx_DFP.1.1.0.pack)
-
 [STM32F0xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F0xx_DFP.1.0.1.pack)
+
+[STM32F1xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F1xx_DFP.1.1.0.pack)
+
+[STM32F4xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F4xx_DFP.1.0.8.pack)
 
 >	部分源代码移植于 [stm32duino](http://www.stm32duino.com/)，用法请参照[Arduino语法](https://www.arduino.cc/reference/en/)。
 
