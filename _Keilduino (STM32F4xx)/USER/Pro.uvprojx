@@ -335,9 +335,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_STDPERIPH_DRIVER,STM32F429_439xx,USE_STM32F429I_DISCO,</Define>
+              <Define>USE_STDPERIPH_DRIVER,STM32F429_439xx</Define>
               <Undefine></Undefine>
-              <IncludePath>.\RTE;.\RTE\Device\STM32F103C8;..\USER;..\Drivers\utility;..\ArduinoAPI;..\Core;..\Libraries;..\Libraries\STM32F429_Discovery\STM32F429I-Discovery</IncludePath>
+              <IncludePath>.\RTE;.\RTE\Device\STM32F103C8;..\USER;..\Drivers\utility;..\ArduinoAPI;..\Core;..\Libraries</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -488,26 +488,6 @@
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\main.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>STM32F429_Discovery</GroupName>
-          <Files>
-            <File>
-              <FileName>stm32f429i_discovery_lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\STM32F429_Discovery\STM32F429I-Discovery\stm32f429i_discovery_lcd.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f429i_discovery.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\STM32F429_Discovery\STM32F429I-Discovery\stm32f429i_discovery.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f429i_discovery_sdram.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\STM32F429_Discovery\STM32F429I-Discovery\stm32f429i_discovery_sdram.c</FilePath>
             </File>
           </Files>
         </Group>
