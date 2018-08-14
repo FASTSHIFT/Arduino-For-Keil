@@ -1,6 +1,7 @@
 #ifndef HardwareSerial_h
 #define HardwareSerial_h
 
+#include "Arduino.h"
 #include "usart.h"
 #include "Print.h"
 #include "Stream.h"
@@ -9,9 +10,9 @@ class HardwareSerial : public Stream
 {
 	public:
 		HardwareSerial(USART_TypeDef *USARTx);
-		void begin(uint32_t baud);
+		void begin(uint32_t BaudRate);
 		void end(void);
-		void attachInterrupt(void (*f)());
+		void attachInterrupt(void_func_point f);
 		virtual int available(void);
     virtual int peek(void);
     virtual int read(void);

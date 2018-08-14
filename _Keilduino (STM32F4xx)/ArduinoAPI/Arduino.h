@@ -14,7 +14,7 @@ extern "C"{
 #include "avr/pgmspace.h"
 
 #define __STM32F4__
-#define __KEILDUINO__ 100
+#define __KEILDUINO__ 110
 #define ARDUINO 111
 #define F_CPU 180000000U
 #define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
