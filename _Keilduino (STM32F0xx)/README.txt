@@ -3,5 +3,5 @@
 
 //*********************************UPGRADE LOGS************************************//
 
-//Finish in 2018.7.29 V_1.0 ����STM32F0xx��־�����(1.0.1��)����ֲ��ȫ����ArduinoAPI
-//Upgrade        8.14 V_1.1 ����USART�Ĵ���
+//Finish in 2018.7.29 V_1.0 基于STM32F0xx标志外设库(1.0.1版)，移植了全部的ArduinoAPI
+//Upgrade        8.14 V_1.1 整理USART相关代码，修改Tone库只占用一个定时器(可使用toneSetTimer()函数切换)
