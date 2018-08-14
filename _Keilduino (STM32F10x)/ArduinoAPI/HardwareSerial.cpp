@@ -8,9 +8,9 @@ HardwareSerial::HardwareSerial(USART_TypeDef *_USARTx)
 	else if(_USARTx==USART3)USART_Num=2;
 }
 
-void HardwareSerial::begin(uint32_t baud)
+void HardwareSerial::begin(uint32_t BaudRate)
 {
-	usart_init(USARTx,baud,1,3);
+	USARTx_Init(USARTx,BaudRate,1,3);
 }
 
 void HardwareSerial::end(void)
@@ -18,9 +18,9 @@ void HardwareSerial::end(void)
 	USART_Cmd(USARTx, DISABLE); 
 }
 
-void HardwareSerial::attachInterrupt(void (*f)())
+void HardwareSerial::attachInterrupt(void_func_point f)
 {
-	usart_attachInterrupt(USART_Num,f);
+	USARTx_attachInterrupt(USART_Num,f);
 }
 
 int HardwareSerial::available(void)
@@ -62,7 +62,7 @@ void HardwareSerial::flush(void)
 
 size_t HardwareSerial::write(uint8_t n)
 {
-	usart_putc(USARTx,n);
+	USARTx_putc(USARTx,n);
 	return n;
 }
 
