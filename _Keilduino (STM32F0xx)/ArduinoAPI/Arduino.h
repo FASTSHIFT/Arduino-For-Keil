@@ -1,5 +1,5 @@
 #ifndef __ARDUINO_H
-#define	__ARDUINO_H
+#define __ARDUINO_H
 
 #ifdef __cplusplus
 extern "C"{
