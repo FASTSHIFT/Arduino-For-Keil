@@ -42,4 +42,4 @@
 //Upgrade        7.8   V_4.6 改进tone函数为非阻塞式(注意，tone会占用定时器，可以进入Tone.h进行更改，如无法避免冲突请使用Block_tone)，random()随机数已支持
 //Upgrade        7.25  V_4.7 优化 delay库、pwm库、timer_exti库，改进togglePin()，加入 F_CPU 自适应支持
 //Upgrade        7.30  V_4.8 优化GPIO相关函数
-
+//Upgrade        8.14  V_4.9 整理USART的代码
