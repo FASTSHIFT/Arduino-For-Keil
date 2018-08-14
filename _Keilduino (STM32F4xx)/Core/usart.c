@@ -6,7 +6,7 @@ volatile uint8_t _rx_buffer[SERIAL_NUM][SERIAL_RX_BUFFER_SIZE];
 
 void_func_point USART_Function[SERIAL_NUM]={null_func, null_func, null_func};
   
-void usart_init(USART_TypeDef* USARTx,uint32_t BaudRate,uint8_t PreemptionPriority, uint8_t SubPriority)
+void USARTx_Init(USART_TypeDef* USARTx,uint32_t BaudRate,uint8_t PreemptionPriority, uint8_t SubPriority)
 {	
   //GPIO端口设置
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -83,13 +83,13 @@ void usart_init(USART_TypeDef* USARTx,uint32_t BaudRate,uint8_t PreemptionPriori
   USART_Cmd(USARTx, ENABLE);                    //使能串口
 }
 
-void usart_putc(USART_TypeDef* USARTx,uint8_t ch)
+void USARTx_putc(USART_TypeDef* USARTx,uint8_t c)
 {
-  USART_SendData(USARTx, ch);
-	while (!(USARTx->SR & USART_FLAG_TXE));
+  USART_SendData(USARTx, c);
+	while (!IS_USARTx_SendDone(USARTx)){};
 }
 
-void usart_attachInterrupt(uint8_t USART_Num,void_func_point f)
+void USARTx_attachInterrupt(uint8_t USART_Num,void_func_point f)
 {
 	USART_Function[USART_Num] = f;
 }

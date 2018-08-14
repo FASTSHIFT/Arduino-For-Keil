@@ -7,11 +7,6 @@ volatile uint32_t System_ms=0;
 
 void Delay_Init(void)
 {
-//	SysTick->LOAD = SysTick_LoadValue; 
-//	SysTick->VAL  = 0x00;           
-//	SysTick->CTRL|= 0x04;
-//	SysTick->CTRL|= 0x02; 	
-//	SysTick->CTRL|= 0x01;
 	SysTick_Config(SysTick_LoadValue);
 	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
 }
