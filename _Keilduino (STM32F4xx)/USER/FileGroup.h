@@ -1,5 +1,5 @@
 #ifndef __FILEGROUP_H
-#define	__FILEGROUP_H
+#define __FILEGROUP_H
 
 //*************C/C++ Library**************//
 
