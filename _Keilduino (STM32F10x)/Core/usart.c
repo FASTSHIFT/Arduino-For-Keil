@@ -6,7 +6,7 @@ uint8_t _rx_buffer[SERIAL_NUM][SERIAL_RX_BUFFER_SIZE];
 
 void_func_point USART_Function[SERIAL_NUM]={null_func, null_func, null_func};
   
-void usart_init(USART_TypeDef* USARTx,uint32_t BaudRate,uint8_t PreemptionPriority,uint8_t SubPriority)
+void USARTx_Init(USART_TypeDef* USARTx,uint32_t BaudRate,uint8_t PreemptionPriority,uint8_t SubPriority)
 {	
   //GPIO端口设置
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -16,40 +16,32 @@ void usart_init(USART_TypeDef* USARTx,uint32_t BaudRate,uint8_t PreemptionPriori
 	uint32_t ItChannel;
 	GPIO_TypeDef *GPIOx;
 	
-	switch((int)USARTx)
+	if(USARTx == USART1)
 	{
-		case (int)USART1:
-		{
-			RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_GPIOA, ENABLE);	
-			Tx_Pin = GPIO_Pin_9;
-			Rx_Pin = GPIO_Pin_10;
-			GPIOx = GPIOA;
-			ItChannel = USART1_IRQn;
-		}
-		break;
-		case (int)USART2:
-		{
-			RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
-			RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);	
-			Tx_Pin = GPIO_Pin_2;
-			Rx_Pin = GPIO_Pin_3;
-			GPIOx = GPIOA;
-			ItChannel = USART2_IRQn;
-		}
-		break;
-		case (int)USART3:
-		{
-			RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
-			RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
-			Tx_Pin = GPIO_Pin_10;
-			Rx_Pin = GPIO_Pin_11;
-			GPIOx = GPIOB;
-			ItChannel = USART3_IRQn;
-		}
-		break;
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_GPIOA, ENABLE);	
+		Tx_Pin = GPIO_Pin_9;
+		Rx_Pin = GPIO_Pin_10;
+		GPIOx = GPIOA;
+		ItChannel = USART1_IRQn;
 	}
-	
-	 
+	else if(USARTx == USART2)
+	{
+		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);	
+		Tx_Pin = GPIO_Pin_2;
+		Rx_Pin = GPIO_Pin_3;
+		GPIOx = GPIOA;
+		ItChannel = USART2_IRQn;
+	}
+	else if(USARTx == USART3)
+	{
+		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+		Tx_Pin = GPIO_Pin_10;
+		Rx_Pin = GPIO_Pin_11;
+		GPIOx = GPIOB;
+		ItChannel = USART3_IRQn;
+	}
   
 	//USART_TX
   GPIO_InitStructure.GPIO_Pin = Tx_Pin;
@@ -83,13 +75,13 @@ void usart_init(USART_TypeDef* USARTx,uint32_t BaudRate,uint8_t PreemptionPriori
   USART_Cmd(USARTx, ENABLE);                    //使能串口
 }
 
-void usart_putc(USART_TypeDef* USARTx,uint8_t ch)
+void USARTx_putc(USART_TypeDef* USARTx,uint8_t c)
 {
-  while((USARTx->SR&0X40)==0){};//循环发送,直到发送完毕   
-  USARTx->DR = (u8) ch;
+  while(!IS_USARTx_SendDone(USARTx)){};//循环发送,直到发送完毕   
+	USART_SendData(USARTx, c);
 }
 
-void usart_attachInterrupt(uint8_t USART_Num,void_func_point f)
+void USARTx_attachInterrupt(uint8_t USART_Num,void_func_point f)
 {
 	USART_Function[USART_Num] = f;
 }

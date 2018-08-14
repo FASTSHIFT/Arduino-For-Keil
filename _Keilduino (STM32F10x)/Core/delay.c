@@ -9,9 +9,7 @@ void Delay_Init(void)
 {
 	SysTick->LOAD = SysTick_LoadValue; 
 	SysTick->VAL  = 0x00;           
-	SysTick->CTRL|= 0x04;
-	SysTick->CTRL|= 0x02; 	
-	SysTick->CTRL|= 0x01; 	
+	SysTick->CTRL|= 0x07;
 }
 
 
