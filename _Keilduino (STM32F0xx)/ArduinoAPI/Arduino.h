@@ -13,7 +13,7 @@ extern "C"{
 #include "delay.h"
 
 #define __STM32F0__
-#define __KEILDUINO_VERSION__ 100
+#define __KEILDUINO_VERSION__ 110
 #define ARDUINO 111
 #define F_CPU 48000000U
 #define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
