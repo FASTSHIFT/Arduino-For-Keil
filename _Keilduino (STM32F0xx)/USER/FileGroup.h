@@ -1,5 +1,5 @@
 #ifndef __FILEGROUP_H
-#define	__FILEGROUP_H
+#define __FILEGROUP_H
 
 //*************C/C++ Library**************//
 
@@ -13,6 +13,8 @@
 #include "usart.h"
 #include "time_exti.h"
 #include "math.h"
+#include "WMath.h"
+#include "Tone.h"
 
 #include "HardwareSerial.h"
 #include "SPI.h"
