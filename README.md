@@ -46,7 +46,6 @@ void loop()
 	delayMicroseconds(Time_us);
 	millis();
 	micros();
-	TimerSet(TIMx,InterruptTime_us,Callback_function);
 ```
 #### 输入输出:
 ```C
