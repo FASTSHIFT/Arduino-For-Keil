@@ -1,4 +1,4 @@
-#ifndef __C_CALL_CPP_H
+﻿#ifndef __C_CALL_CPP_H
 #define	__C_CALL_CPP_H
 
 #ifdef __cplusplus
