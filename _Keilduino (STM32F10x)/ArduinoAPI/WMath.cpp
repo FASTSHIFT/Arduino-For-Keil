@@ -22,6 +22,11 @@
 */
 #include "WMath.h"
 
+/**
+  * @brief  初始化伪随机数生成器
+  * @param  seed：数字初始化伪随机序列 
+  * @retval 无
+  */
 void randomSeed(unsigned long seed)
 {
   if (seed != 0) {
@@ -29,6 +34,11 @@ void randomSeed(unsigned long seed)
   }
 }
 
+/**
+  * @brief  随机函数生成伪随机数
+  * @param  howbig：随机值的上界
+  * @retval 最小和 max-1 之间的随机数
+  */
 long random(long howbig)
 {
   if (howbig == 0) {
@@ -37,6 +47,12 @@ long random(long howbig)
   return rand() % howbig;
 }
 
+/**
+  * @brief  随机函数生成伪随机数
+  * @param  howsmall：随机值的下界
+			howbig：随机值的上界
+  * @retval 最小和 max-1 之间的随机数
+  */
 long random(long howsmall, long howbig)
 {
   if (howsmall >= howbig) {
