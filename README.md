@@ -8,7 +8,7 @@
 
 [STM32F0xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F0xx_DFP.1.0.1.pack)
 
-[STM32F1xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F1xx_DFP.1.1.0.pack)
+[STM32F10x标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F1xx_DFP.1.1.0.pack)
 
 [STM32F3xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F3xx_DFP.1.2.0.pack)
 
