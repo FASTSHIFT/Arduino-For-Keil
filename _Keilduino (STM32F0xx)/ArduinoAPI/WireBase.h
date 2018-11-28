@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
  * The MIT License
  *
  * Copyright (c) 2010 LeafLabs LLC.
@@ -93,7 +93,7 @@ public:
      */
     // Allow derived classes to overwrite begin function
     virtual void begin(uint8_t = 0x00);
-    
+
     void setClock(uint32_t);
 
     /*

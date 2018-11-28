@@ -1,8 +1,8 @@
-#ifndef __WMATH_H
+﻿#ifndef __WMATH_H
 #define __WMATH_H
 
 extern "C" {
-  #include "stdlib.h"
+#include "stdlib.h"
 }
 
 void randomSeed(unsigned long seed);

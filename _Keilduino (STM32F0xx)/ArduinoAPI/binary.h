@@ -1,4 +1,4 @@
-/*
+﻿/*
   binary.h - Definitions for binary constants
   Copyright (c) 2006 David A. Mellis.  All right reserved.
 

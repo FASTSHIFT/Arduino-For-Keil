@@ -1,4 +1,4 @@
-/*
+﻿/*
   Printable.h - Interface class that allows printing of complex types
   Copyright (c) 2011 Adrian McEwen.  All right reserved.
 
@@ -32,7 +32,7 @@ class Print;
 
 class Printable
 {
-  public:
+public:
     virtual size_t printTo(Print& p) const = 0;
 };
 

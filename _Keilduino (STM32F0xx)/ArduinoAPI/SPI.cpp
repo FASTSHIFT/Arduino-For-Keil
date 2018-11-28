@@ -1,245 +1,245 @@
-#include "SPI.h"
+ï»¿#include "SPI.h"
 
 SPIClass::SPIClass(SPI_TypeDef* _SPIx)
 {
-	SPIx = _SPIx;
+    SPIx = _SPIx;
 }
 
 void SPIClass::SPI_Settings(	SPI_TypeDef* SPIx,
-															uint16_t SPI_Mode_x,
-															uint16_t SPI_DataSize_x,
-															uint16_t SPI_MODEx,
-															uint16_t SPI_NSS_x,
-															uint16_t SPI_BaudRatePrescaler_x,
-															uint16_t SPI_FirstBit_x)
+                                uint16_t SPI_Mode_x,
+                                uint16_t SPI_DataSize_x,
+                                uint16_t SPI_MODEx,
+                                uint16_t SPI_NSS_x,
+                                uint16_t SPI_BaudRatePrescaler_x,
+                                uint16_t SPI_FirstBit_x)
 {
-	uint16_t SPI_CPOL_x,SPI_CPHA_x;
-	SPI_Cmd(SPIx,DISABLE);
-	
-	switch(SPI_MODEx)
-	{
-		case 0:
-			SPI_CPOL_x = SPI_CPOL_Low;
-			SPI_CPHA_x = SPI_CPHA_1Edge;
-			break;
-		case 1:
-			SPI_CPOL_x = SPI_CPOL_Low;
-			SPI_CPHA_x = SPI_CPHA_2Edge;
-			break;
-		case 2:
-			SPI_CPOL_x = SPI_CPOL_High;
-			SPI_CPHA_x = SPI_CPHA_1Edge;
-			break;
-		case 3:
-			SPI_CPOL_x = SPI_CPOL_High;
-			SPI_CPHA_x = SPI_CPHA_2Edge;
-			break;
-	}
+    uint16_t SPI_CPOL_x, SPI_CPHA_x;
+    SPI_Cmd(SPIx, DISABLE);
 
-	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //ÉèÖÃSPIµ¥Ïò»òÕßË«ÏòµÄÊı¾İÄ£Ê½
-	SPI_InitStructure.SPI_Mode = SPI_Mode_x;		//ÉèÖÃSPI¹¤×÷Ä£Ê½:(SPI_Mode_Master,SPI_Mode_Slave)
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_x;		//ÉèÖÃSPIµÄÊı¾İ´óĞ¡:SPI·¢ËÍ½ÓÊÕxÎ»Ö¡½á¹¹
-	SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;		//Ñ¡ÔñÁË´®ĞĞÊ±ÖÓµÄÎÈÌ¬
-	SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;	//Êı¾İ²¶»ñÊ±ÖÓÑØ
-	SPI_InitStructure.SPI_NSS = SPI_NSS_x;		//NSSĞÅºÅÓÉÓ²¼ş£¨NSS¹Ü½Å£©»¹ÊÇÈí¼ş£¨Ê¹ÓÃSSIÎ»£©¹ÜÀí:ÄÚ²¿NSSĞÅºÅÓĞSSIÎ»¿ØÖÆ(SPI_NSS_Soft,SPI_NSS_Hard)
-	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;		//¶¨Òå²¨ÌØÂÊÔ¤·ÖÆµµÄÖµ
-	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_x;	//Ö¸¶¨Êı¾İ´«Êä´ÓMSBÎ»»¹ÊÇLSBÎ»¿ªÊ¼:Êı¾İ´«Êä´ÓMSBÎ»¿ªÊ¼(SPI_FirstBit_MSB,SPI_FirstBit_LSB)
-	SPI_InitStructure.SPI_CRCPolynomial = 3;	//CRCÖµ¼ÆËãµÄ¶àÏîÊ½
-	SPI_Init(SPIx, &SPI_InitStructure);  //¸ù¾İSPI_InitStructÖĞÖ¸¶¨µÄ²ÎÊı³õÊ¼»¯ÍâÉèSPIx¼Ä´æÆ÷
- 
-	SPI_Cmd(SPIx, ENABLE); //Ê¹ÄÜSPIÍâÉè
+    switch(SPI_MODEx)
+    {
+    case 0:
+        SPI_CPOL_x = SPI_CPOL_Low;
+        SPI_CPHA_x = SPI_CPHA_1Edge;
+        break;
+    case 1:
+        SPI_CPOL_x = SPI_CPOL_Low;
+        SPI_CPHA_x = SPI_CPHA_2Edge;
+        break;
+    case 2:
+        SPI_CPOL_x = SPI_CPOL_High;
+        SPI_CPHA_x = SPI_CPHA_1Edge;
+        break;
+    case 3:
+        SPI_CPOL_x = SPI_CPOL_High;
+        SPI_CPHA_x = SPI_CPHA_2Edge;
+        break;
+    }
+
+    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //è®¾ç½®SPIå•å‘æˆ–è€…åŒå‘çš„æ•°æ®æ¨¡å¼
+    SPI_InitStructure.SPI_Mode = SPI_Mode_x;		//è®¾ç½®SPIå·¥ä½œæ¨¡å¼:(SPI_Mode_Master,SPI_Mode_Slave)
+    SPI_InitStructure.SPI_DataSize = SPI_DataSize_x;		//è®¾ç½®SPIçš„æ•°æ®å¤§å°:SPIå‘é€æ¥æ”¶xä½å¸§ç»“æ„
+    SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;		//é€‰æ‹©äº†ä¸²è¡Œæ—¶é’Ÿçš„ç¨³æ€
+    SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;	//æ•°æ®æ•è·æ—¶é’Ÿæ²¿
+    SPI_InitStructure.SPI_NSS = SPI_NSS_x;		//NSSä¿¡å·ç”±ç¡¬ä»¶ï¼ˆNSSç®¡è„šï¼‰è¿˜æ˜¯è½¯ä»¶ï¼ˆä½¿ç”¨SSIä½ï¼‰ç®¡ç†:å†…éƒ¨NSSä¿¡å·æœ‰SSIä½æ§åˆ¶(SPI_NSS_Soft,SPI_NSS_Hard)
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;		//å®šä¹‰æ³¢ç‰¹ç‡é¢„åˆ†é¢‘çš„å€¼
+    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_x;	//æŒ‡å®šæ•°æ®ä¼ è¾“ä»MSBä½è¿˜æ˜¯LSBä½å¼€å§‹:æ•°æ®ä¼ è¾“ä»MSBä½å¼€å§‹(SPI_FirstBit_MSB,SPI_FirstBit_LSB)
+    SPI_InitStructure.SPI_CRCPolynomial = 3;	//CRCå€¼è®¡ç®—çš„å¤šé¡¹å¼
+    SPI_Init(SPIx, &SPI_InitStructure);  //æ ¹æ®SPI_InitStructä¸­æŒ‡å®šçš„å‚æ•°åˆå§‹åŒ–å¤–è®¾SPIxå¯„å­˜å™¨
+
+    SPI_Cmd(SPIx, ENABLE); //ä½¿èƒ½SPIå¤–è®¾
 }
 
-void SPIClass::begin(void) 
+void SPIClass::begin(void)
 {
-	GPIO_InitTypeDef GPIO_InitStructure;
-	if(SPIx == SPI1)
-	{
-		RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
-		RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);  
-		GPIO_PinAFConfig(GPIOA, Get_GPIO_PinSource(GPIO_Pin_5), GPIO_AF_1);
-		GPIO_PinAFConfig(GPIOA, Get_GPIO_PinSource(GPIO_Pin_6), GPIO_AF_1);
-		GPIO_PinAFConfig(GPIOA, Get_GPIO_PinSource(GPIO_Pin_7), GPIO_AF_1);
-		 
-		GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
-		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-		GPIO_Init(GPIOA, &GPIO_InitStructure);
-	}		
-	else if(SPIx == SPI2)
-	{
-		RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
-		RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);  
-		GPIO_PinAFConfig(GPIOB, Get_GPIO_PinSource(GPIO_Pin_13), GPIO_AF_0);
-		GPIO_PinAFConfig(GPIOB, Get_GPIO_PinSource(GPIO_Pin_14), GPIO_AF_0);
-		GPIO_PinAFConfig(GPIOB, Get_GPIO_PinSource(GPIO_Pin_15), GPIO_AF_0);
-		 
-		GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-		GPIO_Init(GPIOB, &GPIO_InitStructure);
-	}
-	
-	SPI_Settings(	SPIx,
-								SPI_Mode_Master,
-								SPI_DataSize_8b,
-								SPI_MODE0,
-								SPI_NSS_Soft,
-								SPI_BaudRatePrescaler_16,
-								SPI_FirstBit_MSB);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    if(SPIx == SPI1)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+        GPIO_PinAFConfig(GPIOA, Get_GPIO_PinSource(GPIO_Pin_5), GPIO_AF_1);
+        GPIO_PinAFConfig(GPIOA, Get_GPIO_PinSource(GPIO_Pin_6), GPIO_AF_1);
+        GPIO_PinAFConfig(GPIOA, Get_GPIO_PinSource(GPIO_Pin_7), GPIO_AF_1);
+
+        GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
+        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+        GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+        GPIO_Init(GPIOA, &GPIO_InitStructure);
+    }
+    else if(SPIx == SPI2)
+    {
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
+        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+        GPIO_PinAFConfig(GPIOB, Get_GPIO_PinSource(GPIO_Pin_13), GPIO_AF_0);
+        GPIO_PinAFConfig(GPIOB, Get_GPIO_PinSource(GPIO_Pin_14), GPIO_AF_0);
+        GPIO_PinAFConfig(GPIOB, Get_GPIO_PinSource(GPIO_Pin_15), GPIO_AF_0);
+
+        GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+        GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+        GPIO_Init(GPIOB, &GPIO_InitStructure);
+    }
+
+    SPI_Settings(	SPIx,
+                    SPI_Mode_Master,
+                    SPI_DataSize_8b,
+                    SPI_MODE0,
+                    SPI_NSS_Soft,
+                    SPI_BaudRatePrescaler_16,
+                    SPI_FirstBit_MSB);
 }
 
-void SPIClass::begin(uint32_t clock,uint16_t dataOrder,uint16_t dataMode)
-{	
-	begin();
-	setClock(clock);
-	setBitOrder(dataOrder);
-	setDataMode(dataMode);
-	SPI_Cmd(SPIx, ENABLE);
+void SPIClass::begin(uint32_t clock, uint16_t dataOrder, uint16_t dataMode)
+{
+    begin();
+    setClock(clock);
+    setBitOrder(dataOrder);
+    setDataMode(dataMode);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPIClass::beginSlave(void)
 {
-  begin();
-	SPI_Settings(	SPIx,
-								SPI_Mode_Slave,
-								SPI_DataSize_8b,
-								SPI_MODE0,
-								SPI_NSS_Hard,
-								SPI_BaudRatePrescaler_16,
-								SPI_FirstBit_MSB);
-	SPI_Cmd(SPIx, ENABLE);
+    begin();
+    SPI_Settings(	SPIx,
+                    SPI_Mode_Slave,
+                    SPI_DataSize_8b,
+                    SPI_MODE0,
+                    SPI_NSS_Hard,
+                    SPI_BaudRatePrescaler_16,
+                    SPI_FirstBit_MSB);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPIClass::end(void)
 {
-  SPI_Cmd(SPIx, DISABLE);
+    SPI_Cmd(SPIx, DISABLE);
 }
 
 void SPIClass::setClock(uint32_t clock)
 {
-	uint16_t SPI_BaudRatePrescaler_x;
-	uint16_t clock_div = F_CPU / clock;
-			 if(clock_div <= 2)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_2;
-	else if(clock_div <= 4)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_4;
-	else if(clock_div <= 8)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_8;
-	else if(clock_div <= 16)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_16;
-	else if(clock_div <= 32)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_32;
-	else if(clock_div <= 64)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_64;
-	else if(clock_div <= 128)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_128;
-	else SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_256;
-	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;
-	SPI_Init(SPIx, &SPI_InitStructure);
+    uint16_t SPI_BaudRatePrescaler_x;
+    uint16_t clock_div = F_CPU / clock;
+    if(clock_div <= 2)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_2;
+    else if(clock_div <= 4)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_4;
+    else if(clock_div <= 8)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_8;
+    else if(clock_div <= 16)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_16;
+    else if(clock_div <= 32)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_32;
+    else if(clock_div <= 64)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_64;
+    else if(clock_div <= 128)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_128;
+    else SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_256;
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;
+    SPI_Init(SPIx, &SPI_InitStructure);
 }
 
 void SPIClass::setClockDivider(uint32_t Div) //For AVR compatibility
 {
-	//For AVR:16MHz, STM32F0:48MHz
-	if(Div == 0)
-	{
-		setClock(16000000);
-	}
-	else
-	{
-		setClock(16000000 / Div);		
-	}
+    //For AVR:16MHz, STM32F0:48MHz
+    if(Div == 0)
+    {
+        setClock(16000000);
+    }
+    else
+    {
+        setClock(16000000 / Div);
+    }
 }
 
 void SPIClass::setBitOrder(uint16_t bitOrder)
 {
-	if(bitOrder == MSBFIRST)SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;//MSBFIRST 1
-	else SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_LSB;
-	SPI_Init(SPIx, &SPI_InitStructure);
+    if(bitOrder == MSBFIRST)SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;//MSBFIRST 1
+    else SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_LSB;
+    SPI_Init(SPIx, &SPI_InitStructure);
 }
 
 /*	Victor Perez. Added to test changing datasize from 8 to 16 bit modes on the fly.
 *	Input parameter should be SPI_CR1_DFF set to 0 or 1 on a 32bit word.
-*	
+*
 */
 void SPIClass::setDataSize(uint16_t datasize)
 {
-	SPI_InitStructure.SPI_DataSize = datasize;
-	SPI_Init(SPIx, &SPI_InitStructure);
+    SPI_InitStructure.SPI_DataSize = datasize;
+    SPI_Init(SPIx, &SPI_InitStructure);
 }
 
 void SPIClass::setDataMode(uint8_t dataMode)
 {
-/* Notes.  As far as I can tell, the AVR numbers for dataMode appear to match the numbers required by the STM32
+    /* Notes.  As far as I can tell, the AVR numbers for dataMode appear to match the numbers required by the STM32
 
-From the AVR doc http://www.atmel.com/images/doc2585.pdf section 2.4
+    From the AVR doc http://www.atmel.com/images/doc2585.pdf section 2.4
 
-SPI Mode 	CPOL 	CPHA 	Shift SCK-edge 	Capture SCK-edge
-0 			0 		0 		Falling 		Rising
-1 			0 		1 		Rising 			Falling
-2 			1 		0 		Rising 			Falling
-3 			1 		1 		Falling 		Rising
- 
- 
-On the STM32 it appears to be
+    SPI Mode 	CPOL 	CPHA 	Shift SCK-edge 	Capture SCK-edge
+    0 			0 		0 		Falling 		Rising
+    1 			0 		1 		Rising 			Falling
+    2 			1 		0 		Rising 			Falling
+    3 			1 		1 		Falling 		Rising
 
-bit 1 - CPOL : Clock polarity
-    (This bit should not be changed when communication is ongoing)
-    0 : CLK to 0 when idle
-    1 : CLK to 1 when idle
- 
-bit 0 - CPHA : Clock phase
-    (This bit should not be changed when communication is ongoing)
-    0 : The first clock transition is the first data capture edge
-    1 : The second clock transition is the first data capture edge
- 
-If someone finds this is not the case or sees a logic error with this let me know ;-) 
- */
-	uint16_t SPI_CPOL_x,SPI_CPHA_x;
-	SPI_Cmd(SPIx,DISABLE);
-	
-	switch(dataMode)
-	{
-		case SPI_MODE0:
-			SPI_CPOL_x = SPI_CPOL_Low;
-			SPI_CPHA_x = SPI_CPHA_1Edge;
-			break;
-		case SPI_MODE1:
-			SPI_CPOL_x = SPI_CPOL_Low;
-			SPI_CPHA_x = SPI_CPHA_2Edge;
-			break;
-		case SPI_MODE2:
-			SPI_CPOL_x = SPI_CPOL_High;
-			SPI_CPHA_x = SPI_CPHA_1Edge;
-			break;
-		case SPI_MODE3:
-			SPI_CPOL_x = SPI_CPOL_High;
-			SPI_CPHA_x = SPI_CPHA_2Edge;
-			break;
-	}
-	
-	SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;
-	SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;
-	SPI_Init(SPIx, &SPI_InitStructure);
+
+    On the STM32 it appears to be
+
+    bit 1 - CPOL : Clock polarity
+        (This bit should not be changed when communication is ongoing)
+        0 : CLK to 0 when idle
+        1 : CLK to 1 when idle
+
+    bit 0 - CPHA : Clock phase
+        (This bit should not be changed when communication is ongoing)
+        0 : The first clock transition is the first data capture edge
+        1 : The second clock transition is the first data capture edge
+
+    If someone finds this is not the case or sees a logic error with this let me know ;-)
+     */
+    uint16_t SPI_CPOL_x, SPI_CPHA_x;
+    SPI_Cmd(SPIx, DISABLE);
+
+    switch(dataMode)
+    {
+    case SPI_MODE0:
+        SPI_CPOL_x = SPI_CPOL_Low;
+        SPI_CPHA_x = SPI_CPHA_1Edge;
+        break;
+    case SPI_MODE1:
+        SPI_CPOL_x = SPI_CPOL_Low;
+        SPI_CPHA_x = SPI_CPHA_2Edge;
+        break;
+    case SPI_MODE2:
+        SPI_CPOL_x = SPI_CPOL_High;
+        SPI_CPHA_x = SPI_CPHA_1Edge;
+        break;
+    case SPI_MODE3:
+        SPI_CPOL_x = SPI_CPOL_High;
+        SPI_CPHA_x = SPI_CPHA_2Edge;
+        break;
+    }
+
+    SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;
+    SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;
+    SPI_Init(SPIx, &SPI_InitStructure);
 }
 
 void SPIClass::beginTransaction(SPISettings settings)
 {
-	//SPISettings(settings.clock, settings.bitOrder, settings.dataMode);
-	//setDataSize(settings.dataSize);
-	SPI_Cmd(SPIx, ENABLE);
+    //SPISettings(settings.clock, settings.bitOrder, settings.dataMode);
+    //setDataSize(settings.dataSize);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPIClass::beginTransactionSlave(void)
 {
-	beginSlave();
+    beginSlave();
 }
 
 void SPIClass::endTransaction(void)
 {
-	//SPI_Cmd(SPIx, DISABLE);
+    //SPI_Cmd(SPIx, DISABLE);
 }
 
 
-uint8_t SPIClass::read(void) 
+uint8_t SPIClass::read(void)
 {
     uint8_t buf[1];
     this->read(buf, 1);
@@ -248,71 +248,71 @@ uint8_t SPIClass::read(void)
 
 void SPIClass::read(uint8_t *buf, uint32_t len)
 {
-  uint32_t rxed = 0;
-	
-	while (rxed < len)
-	{
-		while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:½ÓÊÜ»º´æ·Ç¿Õ±êÖ¾Î»
-		buf[rxed++] = (uint8_t)SPI_ReceiveData8(SPIx); //·µ»ØÍ¨¹ıSPIx×î½ü½ÓÊÕµÄÊı¾İ	
-	}
+    uint32_t rxed = 0;
+
+    while (rxed < len)
+    {
+        while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:æ¥å—ç¼“å­˜éç©ºæ ‡å¿—ä½
+        buf[rxed++] = (uint8_t)SPI_ReceiveData8(SPIx); //è¿”å›é€šè¿‡SPIxæœ€è¿‘æ¥æ”¶çš„æ•°æ®
+    }
 }
 
 void SPIClass::write(uint16_t data)
 {
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:·¢ËÍ»º´æ¿Õ±êÖ¾Î»		  
-	SPI_SendData8(SPIx, data); //Í¨¹ıÍâÉèSPIx·¢ËÍÒ»¸öÊı¾İ
+    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:å‘é€ç¼“å­˜ç©ºæ ‡å¿—ä½
+    SPI_SendData8(SPIx, data); //é€šè¿‡å¤–è®¾SPIxå‘é€ä¸€ä¸ªæ•°æ®
 }
 
 void SPIClass::write(const uint8_t *data, uint32_t length)
 {
-	uint32_t txed = 0;
-	while (txed < length)
-	{
-		while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:·¢ËÍ»º´æ¿Õ±êÖ¾Î»
-		SPI_SendData8(SPIx, data[txed]);
-		txed++;
-		//txed += spi_tx(_currentSetting->spi_d, data + txed, length - txed);
-	}
+    uint32_t txed = 0;
+    while (txed < length)
+    {
+        while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:å‘é€ç¼“å­˜ç©ºæ ‡å¿—ä½
+        SPI_SendData8(SPIx, data[txed]);
+        txed++;
+        //txed += spi_tx(_currentSetting->spi_d, data + txed, length - txed);
+    }
 }
 
 uint16_t SPIClass::transfer16(uint16_t wr_data) const
 {
-	uint16_t rd_data;		
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:·¢ËÍ»º´æ¿Õ±êÖ¾Î»	  
-	SPI_SendData8(SPIx, wr_data); //Í¨¹ıÍâÉèSPIx·¢ËÍÒ»¸öÊı¾İ
+    uint16_t rd_data;
+    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:å‘é€ç¼“å­˜ç©ºæ ‡å¿—ä½
+    SPI_SendData8(SPIx, wr_data); //é€šè¿‡å¤–è®¾SPIxå‘é€ä¸€ä¸ªæ•°æ®
 
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:½ÓÊÜ»º´æ·Ç¿Õ±êÖ¾Î»		
-	rd_data = SPI_ReceiveData8(SPIx); //·µ»ØÍ¨¹ıSPIx×î½ü½ÓÊÕµÄÊı¾İ	
-	return rd_data;
+    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:æ¥å—ç¼“å­˜éç©ºæ ‡å¿—ä½
+    rd_data = SPI_ReceiveData8(SPIx); //è¿”å›é€šè¿‡SPIxæœ€è¿‘æ¥æ”¶çš„æ•°æ®
+    return rd_data;
 }
 
 uint8_t SPIClass::transfer(uint8_t wr_data) const
 {
-	uint8_t rd_data;		
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:·¢ËÍ»º´æ¿Õ±êÖ¾Î»		  
-	SPI_SendData8(SPIx, wr_data); //Í¨¹ıÍâÉèSPIx·¢ËÍÒ»¸öÊı¾İ
+    uint8_t rd_data;
+    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:å‘é€ç¼“å­˜ç©ºæ ‡å¿—ä½
+    SPI_SendData8(SPIx, wr_data); //é€šè¿‡å¤–è®¾SPIxå‘é€ä¸€ä¸ªæ•°æ®
 
-	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//¼ì²éÖ¸¶¨µÄSPI±êÖ¾Î»ÉèÖÃÓë·ñ:½ÓÊÜ»º´æ·Ç¿Õ±êÖ¾Î»	
-	rd_data = SPI_ReceiveData8(SPIx); //·µ»ØÍ¨¹ıSPIx×î½ü½ÓÊÕµÄÊı¾İ
-	return rd_data;
+    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//æ£€æŸ¥æŒ‡å®šçš„SPIæ ‡å¿—ä½è®¾ç½®ä¸å¦:æ¥å—ç¼“å­˜éç©ºæ ‡å¿—ä½
+    rd_data = SPI_ReceiveData8(SPIx); //è¿”å›é€šè¿‡SPIxæœ€è¿‘æ¥æ”¶çš„æ•°æ®
+    return rd_data;
 }
 
 uint8_t SPIClass::send(uint8_t data)
 {
-	uint8_t buf[] = {data};
-	return this->send(buf, 1);
+    uint8_t buf[] = {data};
+    return this->send(buf, 1);
 }
 
 uint8_t SPIClass::send(uint8_t *buf, uint32_t len)
 {
-	uint32_t txed = 0;
-	uint8_t ret = 0;
-	while (txed < len)
-	{
-			this->write(buf[txed++]);
-			ret = this->read();
-	}
-	return ret;
+    uint32_t txed = 0;
+    uint8_t ret = 0;
+    while (txed < len)
+    {
+        this->write(buf[txed++]);
+        ret = this->read();
+    }
+    return ret;
 }
 
 uint8_t SPIClass::recv(void)
