@@ -52,7 +52,7 @@
           <OutputName>Pro</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>..\LIST\</ListingPath>
@@ -335,9 +335,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_STDPERIPH_DRIVER,STM32F429_439xx</Define>
+              <Define>USE_STDPERIPH_DRIVER,STM32F429_439xx,USE_STM32F429I_DISCO,USE_DEFAULT_TIMEOUT_CALLBACK</Define>
               <Undefine></Undefine>
-              <IncludePath>.\RTE;.\RTE\Device\STM32F103C8;..\USER;..\Drivers\utility;..\ArduinoAPI;..\Core;..\Libraries</IncludePath>
+              <IncludePath>.\RTE;.\RTE\Device\STM32F103C8;..\USER;..\Drivers\utility;..\ArduinoAPI;..\Core;..\Libraries;..\Libraries\STM32F429_Discovery\STM32F429I-Discovery</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -436,6 +436,11 @@
               <FileType>8</FileType>
               <FilePath>..\ArduinoAPI\SPI.cpp</FilePath>
             </File>
+            <File>
+              <FileName>Tone.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\ArduinoAPI\Tone.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -445,29 +450,14 @@
           <GroupName>Core</GroupName>
           <Files>
             <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\adc.c</FilePath>
+            </File>
+            <File>
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CORE\delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\usart.c</FilePath>
-            </File>
-            <File>
-              <FileName>pwm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\pwm.c</FilePath>
-            </File>
-            <File>
-              <FileName>time_exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\time_exti.c</FilePath>
             </File>
             <File>
               <FileName>exti.c</FileName>
@@ -475,9 +465,19 @@
               <FilePath>..\Core\exti.c</FilePath>
             </File>
             <File>
-              <FileName>adc.c</FileName>
+              <FileName>gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\adc.c</FilePath>
+              <FilePath>..\Core\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\timer.c</FilePath>
             </File>
           </Files>
         </Group>
