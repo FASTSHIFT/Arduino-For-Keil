@@ -1,27 +1,28 @@
 #ifndef __FILEGROUP_H
-#define __FILEGROUP_H
+#define	__FILEGROUP_H
 
-//*************C/C++ Library**************//
+/** 
+  *@Illustrate: A Cross-platform migration Project | Arduino for STM32F0xx 
+  *@Author: FASTSHIFT
+  *@Website: https://github.com/FASTSHIFT/Arduino-For-Keil
+  */
 
-#include "stm32f0xx.h"
+//************* Arduino Library **************//
 #include "Arduino.h"
+#include "HardwareSerial.h"
+#include "Stream.h"
+#include "SPI.h"
+#include "Tone.h"
+#include "WString.h"
+#include "Wire.h"
+#include "WMath.h"
+
+//************* STM32 Core Library **************//
+#include "adc.h"
 #include "delay.h"
 #include "exti.h"
 #include "gpio.h"
-#include "adc.h"
 #include "pwm.h"
-#include "usart.h"
-#include "time_exti.h"
-#include "math.h"
-#include "WMath.h"
-#include "Tone.h"
-
-#include "HardwareSerial.h"
-#include "SPI.h"
-#include "Wire.h"
-#include "WString.h"
-#include "Stream.h"
-
-#include "C_call_CPP.h"
+#include "timer.h"
 
 #endif

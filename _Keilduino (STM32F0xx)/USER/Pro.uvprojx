@@ -312,7 +312,7 @@
           <Cads>
             <interw>1</interw>
             <Optim>4</Optim>
-            <oTime>0</oTime>
+            <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
             <Strict>0</Strict>
@@ -335,9 +335,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_STDPERIPH_DRIVER,STM32F030F4P6,STM32F030</Define>
+              <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\RTE;..\USER;..\Drivers\utility;..\ArduinoAPI;..\Core;..\Libraries;.\RTE\Device\STM32F030C8;..\Core\STM32F0xx_StdPeriph_Driver\inc;..\Core\STM32F0xx_StdPeriph_Driver\src;.\RTE\Device\STM32F030F4;.\RTE\Device\STM32F030RC;.\RTE\_Project</IncludePath>
+              <IncludePath>.\RTE;..\USER;..\ArduinoAPI;..\Core;..\Core\STM32F0xx_StdPeriph_Driver\inc;..\Core\CMSIS\Device\ST\STM32F0xx\Include;..\Core\CMSIS\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -450,29 +450,14 @@
           <GroupName>Core</GroupName>
           <Files>
             <File>
-              <FileName>delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CORE\delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\usart.c</FilePath>
-            </File>
-            <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\adc.c</FilePath>
             </File>
             <File>
-              <FileName>pwm.c</FileName>
+              <FileName>delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\pwm.c</FilePath>
+              <FilePath>..\CORE\delay.c</FilePath>
             </File>
             <File>
               <FileName>exti.c</FileName>
@@ -480,9 +465,19 @@
               <FilePath>..\Core\exti.c</FilePath>
             </File>
             <File>
-              <FileName>time_exti.c</FileName>
+              <FileName>gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\time_exti.c</FilePath>
+              <FilePath>..\Core\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\timer.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -612,7 +607,7 @@
             <File>
               <FileName>startup_stm32f0xx.s</FileName>
               <FileType>2</FileType>
-              <FilePath>.\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm\startup_stm32f0xx.s</FilePath>
+              <FilePath>..\Core\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm\startup_stm32f0xx.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -622,7 +617,7 @@
             <File>
               <FileName>system_stm32f0xx.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\system_stm32f0xx.c</FilePath>
+              <FilePath>..\Core\CMSIS\Device\ST\STM32F0xx\Source\Templates\system_stm32f0xx.c</FilePath>
             </File>
           </Files>
         </Group>
