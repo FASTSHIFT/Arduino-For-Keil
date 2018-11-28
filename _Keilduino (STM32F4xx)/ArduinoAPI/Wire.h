@@ -58,9 +58,9 @@
 //#define I2C_DELAY(x) {uint32 time=micros(); while(time>(micros()+x));}
 //#define I2C_DELAY(x) do{for(int i=0;i<x;i++) {asm volatile("nop");}}while(0)
 #ifdef FULL_SPEED_I2C
-	#define I2C_DELAY(x) {}
+#define I2C_DELAY(x) {}
 #else
-	#define I2C_DELAY(x) {delay_us(x);}
+#define I2C_DELAY(x) {delay_us(x);}
 #endif
 
 #define BUFFER_LENGTH 32
@@ -69,7 +69,7 @@
 #pragma diag_suppress 136
 
 class TwoWire : public WireBase {
- public:
+public:
     uint8_t 		i2c_delay;
     uint8_t       scl_pin;
     uint8_t       sda_pin;
@@ -119,13 +119,13 @@ class TwoWire : public WireBase {
      * Shifts out the data through SDA and clocks SCL for the slave device
      */
     void i2c_shift_out(uint8_t);
- protected:
+protected:
     /*
      * Processes the incoming I2C message defined by WireBase
      */
 
     virtual uint8_t process();
- public:
+public:
     /*
      * Accept pin numbers for SCL and SDA lines. Set the delay needed
      * to create the timing for I2C's Standard Mode and Fast Mode.
@@ -138,7 +138,7 @@ class TwoWire : public WireBase {
      * .begin(uint8_t) in WireBase
      */
     //void begin(uint8_t self_addr);
-		virtual void begin(uint8_t = 0x00);
+    virtual void begin(uint8_t = 0x00);
     /*
      * If object is destroyed, set pin numbers to 0.
      */

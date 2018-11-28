@@ -1,22 +1,26 @@
 #ifndef __ARDUINO_H
-#define __ARDUINO_H
+#define	__ARDUINO_H
+
+//访问 https://www.arduino.cc/reference/en/ 获得更完整的语法介绍
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif
 
+#include "stdlib.h"
+#include "stdbool.h"
+#include "binary.h"
+#include "avr/pgmspace.h"
+
+#include "mcu_type.h"	
 #include "gpio.h"
 #include "pwm.h"
 #include "adc.h"
-#include "binary.h"
+#include "exti.h"
 #include "delay.h"
-#include "stdlib.h"
-#include "avr/pgmspace.h"
 
-#define __STM32F4__
-#define __KEILDUINO__ 110
+#define __STM32__
 #define ARDUINO 111
-#define F_CPU 180000000U
 #define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
 
 #define PI 3.1415926535897932384626433832795
@@ -55,26 +59,28 @@ extern "C"{
 #define sei() __set_PRIMASK(0)
 #define cli() __set_PRIMASK(1)
 
-#define analogInPinToBit(P) (P)
+#define analogInPinToBit(Pin)	(Pin)
+#define digitalPinToPort(Pin)	(PIN_MAP[Pin].GPIOx)
+#define digitalPinToBitMask(Pin) (PIN_MAP[Pin].GPIO_Pin_x)
+#define portInputRegister(Port)  (&(Port->IDR))
+#define portOutputRegister(Port) (&(Port->ODR))
 
-#define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRRL	= PIN_MAP[Pin].GPIO_Pin_x)
-#define digitalWrite_LOW(Pin)  (PIN_MAP[Pin].GPIOx->BSRRH	= PIN_MAP[Pin].GPIO_Pin_x)
-#define togglePin(Pin)				 (PIN_MAP[Pin].GPIOx->ODR	 ^= PIN_MAP[Pin].GPIO_Pin_x)
-
-#define GPIO_HIGH(GPIOX, GPIO_PIN_X) 				(GPIOX->BSRRL	= GPIO_PIN_X)
-#define GPIO_LOW(GPIOX, GPIO_PIN_X) 				(GPIOX->BSRRH	= GPIO_PIN_X)
+#define NOT_A_PIN 0
+#define NOT_A_PORT 0
+#define NOT_AN_INTERRUPT -1
 
 #define boolean bool
 typedef unsigned char byte;
+typedef void(*CallbackFunction_t)(void);
 
 typedef enum {LOW = 0, HIGH = !LOW} GPIO_State_Type;
 typedef enum {Off = 0, On = !Off} _Switch_Type;
 typedef enum {OFF = 0, ON = !OFF} _SWITCH_Type;
 
-void pinMode(uint8_t Pin,pinMode_TypeDef pinMode_x);
-void digitalWrite(uint8_t Pin,uint8_t val);
+void pinMode(uint8_t Pin, pinMode_TypeDef GPIO_Mode_x);
+void digitalWrite(uint8_t Pin, uint8_t val);
 uint8_t digitalRead(uint8_t Pin);
-uint16_t analogWrite(uint8_t Pin,uint16_t val);
+uint16_t analogWrite(uint8_t Pin, uint16_t val);
 uint16_t analogRead(uint8_t Pin);
 uint16_t analogRead_DMA(uint8_t Pin);
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value);
@@ -84,11 +90,14 @@ uint32_t pulseIn(uint32_t Pin, uint32_t State, uint32_t Timeout);
 long map(long x, long in_min, long in_max, long out_min, long out_max);
 double fmap(double x, double in_min, double in_max, double out_min, double out_max);
 
-typedef void(*void_func_point)(void);
-void null_func(void);
-
 #ifdef __cplusplus
 }// extern "C"
+#endif
+
+#ifdef __cplusplus
+	#include "WCharacter.h"
+//	#include "WString.h"
+//	#include "HardwareSerial.h"
 #endif
 
 #endif
