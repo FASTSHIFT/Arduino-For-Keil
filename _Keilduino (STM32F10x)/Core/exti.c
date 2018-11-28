@@ -1,17 +1,17 @@
 #include "exti.h"
 
-EXTI_CallbackFunction_t EXTI_Function[16] = {0, 0, 0, 0, 0, 0, 0, 0,
-											0, 0, 0, 0, 0, 0, 0, 0};
-//外部中断回调函数指针数组
+static EXTI_CallbackFunction_t EXTI_Function[16] = {0, 0, 0, 0, 0, 0, 0, 0,
+                                                    0, 0, 0, 0, 0, 0, 0, 0};
+
 
 											
 /**
   * @brief  外部中断初始化
   * @param  Pin: 引脚编号
-			function: 回调函数
-			Trigger_Mode: 触发方式
-			PreemptionPriority: 抢占优先级
-			SubPriority: 子优先级
+  * @param  function: 回调函数
+  * @param  Trigger_Mode: 触发方式
+  * @param  PreemptionPriority: 抢占优先级
+  * @param  SubPriority: 子优先级
   * @retval 无
   */
 void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_TypeDef Trigger_Mode, uint8_t PreemptionPriority, uint8_t SubPriority)
@@ -70,8 +70,8 @@ void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_TypeD
 /**
   * @brief  外部中断初始化 (Arduino)
   * @param  Pin: 引脚编号
-			function: 回调函数
-			Trigger_Mode: 触发方式
+  * @param  function: 回调函数
+  * @param  Trigger_Mode: 触发方式
   * @retval 无
   */
 void attachInterrupt(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_TypeDef Trigger_Mode)

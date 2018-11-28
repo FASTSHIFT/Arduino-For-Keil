@@ -2,13 +2,13 @@
 
 enum {TIMER1, TIMER2, TIMER3, TIMER4, TIMER5, TIMER6, TIMER7, TIMER8};//定时器编号枚举
 
-Timer_CallbackFunction_t TIMx_Function[8] = {0, 0, 0, 0, 0, 0, 0, 0};//定时中断回调函数指针数组
+static Timer_CallbackFunction_t TIMx_Function[8] = {0, 0, 0, 0, 0, 0, 0, 0};//定时中断回调函数指针数组
 
 /**
   * @brief  定时中断配置
   * @param  TIMx:定时器地址
-			InterruptTime_us: 中断时间(微秒)
-			function: 定时中断回调函数
+  * @param  InterruptTime_us: 中断时间(微秒)
+  * @param  function: 定时中断回调函数
   * @retval 无
   */
 void TimerSet(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function)
@@ -19,7 +19,7 @@ void TimerSet(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFuncti
 /**
   * @brief  更新定时中断时间
   * @param  TIMx:定时器地址
-			InterruptTime_us: 中断时间(微秒)
+  * @param  InterruptTime_us: 中断时间(微秒)
   * @retval 无
   */
 void TimerSet_InterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t InterruptTime_us)
@@ -51,10 +51,10 @@ void TimerSet_InterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t InterruptTime_us)
 /**
   * @brief  定时中断配置
   * @param  TIMx:定时器地址
-			InterruptTime_us: 中断时间(微秒)
-			function: 定时中断回调函数
-			PreemptionPriority: 抢占优先级
-			SubPriority: 子优先级
+  * @param  InterruptTime_us: 中断时间(微秒)
+  * @param  function: 定时中断回调函数
+  * @param  PreemptionPriority: 抢占优先级
+  * @param  SubPriority: 子优先级
   * @retval 无
   */
 void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function, uint8_t PreemptionPriority, uint8_t SubPriority)
@@ -159,7 +159,6 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure); //根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
 
     /**********************************设置中断优先级************************************/
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); //设置NVIC中断分组1
     NVIC_InitStructure.NVIC_IRQChannel = TIMx_IRQn;  //TIM中断
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;  //先占优先级
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;  //从优先级

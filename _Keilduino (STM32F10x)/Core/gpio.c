@@ -1,7 +1,7 @@
 #include "gpio.h"
 
 //GPIO 基本信息
-const PinInfo_TypeDef PIN_MAP[] = {
+const PinInfo_TypeDef PIN_MAP[Pxx_MAX] = {
     /*GPIO_TypeDef* GPIOx;	//	对应GPIOx地址
     TIM_TypeDef* TIMx;		//	对应TIMx地址
     ADC_TypeDef* ADCx;		//	对应ADCx地址
@@ -61,7 +61,6 @@ const PinInfo_TypeDef PIN_MAP[] = {
     {GPIOC, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PC14 OSC32_IN */
     {GPIOC, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PC15 OSC32_OUT */
 
-//#if defined (STM32F10X_HD)
     {GPIOD, NULL, NULL,  GPIO_Pin_0, 0, ADC_Channel_X}, /* PD0 */
     {GPIOD, NULL, NULL,  GPIO_Pin_1, 0, ADC_Channel_X}, /* PD1 */
     {GPIOD, NULL, NULL,  GPIO_Pin_2, 0, ADC_Channel_X}, /* PD2 */
@@ -129,15 +128,14 @@ const PinInfo_TypeDef PIN_MAP[] = {
     {GPIOG, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PG13 */
     {GPIOG, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PG14 */
     {GPIOG, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PG15 */
-//#endif
 };
 
 /**
   * @brief  GPIO初始化
   * @param  GPIOx: GPIO地址
-			GPIO_Pin_x: GPIO对应位
-			GPIO_Mode_x: GPIO模式
-			GPIO_Speed_x: GPIO速度
+  * @param  GPIO_Pin_x: GPIO对应位
+  * @param  GPIO_Mode_x: GPIO模式
+  * @param  GPIO_Speed_x: GPIO速度
   * @retval 无
   */
 void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, GPIOMode_TypeDef GPIO_Mode_x, GPIOSpeed_TypeDef GPIO_Speed_x)

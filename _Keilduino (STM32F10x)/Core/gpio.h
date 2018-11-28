@@ -21,7 +21,8 @@ typedef enum {
     PD0, PD1, PD2, PD3, PD4, PD5, PD6, PD7, PD8, PD9, PD10, PD11, PD12, PD13, PD14, PD15,
     PE0, PE1, PE2, PE3, PE4, PE5, PE6, PE7, PE8, PE9, PE10, PE11, PE12, PE13, PE14, PE15,
     PF0, PF1, PF2, PF3, PF4, PF5, PF6, PF7, PF8, PF9, PF10, PF11, PF12, PF13, PF14, PF15,
-    PG0, PG1, PG2, PG3, PG4, PG5, PG6, PG7, PG8, PG9, PG10, PG11, PG12, PG13, PG14, PG15
+    PG0, PG1, PG2, PG3, PG4, PG5, PG6, PG7, PG8, PG9, PG10, PG11, PG12, PG13, PG14, PG15,
+    Pxx_MAX
 } Pxx_TypeDef;
 
 typedef struct STM32_PinInfo {
@@ -34,7 +35,7 @@ typedef struct STM32_PinInfo {
     uint8_t ADC_Channel;
 } PinInfo_TypeDef;
 
-extern const PinInfo_TypeDef PIN_MAP[];
+extern const PinInfo_TypeDef PIN_MAP[Pxx_MAX];
 
 #define IS_ADC_PIN(Pin) (PIN_MAP[Pin].ADC_Channel  != ADC_Channel_X)
 #define IS_PWM_PIN(Pin) (PIN_MAP[Pin].TimerChannel != 0)

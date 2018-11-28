@@ -3,14 +3,13 @@
 
 //*************** BASIC ***************//
 #include "stm32f10x.h"
+#include "stm32f10x_conf.h"
 
-#define __KEILDUINO__ 560
+#define __KEILDUINO__ 590
 #define __STM32F1__
 #define F_CPU 72000000U
 
 //*************** GPIO ***************//
-#include "stm32f10x_gpio.h"
-
 #define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRR = PIN_MAP[Pin].GPIO_Pin_x)
 #define digitalWrite_LOW(Pin)  (PIN_MAP[Pin].GPIOx->BRR  = PIN_MAP[Pin].GPIO_Pin_x)
 #define digitalRead_FAST(Pin) ((PIN_MAP[Pin].GPIOx->IDR  & PIN_MAP[Pin].GPIO_Pin_x)!=0)
@@ -33,11 +32,9 @@ typedef enum
 } pinMode_Type;
 
 //*************** USART ***************//
-#include "stm32f10x_usart.h"
-#define IS_USARTx_SendDone(USARTx)	(USARTx->SR & USART_SR_TC)
+#define IS_USARTx_SendDone(USARTx)	(USARTx->SR & USART_SR_TXE)
 
 //*************** SPI ***************//
-#include "stm32f10x_spi.h"
 #define IS_SPIx_TxRxDone(SPIx,SPI_I2S_FLAG)	(SPIx->SR & SPI_I2S_FLAG)
 
 #define SPIx_FastSendData(SPIx,Data)	(SPIx->DR = Data)

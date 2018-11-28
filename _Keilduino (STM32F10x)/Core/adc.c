@@ -188,7 +188,7 @@ void ADCx_Init(ADC_TypeDef* ADCx)
 /**
   * @brief  获取 ADC 值
   * @param  ADCx: ADC地址
-			ADC_Channel: ADC通道
+  * @param  ADC_Channel: ADC通道
   * @retval 无
   */
 uint16_t Get_ADC(ADC_TypeDef* ADCx, uint16_t ADC_Channel)
