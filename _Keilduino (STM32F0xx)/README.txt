@@ -3,5 +3,9 @@
 
 //*********************************UPGRADE LOGS************************************//
 
-//Finish in 2018.7.29 V_1.0 åŸºäºSTM32F0xxæ ‡å¿—å¤–è®¾åº“(1.0.1ç‰ˆ)ï¼Œç§»æ¤äº†å…¨éƒ¨çš„ArduinoAPI
-//Upgrade        8.14 V_1.1 æ•´ç†USARTç›¸å…³ä»£ç ï¼Œä¿®æ”¹Toneåº“åªå ç”¨ä¸€ä¸ªå®šæ—¶å™¨(å¯ä½¿ç”¨toneSetTimer()å‡½æ•°åˆ‡æ¢)
+//Finish in 2018.7.29  V_1.0 »ùÓÚSTM32F0xx±êÖ¾ÍâÉè¿â(1.0.1°æ)£¬ÒÆÖ²ÁËÈ«²¿µÄArduinoAPI
+//Upgrade        8.14  V_1.1 ÕûÀíUSARTÏà¹Ø´úÂë£¬ĞŞ¸ÄTone¿âÖ»Õ¼ÓÃÒ»¸ö¶¨Ê±Æ÷(¿ÉÊ¹ÓÃtoneSetTimer()º¯ÊıÇĞ»»),time_exti¸ÄÃûÎªtimer
+//Upgrade        8.17  V_1.2 ÔÚArduino.hÌí¼ÓÁË¸üÍêÕûµÄÓëGPIO¼Ä´æÆ÷½»»¥º¯Êı£¬ÌáÉıÓëµÚÈı·½¿âµÄ¼æÈİĞÔ
+//Upgrade        8.20  V_1.3 Ìí¼ÓWCharacter.h£¬Ö§³ÖArduinoÓĞ¹ØCharactersµÄº¯Êı£¬Ìí¼Ómcu_type.h£¬Ê¹Arduino.h¿ÉÒÔ¿çMCUÊ¹ÓÃ
+//Upgrade        10.9  V_1.4 Ìí¼Ó×¢ÊÍ£¬¸üĞÂTone¡¢HardwareSerial£¬È¥³ıusart.c usart.h
+//Upgrade        11.21 V_1.5 ¸üĞÂArduino.c
