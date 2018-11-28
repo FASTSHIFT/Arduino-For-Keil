@@ -9,6 +9,7 @@ HardwareSerial::HardwareSerial(USART_TypeDef *_USARTx)
 {
     this->USARTx = _USARTx;
     USART_Function = 0;
+	_rx_buffer_head = _rx_buffer_tail = 0;
 }
 
 /**
@@ -50,7 +51,7 @@ void HardwareSerial::begin(uint32_t BaudRate)
 /**
   * @brief  串口初始化
   * @param  BaudRate: 波特率
-			Config: 配置参数
+  * @param  Config: 配置参数
   * @retval 无
   */
 void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config)
@@ -61,9 +62,9 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config)
 /**
   * @brief  串口初始化
   * @param  BaudRate: 波特率
-			Config: 配置参数
-			PreemptionPriority: 抢占优先级
-			SubPriority: 从优先级
+  * @param  Config: 配置参数
+  * @param  PreemptionPriority: 抢占优先级
+  * @param  SubPriority: 从优先级
   * @retval 无
   */
 void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t PreemptionPriority, uint8_t SubPriority)
@@ -208,7 +209,7 @@ int HardwareSerial::peek(void)
   */
 void HardwareSerial::flush(void)
 {
-    while(read() >= 0);
+    _rx_buffer_head = _rx_buffer_tail;
 }
 
 /**

@@ -1,5 +1,5 @@
 /*
-  Printable.h - Interface class that allows printing of complex types
+  Server.h - Base class that provides Server
   Copyright (c) 2011 Adrian McEwen.  All right reserved.
 
   This library is free software; you can redistribute it and/or
@@ -17,24 +17,14 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef Printable_h
-#define Printable_h
+#ifndef server_h
+#define server_h
 
-#include <stdlib.h>
+#include "Print.h"
 
-class Print;
-
-/** The Printable class provides a way for new classes to allow themselves to be printed.
-    By deriving from Printable and implementing the printTo method, it will then be possible
-    for users to print out instances of this class by passing them into the usual
-    Print::print and Print::println methods.
-*/
-
-class Printable
-{
+class Server : public Print {
 public:
-    virtual size_t printTo(Print& p) const = 0;
+  virtual void begin() =0;
 };
 
 #endif
-

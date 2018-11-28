@@ -79,9 +79,9 @@ long random(long max);
  * @return the mapped value.
  */
 static inline long map(long value, long fromStart, long fromEnd,
-                long toStart, long toEnd) {
+                       long toStart, long toEnd) {
     return (value - fromStart) * (toEnd - toStart) / (fromEnd - fromStart) +
-        toStart;
+           toStart;
 }
 
 #define PI          3.1415926535897932384626433832795
@@ -98,10 +98,10 @@ static inline long map(long value, long fromStart, long fromEnd,
  * as Maple doesn't have a wiring_constants file (though it probably should have in the long term to make it more compatible with the Arduino 1.0 + API
  * also added definition for EULER and SERIAL and DISPLAY, also from the same SAM header
  */
- 
+
 #define EULER 2.718281828459045235360287471352
 #define SERIAL  0x0
-#define DISPLAY 0x1 
+#define DISPLAY 0x1
 
 #define min(a,b)                ((a)<(b)?(a):(b))
 #define max(a,b)                ((a)>(b)?(a):(b))

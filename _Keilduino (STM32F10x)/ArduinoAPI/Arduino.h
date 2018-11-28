@@ -65,6 +65,10 @@ extern "C" {
 #define portInputRegister(Port)  (&(Port->IDR))
 #define portOutputRegister(Port) (&(Port->ODR))
 
+#define NOT_A_PIN 0
+#define NOT_A_PORT 0
+#define NOT_AN_INTERRUPT -1
+
 #define boolean bool
 typedef unsigned char byte;
 typedef void(*CallbackFunction_t)(void);

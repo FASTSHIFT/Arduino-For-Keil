@@ -3,7 +3,7 @@
 /**
   * @brief  配置引脚输入输出模式
   * @param  Pin: 引脚编号
-			GPIO_Mode_x: 模式
+  * @param  GPIO_Mode_x: 模式
   * @retval 无
   */
 void pinMode(uint8_t Pin, uint8_t GPIO_Mode_x)
@@ -18,19 +18,12 @@ void pinMode(uint8_t Pin, uint8_t GPIO_Mode_x)
 /**
   * @brief  将数字HIGH(1)或LOW(0)值写入数字引脚
   * @param  Pin:引脚编号
-			val: 写入值
+  * @param  val: 写入值
   * @retval 无
   */
 void digitalWrite(uint8_t Pin, uint8_t val)
 {
-    if(val)
-    {
-        digitalWrite_HIGH(Pin);
-    }
-    else
-    {
-        digitalWrite_LOW(Pin);
-    }
+    val ? digitalWrite_HIGH(Pin) : digitalWrite_LOW(Pin);
 }
 
 /**
@@ -46,16 +39,12 @@ uint8_t digitalRead(uint8_t Pin)
 /**
   * @brief  将模拟值(PWM占空比)写入引脚
   * @param  Pin: 引脚编号
-			val: PWM占空比
+  * @param  val: PWM占空比
   * @retval PWM占空比
   */
 uint16_t analogWrite(uint8_t Pin, uint16_t val)
 {
-    if(IS_PWM_PIN(Pin))
-    {
-        return pwmWrite(Pin, val);
-    }
-    else return 0;
+    return (IS_PWM_PIN(Pin) ? pwmWrite(Pin, val) : 0);
 }
 
 /**
@@ -65,11 +54,7 @@ uint16_t analogWrite(uint8_t Pin, uint16_t val)
   */
 uint16_t analogRead(uint8_t Pin)
 {
-    if(IS_ADC_PIN(Pin))
-    {
-        return Get_ADC(PIN_MAP[Pin].ADCx, PIN_MAP[Pin].ADC_Channel);
-    }
-    else return 0;
+    return (IS_ADC_PIN(Pin) ? Get_ADC(PIN_MAP[Pin].ADCx, PIN_MAP[Pin].ADC_Channel) : 0);
 }
 
 /**
@@ -79,21 +64,17 @@ uint16_t analogRead(uint8_t Pin)
   */
 uint16_t analogRead_DMA(uint8_t Pin)
 {
-    if(IS_ADC_PIN(Pin))
-    {
-        return Get_DMA_ADC(PIN_MAP[Pin].ADC_Channel);
-    }
-    else return 0;
+    return (IS_ADC_PIN(Pin) ? Get_DMA_ADC(PIN_MAP[Pin].ADC_Channel) : 0);
 }
 
 
 /**
   * @brief  一次移出一个字节的数据，从最左端或最小(最右边)开始
   * @param  dataPin: 输出每个位的 pin
-			clockPin: 将 dataPin 设置为正确值后要切换的 pin (int)
-			bitOrder: MSBFIRST / LSBFIRST
-			value: 要移出的数据(字节)
-  * @retval ADC值：0~4095
+  * @param  clockPin: 将 dataPin 设置为正确值后要切换的 pin (int)
+  * @param  bitOrder: MSBFIRST / LSBFIRST
+  * @param  value: 要移出的数据(字节)
+  * @retval 无
   */
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value)
 {
@@ -111,8 +92,8 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value
 /**
   * @brief  一次将一个字节的数据移位，从最左端或最小 (最右边) 开始
   * @param  dataPin:  输入每个位的 pin
-			clockPin: 要切换到的 pin 信号从dataPin读取
-			bitOrder: MSBFIRST/LSBFIRST
+  * @param  clockPin: 要切换到的 pin 信号从dataPin读取
+  * @param  bitOrder: MSBFIRST/LSBFIRST
   * @retval 读取的值 (字节)
   */
 uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
@@ -139,10 +120,10 @@ uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
 /**
   * @brief  将一个数字(整形)从一个范围重新映射到另一个区域
   * @param  x: 要映射的数字
-			in_min: 值的当前范围的下界
-			in_max: 值的当前范围的上界
-			out_min: 值的目标范围的下界
-			out_max: 值目标范围的上界
+  * @param  in_min: 值的当前范围的下界
+  * @param  in_max: 值的当前范围的上界
+  * @param  out_min: 值的目标范围的下界
+  * @param  out_max: 值目标范围的上界
   * @retval 映射的值(long)
   */
 long map(long x, long in_min, long in_max, long out_min, long out_max)
@@ -153,10 +134,10 @@ long map(long x, long in_min, long in_max, long out_min, long out_max)
 /**
   * @brief  将一个数字(浮点型)从一个范围重新映射到另一个区域
   * @param  x: 要映射的数字
-			in_min: 值的当前范围的下界
-			in_max: 值的当前范围的上界
-			out_min: 值的目标范围的下界
-			out_max: 值目标范围的上界
+  * @param  in_min: 值的当前范围的下界
+  * @param  in_max: 值的当前范围的上界
+  * @param  out_min: 值的目标范围的下界
+  * @param  out_max: 值目标范围的上界
   * @retval 映射的值(double)
   */
 double fmap(double x, double in_min, double in_max, double out_min, double out_max)
@@ -167,8 +148,8 @@ double fmap(double x, double in_min, double in_max, double out_min, double out_m
 /**
   * @brief  在引脚上读取脉冲
   * @param  pin: 要读取脉冲的引脚编号
-			value: 脉冲类型:高或低
-			timeout: 等待脉冲开始的微秒数
+  * @param  value: 脉冲类型:高或低
+  * @param  timeout: 等待脉冲开始的微秒数
   * @retval 脉冲的长度(以微秒计)或0, 如果没有脉冲在超时之前开始
   */
 uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout )
@@ -177,7 +158,7 @@ uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout )
    // pulse width measuring loop and achieve finer resolution.  calling
    // digitalRead() instead yields much coarser resolution.
  
-   __IO uint32_t * const idr = portInputRegister(digitalPinToPort(pin));
+   __IO uint32_t *idr = portInputRegister(digitalPinToPort(pin));
    const uint32_t bit = digitalPinToBitMask(pin);
    const uint32_t stateMask = (state ? bit:0);
 

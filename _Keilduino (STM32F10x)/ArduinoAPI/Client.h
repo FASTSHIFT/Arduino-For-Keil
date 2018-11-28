@@ -1,5 +1,5 @@
 /*
-  Printable.h - Interface class that allows printing of complex types
+  Client.h - Base class that provides Client
   Copyright (c) 2011 Adrian McEwen.  All right reserved.
 
   This library is free software; you can redistribute it and/or
@@ -17,24 +17,32 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef Printable_h
-#define Printable_h
+#ifndef client_h
+#define client_h
+#include "Print.h"
+#include "Stream.h"
+#include "IPAddress.h"
 
-#include <stdlib.h>
+class Client : public Stream {
 
-class Print;
-
-/** The Printable class provides a way for new classes to allow themselves to be printed.
-    By deriving from Printable and implementing the printTo method, it will then be possible
-    for users to print out instances of this class by passing them into the usual
-    Print::print and Print::println methods.
-*/
-
-class Printable
-{
 public:
-    virtual size_t printTo(Print& p) const = 0;
+    virtual int connect(IPAddress ip, uint16_t port) = 0;
+    virtual int connect(const char *host, uint16_t port) = 0;
+    virtual size_t write(uint8_t) = 0;
+    virtual size_t write(const uint8_t *buf, size_t size) = 0;
+    using Print::write;
+    virtual int available() = 0;
+    virtual int read() = 0;
+    virtual int read(uint8_t *buf, size_t size) = 0;
+    virtual int peek() = 0;
+    virtual void flush() = 0;
+    virtual void stop() = 0;
+    virtual uint8_t connected() = 0;
+    virtual operator bool() = 0;
+protected:
+    uint8_t* rawIPAddress(IPAddress& addr) {
+        return addr.raw_address();
+    };
 };
 
 #endif
-

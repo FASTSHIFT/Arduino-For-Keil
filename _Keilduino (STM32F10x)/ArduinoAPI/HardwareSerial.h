@@ -1,5 +1,5 @@
-#ifndef HardwareSerial_h
-#define HardwareSerial_h
+#ifndef __HardwareSerial_h
+#define __HardwareSerial_h
 
 #include "Arduino.h"
 #include "Print.h"

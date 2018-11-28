@@ -1,7 +1,5 @@
 /*
-  dtostrf - Emulation for dtostrf function from avr-libc
-  Copyright (c) 2013 Arduino.  All rights reserved.
-  Written by Cristian Maglie <c.maglie@bug.st>
+  Copyright (c) 2014 Arduino.  All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -10,20 +8,28 @@
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "dtostrf.h"
+#include <new.h>
 
-char *dtostrf (double val, signed char width, unsigned char prec, char *sout) {
-    char fmt[20];
-    sprintf(fmt, "%%%d.%df", width, prec);
-    sprintf(sout, fmt, val);
-    return sout;
+void *operator new(size_t size) {
+  return malloc(size);
 }
 
+void *operator new[](size_t size) {
+  return malloc(size);
+}
+
+void operator delete(void * ptr) {
+  free(ptr);
+}
+
+void operator delete[](void * ptr) {
+  free(ptr);
+}

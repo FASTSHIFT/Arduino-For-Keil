@@ -1,9 +1,13 @@
 #ifndef __SPI_H
 #define __SPI_H
 
-#include "stm32f10x.h"
-#include "stm32f10x_spi.h"
 #include "Arduino.h"
+
+/**
+  *@SPI1: SCK->PA5  MISO->PA6  MOSI->PA7
+  *@SPI2: SCK->PB13 MISO->PB14 MOSI->PB15
+  *@SPI3: SCK->PB3  MISO->PB4  MOSI->PB5
+  */
 
 #define SPI1_CLOCK  F_CPU
 #define SPI2_CLOCK (F_CPU/2)

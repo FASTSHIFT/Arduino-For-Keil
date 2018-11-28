@@ -7,9 +7,9 @@
 SPIClass::SPIClass(SPI_TypeDef* _SPIx)
 {
     SPIx = _SPIx;
-	if(SPIx == SPI1)SPI_Clock = SPI1_CLOCK;
-	else if(SPIx == SPI2)SPI_Clock = SPI2_CLOCK;
-	else if(SPIx == SPI3)SPI_Clock = SPI3_CLOCK;
+    if(SPIx == SPI1)SPI_Clock = SPI1_CLOCK;
+    else if(SPIx == SPI2)SPI_Clock = SPI2_CLOCK;
+    else if(SPIx == SPI3)SPI_Clock = SPI3_CLOCK;
 }
 
 void SPIClass::SPI_Settings(	SPI_TypeDef* SPIx,
@@ -20,7 +20,7 @@ void SPIClass::SPI_Settings(	SPI_TypeDef* SPIx,
                                 uint16_t SPI_BaudRatePrescaler_x,
                                 uint16_t SPI_FirstBit_x)
 {
-    u16 SPI_CPOL_x, SPI_CPHA_x;
+    uint16_t SPI_CPOL_x, SPI_CPHA_x;
     SPI_Cmd(SPIx, DISABLE);
 
     switch(SPI_MODEx)
@@ -60,31 +60,31 @@ void SPIClass::SPI_Settings(	SPI_TypeDef* SPIx,
 void SPIClass::begin(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
-    switch((int)SPIx)
+    if(SPIx == SPI1)
     {
-    case (int)SPI1:
         RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOA | RCC_APB2Periph_SPI1, ENABLE);
         GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
         GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //复用推挽输出
         GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
         GPIO_Init(GPIOA, &GPIO_InitStructure);
-        break;
-    case (int)SPI2:
+    }
+    else if(SPIx == SPI2)
+    {
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
         RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOB, ENABLE);
         GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
         GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
         GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
         GPIO_Init(GPIOB, &GPIO_InitStructure);
-        break;
-	case (int)SPI3:
+    }
+    else if(SPIx == SPI3)
+    {
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, ENABLE);
         RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOB, ENABLE);
         GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
         GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
         GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
         GPIO_Init(GPIOB, &GPIO_InitStructure);
-        break;
     }
 
     SPI_Settings(	SPIx,
@@ -146,7 +146,7 @@ void SPIClass::setClock(uint32_t clock)
     else SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_256;
     SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;
     SPI_Init(SPIx, &SPI_InitStructure);
-	SPI_Cmd(SPIx,ENABLE);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPIClass::setClockDivider(uint32_t Div) //For AVR compatibility
@@ -167,7 +167,7 @@ void SPIClass::setBitOrder(uint16_t bitOrder)
     if(bitOrder == MSBFIRST)SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;//MSBFIRST 1
     else SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_LSB;
     SPI_Init(SPIx, &SPI_InitStructure);
-	SPI_Cmd(SPIx,ENABLE);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 /*	Victor Perez. Added to test changing datasize from 8 to 16 bit modes on the fly.
@@ -178,7 +178,7 @@ void SPIClass::setDataSize(uint16_t datasize)
 {
     SPI_InitStructure.SPI_DataSize = datasize;
     SPI_Init(SPIx, &SPI_InitStructure);
-	SPI_Cmd(SPIx,ENABLE);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPIClass::setDataMode(uint8_t dataMode)
@@ -234,7 +234,7 @@ void SPIClass::setDataMode(uint8_t dataMode)
     SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;
     SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;
     SPI_Init(SPIx, &SPI_InitStructure);
-	SPI_Cmd(SPIx,ENABLE);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPIClass::beginTransaction(SPISettings settings)
@@ -287,7 +287,6 @@ void SPIClass::write(const uint8_t *data, uint32_t length)
         while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //检查指定的SPI标志位设置与否:发送缓存空标志位
         SPI_I2S_SendData(SPIx, data[txed]);
         txed++;
-        //txed += spi_tx(_currentSetting->spi_d, data + txed, length - txed);
     }
 }
 
