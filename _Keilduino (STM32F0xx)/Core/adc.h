@@ -1,8 +1,8 @@
-#ifndef __ADC_H
+﻿#ifndef __ADC_H
 #define	__ADC_H
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif
 
 #include "stm32f0xx.h"
@@ -19,7 +19,7 @@ void ADCx_DMA_Init(void);
 void ADCx_Init(ADC_TypeDef* ADCx);
 
 uint16_t Get_DMA_ADC(uint8_t Channel);
-uint16_t Get_ADC(ADC_TypeDef* ADCx,uint32_t ADC_Channel);
+uint16_t Get_ADC(ADC_TypeDef* ADCx, uint32_t ADC_Channel);
 
 #ifdef __cplusplus
 }
