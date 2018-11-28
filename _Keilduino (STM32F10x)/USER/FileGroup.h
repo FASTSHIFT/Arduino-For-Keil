@@ -12,18 +12,17 @@
 #include "HardwareSerial.h"
 #include "Stream.h"
 #include "SPI.h"
+#include "Tone.h"
 #include "WString.h"
 #include "Wire.h"
-#include "Tone.h"
 #include "WMath.h"
 
 //************* STM32 Core Library **************//
+#include "adc.h"
 #include "delay.h"
 #include "exti.h"
 #include "gpio.h"
-#include "adc.h"
 #include "pwm.h"
 #include "timer.h"
-#include "C_call_CPP.h"
 
 #endif

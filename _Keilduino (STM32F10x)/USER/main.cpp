@@ -8,11 +8,10 @@ void loop() {
 	// put your main code here, to run repeatedly:
 }
 
-
 /**
-  * @brief  main函数
-  * @param  无
-  * @retval 无
+  * @brief  Main Function
+  * @param  None
+  * @retval None
   */
 int main(void)
 {

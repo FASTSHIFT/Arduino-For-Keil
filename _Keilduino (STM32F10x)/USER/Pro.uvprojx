@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DERIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\RTE;.\RTE\Device\STM32F103C8;..\USER;..\Drivers\utility;..\ArduinoAPI;..\Core;..\Libraries</IncludePath>
+              <IncludePath>.\RTE;..\USER;..\Drivers\utility;..\ArduinoAPI;..\Core;..\Libraries</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -534,6 +534,12 @@
           <targetInfo name="Project"/>
         </targetInfos>
       </component>
+      <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Flash" Cvendor="Keil" Cversion="3.5.0" condition="STM32F1 STDPERIPH">
+        <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
+        <targetInfos>
+          <targetInfo name="Project"/>
+        </targetInfos>
+      </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="3.5.1" condition="STM32F1 STDPERIPH">
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
         <targetInfos>
@@ -620,7 +626,7 @@
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
         <targetInfos/>
       </file>
-      <file attr="config" category="header" name="RTE_Driver\Config\RTE_Device.h">
+      <file attr="config" category="header" name="RTE_Driver\Config\RTE_Device.h" version="1.0.0">
         <instance index="0">RTE\Device\STM32F103TB\RTE_Device.h</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32F1xx CMSIS Device"/>
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
@@ -628,7 +634,7 @@
           <targetInfo name="Project"/>
         </targetInfos>
       </file>
-      <file attr="config" category="source" condition="STM32F1xx MD" name="Device\Source\ARM\startup_stm32f10x_md.s">
+      <file attr="config" category="source" condition="STM32F1xx MD" name="Device\Source\ARM\startup_stm32f10x_md.s" version="1.0.0">
         <instance index="0">RTE\Device\STM32F103TB\startup_stm32f10x_md.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32F1xx CMSIS Device"/>
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
@@ -644,7 +650,7 @@
           <targetInfo name="Project"/>
         </targetInfos>
       </file>
-      <file attr="config" category="source" name="Device\Source\system_stm32f10x.c">
+      <file attr="config" category="source" name="Device\Source\system_stm32f10x.c" version="1.0.0">
         <instance index="0">RTE\Device\STM32F103TB\system_stm32f10x.c</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32F1xx CMSIS Device"/>
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
