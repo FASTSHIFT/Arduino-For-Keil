@@ -1,6 +1,6 @@
 #include "Tone.h"
 
-static TIM_TypeDef *ToneTimer_Last = 0,*ToneTimer = ToneTimer_Default;
+static TIM_TypeDef *ToneTimer_Last = 0, *ToneTimer = ToneTimer_Default;
 static uint8_t tone_State = Off;
 static uint8_t tone_Pin;
 static uint32_t tone_StopTimePoint;
@@ -10,13 +10,11 @@ static uint32_t tone_StopTimePoint;
   * @param  无
   * @retval 无
   */
-void tone_TimerHandler()
+static void toneTimer_Handler()
 {
     togglePin(tone_Pin);
     if(millis() > tone_StopTimePoint && !tone_State)
-    {
         noTone(tone_Pin);
-    }
 }
 
 /**
@@ -38,7 +36,7 @@ void toneSetTimer(TIM_TypeDef* TIMx)
   */
 void tone(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
 {
-    if(freq == 0 || freq > 500000 || Time_ms == 0)
+    if(!IS_PIN(Pin) || freq == 0 || freq > 500000 || Time_ms == 0)
     {
         noTone(Pin);
         return;
@@ -56,25 +54,25 @@ void tone(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
   */
 void tone(uint8_t Pin, uint32_t freq)
 {
-    if(freq == 0 || freq > 500000)
+    if(!IS_PIN(Pin) || freq == 0 || freq > 500000)
     {
         noTone(Pin);
         return;
     }
     tone_Pin = Pin;
     tone_State = On;
-	
-	if(ToneTimer != ToneTimer_Last)
-	{
-		Timer_Init(ToneTimer, (500000.0 / freq), tone_TimerHandler, 0, 0);
-		TIM_Cmd(ToneTimer, ENABLE);
-		ToneTimer_Last = ToneTimer;
-	}
-	else 
-	{
-		TimerSet_InterruptTimeUpdate(ToneTimer, 500000.0 / freq);
-		TIM_Cmd(ToneTimer, ENABLE);
-	}
+
+    if(ToneTimer != ToneTimer_Last)
+    {
+        Timer_Init(ToneTimer, (500000.0 / freq), toneTimer_Handler, 0, 0);
+        TIM_Cmd(ToneTimer, ENABLE);
+        ToneTimer_Last = ToneTimer;
+    }
+    else
+    {
+        TimerSet_InterruptTimeUpdate(ToneTimer, 500000.0 / freq);
+        TIM_Cmd(ToneTimer, ENABLE);
+    }
 }
 
 /**
@@ -84,6 +82,9 @@ void tone(uint8_t Pin, uint32_t freq)
   */
 void noTone(uint8_t Pin)
 {
+    if(!IS_PIN(Pin))
+        return;
+    
     TIM_Cmd(ToneTimer, DISABLE);
     digitalWrite_LOW(Pin);
     tone_State = Off;
@@ -98,9 +99,11 @@ void noTone(uint8_t Pin)
   */
 void toneBlock(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
 {
+    if(!IS_PIN(Pin) || freq == 0 || Time_ms == 0)
+        return;
+    
     uint32_t TimePoint = millis() + Time_ms;
-    uint32_t dlyus = 500000 / freq;
-    if(freq == 0)return;
+    uint32_t dlyus = 500000 / freq; 
     do
     {
         digitalWrite_HIGH(Pin);
@@ -112,18 +115,21 @@ void toneBlock(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
 }
 
 /**
-  * @brief  在Pin上生成指定频率和音量 (50%占空比的方波，阻塞式不占用定时器)
+  * @brief  在Pin上生成指定频率和音量 (可调占空比的方波，阻塞式不占用定时器)
   * @param  pin: 产生音调的引脚编号
   * @param  freq: 频率(Hz)
   * @param  Time_ms: 音调的持续时间 (以毫秒为单位)
-  * @param  vol: 音量(0-100)
+  * @param  vol: 音量(0.0~1.0对应占空比0%~100%)
   * @retval 无
   */
-void toneBlock_Volumn(uint8_t Pin, uint32_t freq, uint32_t Time_ms, uint32_t vol)
+void toneBlock_Volumn(uint8_t Pin, uint32_t freq, uint32_t Time_ms, float vol)
 {
+    if(!IS_PIN(Pin) || freq == 0 || Time_ms == 0 || vol < 0.0)
+        return;
+    
     uint32_t TimePoint = millis() + Time_ms;
     uint32_t dlyus = 500000 / freq;
-    uint32_t dlHigh = dlyus * vol / 100;
+    uint32_t dlHigh = dlyus * vol;
     uint32_t dlLow = 2 * dlyus - dlHigh;
     if(freq == 0)return;
     do
@@ -137,18 +143,21 @@ void toneBlock_Volumn(uint8_t Pin, uint32_t freq, uint32_t Time_ms, uint32_t vol
 }
 
 /**
-  * @brief  在Pin上生成指定频率和音量 (50%占空比的方波，阻塞式不占用定时器)
+  * @brief  在Pin上生成指定频率和音量 (可调占空比的方波，阻塞式不占用定时器)
   * @param  pin: 产生音调的引脚编号
   * @param  freq: 频率(Hz)
   * @param  Time_us: 音调的持续时间 (以微秒为单位)
-  * @param  vol: 音量(0-100)
+  * @param  vol: 音量(0.0~1.0对应占空比0%~100%)
   * @retval 无
   */
-void toneBlock_Volumn_us(uint8_t Pin, uint32_t freq, uint32_t Time_us, uint32_t vol)
+void toneBlock_Volumn_us(uint8_t Pin, uint32_t freq, uint32_t Time_us, float vol)
 {
+    if(!IS_PIN(Pin) || freq == 0 || Time_us == 0 || vol < 0.0)
+        return;
+    
     uint32_t TimePoint = micros() + Time_us;
     uint32_t dlyus = 500000 / freq;
-    uint32_t dlHigh = dlyus * vol / 100;
+    uint32_t dlHigh = dlyus * vol;
     uint32_t dlLow = 2 * dlyus - dlHigh;
     if(freq == 0)return;
     do

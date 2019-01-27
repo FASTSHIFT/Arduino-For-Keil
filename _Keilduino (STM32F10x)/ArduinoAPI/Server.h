@@ -24,7 +24,7 @@
 
 class Server : public Print {
 public:
-  virtual void begin() =0;
+    virtual void begin() = 0;
 };
 
 #endif

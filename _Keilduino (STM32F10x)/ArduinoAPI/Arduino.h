@@ -12,7 +12,7 @@ extern "C" {
 #include "binary.h"
 #include "avr/pgmspace.h"
 
-#include "mcu_type.h"	
+#include "mcu_type.h"
 #include "gpio.h"
 #include "pwm.h"
 #include "adc.h"
@@ -21,7 +21,6 @@ extern "C" {
 
 #define __STM32__
 #define ARDUINO 111
-#define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
 
 #define PI 3.1415926535897932384626433832795
 #define HALF_PI 1.5707963267948966192313216916398
@@ -49,15 +48,17 @@ extern "C" {
 #define highByte(w) ((uint8_t) ((w) >> 8))
 
 #define bitRead(value, bit) (((value) >> (bit)) & 0x01)
+#define bitSet(value, bit) ((value) |= (1UL << (bit)))
+#define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
-#define delay delay_ms
-#define delayMicroseconds delay_us
+#define delay(ms) delay_ms(ms)
+#define delayMicroseconds(us) delay_us(us)
 
-#define interrupts() __set_PRIMASK(0)
-#define noInterrupts() __set_PRIMASK(1)
 #define sei() __set_PRIMASK(0)
 #define cli() __set_PRIMASK(1)
+#define interrupts() sei()
+#define noInterrupts() cli()
 
 #define analogInPinToBit(Pin)	(Pin)
 #define digitalPinToPort(Pin)	(PIN_MAP[Pin].GPIOx)
@@ -70,8 +71,9 @@ extern "C" {
 #define NOT_AN_INTERRUPT -1
 
 #define boolean bool
-typedef unsigned char byte;
-typedef void(*CallbackFunction_t)(void);
+typedef unsigned int word;
+#define bit(b) (1UL << (b))
+typedef uint8_t byte;
 
 typedef enum {LOW = 0, HIGH = !LOW} GPIO_State_Type;
 typedef enum {Off = 0, On = !Off} _Switch_Type;
@@ -95,7 +97,7 @@ double fmap(double x, double in_min, double in_max, double out_min, double out_m
 #endif
 
 #ifdef __cplusplus
-	#include "WCharacter.h"
+#include "WCharacter.h"
 //	#include "WString.h"
 //	#include "HardwareSerial.h"
 #endif

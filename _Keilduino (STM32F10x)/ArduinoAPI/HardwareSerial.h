@@ -80,7 +80,7 @@ public:
 
 private:
     USART_TypeDef *USARTx;
-	USART_CallbackFunction_t USART_Function;
+    USART_CallbackFunction_t USART_Function;
     volatile uint16_t _rx_buffer_head;
     volatile uint16_t _rx_buffer_tail;
     uint8_t _rx_buffer[SERIAL_RX_BUFFER_SIZE];

@@ -9,10 +9,14 @@
 void pinMode(uint8_t Pin, uint8_t GPIO_Mode_x)
 {
     if(IS_GPIO_MODE(GPIO_Mode_x))
-    {
-        GPIOx_Init(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x, (GPIOMode_TypeDef)GPIO_Mode_x, GPIO_Speed_50MHz);
-    }
-    else if(GPIO_Mode_x == PWM) PWM_Init(Pin, 1000, 20000);
+        GPIOx_Init(
+            PIN_MAP[Pin].GPIOx,
+            PIN_MAP[Pin].GPIO_Pin_x,
+            (GPIOMode_TypeDef)GPIO_Mode_x,
+            GPIO_Speed_50MHz
+        );
+    else if(GPIO_Mode_x == PWM)
+        PWM_Init(Pin, 1000, 20000);
 }
 
 /**
@@ -64,7 +68,7 @@ uint16_t analogRead(uint8_t Pin)
   */
 uint16_t analogRead_DMA(uint8_t Pin)
 {
-    return (IS_ADC_PIN(Pin) ? Get_DMA_ADC(PIN_MAP[Pin].ADC_Channel) : 0);
+    return (IS_ADC_PIN(Pin) ? Get_DMA_ADC(Pin) : 0);
 }
 
 
@@ -154,48 +158,48 @@ double fmap(double x, double in_min, double in_max, double out_min, double out_m
   */
 uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout )
 {
-   // cache the IDR address and bit of the pin in order to speed up the
-   // pulse width measuring loop and achieve finer resolution.  calling
-   // digitalRead() instead yields much coarser resolution.
- 
-   __IO uint32_t *idr = portInputRegister(digitalPinToPort(pin));
-   const uint32_t bit = digitalPinToBitMask(pin);
-   const uint32_t stateMask = (state ? bit:0);
+    // cache the IDR address and bit of the pin in order to speed up the
+    // pulse width measuring loop and achieve finer resolution.  calling
+    // digitalRead() instead yields much coarser resolution.
 
-   uint32_t width = 0; // keep initialization out of time critical area
-   
-   // convert the timeout from microseconds to a number of times through
-   // the initial loop; it takes 16 clock cycles per iteration.
-   uint32_t numloops = 0;
-   uint32_t maxloops =  timeout * ( F_CPU / 16000000);
-   volatile uint32_t dummyWidth=0;
-   
-   // wait for any previous pulse to end
-   while ((*idr & bit) == stateMask)   {
-      if (numloops++ == maxloops)  {
-         return 0;
-      }
-      dummyWidth++;
-   }
-   
-   // wait for the pulse to start
-   while ((*idr & bit) != stateMask)   {
-      if (numloops++ == maxloops) {
-         return 0;
-      }
-      dummyWidth++;
-   }
-   
-   // wait for the pulse to stop
-   while ((*idr & bit) == stateMask) {
-      if (numloops++ == maxloops)  {
-         return 0;
-      }
-      width++;
-   }
+    __IO uint32_t *idr = portInputRegister(digitalPinToPort(pin));
+    const uint32_t bit = digitalPinToBitMask(pin);
+    const uint32_t stateMask = (state ? bit : 0);
 
-   // Excluding time taking up by the interrupts, it needs 16 clock cycles to look through the last while loop  
-   // 5 is added as a fiddle factor to correct for interrupts etc. But ultimately this would only be accurate if it was done ona hardware timer
-   
-   return (uint32_t)( ( (unsigned long long)(width+5) *  (unsigned long long) 16000000.0) /(unsigned long long)F_CPU ) ;
+    uint32_t width = 0; // keep initialization out of time critical area
+
+    // convert the timeout from microseconds to a number of times through
+    // the initial loop; it takes 16 clock cycles per iteration.
+    uint32_t numloops = 0;
+    uint32_t maxloops =  timeout * ( F_CPU / 16000000);
+    volatile uint32_t dummyWidth = 0;
+
+    // wait for any previous pulse to end
+    while ((*idr & bit) == stateMask)   {
+        if (numloops++ == maxloops)  {
+            return 0;
+        }
+        dummyWidth++;
+    }
+
+    // wait for the pulse to start
+    while ((*idr & bit) != stateMask)   {
+        if (numloops++ == maxloops) {
+            return 0;
+        }
+        dummyWidth++;
+    }
+
+    // wait for the pulse to stop
+    while ((*idr & bit) == stateMask) {
+        if (numloops++ == maxloops)  {
+            return 0;
+        }
+        width++;
+    }
+
+    // Excluding time taking up by the interrupts, it needs 16 clock cycles to look through the last while loop
+    // 5 is added as a fiddle factor to correct for interrupts etc. But ultimately this would only be accurate if it was done ona hardware timer
+
+    return (uint32_t)( ( (unsigned long long)(width + 5) *  (unsigned long long) 16000000.0) / (unsigned long long)F_CPU ) ;
 }

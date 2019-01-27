@@ -1,4 +1,4 @@
-﻿#ifndef __TONE_H
+#ifndef __TONE_H
 #define __TONE_H
 
 #include "Arduino.h"
@@ -13,7 +13,7 @@ void tone(uint8_t Pin, uint32_t freq);
 void noTone(uint8_t Pin);
 
 void toneBlock(uint8_t Pin, uint32_t freq, uint32_t Time_ms);
-void toneBlock_Volumn(uint8_t Pin, uint32_t freq, uint32_t Time_ms, uint32_t vol);
-void toneBlock_Volumn_us(uint8_t Pin, uint32_t freq, uint32_t Time_us, uint32_t vol);
+void toneBlock_Volumn(uint8_t Pin, uint32_t freq, uint32_t Time_ms, float vol);
+void toneBlock_Volumn_us(uint8_t Pin, uint32_t freq, uint32_t Time_us, float vol);
 
 #endif

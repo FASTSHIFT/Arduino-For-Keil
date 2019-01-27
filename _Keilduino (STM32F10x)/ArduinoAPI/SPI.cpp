@@ -1,5 +1,9 @@
 #include "SPI.h"
 
+#define SPI1_CLOCK  F_CPU
+#define SPI2_CLOCK (F_CPU/2)
+#define SPI3_CLOCK (F_CPU/2)
+
 #define SPI_I2S_GetFlagStatus(SPIx,FLAG) IS_SPIx_TxRxDone(SPIx,FLAG)
 #define SPI_I2S_SendData(SPIx,Data)	SPIx_FastSendData(SPIx,Data)
 #define SPI_I2S_ReceiveData(SPIx)	SPIx_FastRecvData(SPIx)
@@ -7,9 +11,6 @@
 SPIClass::SPIClass(SPI_TypeDef* _SPIx)
 {
     SPIx = _SPIx;
-    if(SPIx == SPI1)SPI_Clock = SPI1_CLOCK;
-    else if(SPIx == SPI2)SPI_Clock = SPI2_CLOCK;
-    else if(SPIx == SPI3)SPI_Clock = SPI3_CLOCK;
 }
 
 void SPIClass::SPI_Settings(	SPI_TypeDef* SPIx,
@@ -62,6 +63,7 @@ void SPIClass::begin(void)
     GPIO_InitTypeDef GPIO_InitStructure;
     if(SPIx == SPI1)
     {
+        SPI_Clock = SPI1_CLOCK;
         RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOA | RCC_APB2Periph_SPI1, ENABLE);
         GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
         GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //∏¥”√Õ∆ÕÏ ‰≥ˆ
@@ -70,6 +72,7 @@ void SPIClass::begin(void)
     }
     else if(SPIx == SPI2)
     {
+        SPI_Clock = SPI2_CLOCK;
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
         RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOB, ENABLE);
         GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
@@ -79,6 +82,7 @@ void SPIClass::begin(void)
     }
     else if(SPIx == SPI3)
     {
+        SPI_Clock = SPI3_CLOCK;
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, ENABLE);
         RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOB, ENABLE);
         GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;

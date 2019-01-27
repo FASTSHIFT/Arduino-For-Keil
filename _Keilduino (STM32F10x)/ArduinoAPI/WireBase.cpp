@@ -51,7 +51,7 @@ void WireBase::begin(uint8_t self_addr) {
 
 void WireBase::setClock(uint32_t clock)
 {
-    
+
 }
 
 void WireBase::beginTransmission(uint8_t slave_address) {
@@ -137,7 +137,7 @@ uint8_t WireBase::read() {
         rx_buf_idx = 0;
         rx_buf_len = 0;
         return 0;
-    } else if (rx_buf_idx == (rx_buf_len-1)) {
+    } else if (rx_buf_idx == (rx_buf_len - 1)) {
         uint8_t temp = rx_buf[rx_buf_idx];
         rx_buf_idx = 0;
         rx_buf_len = 0;

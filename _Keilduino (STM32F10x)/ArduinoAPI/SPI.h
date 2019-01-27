@@ -9,10 +9,6 @@
   *@SPI3: SCK->PB3  MISO->PB4  MOSI->PB5
   */
 
-#define SPI1_CLOCK  F_CPU
-#define SPI2_CLOCK (F_CPU/2)
-#define SPI3_CLOCK (F_CPU/2)
-
 #define __builtin_constant_p(x) 1
 
 #ifndef LSBFIRST
@@ -112,7 +108,7 @@ public:
                         uint16_t SPI_FirstBit_x);
     void begin(void);
     void begin(uint32_t clock, uint16_t dataOrder, uint16_t dataMode);
-	void begin(SPISettings settings);
+    void begin(SPISettings settings);
     void beginSlave(uint32_t bitOrder, uint32_t mode);
     void beginSlave(void);
     void beginTransactionSlave(void);
@@ -140,7 +136,7 @@ public:
 private:
     SPI_TypeDef* SPIx;
     SPI_InitTypeDef  SPI_InitStructure;
-	uint32_t SPI_Clock;
+    uint32_t SPI_Clock;
 };
 
 extern SPIClass SPI;

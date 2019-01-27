@@ -47,7 +47,7 @@
  * On the Maple, let the default pins be in the same location as the Arduino
  * pins
  */
- 
+
 #ifndef SDA_Pin
 #define SDA_Pin PB7
 #endif
