@@ -15,7 +15,9 @@ void loop() {
   */
 int main(void)
 {
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
 	GPIO_JTAG_Disable();
+//  SysClock_Init(F_CPU_128MHz);
     Delay_Init();
     ADCx_Init(ADC1);
 //	ADCx_DMA_Init();
