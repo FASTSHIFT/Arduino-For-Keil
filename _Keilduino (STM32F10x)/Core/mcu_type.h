@@ -5,9 +5,33 @@
 #include "stm32f10x.h"
 #include "stm32f10x_conf.h"
 
-#define __KEILDUINO__ 590
+typedef enum{
+    F_CPU_16MHz,
+    F_CPU_24MHz,
+    F_CPU_32MHz,
+    F_CPU_40MHz,
+    F_CPU_48MHz,
+    F_CPU_56MHz,
+    F_CPU_64MHz,
+    F_CPU_72MHz,
+    F_CPU_80MHz,
+    F_CPU_88MHz,
+    F_CPU_96MHz,
+    F_CPU_104MHz,
+    F_CPU_112MHz,
+    F_CPU_120MHz,
+    F_CPU_128MHz,
+}F_CPU_Type;
+
+typedef struct{
+    uint32_t F_CPU_x;
+    uint32_t RCC_PLLMul_x;
+}SysClock_TypeDef;
+
+#define __KEILDUINO__ 620
 #define __STM32F1__
-#define F_CPU 72000000U
+#define F_CPU SystemCoreClock
+#define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
 
 //*************** GPIO ***************//
 #define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRR = PIN_MAP[Pin].GPIO_Pin_x)

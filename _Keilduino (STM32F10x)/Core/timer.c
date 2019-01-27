@@ -1,8 +1,12 @@
 #include "timer.h"
 
-enum {TIMER1, TIMER2, TIMER3, TIMER4, TIMER5, TIMER6, TIMER7, TIMER8};//定时器编号枚举
+typedef enum {
+    TIMER1, TIMER2, TIMER3, TIMER4, 
+    TIMER5, TIMER6, TIMER7, TIMER8, 
+    TIMER_MAX
+}TIMERx_Type;//定时器编号枚举
 
-static Timer_CallbackFunction_t TIMx_Function[8] = {0, 0, 0, 0, 0, 0, 0, 0};//定时中断回调函数指针数组
+static Timer_CallbackFunction_t TIMx_Function[TIMER_MAX] = {0};//定时中断回调函数指针数组
 
 /**
   * @brief  定时中断配置
@@ -13,7 +17,13 @@ static Timer_CallbackFunction_t TIMx_Function[8] = {0, 0, 0, 0, 0, 0, 0, 0};//�
   */
 void TimerSet(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function)
 {
-    Timer_Init(TIMx, InterruptTime_us, function, Timer_PreemptionPriority_Default, Timer_SubPriority_Default);
+    Timer_Init(
+        TIMx, 
+        InterruptTime_us, 
+        function, 
+        Timer_PreemptionPriority_Default, 
+        Timer_SubPriority_Default
+    );
 }
 
 /**
@@ -64,63 +74,63 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
 
     uint32_t arr, psc;
     uint32_t RCC_APBxPeriph_TIMx;
-    uint8_t TIMx_IRQn;
-    uint8_t TimerNum;
+    IRQn_Type TIMx_IRQn;
+    TIMERx_Type TIMERx;
 
     if(!IS_TIM_ALL_PERIPH(TIMx))return;
 
     if(TIMx == TIM1)
     {
-        TimerNum = TIMER1;
+        TIMERx = TIMER1;
         RCC_APBxPeriph_TIMx = RCC_APB2Periph_TIM1;
         TIMx_IRQn = TIM1_UP_IRQn;
     }
     else if(TIMx == TIM2)
     {
-        TimerNum = TIMER2;
+        TIMERx = TIMER2;
         RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM2;
         TIMx_IRQn = TIM2_IRQn;
     }
     else if(TIMx == TIM3)
     {
-        TimerNum = TIMER3;
+        TIMERx = TIMER3;
         RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM3;
         TIMx_IRQn = TIM3_IRQn;
     }
     else if(TIMx == TIM4)
     {
-        TimerNum = TIMER4;
+        TIMERx = TIMER4;
         RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM4;
         TIMx_IRQn = TIM4_IRQn;
     }
 #ifdef STM32F10X_HD
     else if(TIMx == TIM5)
     {
-        TimerNum = TIMER5;
+        TIMERx = TIMER5;
         RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM5;
         TIMx_IRQn = TIM5_IRQn;
     }
     else if(TIMx == TIM6)
     {
-        TimerNum = TIMER6;
+        TIMERx = TIMER6;
         RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM6;
         TIMx_IRQn = TIM6_IRQn;
     }
     else if(TIMx == TIM7)
     {
-        TimerNum = TIMER5;
+        TIMERx = TIMER5;
         RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM7;
         TIMx_IRQn = TIM7_IRQn;
     }
     else if(TIMx == TIM8)
     {
-        TimerNum = TIMER8;
+        TIMERx = TIMER8;
         RCC_APBxPeriph_TIMx = RCC_APB2Periph_TIM8;
         TIMx_IRQn = TIM8_UP_IRQn;
     }
 #endif
 
-    TIMx_Function[TimerNum] = function;//Callback Functions
+    TIMx_Function[TIMERx] = function;//Callback Functions
 
     //Calculate TIM_Period and TIM_Prescaler
     InterruptTime_us *= CYCLES_PER_MICROSECOND;
@@ -141,6 +151,7 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     }
 
     //Enable PeriphClock
+    TIM_DeInit(TIMx);
     if(TIMx == TIM1 || TIMx == TIM8)
     {
         RCC_APB2PeriphClockCmd(RCC_APBxPeriph_TIMx, ENABLE);
@@ -149,8 +160,7 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     {
         RCC_APB1PeriphClockCmd(RCC_APBxPeriph_TIMx, ENABLE); //时钟使能
     }
-
-    TIM_DeInit(TIMx);
+    
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
     TIM_TimeBaseStructure.TIM_Period = arr - 1; 		//设置在下一个更新事件装入活动的自动重装载寄存器周期的值
     TIM_TimeBaseStructure.TIM_Prescaler = psc - 1; 	//设置用来作为TIMx时钟频率除数的预分频值  10Khz的计数频率
@@ -164,8 +174,9 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;  //从优先级
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能
     NVIC_Init(&NVIC_InitStructure);  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
-
+  
     TIM_ClearFlag(TIMx, TIM_FLAG_Update);
+    TIM_ClearITPendingBit(TIMx, TIM_IT_Update);
     TIM_ITConfig(TIMx, TIM_IT_Update, ENABLE);	//使能TIM中断
 }
 

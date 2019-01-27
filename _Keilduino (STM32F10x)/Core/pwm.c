@@ -116,7 +116,7 @@ uint16_t pwmWrite(uint8_t Pin, uint16_t val)
   */
 uint16_t timer_get_compare(TIM_TypeDef* TIMx, uint8_t TimerChannel)
 {
-    u16 compare = 0;
+    uint16_t compare = 0;
     switch(TimerChannel)
     {
     case 1:

@@ -1,9 +1,25 @@
 #include "delay.h"
-#include "Arduino.h"
 
 #define SysTick_LoadValue (F_CPU / 1000U) //根据当前时钟频率自动计算Systick初始值
 
 volatile static uint32_t System_ms = 0; //系统时钟计时变量
+static SysClock_TypeDef SysClock[] = {
+    {16000000, RCC_PLLMul_2},//16MHz, 2倍频
+    {24000000, RCC_PLLMul_3},//24MHz, 3倍频
+    {32000000, RCC_PLLMul_4},//32MHz, 4倍频
+    {40000000, RCC_PLLMul_5},//40MHz, 5倍频
+    {48000000, RCC_PLLMul_6},//48MHz, 6倍频
+    {56000000, RCC_PLLMul_7},//56MHz, 7倍频
+    {64000000, RCC_PLLMul_8},//64MHz, 8倍频
+    {72000000, RCC_PLLMul_9},//72MHz, 9倍频
+    {80000000, RCC_PLLMul_10},//80MHz, 10倍频
+    {88000000, RCC_PLLMul_11},//88MHz, 11倍频
+    {96000000, RCC_PLLMul_12},//96MHz, 12倍频
+    {104000000, RCC_PLLMul_13},//104MHz, 13倍频
+    {112000000, RCC_PLLMul_14},//112MHz, 14倍频
+    {120000000, RCC_PLLMul_15},//120MHz, 15倍频
+    {128000000, RCC_PLLMul_16},//128MHz, 16倍频
+};
 
 /**
   * @brief  系统滴答定时器初始化，定时1ms
@@ -12,9 +28,32 @@ volatile static uint32_t System_ms = 0; //系统时钟计时变量
   */
 void Delay_Init(void)
 {
-    SysTick->LOAD = SysTick_LoadValue;
-    SysTick->VAL  = 0x00;
-    SysTick->CTRL |= 0x07;
+    SystemCoreClockUpdate();
+    SysTick_Config(SysTick_LoadValue);
+}
+
+/**
+  * @brief  系统时钟配置
+  * @param  fcpu:主频值 (详见F_CPU_Type枚举)
+  * @retval 无
+  */
+void SysClock_Init(F_CPU_Type fcpu)
+{
+    SystemCoreClock = SysClock[fcpu].F_CPU_x;
+    RCC_SYSCLKConfig(RCC_SYSCLKSource_HSI);
+    while(RCC_GetSYSCLKSource());
+    RCC_HCLKConfig(RCC_SYSCLK_Div1);
+    RCC_PCLK1Config(RCC_HCLK_Div2);
+    RCC_PCLK2Config(RCC_HCLK_Div1);
+    RCC_PLLCmd(DISABLE);
+    RCC_HSEConfig(RCC_HSE_ON);
+    RCC_WaitForHSEStartUp();
+    RCC_PLLConfig(RCC_PLLSource_HSE_Div1, SysClock[fcpu].RCC_PLLMul_x);
+    RCC_PLLCmd(ENABLE);
+    while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET) ;
+    RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+    while(RCC_GetSYSCLKSource() != 0x08);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 }
 
 /**

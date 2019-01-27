@@ -8,7 +8,7 @@ uint16_t ADC_ConvertedValue[ADC_CHANNEL_NUM];//ADC DMA Buffer
   * @param  无
   * @retval 无
   */
-void ADCx_GPIO_Config(void)
+static void ADCx_GPIO_Config(void)
 {
     pinMode(PA0, INPUT_ANALOG);
     pinMode(PA1, INPUT_ANALOG);
@@ -25,7 +25,7 @@ void ADCx_GPIO_Config(void)
   * @param  无
   * @retval 无
   */
-void ADCx_DMA_Config(void)
+static void ADCx_DMA_Config(void)
 {
     DMA_InitTypeDef DMA_InitStructure;
     ADC_InitTypeDef ADC_InitStructure;
@@ -147,7 +147,7 @@ void ADCx_DMA_Init(void)
 
 /**
   * @brief  获取 ADC DMA 值
-  * @param  Channel: ADC通道号
+  * @param  Channel: ADC通道号(数组)
   * @retval 无
   */
 uint16_t Get_DMA_ADC(uint8_t Channel)
