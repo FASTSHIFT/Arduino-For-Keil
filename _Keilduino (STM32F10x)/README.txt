@@ -59,3 +59,4 @@
 //Upgrade   2018.11.29 V_6.0 更新detachInterrupt()函数
 //Upgrade   2018.12.10 V_6.1 补充Arduino.h和timer.c
 //Upgrade   2019.1.26  V_6.2 更新Core核心库，支持"一键"超频(使用SysClock_Init配置主频)，在Tone库中添加参数合法性判断
+//Upgrade   2019.2.5   V_6.3 Arduino.h已包含WString.h和HardwareSerial.h 
