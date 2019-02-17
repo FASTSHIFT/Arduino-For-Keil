@@ -5,7 +5,6 @@
 extern "C" {
 #endif
 
-#include "stm32f10x.h"
 #include "mcu_type.h"
 
 void Delay_Init(void);

@@ -1,4 +1,5 @@
 #include "exti.h"
+#include "gpio.h"
 
 static EXTI_CallbackFunction_t EXTI_Function[16] = {0};
 											

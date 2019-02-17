@@ -4,10 +4,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "stm32f10x.h"
-#include "stm32f10x_exti.h"
-#include "Arduino.h"
+    
+#include "mcu_type.h"
 
 #define	CHANGE EXTI_Trigger_Rising_Falling
 #define	FALLING EXTI_Trigger_Falling

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "stm32f10x.h"
+#include "mcu_type.h"
 
 #define ADC_AverageTimes 8 //ADC求平均次数
 
