@@ -1,4 +1,4 @@
-﻿/*
+/*
   Stream.h - base class for character-based streams.
   Copyright (c) 2010 David A. Mellis.  All right reserved.
 
@@ -22,10 +22,7 @@
 #ifndef Stream_h
 #define Stream_h
 
-extern "C" {
 #include <inttypes.h>
-#include "Arduino.h"
-}
 #include "Print.h"
 
 // compatability macros for testing

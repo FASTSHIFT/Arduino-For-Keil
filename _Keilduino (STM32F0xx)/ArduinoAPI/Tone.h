@@ -1,7 +1,6 @@
-﻿#ifndef __TONE_H
+#ifndef __TONE_H
 #define __TONE_H
 
-#include "Arduino.h"
 #include "timer.h"
 
 #define ToneVolumn_Default 80

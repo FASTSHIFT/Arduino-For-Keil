@@ -1,4 +1,5 @@
-﻿#include "Tone.h"
+#include "Tone.h"
+#include "Arduino.h"
 
 static TIM_TypeDef *ToneTimer_Last = 0, *ToneTimer = ToneTimer_Default;
 static uint8_t tone_State = Off;
