@@ -11,9 +11,9 @@ volatile static uint32_t System_ms = 0;
   * @retval 无
   */
 void Delay_Init(void)
-{
+{    
+    SystemCoreClockUpdate();
     SysTick_Config(SysTick_LoadValue);
-    SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
 }
 
 /**

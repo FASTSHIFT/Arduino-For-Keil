@@ -1,11 +1,11 @@
-﻿#ifndef __PWM_H
+#ifndef __PWM_H
 #define __PWM_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "stm32f4xx.h"
+#include "mcu_type.h"
 
 #define Get_TIM_PinSourcex(Pin) Get_Pinx(Pin)
 

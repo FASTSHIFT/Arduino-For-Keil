@@ -1,11 +1,11 @@
-﻿#ifndef __ADC_H
+#ifndef __ADC_H
 #define	__ADC_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "stm32f4xx.h"
+#include "mcu_type.h"
 
 #define ADC_AverageTimes 8 //ADC求平均次数
 

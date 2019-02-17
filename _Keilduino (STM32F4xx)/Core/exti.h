@@ -1,13 +1,13 @@
 #ifndef __EXTI_H
 #define __EXTI_H
 
+#include "Arduino.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "stm32f4xx.h"
-#include "stm32f4xx_exti.h"
-#include "Arduino.h"
+#include "mcu_type.h"
 
 #define Get_EXTI_Linex(Pin) (1 << Pinx)
 #define Get_EXTI_PortSourceGPIOx(Pin) (Get_GPIOx(Pin))

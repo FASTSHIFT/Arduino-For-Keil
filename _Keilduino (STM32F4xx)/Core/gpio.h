@@ -5,9 +5,7 @@
 extern "C" {
 #endif
 
-#include "stm32f4xx.h"
-#include "stm32f4xx_gpio.h"
-#include "stm32f4xx_rcc.h"
+#include "mcu_type.h"
 
 #ifndef NULL
 #define NULL 0
@@ -27,8 +25,8 @@ typedef enum {
     PI0, PI1, PI2, PI3, PI4, PI5, PI6, PI7, PI8, PI9, PI10, PI11, PI12, PI13, PI14, PI15,
     PJ0, PJ1, PJ2, PJ3, PJ4, PJ5, PJ6, PJ7, PJ8, PJ9, PJ10, PJ11, PJ12, PJ13, PJ14, PJ15,
     PK0, PK1, PK2, PK3, PK4, PK5, PK6, PK7, PK8, PK9, PK10, PK11, PK12, PK13, PK14, PK15,
-    Pxx_MAX
-} Pxx_TypeDef;
+    PIN_MAX
+} Pin_TypeDef;
 
 typedef struct STM32_PinInfo {
     GPIO_TypeDef* GPIOx;
@@ -52,10 +50,11 @@ typedef enum
     PWM
 } pinMode_TypeDef;
 
-extern const PinInfo_TypeDef PIN_MAP[Pxx_MAX];
+extern const PinInfo_TypeDef PIN_MAP[PIN_MAX];
 
 #define IS_ADC_PIN(Pin) (PIN_MAP[Pin].ADC_Channel != ADC_Channel_X)
 #define IS_PWM_PIN(Pin) (PIN_MAP[Pin].TimerChannel != 0)
+#define IS_PIN(Pin)     (Pin<PIN_MAX)
 
 void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMode_x, GPIOSpeed_TypeDef GPIO_Speed_x);
 void GPIO_JTAG_Disable(void);

@@ -5,8 +5,7 @@
 extern "C" {
 #endif
 
-#include "stm32f4xx.h"
-#include "Arduino.h"
+#include "mcu_type.h"
     
 #define Timer_PreemptionPriority_Default 0
 #define Timer_SubPriority_Default	3
