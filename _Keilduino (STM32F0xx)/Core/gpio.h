@@ -5,9 +5,7 @@
 extern "C" {
 #endif
 
-#include "stm32f0xx.h"
-#include "stm32f0xx_gpio.h"
-#include "stm32f0xx_rcc.h"
+#include "mcu_type.h"
 
 #ifndef NULL
 #define NULL 0
@@ -56,7 +54,6 @@ extern const PinInfo_TypeDef PIN_MAP[];
 #define IS_PWM_PIN(Pin) (PIN_MAP[Pin].TimerChannel != 0)
 
 void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMode_x, GPIOSpeed_TypeDef GPIO_Speed_x);
-void GPIO_JTAG_Disable(void);
 uint8_t Get_GPIOx(uint8_t Pin);
 uint8_t Get_Pinx(uint8_t Pin);
 uint8_t Get_GPIO_PinSource(uint16_t GPIO_Pin_x);

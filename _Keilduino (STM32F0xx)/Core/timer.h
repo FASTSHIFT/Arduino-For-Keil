@@ -1,12 +1,11 @@
-﻿#ifndef __TIMER_H
+#ifndef __TIMER_H
 #define __TIMER_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "stm32f0xx.h"
-#include "Arduino.h"
+#include "mcu_type.h"
 	
 #define Timer_ChannelPriority_Default	2
 	

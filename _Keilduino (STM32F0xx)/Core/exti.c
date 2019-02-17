@@ -1,4 +1,5 @@
 #include "exti.h"
+#include "gpio.h"
 
 EXTI_CallbackFunction_t EXTI_Function[16] = {0, 0, 0, 0, 0, 0, 0, 0,
 											0, 0, 0, 0, 0, 0, 0, 0};

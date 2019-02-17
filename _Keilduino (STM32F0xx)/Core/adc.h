@@ -1,12 +1,11 @@
-﻿#ifndef __ADC_H
+#ifndef __ADC_H
 #define	__ADC_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "stm32f0xx.h"
-#include "Arduino.h"
+#include "mcu_type.h"
 
 // 注意：用作ADC采集的IO必须没有复用，否则采集电压会有影响
 

@@ -1,4 +1,5 @@
-﻿#include "timer.h"
+#include "timer.h"
+#include "Arduino.h"
 
 typedef enum {
     TIMER1, TIMER2, TIMER3,

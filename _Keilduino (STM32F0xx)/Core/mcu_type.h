@@ -2,11 +2,12 @@
 #define __MCU_TYPE
 
 #include "stm32f0xx.h"
+#include "stm32f0xx_conf.h"
 
+#define __KEILDUINO__ 160
 #define __STM32F0__
-#define F_CPU 48000000U
-
-#define __KEILDUINO__ 150
+#define F_CPU SystemCoreClock
+#define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
 
 #define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRR = PIN_MAP[Pin].GPIO_Pin_x)
 #define digitalWrite_LOW(Pin)  (PIN_MAP[Pin].GPIOx->BRR  = PIN_MAP[Pin].GPIO_Pin_x)

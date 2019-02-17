@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "stm32f0xx.h"
+#include "mcu_type.h"
 
 uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint16_t PWM_Frequency);
 uint16_t pwmWrite(uint8_t Pin, uint16_t val);

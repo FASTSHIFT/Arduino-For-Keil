@@ -191,15 +191,6 @@ void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMod
 }
 
 /**
-  * @brief  禁用JTAG引脚
-  * @param  无
-  * @retval 无
-  */
-void GPIO_JTAG_Disable(void)
-{
-}
-
-/**
   * @brief  获取当前引脚对应的GPIOx编号
   * @param  Pin: 引脚编号
   * @retval 无

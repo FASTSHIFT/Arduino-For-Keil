@@ -5,9 +5,7 @@
 extern "C" {
 #endif
 
-#include "stm32f0xx.h"
-#include "stm32f0xx_exti.h"
-#include "Arduino.h"
+#include "mcu_type.h"
 
 typedef void(*EXTI_CallbackFunction_t)(void);
 	

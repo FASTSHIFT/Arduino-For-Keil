@@ -1,12 +1,11 @@
-﻿#ifndef __DELAY_H
+#ifndef __DELAY_H
 #define __DELAY_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "stm32f0xx.h"
-#include "stdint.h"
+#include "mcu_type.h"
 
 void Delay_Init(void);
 uint32_t millis(void);

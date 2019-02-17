@@ -1,4 +1,5 @@
 #include "adc.h"
+#include "Arduino.h"
 
 volatile uint16_t ADC_ConvertedValue[ADC_CHANNEL_NUM];//ADC DMA Buffer
 
