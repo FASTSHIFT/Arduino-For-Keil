@@ -47,20 +47,25 @@
  * On the Maple, let the default pins be in the same location as the Arduino
  * pins
  */
+#ifndef SDA_Pin
 #define SDA_Pin PB7
+#endif
+
+#ifndef SCL_Pin
 #define SCL_Pin PB6
+#endif
 
 #define SOFT_STANDARD 27
 #define SOFT_FAST 0
 
-#define FULL_SPEED_I2C
+//#define FULL_SPEED_I2C
 
 //#define I2C_DELAY(x) {uint32 time=micros(); while(time>(micros()+x));}
 //#define I2C_DELAY(x) do{for(int i=0;i<x;i++) {asm volatile("nop");}}while(0)
 #ifdef FULL_SPEED_I2C
 #define I2C_DELAY(x) {}
 #else
-#define I2C_DELAY(x) {delay_us(x);}
+#define I2C_DELAY(x) {/*delayMicroseconds(x);*/}
 #endif
 
 #define BUFFER_LENGTH 32

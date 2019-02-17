@@ -10,7 +10,12 @@ void pinMode(uint8_t Pin, pinMode_TypeDef pinMode_x)
 {
     if(pinMode_x != PWM)
     {
-        GPIOx_Init(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x, pinMode_x, GPIO_Speed_100MHz);
+        GPIOx_Init(
+            PIN_MAP[Pin].GPIOx, 
+            PIN_MAP[Pin].GPIO_Pin_x, 
+            pinMode_x, 
+            GPIO_Speed_100MHz
+        );
     }
     else if(pinMode_x == PWM)PWM_Init(Pin, 1000, 2000);
 }

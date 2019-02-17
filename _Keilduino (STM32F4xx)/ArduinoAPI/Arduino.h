@@ -21,7 +21,6 @@ extern "C" {
 
 #define __STM32__
 #define ARDUINO 111
-#define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
 
 #define PI 3.1415926535897932384626433832795
 #define HALF_PI 1.5707963267948966192313216916398
@@ -49,10 +48,12 @@ extern "C" {
 #define highByte(w) ((uint8_t) ((w) >> 8))
 
 #define bitRead(value, bit) (((value) >> (bit)) & 0x01)
+#define bitSet(value, bit) ((value) |= (1UL << (bit)))
+#define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
-#define delay delay_ms
-#define delayMicroseconds delay_us
+#define delay(x) delay_ms(x)
+#define delayMicroseconds(x) delay_us(x)
 
 #define interrupts() __set_PRIMASK(0)
 #define noInterrupts() __set_PRIMASK(1)
@@ -71,7 +72,6 @@ extern "C" {
 
 #define boolean bool
 typedef unsigned char byte;
-typedef void(*CallbackFunction_t)(void);
 
 typedef enum {LOW = 0, HIGH = !LOW} GPIO_State_Type;
 typedef enum {Off = 0, On = !Off} _Switch_Type;
@@ -96,8 +96,8 @@ double fmap(double x, double in_min, double in_max, double out_min, double out_m
 
 #ifdef __cplusplus
 	#include "WCharacter.h"
-//	#include "WString.h"
-//	#include "HardwareSerial.h"
+	#include "WString.h"
+	#include "HardwareSerial.h"
 #endif
 
 #endif

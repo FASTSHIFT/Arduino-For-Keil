@@ -1,11 +1,13 @@
 #ifndef __SPI_H
 #define __SPI_H
 
-#include "stm32f4xx.h"
-#include "stm32f4xx_spi.h"
 #include "Arduino.h"
 
-#define __builtin_constant_p(x) 1
+/**
+  *@SPI1: SCK->PA5  MISO->PA6  MOSI->PA7
+  *@SPI2: SCK->PB13 MISO->PB14 MOSI->PB15
+  *@SPI3: SCK->PB3  MISO->PB4  MOSI->PB5
+  */
 
 #ifndef LSBFIRST
 #define LSBFIRST 0
@@ -26,8 +28,8 @@ typedef enum
 #define DATA_SIZE_8BIT SPI_DataSize_8b
 #define DATA_SIZE_16BIT SPI_DataSize_16b
 
-#define BitOrder uint16_t
-#define spi_dev SPI_TypeDef
+typedef uint16_t BitOrder;
+typedef SPI_TypeDef spi_dev;
 
 typedef enum {
     SPI_STATE_IDLE,
@@ -36,6 +38,8 @@ typedef enum {
     SPI_STATE_TRANSMIT,
     SPI_STATE_TRANSFER
 } spi_mode_t;
+
+#define __builtin_constant_p(x) 1
 
 class SPISettings
 {
@@ -104,6 +108,7 @@ public:
                         uint16_t SPI_FirstBit_x);
     void begin(void);
     void begin(uint32_t clock, uint16_t dataOrder, uint16_t dataMode);
+    void begin(SPISettings settings);
     void beginSlave(uint32_t bitOrder, uint32_t mode);
     void beginSlave(void);
     void beginTransactionSlave(void);
@@ -131,9 +136,11 @@ public:
 private:
     SPI_TypeDef* SPIx;
     SPI_InitTypeDef  SPI_InitStructure;
+    uint32_t SPI_Clock;
 };
 
 extern SPIClass SPI;
 extern SPIClass SPI_2;
+extern SPIClass SPI_3;
 
 #endif
