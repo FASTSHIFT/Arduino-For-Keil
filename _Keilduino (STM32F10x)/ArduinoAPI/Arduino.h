@@ -98,8 +98,8 @@ double fmap(double x, double in_min, double in_max, double out_min, double out_m
 
 #ifdef __cplusplus
 #include "WCharacter.h"
-//	#include "WString.h"
-//	#include "HardwareSerial.h"
+#include "WString.h"
+#include "HardwareSerial.h"
 #endif
 
 #endif

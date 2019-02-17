@@ -5,8 +5,8 @@
 #define SPI3_CLOCK (F_CPU/2)
 
 #define SPI_I2S_GetFlagStatus(SPIx,FLAG) IS_SPIx_TxRxDone(SPIx,FLAG)
-#define SPI_I2S_SendData(SPIx,Data)	SPIx_FastSendData(SPIx,Data)
-#define SPI_I2S_ReceiveData(SPIx)	SPIx_FastRecvData(SPIx)
+#define SPI_I2S_SendData(SPIx,Data)	     SPIx_FastSendData(SPIx,Data)
+#define SPI_I2S_ReceiveData(SPIx)	     SPIx_FastRecvData(SPIx)
 
 SPIClass::SPIClass(SPI_TypeDef* _SPIx)
 {
@@ -153,9 +153,8 @@ void SPIClass::setClock(uint32_t clock)
     SPI_Cmd(SPIx, ENABLE);
 }
 
-void SPIClass::setClockDivider(uint32_t Div) //For AVR compatibility
+void SPIClass::setClockDivider(uint32_t Div) //For AVR(16MHz) compatibility
 {
-    // AVR:16MHz, STM32F1:72MHz
     if(Div == 0)
     {
         setClock(16000000);
