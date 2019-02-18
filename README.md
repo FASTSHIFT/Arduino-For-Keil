@@ -14,7 +14,7 @@
 
 [STM32F4xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F4xx_DFP.1.0.8.pack)
 
->	部分源代码移植于 [stm32duino](http://www.stm32duino.com/)，用法请参照[Arduino语法](https://www.arduino.cc/reference/en/)。
+>这个项目大部分函数是重写的，有部分源代码参考了 [stm32duino](http://www.stm32duino.com/)，用法请参照[Arduino语法](https://www.arduino.cc/reference/en/)。
 
 支持与寄存器和标准外设库的函数混用:
 ```C
