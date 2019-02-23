@@ -14,7 +14,8 @@
 
 [STM32F4xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F4xx_DFP.1.0.8.pack)
 
->这个项目大部分核心函数是重构的，有部分源代码参考了 [stm32duino](https://github.com/stm32duino)，一般用法可以直接参照[Arduino语法](https://www.arduino.cc/reference/en/)，高级用法参考工程自带的Example文件夹内的示例。
+>这个项目大部分核心函数是重构的，有部分源代码参考了 [stm32duino](https://github.com/stm32duino)。
+>一般用法可以直接参照[Arduino语法](https://www.arduino.cc/reference/en/)，高级用法参考工程自带的Example文件夹内的示例。
 
 支持与寄存器和标准外设库的函数混用:
 ```C
