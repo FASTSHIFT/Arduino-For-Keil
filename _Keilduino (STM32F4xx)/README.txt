@@ -3,17 +3,17 @@
 
 # https://github.com/FASTSHIFT/Arduino-For-Keil
 
-æ³¨æ„{ 
-	æ­¤ç‰ˆæœ¬çš„æ ‡å‡†å¤–è®¾åº“é»˜è®¤æ™¶æŒ¯é¢‘çŽ‡æ˜¯25MHz;
-	è‹¥æ¿è½½æ™¶æŒ¯ä¸º8MHz,éœ€è¦å°†stm32f4xx.hé‡Œçš„HSE_VALUEçš„å®šä¹‰æ”¹ä¸º ((uint32_t)8000000),
-	ä»¥åŠsystem_stm32f4xx.cé‡Œçš„PLL_Må®šä¹‰ 25 æ”¹ä¸º 8 !
+×¢Òâ{ 
+	´Ë°æ±¾µÄ±ê×¼ÍâÉè¿âÄ¬ÈÏ¾§ÕñÆµÂÊÊÇ25MHz;
+	Èô°åÔØ¾§ÕñÎª8MHz,ÐèÒª½«stm32f4xx.hÀïµÄHSE_VALUEµÄ¶¨Òå¸ÄÎª ((uint32_t)8000000),
+	ÒÔ¼°system_stm32f4xx.cÀïµÄPLL_M¶¨Òå 25 ¸ÄÎª 8 !
 }
 
 //*********************************UPGRADE LOGS************************************//
 
-//Finish in 2018.8.1    V_1.0 åŸºäºŽSTM32F4xxæ ‡å¿—å¤–è®¾åº“(1.3.0ç‰ˆ)ï¼Œç§»æ¤äº†å…¨éƒ¨çš„ArduinoAPI
-//Upgrade   2018.8.14   V_1.1 æ•´ç†USARTç›¸å…³ä»£ç ï¼Œä¿®æ”¹Toneåº“åªå ç”¨ä¸€ä¸ªå®šæ—¶å™¨(å¯ä½¿ç”¨toneSetTimer()å‡½æ•°åˆ‡æ¢),time_extiæ”¹åä¸ºtimer
-//Upgrade   2018.8.17   V_1.2 åœ¨Arduino.hæ·»åŠ äº†æ›´å®Œæ•´çš„ä¸ŽGPIOå¯„å­˜å™¨äº¤äº’å‡½æ•°ï¼Œæå‡ä¸Žç¬¬ä¸‰æ–¹åº“çš„å…¼å®¹æ€§
-//Upgrade   2018.8.17   V_1.3 æ·»åŠ WCharacter.hï¼Œæ”¯æŒArduinoæœ‰å…³Charactersçš„å‡½æ•°ï¼Œæ·»åŠ mcu_type.hï¼Œä½¿Arduino.hå¯ä»¥è·¨MCUä½¿ç”¨
-//Upgrade   2018.11.28  V_1.4 å¢žåŠ äº†æ³¨é‡Š
-//Upgrade   2019.2.17   V_1.5 æå‡æ•ˆçŽ‡ä»¥åŠå…¼å®¹æ€§,SPIåº“å·²å¯ä»¥æ­£å¸¸å·¥ä½œ
+//Finish in 2018.8.1    V_1.0 »ùÓÚSTM32F4xx±êÖ¾ÍâÉè¿â(1.3.0°æ)£¬ÒÆÖ²ÁËÈ«²¿µÄArduinoAPI
+//Upgrade   2018.8.14   V_1.1 ÕûÀíUSARTÏà¹Ø´úÂë£¬ÐÞ¸ÄTone¿âÖ»Õ¼ÓÃÒ»¸ö¶¨Ê±Æ÷(¿ÉÊ¹ÓÃtoneSetTimer()º¯ÊýÇÐ»»),time_exti¸ÄÃûÎªtimer
+//Upgrade   2018.8.17   V_1.2 ÔÚArduino.hÌí¼ÓÁË¸üÍêÕûµÄÓëGPIO¼Ä´æÆ÷½»»¥º¯Êý£¬ÌáÉýÓëµÚÈý·½¿âµÄ¼æÈÝÐÔ
+//Upgrade   2018.8.17   V_1.3 Ìí¼ÓWCharacter.h£¬Ö§³ÖArduinoÓÐ¹ØCharactersµÄº¯Êý£¬Ìí¼Ómcu_type.h£¬Ê¹Arduino.h¿ÉÒÔ¿çMCUÊ¹ÓÃ
+//Upgrade   2018.11.28  V_1.4 Ôö¼ÓÁË×¢ÊÍ
+//Upgrade   2019.2.17   V_1.5 ÌáÉýÐ§ÂÊÒÔ¼°¼æÈÝÐÔ,SPI¿âÒÑ¿ÉÒÔÕý³£¹¤×÷

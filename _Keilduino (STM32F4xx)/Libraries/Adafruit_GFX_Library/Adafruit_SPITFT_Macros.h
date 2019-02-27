@@ -1,18 +1,28 @@
-﻿
+
+
+#include "Arduino.h"
+#define USE_FAST_PINIO
 /*
  * Control Pins
  * */
 
 #ifdef USE_FAST_PINIO
-#define SPI_DC_HIGH()           *dcport |=  dcpinmask
-#define SPI_DC_LOW()            *dcport &= ~dcpinmask
-#define SPI_CS_HIGH()           *csport |= cspinmask
-#define SPI_CS_LOW()            *csport &= ~cspinmask
+	#if defined (__STM32__)
+		#define SPI_DC_HIGH()           (dcport->BSRR = dcpinmask)
+		#define SPI_DC_LOW()            (dcport->BRR = dcpinmask)
+		#define SPI_CS_HIGH()           (csport->BSRR = cspinmask)
+		#define SPI_CS_LOW()            (csport->BRR = cspinmask)
+	#else
+		#define SPI_DC_HIGH()           *dcport |=  dcpinmask
+		#define SPI_DC_LOW()            *dcport &= ~dcpinmask
+		#define SPI_CS_HIGH()           *csport |= cspinmask
+		#define SPI_CS_LOW()            *csport &= ~cspinmask
+	#endif
 #else
-#define SPI_DC_HIGH()           digitalWrite(_dc, HIGH)
-#define SPI_DC_LOW()            digitalWrite(_dc, LOW)
-#define SPI_CS_HIGH()           digitalWrite(_cs, HIGH)
-#define SPI_CS_LOW()            digitalWrite(_cs, LOW)
+	#define SPI_DC_HIGH()           digitalWrite(_dc, HIGH)
+	#define SPI_DC_LOW()            digitalWrite(_dc, LOW)
+	#define SPI_CS_HIGH()           digitalWrite(_cs, HIGH)
+	#define SPI_CS_LOW()            digitalWrite(_cs, LOW)
 #endif
 
 /*
@@ -20,11 +30,19 @@
  * */
 
 #ifdef USE_FAST_PINIO
-#define SSPI_MOSI_HIGH()        *mosiport |=  mosipinmask
-#define SSPI_MOSI_LOW()         *mosiport &= ~mosipinmask
-#define SSPI_SCK_HIGH()         *clkport |=  clkpinmask
-#define SSPI_SCK_LOW()          *clkport &= ~clkpinmask
-#define SSPI_MISO_READ()        ((*misoport & misopinmask) != 0)
+	#if defined (__STM32__)
+		#define SSPI_MOSI_HIGH()        (mosiport->BSRR = mosipinmask)
+		#define SSPI_MOSI_LOW()         (mosiport->BRR = mosipinmask)
+		#define SSPI_SCK_HIGH()         (clkport->BSRR = clkpinmask)
+		#define SSPI_SCK_LOW()          (clkport->BRR = clkpinmask)
+		#define SSPI_MISO_READ()        ((misoport->IDR & misopinmask) != 0)
+	#else
+		#define SSPI_MOSI_HIGH()        *mosiport |=  mosipinmask
+		#define SSPI_MOSI_LOW()         *mosiport &= ~mosipinmask
+		#define SSPI_SCK_HIGH()         *clkport |=  clkpinmask
+		#define SSPI_SCK_LOW()          *clkport &= ~clkpinmask
+		#define SSPI_MISO_READ()        ((*misoport & misopinmask) != 0)
+	#endif
 #else
 #define SSPI_MOSI_HIGH()        digitalWrite(_mosi, HIGH)
 #define SSPI_MOSI_LOW()         digitalWrite(_mosi, LOW)
@@ -49,7 +67,7 @@
 #if defined (__AVR__) ||  defined(TEENSYDUINO) ||  defined(ARDUINO_ARCH_STM32F1)
     #define HSPI_SET_CLOCK() SPI_OBJECT.setClockDivider(SPI_CLOCK_DIV2);
 #elif defined (__arm__)
-    #define HSPI_SET_CLOCK() SPI_OBJECT.setClockDivider(11);
+    #define HSPI_SET_CLOCK() SPI_OBJECT.setClock(8000000);
 #elif defined(ESP8266) || defined(ESP32)
     #define HSPI_SET_CLOCK() SPI_OBJECT.setFrequency(_freq);
 #elif defined(RASPI)

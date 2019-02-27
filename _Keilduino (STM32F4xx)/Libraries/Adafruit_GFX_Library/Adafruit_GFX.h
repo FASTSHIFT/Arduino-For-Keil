@@ -1,4 +1,4 @@
-﻿#ifndef _ADAFRUIT_GFX_H
+#ifndef _ADAFRUIT_GFX_H
 #define _ADAFRUIT_GFX_H
 
 #include "Arduino.h"
