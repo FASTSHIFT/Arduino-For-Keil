@@ -1,5 +1,7 @@
 # Arduino for Keil
 
+>   (一个新的移植项目:https://github.com/FASTSHIFT/Arduino-For-STM32Cube)
+
 >   这是一个跨平台移植的项目，可以在Keil MDK5环境下使用Arduino的函数对**STM32**系列单片机进行编程。
 它本质上是一个建立好的Keil工程，然后在它的基础上封装一套类似于Arduino的底层函数库，可以像在Arduino IDE一样直接调用写好的API，
 只需将Arduino支持的第三方库的文件夹加入 "Libraries" 文件夹下即可，然后打开"USER"文件夹启动keil工程进行编写程序。
@@ -14,7 +16,9 @@
 
 [STM32F4xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F4xx_DFP.1.0.8.pack)
 
->	部分源代码移植于 [stm32duino](http://www.stm32duino.com/)，用法请参照[Arduino语法](https://www.arduino.cc/reference/en/)。
+>这个项目大部分核心函数是重构的，有部分源代码参考了 [stm32duino](https://github.com/stm32duino)。
+
+>一般用法可以直接参照[Arduino语法](https://www.arduino.cc/reference/en/)，高级用法参考工程自带的Example文件夹内的示例。
 
 支持与寄存器和标准外设库的函数混用:
 ```C
