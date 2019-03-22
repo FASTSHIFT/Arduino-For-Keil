@@ -17,3 +17,4 @@
 //Upgrade   2018.8.17   V_1.3 添加WCharacter.h，支持Arduino有关Characters的函数，添加mcu_type.h，使Arduino.h可以跨MCU使用
 //Upgrade   2018.11.28  V_1.4 增加了注释
 //Upgrade   2019.2.17   V_1.5 提升效率以及兼容性,SPI库已可以正常工作
+//Upgrade   2019.3.22   V_1.6 为SysTick设置最高中断优先级，防止被其他中断打断(非常重要!)

@@ -1,14 +1,18 @@
-﻿
+
 #ifndef _ADAFRUIT_SPITFT_
 #define _ADAFRUIT_SPITFT_
 
+#include "Arduino.h"
+#include "Print.h"
 
-#if ARDUINO >= 100
- #include "Arduino.h"
- #include "Print.h"
-#else
- #include "WProgram.h"
-#endif
+#define USE_FAST_PINIO
+
+//#if ARDUINO >= 100
+// #include "Arduino.h"
+// #include "Print.h"
+//#else
+// #include "WProgram.h"
+//#endif
 #include <SPI.h>
 #include "Adafruit_GFX.h"
 
@@ -68,8 +72,13 @@ class Adafruit_SPITFT : public Adafruit_GFX {
 #endif
 
 #ifdef USE_FAST_PINIO
-        volatile RwReg *mosiport, *misoport, *clkport, *dcport, *csport;
-        RwReg  mosipinmask, misopinmask, clkpinmask, cspinmask, dcpinmask;
+	#if defined(__STM32__)
+		GPIO_TypeDef *mosiport, *misoport, *clkport, *dcport, *csport;
+		uint16_t  mosipinmask, misopinmask, clkpinmask, cspinmask, dcpinmask;
+	#else
+			volatile RwReg *mosiport, *misoport, *clkport, *dcport, *csport;
+			RwReg  mosipinmask, misopinmask, clkpinmask, cspinmask, dcpinmask;
+	#endif
 #endif
 
         void        writeCommand(uint8_t cmd);

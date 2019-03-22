@@ -79,7 +79,7 @@ typedef enum {LOW = 0, HIGH = !LOW} GPIO_State_Type;
 typedef enum {Off = 0, On = !Off} _Switch_Type;
 typedef enum {OFF = 0, ON = !OFF} _SWITCH_Type;
 
-void pinMode(uint8_t Pin, uint8_t GPIO_Mode_x);
+void pinMode(uint8_t Pin, pinMode_TypeDef pinMode_x);
 void digitalWrite(uint8_t Pin, uint8_t val);
 uint8_t digitalRead(uint8_t Pin);
 uint16_t analogWrite(uint8_t Pin, uint16_t val);

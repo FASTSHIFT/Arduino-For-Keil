@@ -1,7 +1,7 @@
 #include "Tone.h"
 
 static TIM_TypeDef *ToneTimer_Last = 0, *ToneTimer = ToneTimer_Default;
-static uint8_t tone_State = Off;
+static bool IsToneEnable = false;
 static uint8_t tone_Pin;
 static uint32_t tone_StopTimePoint;
 
@@ -13,7 +13,7 @@ static uint32_t tone_StopTimePoint;
 static void toneTimer_Handler()
 {
     togglePin(tone_Pin);
-    if(millis() > tone_StopTimePoint && !tone_State)
+    if(millis() > tone_StopTimePoint && !IsToneEnable)
         noTone(tone_Pin);
 }
 
@@ -36,14 +36,17 @@ void toneSetTimer(TIM_TypeDef* TIMx)
   */
 void tone(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
 {
-    if(!IS_PIN(Pin) || freq == 0 || freq > 500000 || Time_ms == 0)
+    if(!IS_PIN(Pin))
+        return;
+    
+    if(freq == 0 || freq > 500000)
     {
         noTone(Pin);
         return;
     }
     tone(Pin, freq);
     tone_StopTimePoint = millis() + Time_ms;
-    tone_State = Off;
+    IsToneEnable = false;
 }
 
 /**
@@ -54,13 +57,16 @@ void tone(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
   */
 void tone(uint8_t Pin, uint32_t freq)
 {
-    if(!IS_PIN(Pin) || freq == 0 || freq > 500000)
+    if(!IS_PIN(Pin))
+        return;
+    
+    if(freq == 0 || freq > 500000)
     {
         noTone(Pin);
         return;
     }
     tone_Pin = Pin;
-    tone_State = On;
+    IsToneEnable = true;
 
     if(ToneTimer != ToneTimer_Last)
     {
@@ -87,7 +93,7 @@ void noTone(uint8_t Pin)
     
     TIM_Cmd(ToneTimer, DISABLE);
     digitalWrite_LOW(Pin);
-    tone_State = Off;
+    IsToneEnable = false;
 }
 
 /**

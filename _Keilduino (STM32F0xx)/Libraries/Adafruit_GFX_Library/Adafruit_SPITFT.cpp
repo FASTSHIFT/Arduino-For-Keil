@@ -1,4 +1,4 @@
-﻿/***************************************************
+/***************************************************
   This is our library for generic SPI TFT Displays with
   address windows and 16 bit color (e.g. ILI9341, HX8357D, ST7735...)
 

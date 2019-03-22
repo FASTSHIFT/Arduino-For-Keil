@@ -12,3 +12,4 @@
 //Upgrade   2018.10.9  V_1.4 添加注释，更新Tone、HardwareSerial，去除usart.c usart.h
 //Upgrade   2018.11.21 V_1.5 更新Arduino.c
 //Upgrade   2019.2.18  V_1.6 整理代码,更好的兼容性
+//Upgrade   2019.3.22  V_1.7 为SysTick设置最高中断优先级，防止被其他中断打断(非常重要!)

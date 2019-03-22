@@ -5,9 +5,9 @@
 #include "stm32f30x_conf.h"
 
 #define __STM32F3__
-#define F_CPU 72000000U
+#define F_CPU SystemCoreClock
 
-#define __KEILDUINO__ 100
+#define __KEILDUINO__ 110
 
 #define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRR = PIN_MAP[Pin].GPIO_Pin_x)
 #define digitalWrite_LOW(Pin)  (PIN_MAP[Pin].GPIOx->BRR  = PIN_MAP[Pin].GPIO_Pin_x)

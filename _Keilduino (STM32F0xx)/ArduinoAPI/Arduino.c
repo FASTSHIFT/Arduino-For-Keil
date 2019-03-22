@@ -39,7 +39,7 @@ void digitalWrite(uint8_t Pin, uint8_t val)
   */
 uint8_t digitalRead(uint8_t Pin)
 {
-    return(GPIO_READ(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x));
+    return digitalRead_FAST(Pin);
 }
 
 /**

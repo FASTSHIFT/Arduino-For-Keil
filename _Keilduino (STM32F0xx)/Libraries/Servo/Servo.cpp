@@ -47,14 +47,6 @@
                                         this->minPW, this->maxPW)))
 #define US_TO_ANGLE(us)   ((int16)(map((us), this->minPW, this->maxPW,  \
                                        this->minAngle, this->maxAngle)))
-										   
-// Unit conversions	(float)
-#define US_TO_COMPARE_F(us) ((float)fmap((us), 0, TAU_USEC, 0, SERVO_OVERFLOW))
-#define COMPARE_TO_US_F(c)  ((float)fmap((c), 0, SERVO_OVERFLOW, 0, TAU_USEC))
-#define ANGLE_TO_US_F(a)    ((float)(fmap((a), this->minAngle, this->maxAngle, \
-                                        this->minPW, this->maxPW)))
-#define US_TO_ANGLE_F(us)   ((float)(fmap((us), this->minPW, this->maxPW,  \
-                                       this->minAngle, this->maxAngle)))
 
 Servo::Servo() {
     this->resetFields();
@@ -102,7 +94,7 @@ bool Servo::detach() {
     TIM_TypeDef* tdev = PIN_MAP[this->pin].TIMx;
     uint8 tchan = PIN_MAP[this->pin].TimerChannel;
     //timer_set_mode(tdev, tchan, DISABLE);
-	TIM_CCxCmd(tdev, tchan, TIM_CCx_Disable);
+		TIM_CCxCmd(tdev, tchan, TIM_CCx_Disable);
     this->resetFields();
 
     return true;
@@ -113,21 +105,8 @@ void Servo::write(int degrees) {
     this->writeMicroseconds(ANGLE_TO_US(degrees));
 }
 
-void Servo::write(float degrees) {
-    degrees = constrain(degrees, this->minAngle, this->maxAngle);
-    this->writeMicroseconds(ANGLE_TO_US_F(degrees));
-}
-
 int Servo::read() const {
     int a = US_TO_ANGLE(this->readMicroseconds());
-    // map() round-trips in a weird way we mostly correct for here;
-    // the round-trip is still sometimes off-by-one for write(1) and
-    // write(179).
-    return a == this->minAngle || a == this->maxAngle ? a : a + 1;
-}
-
-float Servo::read_f() const {
-    int a = US_TO_ANGLE_F(this->readMicroseconds_f());
     // map() round-trips in a weird way we mostly correct for here;
     // the round-trip is still sometimes off-by-one for write(1) and
     // write(179).
@@ -144,16 +123,6 @@ void Servo::writeMicroseconds(uint16 pulseWidth) {
     pwmWrite(this->pin, US_TO_COMPARE(pulseWidth));
 }
 
-void Servo::writeMicroseconds(float pulseWidth) {
-    if (!this->attached()) {
-        //ASSERT(0);
-        return;
-    }
-
-    pulseWidth = constrain(pulseWidth, this->minPW, this->maxPW);
-    pwmWrite(this->pin, US_TO_COMPARE_F(pulseWidth));
-}
-
 uint16 Servo::readMicroseconds() const {
     if (!this->attached()) {
         //ASSERT(0);
@@ -164,18 +133,6 @@ uint16 Servo::readMicroseconds() const {
                                        PIN_MAP[this->pin].TimerChannel);
 
     return COMPARE_TO_US(compare);
-}
-
-float Servo::readMicroseconds_f() const {
-    if (!this->attached()) {
-        //ASSERT(0);
-        return 0;
-    }
-		
-    uint16 compare = timer_get_compare(PIN_MAP[this->pin].TIMx,
-                                       PIN_MAP[this->pin].TimerChannel);
-
-    return COMPARE_TO_US_F(compare);
 }
 
 void Servo::resetFields(void) {

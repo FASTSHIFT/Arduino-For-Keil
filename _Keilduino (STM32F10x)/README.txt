@@ -60,3 +60,4 @@
 //Upgrade   2018.12.10 V_6.1 补充Arduino.h和timer.c
 //Upgrade   2019.1.26  V_6.2 更新Core核心库，支持"一键"超频(使用SysClock_Init配置主频)，在Tone库中添加参数合法性判断
 //Upgrade   2019.2.5   V_6.3 Arduino.h已包含WString.h和HardwareSerial.h 
+//Upgrade   2019.3.22  V_6.4 更新Tone库参数合法性判断顺序，为SysTick设置最高中断优先级，防止被其他中断打断(非常重要!)

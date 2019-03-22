@@ -1,4 +1,4 @@
-﻿// Picopixel by Sebastian Weber.  A tiny font
+// Picopixel by Sebastian Weber.  A tiny font
 // with all characters within a 6 pixel height.
 
 const uint8_t PicopixelBitmaps[] PROGMEM = {

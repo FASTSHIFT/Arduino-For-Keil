@@ -1,4 +1,4 @@
-﻿/**
+/**
 ** The original 3x5 font is licensed under the 3-clause BSD license:
 **
 ** Copyright 1999 Brian J. Swetland

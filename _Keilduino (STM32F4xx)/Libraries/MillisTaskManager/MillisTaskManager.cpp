@@ -1,115 +1,215 @@
 #include "MillisTaskManager.h"
 
-void NullFunction()//空函数
+/**
+  * @brief  初始化任务列表
+  * @param  TaskNum_MAX_Set:设定任务列表总长度
+  * @retval 无
+  */
+MillisTaskManager::MillisTaskManager(TaskNum_t TaskNum_MAX_Set)
 {
+    if(TaskList != 0) delete TaskList;//清空列表
+    TaskList = new MillisTaskManager_TypeDef[TaskNum_MAX_Set];//为任务列表申请内存
+    TaskNum_MAX = TaskNum_MAX_Set;//记录任务列表总长度
+
+    for(TaskNum_t i = 0; i < TaskNum_MAX; i++)//初始化任务列表，清零
+        TaskClear(i);
 }
 
-
-//用途：初始化任务列表
-//参数: (设定任务列表总长度)
-MillisTaskManager::MillisTaskManager(uint8_t TaskNum_MAX_Set)
+/**
+  * @brief  调度器析构，释放任务列表内存
+  * @param  无
+  * @retval 无
+  */
+MillisTaskManager::~MillisTaskManager()
 {
-	if(TaskList != NULL) delete TaskList;//清空列表
-	TaskList = new MillisTaskManager_TypeDef[TaskNum_MAX_Set];//为任务列表申请内存
-	TaskNum_MAX = TaskNum_MAX_Set;//记录任务列表总长度
-	
-	for(uint8_t i = 0; i < TaskNum_MAX; i++)//初始化任务列表，清零
-	{
-		TaskClear(i);
-	}
+    if(TaskList != 0) delete TaskList;
 }
 
-//用途：不带越界判断地清除一个任务，private权限
-//参数: (任务注册的位置)
-void MillisTaskManager::TaskClear(uint8_t FuncPos)
+/**
+  * @brief  不带越界判断地清除一个任务(private)
+  * @param  ID:任务ID
+  * @retval 无
+  */
+void MillisTaskManager::TaskClear(TaskNum_t ID)
 {
-	TaskList[FuncPos].Function = NullFunction;
-	TaskList[FuncPos].State = 0;
-	TaskList[FuncPos].IntervalTime = 0;
-	TaskList[FuncPos].TimePoint = 0;
+    TaskList[ID].Function = 0;
+    TaskList[ID].State = false;
+    TaskList[ID].IntervalTime = 0;
+    TaskList[ID].TimePoint = 0;
 }
 
-//用途：在任务列表内的一个位置注册一个任务，设定间隔执行时间
-//参数: (任务注册地址，任务函数指针，时间设定(毫秒))
-int16_t MillisTaskManager::TaskRegister(uint8_t FuncPos, void_TaskFunction_t Function, uint32_t TimeSetMs, uint8_t TaskState)
+/**
+  * @brief  在任务列表内的一个位置注册一个任务，设定间隔执行时间
+  * @param  ID:任务ID
+  * @param  Function:任务函数指针
+  * @param  TimeSetMs:时间设定(毫秒)
+  * @param  TaskState:任务开关
+  * @retval true:成功 ; false:失败
+  */
+bool MillisTaskManager::TaskRegister(TaskNum_t ID, void_TaskFunction_t Function, uint32_t TimeSetMs, bool TaskState)
 {
-	if(FuncPos < TaskNum_MAX)//判断是否越界
-	{
-		TaskList[FuncPos].Function = Function;//注册函数指针
-		TaskList[FuncPos].State = TaskState;//初始状态设定
-		TaskList[FuncPos].IntervalTime = TimeSetMs;//注册时间
-		return FuncPos;//如果注册成功，返回注册地址
-	}
-	return -1;//如果注册失败，返回-1
+    if(ID < TaskNum_MAX)//判断是否越界
+    {
+        TaskList[ID].Function = Function;//注册函数指针
+        TaskList[ID].State = TaskState;//初始状态设定
+        TaskList[ID].IntervalTime = TimeSetMs;//注册时间
+        return true;//注册成功
+    }
+    else return false;//注册失败
 }
 
-//用途：注销任务
-//参数: (任务函数指针)
-int16_t MillisTaskManager::TaskLogout(void_TaskFunction_t Function)
+/**
+  * @brief  寻找任务,返回任务注册地址
+  * @param  Function:任务函数指针
+  * @param  *ID:任务注册地址指针
+  * @retval true:成功 ; false:失败
+  */
+bool MillisTaskManager::TaskFind(void_TaskFunction_t Function, TaskNum_t *ID)
 {
-	for(uint8_t i = 0; i < TaskNum_MAX; i++)
-	{
-		if(TaskList[i].Function == Function)
-		{
-			TaskClear(i);
-			return i;
-		}
-	}
-	return -1;
+    for(TaskNum_t i = 0; i < TaskNum_MAX; i++)
+    {
+        if(TaskList[i].Function == Function)
+        {
+            *ID = i;
+            return true;
+        }
+    }
+    return false;
 }
 
-//用途：注销任务
-//参数: (任务注册的位置)
-int16_t MillisTaskManager::TaskLogout(uint8_t FuncPos)
+/**
+  * @brief  寻找任务,返回任务注册地址
+  * @param  Function:任务函数指针
+  * @retval -1:未找到 ; 其他:任务ID
+  */
+int16_t MillisTaskManager::TaskFind(void_TaskFunction_t Function)
 {
-	if(FuncPos < TaskNum_MAX)
-	{
-		TaskClear(FuncPos);
-		return FuncPos;
-	}
-	return -1;
+    TaskNum_t id;
+    if(TaskFind(Function, &id) == true)
+        return id;
+    else
+        return -1;
 }
 
-//用途：任务状态控制
-//参数: (任务函数指针，任务状态)
-int16_t MillisTaskManager::TaskCtrl(void_TaskFunction_t Function, uint8_t TaskState)
+/**
+  * @brief  注销任务
+  * @param  Function:任务函数指针
+  * @retval true:成功 ; false:失败
+  */
+bool MillisTaskManager::TaskLogout(void_TaskFunction_t Function)
 {
-	for(uint8_t i = 0; i < TaskNum_MAX; i++)
-	{
-		if(TaskList[i].Function == Function)
-		{
-			TaskList[i].State = TaskState;
-			return i;
-		}
-	}
-	return -1;
+    TaskNum_t ID = 0;
+    if(TaskFind(Function, &ID) == true)
+    {
+        TaskClear(ID);
+        return true;
+    }
+    else
+        return false;
 }
 
-//用途：任务状态控制
-//参数: (任务注册的位置，任务状态)
-int16_t MillisTaskManager::TaskCtrl(uint8_t FuncPos, uint8_t TaskState)
+/**
+  * @brief  注销任务
+  * @param  ID:任务ID
+  * @retval true:成功 ; false:失败
+  */
+bool MillisTaskManager::TaskLogout(TaskNum_t ID)
 {
-	if(FuncPos < TaskNum_MAX)
-	{
-		TaskList[FuncPos].State = TaskState;
-		return FuncPos;
-	}
-	return -1;
+    if(ID < TaskNum_MAX)
+    {
+        TaskClear(ID);
+        return true;
+    }
+    else
+        return false;
 }
 
-//用途：执行调度器
-//参数: (一个精确到毫秒的系统时钟)
+/**
+  * @brief  任务状态控制
+  * @param  Function:任务函数指针
+  * @param  TaskState:任务状态
+  * @retval true:成功 ; false:失败
+  */
+bool MillisTaskManager::TaskStateCtrl(void_TaskFunction_t Function, bool TaskState)
+{
+    TaskNum_t ID = 0;
+    if(TaskFind(Function, &ID) == true)
+    {
+        TaskList[ID].State = TaskState;
+        return true;
+    }
+    else
+        return false;
+}
+
+/**
+  * @brief  任务状态控制
+  * @param  ID:任务ID
+  * @param  TaskState:任务状态
+  * @retval true:成功 ; false:失败
+  */
+bool MillisTaskManager::TaskStateCtrl(TaskNum_t ID, bool TaskState)
+{
+    if(ID < TaskNum_MAX)
+    {
+        TaskList[ID].State = TaskState;
+        return true;
+    }
+    else
+        return false;
+}
+
+/**
+  * @brief  任务间隔时间设置
+  * @param  Function:任务函数指针
+  * @param  TaskState:任务间隔时间
+  * @retval true:成功 ; false:失败
+  */
+bool MillisTaskManager::TaskSetIntervalTime(void_TaskFunction_t Function, uint32_t TimeSetMs)
+{
+    TaskNum_t ID = 0;
+    if(TaskFind(Function, &ID) == true)
+    {
+        TaskList[ID].IntervalTime = TimeSetMs;
+        return true;
+    }
+    else
+        return false;
+}
+
+/**
+  * @brief  任务间隔时间设置
+  * @param  ID:任务注册的位置
+  * @param  TaskState:任务间隔时间
+  * @retval true:成功 ; false:失败
+  */
+bool MillisTaskManager::TaskSetIntervalTime(TaskNum_t ID, uint32_t TimeSetMs)
+{
+    if(ID < TaskNum_MAX)
+    {
+        TaskList[ID].IntervalTime = TimeSetMs;
+        return true;
+    }
+    else
+        return false;
+}
+
+/**
+  * @brief  调度器(内核)
+  * @param  MillisSeed:提供一个精确到毫秒的系统时钟变量
+  * @retval 无
+  */
 void MillisTaskManager::Running(uint32_t MillisSeed)
 {
-	for(uint8_t i = 0; i < TaskNum_MAX; i++)//遍历任务列表
-	{
-		if(TaskList[i].Function != NullFunction)//判断是否为空函数
-		{
-			if(TaskList[i].State && MillisSeed >= TaskList[i].TimePoint)//判断是否运行任务，是否到达触发时间点
-			{
-				TaskList[i].TimePoint = MillisSeed + TaskList[i].IntervalTime;//标记下一个时间点
-				TaskList[i].Function();//执行任务
-			}
-		}
-	}
+    for(TaskNum_t i = 0; i < TaskNum_MAX; i++)//遍历任务列表
+    {
+        if(TaskList[i].Function)//判断是否为空函数
+        {
+            if(TaskList[i].State && (MillisSeed - TaskList[i].TimePoint >= TaskList[i].IntervalTime))//判断是否运行任务，是否到达触发时间点
+            {
+                TaskList[i].TimePoint = MillisSeed;//标记下一个时间点
+                TaskList[i].Function();//执行任务
+            }
+        }
+    }
 }

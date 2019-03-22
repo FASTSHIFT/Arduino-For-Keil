@@ -1,7 +1,7 @@
 #ifndef __EEPROM_H
 #define __EEPROM_H
 
-#include "Arduino.h"
+#include "stm32f10x.h"
 
 // HACK ALERT. This definition may not match your processor
 // To Do. Work out correct value for EEPROM_PAGE_SIZE on the STM32F103CT6 etc 

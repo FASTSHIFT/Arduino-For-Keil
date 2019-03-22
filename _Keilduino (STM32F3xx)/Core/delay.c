@@ -12,9 +12,9 @@ volatile static uint32_t System_ms = 0;
   */
 void Delay_Init(void)
 {
-    SysTick->LOAD = SysTick_LoadValue;
-    SysTick->VAL  = 0x00;
-    SysTick->CTRL |= 0x07;
+    SystemCoreClockUpdate();
+    SysTick_Config(SysTick_LoadValue);
+    NVIC_SetPriority(SysTick_IRQn, 0);
 }
 
 /**
