@@ -21,43 +21,36 @@ All text above, and the splash screen must be included in any redistribution
 #include "Arduino.h"
 #define WIRE_WRITE Wire.write
 
-//#if ARDUINO >= 100
-// #include "Arduino.h"
-// #define WIRE_WRITE Wire.write
-//#else
-// #include "WProgram.h"
-//  #define WIRE_WRITE Wire.send
-//#endif
-
 #if defined(__SAM3X8E__)
-typedef volatile RwReg PortReg;
-typedef uint32_t PortMask;
-#define HAVE_PORTREG
-#elif defined(ARDUINO_ARCH_SAMD)
-// not supported
-#elif defined(ESP8266) || defined(ESP32) || defined(ARDUINO_STM32_FEATHER) || defined(__arc__)
-typedef volatile uint32_t PortReg;
-typedef uint32_t PortMask;
+    typedef volatile RwReg PortReg;
+    typedef uint32_t PortMask;
+    #define HAVE_PORTREG
+    #elif defined(ARDUINO_ARCH_SAMD)
+    // not supported
+    #elif defined(ESP8266) || defined(ESP32) || defined(ARDUINO_STM32_FEATHER) || defined(__arc__)
+    typedef volatile uint32_t PortReg;
+    typedef uint32_t PortMask;
 #elif defined(__AVR__)
-typedef volatile uint8_t PortReg;
-typedef uint8_t PortMask;
-#define HAVE_PORTREG
+    typedef volatile uint8_t PortReg;
+    typedef uint8_t PortMask;
+    #define HAVE_PORTREG
 #elif defined(__STM32__)
-typedef GPIO_TypeDef PortReg;
-typedef uint16_t PortMask;
-#define HAVE_PORTREG
+    #if defined(__STM32F0__)
+        typedef volatile uint16_t PortReg;
+    #else
+        typedef volatile uint32_t PortReg;
+    #endif     
+    typedef uint16_t PortMask;
+    #define HAVE_PORTREG
 #else
-// chances are its 32 bit so assume that
-typedef volatile uint32_t PortReg;
-typedef uint32_t PortMask;
+    // chances are its 32 bit so assume that
+    typedef volatile uint32_t PortReg;
+    typedef uint32_t PortMask;
 #endif
 
-#include <SPI.h>
 #include <Adafruit_GFX.h>
 
-#define BLACK 0
-#define WHITE 1
-#define INVERSE 2
+#define SSD1306_SPI SPI
 
 #define SSD1306_I2C_ADDRESS   0x3C  // 011110+SA0+RW - 0x3C or 0x3D
 // Address for 128x32 is 0x3C
@@ -148,6 +141,10 @@ typedef uint32_t PortMask;
 #define SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL 0x29
 #define SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL 0x2A
 
+#define BLACK 0
+#define WHITE 1
+#define INVERSE 2
+
 class Adafruit_SSD1306 : public Adafruit_GFX {
 public:
     Adafruit_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RST, int8_t CS);
@@ -169,17 +166,30 @@ public:
     void stopscroll(void);
 
     void dim(boolean dim);
+    uint8_t *getBuffer();
 
     virtual void drawPixel(int16_t x, int16_t y, uint16_t color);
 
     virtual void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
     virtual void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
+    
+    typedef enum {
+        Black = BLACK,
+        Blue = WHITE,
+        Red = WHITE,
+        Green = WHITE,
+        Cyan = WHITE,
+        Magenta = WHITE,
+        Yellow = WHITE,
+        White = WHITE,
+    } Color_Type;
 
 private:
     int8_t _i2caddr, _vccstate, sid, sclk, dc, rst, cs;
     void fastSPIwrite(uint8_t c);
 
     boolean hwSPI;
+    uint8_t buffer[SSD1306_LCDHEIGHT * SSD1306_LCDWIDTH / 8];
 #ifdef HAVE_PORTREG
     PortReg *mosiport, *clkport, *csport, *dcport;
     PortMask mosipinmask, clkpinmask, cspinmask, dcpinmask;

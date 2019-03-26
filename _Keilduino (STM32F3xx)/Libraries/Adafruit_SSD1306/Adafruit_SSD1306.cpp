@@ -108,6 +108,11 @@ static uint8_t buffer[SSD1306_LCDHEIGHT * SSD1306_LCDWIDTH / 8] = {
 #endif
 };
 
+uint8_t* Adafruit_SSD1306::getBuffer()
+{
+    return this->buffer;
+}
+
 #define ssd1306_swap(a, b) { int16_t t = a; a = b; b = t; }
 
 // the most basic function, set a single pixel
@@ -198,7 +203,7 @@ void Adafruit_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr, bool reset) {
 #endif
         }
         if (hwSPI) {
-            SPI.begin(8000000, MSBFIRST, SPI_MODE0);
+            SSD1306_SPI.begin(8000000, MSBFIRST, SPI_MODE0);
 #ifdef SPI_HAS_TRANSACTION
             SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
 #else
@@ -323,15 +328,9 @@ void Adafruit_SSD1306::ssd1306_command(uint8_t c) {
     {
         // SPI
 #if defined(HAVE_PORTREG)
-	#if defined(__STM32__)
-		GPIO_HIGH(csport,cspinmask);
-        GPIO_LOW(dcport,dcpinmask);
-        GPIO_LOW(csport,cspinmask);
-	#else
         *csport |= cspinmask;
         *dcport &= ~dcpinmask;
         *csport &= ~cspinmask;
-	#endif
 #else
         digitalWrite(cs, HIGH);
         digitalWrite(dc, LOW);
@@ -339,11 +338,7 @@ void Adafruit_SSD1306::ssd1306_command(uint8_t c) {
 #endif
         fastSPIwrite(c);
 #ifdef HAVE_PORTREG
-	#if defined(__STM32__)
-		GPIO_HIGH(csport,cspinmask);
-	#else
         *csport |= cspinmask;
-	#endif
 #else
         digitalWrite(cs, HIGH);
 #endif
@@ -469,15 +464,10 @@ void Adafruit_SSD1306::display(void) {
     {
         // SPI
 #ifdef HAVE_PORTREG
-	#if defined(__STM32__)
-		GPIO_HIGH(csport,cspinmask);
-        GPIO_HIGH(dcport,dcpinmask);
-        GPIO_LOW(csport,cspinmask);
-	#else
+
         *csport |= cspinmask;
         *dcport |= dcpinmask;
-        *csport &= ~cspinmask;
-	#endif		
+        *csport &= ~cspinmask;		
 #else
         digitalWrite(cs, HIGH);
         digitalWrite(dc, HIGH);
@@ -488,11 +478,7 @@ void Adafruit_SSD1306::display(void) {
             fastSPIwrite(buffer[i]);
         }
 #ifdef HAVE_PORTREG
-	#if defined(__STM32__)
-		GPIO_HIGH(csport,cspinmask);
-	#else
         *csport |= cspinmask;
-	#endif
 #else
         digitalWrite(cs, HIGH);
 #endif
@@ -535,21 +521,14 @@ void Adafruit_SSD1306::clearDisplay(void) {
 inline void Adafruit_SSD1306::fastSPIwrite(uint8_t d) {
 
     if(hwSPI) {
-        (void)SPI.transfer(d);
+        (void)SSD1306_SPI.transfer(d);
     } else {
         for(uint8_t bit = 0x80; bit; bit >>= 1) {
 #ifdef HAVE_PORTREG
-	#if defined(__STM32__)
-			GPIO_LOW(clkport,clkpinmask);
-            if(d & bit) GPIO_HIGH(mosiport,mosipinmask);
-            else        GPIO_LOW(mosiport,mosipinmask);
-            GPIO_HIGH(clkport,clkpinmask);
-	#else
             *clkport &= ~clkpinmask;
             if(d & bit) *mosiport |=  mosipinmask;
             else        *mosiport &= ~mosipinmask;
             *clkport |=  clkpinmask;
-	#endif	
 #else
             digitalWrite(sclk, LOW);
             if(d & bit) digitalWrite(sid, HIGH);
