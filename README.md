@@ -56,7 +56,7 @@ void loop()
 #### 输入输出:
 ```C
 	pinMode(Pin,Mode);
-	attachInterrrupt(Pin,Trigger_Mode,Callback_function);	
+	attachInterrrupt(Pin,Callback_function,Trigger_Mode);	
 	digitalWrite(Pin,State);
 	digitalRead(Pin);
 	analogRead(Pin);
