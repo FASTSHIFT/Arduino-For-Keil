@@ -1,8 +1,11 @@
 #include "timer.h"
 
-enum {TIMER1, TIMER2, TIMER3, TIMER4, TIMER5, TIMER6, TIMER7, TIMER8};//定时器编号枚举
+typedef enum {
+    TIMER1, TIMER2, TIMER3, TIMER4, TIMER5, TIMER6, TIMER7, TIMER8,
+    TIMER9, TIMER10, TIMER11, TIMER12, TIMER13, TIMER14, TIMER_MAX
+}TIMER_Type;//定时器编号枚举
 
-static Timer_CallbackFunction_t TIMx_Function[8] = {0, 0, 0, 0, 0, 0, 0, 0};//定时中断回调函数指针数组
+static Timer_CallbackFunction_t TIMx_Function[TIMER_MAX] = {0};//定时中断回调函数指针数组
 
 /**
   * @brief  定时中断配置
@@ -42,6 +45,9 @@ void TimerSet_InterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t InterruptTime_us)
         arr = InterruptTime_us / 20000;
         psc = InterruptTime_us / arr;
     }
+    
+    if(!IS_APB2_TIM(TIMx))
+        psc /= 2;
 	
 	TIMx->ARR = arr - 1;
     TIMx->PSC = psc - 1;
@@ -65,7 +71,7 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     uint32_t arr, psc;
     uint32_t RCC_APBxPeriph_TIMx;
     uint8_t TIMx_IRQn;
-    uint8_t TimerNum;
+    TIMER_Type TimerNum;
 
     if(!IS_TIM_ALL_PERIPH(TIMx))return;
 
@@ -99,36 +105,49 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
         RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM5;
         TIMx_IRQn = TIM5_IRQn;
     }
-//	else if(TIMx == TIM6)
-//	{
-//		TimerNum = TIMER6;
-//		RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM6;
-//		TIMx_IRQn = TIM6_IRQn;
-//	}
+#ifdef TIM6_IRQn
+	else if(TIMx == TIM6)
+	{
+		TimerNum = TIMER6;
+		RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM6;
+		TIMx_IRQn = TIM6_IRQn;
+	}
+#endif
+#ifdef TIM7_IRQn
     else if(TIMx == TIM7)
     {
         TimerNum = TIMER5;
         RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM7;
         TIMx_IRQn = TIM7_IRQn;
     }
+#endif
+#ifdef TIM8_UP_TIM13_IRQn
     else if(TIMx == TIM8)
     {
         TimerNum = TIMER8;
         RCC_APBxPeriph_TIMx = RCC_APB2Periph_TIM8;
         TIMx_IRQn = TIM8_UP_TIM13_IRQn;
     }
+#endif
+#ifdef TIM1_BRK_TIM9_IRQn
+    else if(TIMx == TIM9)
+    {
+        TimerNum = TIMER9;
+        RCC_APBxPeriph_TIMx = RCC_APB2Periph_TIM9;
+        TIMx_IRQn = TIM1_BRK_TIM9_IRQn;
+    }
+#endif
 
     TIMx_Function[TimerNum] = function;//Callback Functions
 
     //Enable PeriphClock
-    if(TIMx == TIM1 || TIMx == TIM8)
+    if(IS_APB2_TIM(TIMx))
     {
         RCC_APB2PeriphClockCmd(RCC_APBxPeriph_TIMx, ENABLE);
     }
     else
     {
         RCC_APB1PeriphClockCmd(RCC_APBxPeriph_TIMx, ENABLE); //时钟使能
-        InterruptTime_us /= 2;
     }
 
     //Calculate TIM_Period and TIM_Prescaler
@@ -148,6 +167,9 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
         arr = InterruptTime_us / 20000;
         psc = InterruptTime_us / arr;
     }
+    
+    if(!IS_APB2_TIM(TIMx))
+        psc /= 2;
 
     TIM_DeInit(TIMx);
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
@@ -277,5 +299,10 @@ void TIM8_UP_TIM13_IRQHandler(void)
     {
         if(TIMx_Function[TIMER8]) TIMx_Function[TIMER8]();
         TIM_ClearITPendingBit(TIM8, TIM_IT_Update);
+    }
+    if (TIM_GetITStatus(TIM13, TIM_IT_Update) != RESET)
+    {
+        if(TIMx_Function[TIMER13]) TIMx_Function[TIMER13]();
+        TIM_ClearITPendingBit(TIM13, TIM_IT_Update);
     }
 }

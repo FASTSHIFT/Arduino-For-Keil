@@ -1,9 +1,9 @@
-﻿#include "adc.h"
+#include "adc.h"
 #include "Arduino.h"
 
 uint16_t ADC_ConvertedValue[ADC_CHANNEL_NUM];//ADC DMA Buffer
 
-void ADCx_GPIO_Config(void)
+static void ADCx_GPIO_Config(void)
 {
     pinMode(PA0, INPUT_ANALOG);
     pinMode(PA1, INPUT_ANALOG);
@@ -15,150 +15,132 @@ void ADCx_GPIO_Config(void)
     pinMode(PA7, INPUT_ANALOG);
 }
 
-/*void ADCx_DMA_Config(void)
+static void Init_ADC_DMA()
 {
-	DMA_InitTypeDef DMA_InitStructure;
-	ADC_InitTypeDef ADC_InitStructure;
+    DMA_InitTypeDef DMA_InitStructure;
 
-	// 打开DMA时钟
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-	// 打开ADC时钟
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    DMA_DeInit(DMA2_Stream0);
 
-	// 复位DMA控制器
-	DMA_DeInit(DMA1_Channel1);
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE); /*DMA2的时钟使能*/
+    while(DMA_GetCmdStatus(DMA2_Stream0) != DISABLE); /*等待DMA可以配置*/
 
-	// 配置 DMA 初始化结构体
-	// 外设基址为：ADC 数据寄存器地址
-	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t) (&( ADC1->DR));
 
-	// 存储器地址
-	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)ADC_ConvertedValue;
-
-	// 数据源来自外设
-	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-
-	// 缓冲区大小，应该等于数据目的地的大小
-	DMA_InitStructure.DMA_BufferSize = ADC_CHANNEL_NUM;
-
-	// 外设寄存器只有一个，地址不用递增
-	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-
-	// 存储器地址递增
-	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-
-	// 外设数据大小为半字，即两个字节
-	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
-
-	// 内存数据大小也为半字，跟外设数据大小相同
-	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
-
-	// 循环传输模式
-	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
-
-	// DMA 传输通道优先级为高，当使用一个DMA通道时，优先级设置不影响
-	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
-
-	// 禁止存储器到存储器模式，因为是从外设到存储器
-	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
-
-	// 初始化DMA
-	DMA_Init(DMA1_Channel1, &DMA_InitStructure);
-
-	// 使能 DMA 通道
-	DMA_Cmd(DMA1_Channel1 , ENABLE);
-
-	// ADC 模式配置
-	// 只使用一个ADC，属于单模式
-	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
-
-	// 扫描模式
-	ADC_InitStructure.ADC_ScanConvMode = ENABLE ;
-
-	// 连续转换模式
-	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
-
-	// 不用外部触发转换，软件开启即可
-	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
-
-	// 转换结果右对齐
-	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-
-	// 转换通道个数
-	ADC_InitStructure.ADC_NbrOfChannel = ADC_CHANNEL_NUM;
-
-	// 初始化ADC
-	ADC_Init(ADC1, &ADC_InitStructure);
-
-	// 配置ADC时钟CLK2的8分频，即9MHz
-	RCC_ADCCLKConfig(RCC_PCLK2_Div8);
-
-	// 配置ADC 通道的转换顺序和采样时间
-	ADC_RegularChannelConfig(ADC1, PIN_MAP[PA0].ADC_Channel, 1, ADC_SampleTime_55Cycles5);
-	ADC_RegularChannelConfig(ADC1, PIN_MAP[PA1].ADC_Channel, 2, ADC_SampleTime_55Cycles5);
-	ADC_RegularChannelConfig(ADC1, PIN_MAP[PA2].ADC_Channel, 3, ADC_SampleTime_55Cycles5);
-	ADC_RegularChannelConfig(ADC1, PIN_MAP[PA3].ADC_Channel, 4, ADC_SampleTime_55Cycles5);
-	ADC_RegularChannelConfig(ADC1, PIN_MAP[PA4].ADC_Channel, 5, ADC_SampleTime_55Cycles5);
-	ADC_RegularChannelConfig(ADC1, PIN_MAP[PA5].ADC_Channel, 6, ADC_SampleTime_55Cycles5);
-	ADC_RegularChannelConfig(ADC1, PIN_MAP[PA6].ADC_Channel, 7, ADC_SampleTime_55Cycles5);
-	ADC_RegularChannelConfig(ADC1, PIN_MAP[PA7].ADC_Channel, 8, ADC_SampleTime_55Cycles5);
-
-	// 使能ADC DMA 请求
-	ADC_DMACmd(ADC1, ENABLE);
-
-	// 开启ADC ，并开始转换
-	ADC_Cmd(ADC1, ENABLE);
-
-	// 初始化ADC 校准寄存器
-	ADC_ResetCalibration(ADC1);
-	// 等待校准寄存器初始化完成
-	while(ADC_GetResetCalibrationStatus(ADC1));
-
-	// ADC开始校准
-	ADC_StartCalibration(ADC1);
-	// 等待校准完成
-	while(ADC_GetCalibrationStatus(ADC1));
-
-	// 由于没有采用外部触发，所以使用软件触发ADC转换
-	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+    DMA_InitStructure.DMA_Channel = DMA_Channel_0;/*DMA通道0*/
+    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR; /*外设地址*/
+    DMA_InitStructure.DMA_Memory0BaseAddr    = (uint32_t)ADC_ConvertedValue;/*存取器地址*/
+    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;/*方向从外设到内存*/
+    DMA_InitStructure.DMA_BufferSize = ADC_CHANNEL_NUM;/*数据传输的数量为3*/
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;/*地址不增加*/
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;/*地址不增加*/
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;/*数据长度半字*/
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;/*数据长度半字*/
+    DMA_InitStructure.DMA_Priority = DMA_Priority_High;/*高优先级*/
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;/*循环模式*/
+    DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;/*禁止FIFO*/
+    DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_HalfFull;/*FIFO的值*/
+    DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;/*单次传输*/
+    DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;/*单次传输*/
+    DMA_Init(DMA2_Stream0, &DMA_InitStructure); /**/
+    DMA_Cmd(DMA2_Stream0, ENABLE); //开启DMA传输
 }
+
+void ADCx_DMA_Config()
+{
+    ADC_CommonInitTypeDef ADC_CommonInitStructure;
+    ADC_InitTypeDef ADC_InitStructure;
+
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE); //使能ADC时钟
+
+    Init_ADC_DMA();
+
+    ADC_DeInit();
+    
+    /*通用控制寄存器的配置*/
+    ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;/*DMA失能*/
+    ADC_CommonInitStructure.ADC_Mode          = ADC_Mode_Independent;/*独立模式*/
+    ADC_CommonInitStructure.ADC_Prescaler     = ADC_Prescaler_Div6;/*APB2的4分频 即84/4=21M*/
+    ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_20Cycles;/*两个采样阶段的延时5个时钟*/
+    ADC_CommonInit(&ADC_CommonInitStructure);/*初始化*/
+    /*初始化ADC1*/
+    ADC_InitStructure.ADC_Resolution  = ADC_Resolution_12b;/*12位模式*/
+    ADC_InitStructure.ADC_ScanConvMode = ENABLE;/*扫描模式*/
+    ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;/*连续转换*/
+    ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;/*禁止触发检测 使用软件触发*/
+    ADC_InitStructure.ADC_DataAlign    = ADC_DataAlign_Right;/*右对齐*/
+    ADC_InitStructure.ADC_NbrOfConversion = ADC_CHANNEL_NUM;/*只使用1通道 规则通为1*/
+    ADC_Init(ADC1, &ADC_InitStructure); /*初始化*/
+
+    ADC_Cmd(ADC1, ENABLE); /*开启转换*/
+    
+    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA0].ADC_Channel, 1, ADC_SampleTime_480Cycles);
+    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA1].ADC_Channel, 2, ADC_SampleTime_480Cycles);
+    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA2].ADC_Channel, 3, ADC_SampleTime_480Cycles);
+    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA3].ADC_Channel, 4, ADC_SampleTime_480Cycles);
+    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA4].ADC_Channel, 5, ADC_SampleTime_480Cycles);
+    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA5].ADC_Channel, 6, ADC_SampleTime_480Cycles);
+    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA6].ADC_Channel, 7, ADC_SampleTime_480Cycles);
+    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA7].ADC_Channel, 8, ADC_SampleTime_480Cycles);
+    
+    ADC_DMARequestAfterLastTransferCmd(ADC1, ENABLE); //源数据变化时开启DMA传输
+    ADC_DMACmd(ADC1, ENABLE); //使能ADC传输 /*设置规则通道2 1个序列 采样时间 */
+    ADC_SoftwareStartConv(ADC1);/*启动软件转换*/
+}
+
+
 
 void ADCx_DMA_Init(void)
 {
-	ADCx_GPIO_Config();
+    ADCx_GPIO_Config();
 	ADCx_DMA_Config();
-}*/
+}
 
 uint16_t Get_DMA_ADC(uint8_t Channel)
 {
-    return ADC_ConvertedValue[Channel];
+    if(Channel < ADC_CHANNEL_NUM)
+        return ADC_ConvertedValue[Channel];
+    else
+        return 0;
 }
 
 void ADCx_Init(ADC_TypeDef* ADCx)
 {
-    ADC_InitTypeDef ADC_InitStructure;
     ADC_CommonInitTypeDef ADC_CommonInitStructure;
+    ADC_InitTypeDef       ADC_InitStructure;
+    
+    ADCx_GPIO_Config();
 
-    if(ADCx == ADC1)RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE );
-    else if(ADCx == ADC2)RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE );
-    else if(ADCx == ADC3)RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC3, ENABLE );
-    else return;
+    if(ADCx == ADC1)
+    {
+        RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC1, DISABLE);	//复位结束
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE); //使能ADC1时钟
+    }
+    else if(ADCx == ADC2)
+    {
+        RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC2, DISABLE);	//复位结束
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE); //使能ADC2时钟
+    }
+    else if(ADCx == ADC3)
+    {
+        RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC3, DISABLE);	//复位结束
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC3, ENABLE); //使能ADC3时钟
+    }
 
-    ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;  //不用DMA
-    ADC_CommonInitStructure.ADC_Mode = ADC_Mode_Independent;  //独立采样
-    ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div8;  //速度尽可能低
-    ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_20Cycles;
-    ADC_CommonInit(&ADC_CommonInitStructure);
+    ADC_CommonInitStructure.ADC_Mode = ADC_Mode_Independent;//独立模式
+    ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_5Cycles;//两个采样阶段之间的延迟5个时钟
+    ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled; //DMA失能
+    ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div4;//预分频4分频。ADCCLK=PCLK2/4=84/4=21Mhz,ADC时钟最好不要超过36Mhz
+    ADC_CommonInit(&ADC_CommonInitStructure);//初始化
 
-    ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
-    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConvEdge_None;
-    ADC_InitStructure.ADC_NbrOfConversion = 1;  //通道数
-    ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
-    ADC_InitStructure.ADC_ScanConvMode = DISABLE;
-    ADC_Init(ADCx, &ADC_InitStructure);
+    ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;//12位模式
+    ADC_InitStructure.ADC_ScanConvMode = DISABLE;//非扫描模式
+    ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;//关闭连续转换
+    ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;//禁止触发检测，使用软件触发
+    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;//右对齐
+    ADC_InitStructure.ADC_NbrOfConversion = 1;//1个转换在规则序列中 也就是只转换规则序列1
+    ADC_Init(ADCx, &ADC_InitStructure);//ADC初始化
 
-    ADC_Cmd(ADCx, ENABLE);
+
+    ADC_Cmd(ADCx, ENABLE);//开启AD转换器
 }
 
 uint16_t Get_ADC(ADC_TypeDef* ADCx, uint8_t ADC_Channel)

@@ -1,10 +1,10 @@
 #include "FileGroup.h"
 
-void setup(){
+void setup() {
 	// put your setup code here, to run once:
 }
 
-void loop(){
+void loop() {
 	// put your main code here, to run repeatedly:
 }
 
@@ -17,7 +17,7 @@ int main(void)
 {
 	Delay_Init();
 	ADCx_Init(ADC1);
-//	ADCx_DMA_Init();
+	//ADCx_DMA_Init();
 	setup();
 	for(;;)loop();
 }

@@ -17,7 +17,8 @@ void pinMode(uint8_t Pin, pinMode_TypeDef pinMode_x)
             GPIO_Speed_100MHz
         );
     }
-    else if(pinMode_x == PWM)PWM_Init(Pin, 1000, 2000);
+    else if(pinMode_x == PWM)
+        PWM_Init(Pin, 1000, 8000);
 }
 
 /**
@@ -69,12 +70,7 @@ uint16_t analogRead(uint8_t Pin)
   */
 uint16_t analogRead_DMA(uint8_t Pin)
 {
-//	if(IS_ADC_PIN(Pin))
-//	{
-//		return Get_DMA_ADC(PIN_MAP[Pin].ADC_Channel);
-//	}
-//	else
-    return 0;
+	return (IS_ADC_PIN(Pin) ? Get_DMA_ADC(PIN_MAP[Pin].ADC_Channel) : 0);
 }
 
 /**

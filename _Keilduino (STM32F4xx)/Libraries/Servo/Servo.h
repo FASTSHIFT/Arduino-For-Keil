@@ -151,8 +151,8 @@ public:
      *
      * @see Servo::attach()
      */
-    void write(int angle);
-
+    void write(int degrees);
+	void write(float degrees);
 
     /**
      * Get the servomotor's target angle, in degrees.  This will
@@ -161,6 +161,7 @@ public:
      * @see Servo::attach()
      */
     int read() const;
+	float read_f() const;
 
     /**
      * @brief Set the pulse width, in microseconds.
@@ -173,6 +174,7 @@ public:
      * @see Servo::attach()
      */
     void writeMicroseconds(uint16 pulseWidth);
+	void writeMicroseconds(float pulseWidth);
 
     /**
      * Get the current pulse width, in microseconds.  This will
@@ -181,6 +183,7 @@ public:
      * @see Servo::attach()
      */
     uint16 readMicroseconds() const;
+	float readMicroseconds_f() const;
 
 private:
     int16 pin;
