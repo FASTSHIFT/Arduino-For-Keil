@@ -20,7 +20,7 @@
 
 >一般用法可以直接参照[Arduino语法](https://www.arduino.cc/reference/en/)，高级用法参考工程自带的Example文件夹内的示例。
 
-支持与寄存器和标准外设库的函数混用:
+支持与寄存器和标准外设库的函数混用，**提升运行效率**:
 ```C
 void setup()
 {
