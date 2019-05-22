@@ -20,7 +20,7 @@ int main(void)
 //  SysClock_Init(F_CPU_128MHz);
     Delay_Init();
     ADCx_Init(ADC1);
-//	ADCx_DMA_Init();
+// 	ADCx_DMA_Init();
     setup();
     for(;;)loop();
 }
