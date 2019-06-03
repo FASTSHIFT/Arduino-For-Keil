@@ -9,7 +9,7 @@ extern "C" {
 
 #define Get_TIM_PinSourcex(Pin) Get_Pinx(Pin)
 
-uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint16_t PWM_Frequency);
+uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint32_t PWM_Frequency);
 uint16_t pwmWrite(uint8_t Pin, uint16_t val);
 void TIMx_Init(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChannel);
 uint8_t Get_TIMx_GPIO_AF_x(uint8_t Pin);

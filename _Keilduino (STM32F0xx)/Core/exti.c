@@ -1,8 +1,7 @@
 #include "exti.h"
 #include "gpio.h"
 
-EXTI_CallbackFunction_t EXTI_Function[16] = {0, 0, 0, 0, 0, 0, 0, 0,
-											0, 0, 0, 0, 0, 0, 0, 0};
+EXTI_CallbackFunction_t EXTI_Function[16] = {0};
 //外部中断回调函数指针数组
 
 /**

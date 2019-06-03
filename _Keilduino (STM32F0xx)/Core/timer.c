@@ -3,10 +3,11 @@
 
 typedef enum {
     TIMER1, TIMER2, TIMER3,
-    TIMER14, TIMER15, TIMER16, TIMER17
+    TIMER14, TIMER15, TIMER16, TIMER17,
+    TIMER_MAX
 } TIMERx_TypeDef;
 
-Timer_CallbackFunction_t TIM_Function[] = {0, 0, 0, 0, 0, 0, 0};
+static Timer_CallbackFunction_t TIM_Function[TIMER_MAX] = {0};
 
 void TimerSet(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function)
 {

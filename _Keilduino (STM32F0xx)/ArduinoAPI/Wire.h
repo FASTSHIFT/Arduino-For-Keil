@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
  * The MIT License
  *
  * Copyright (c) 2010 LeafLabs LLC.
@@ -47,8 +47,13 @@
  * On the Maple, let the default pins be in the same location as the Arduino
  * pins
  */
+#ifndef SDA_Pin
 #define SDA_Pin PB7
+#endif
+
+#ifndef SCL_Pin
 #define SCL_Pin PB6
+#endif
 
 #define SOFT_STANDARD 27
 #define SOFT_FAST 0

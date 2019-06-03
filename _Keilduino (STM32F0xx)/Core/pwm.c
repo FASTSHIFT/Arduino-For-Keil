@@ -72,11 +72,14 @@ void TIMx_Init(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChann
 			PWM_Frequency: PWM频率
   * @retval 引脚对应的定时器通道
   */
-uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint16_t PWM_Frequency)
+uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint32_t PWM_Frequency)
 {
     uint32_t arr, psc;
 
     if(!IS_PWM_PIN(Pin))return 0;
+    
+    if(PWM_DutyCycle == 0 || PWM_Frequency == 0 || (PWM_DutyCycle * PWM_Frequency) > F_CPU)
+        return 0;
 
     pinMode(Pin, OUTPUT_AF);
     GPIO_PinAFConfig(PIN_MAP[Pin].GPIOx, Get_Pinx(Pin), Get_TIMx_GPIO_AF_x(Pin));

@@ -20,7 +20,6 @@ extern "C" {
 #include "delay.h"
 
 #define __STM32__
-#define ARDUINO 111
 
 #define PI 3.1415926535897932384626433832795
 #define HALF_PI 1.5707963267948966192313216916398

@@ -15,9 +15,9 @@ void loop() {
   */
 int main(void)
 {
-	Delay_Init();
-	ADCx_Init(ADC1);
+    Delay_Init();
+    ADCx_Init(ADC1);
 //	ADCx_DMA_Init();
-	setup();
-	for(;;)loop();
+    setup();
+    for(;;)loop();
 }
