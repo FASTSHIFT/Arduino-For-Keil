@@ -58,12 +58,14 @@ extern "C" {
 #define cli() __set_PRIMASK(1)
 #define interrupts() sei()
 #define noInterrupts() cli()
+#define yield()
 
-#define analogInPinToBit(Pin)	(Pin)
-#define digitalPinToPort(Pin)	(PIN_MAP[Pin].GPIOx)
-#define digitalPinToBitMask(Pin) (PIN_MAP[Pin].GPIO_Pin_x)
-#define portInputRegister(Port)  (&(Port->IDR))
-#define portOutputRegister(Port) (&(Port->ODR))
+#define analogInPinToBit(Pin)       (Pin)
+#define digitalPinToInterrupt(Pin)  (Pin)
+#define digitalPinToPort(Pin)       (PIN_MAP[Pin].GPIOx)
+#define digitalPinToBitMask(Pin)    (PIN_MAP[Pin].GPIO_Pin_x)
+#define portInputRegister(Port)     (&(Port->IDR))
+#define portOutputRegister(Port)    (&(Port->ODR))
 
 #define NOT_A_PIN 0
 #define NOT_A_PORT 0
@@ -83,7 +85,7 @@ void digitalWrite(uint8_t Pin, uint8_t val);
 uint8_t digitalRead(uint8_t Pin);
 uint16_t analogWrite(uint8_t Pin, uint16_t val);
 uint16_t analogRead(uint8_t Pin);
-uint16_t analogRead_DMA(uint8_t Pin);
+uint16_t analogRead_DMA(uint8_t DMA_Channel);
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value);
 uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder);
 uint32_t pulseIn(uint32_t Pin, uint32_t State, uint32_t Timeout);

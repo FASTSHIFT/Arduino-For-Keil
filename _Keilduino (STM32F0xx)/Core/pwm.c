@@ -128,7 +128,7 @@ uint8_t Get_TIMx_GPIO_AF_x(uint8_t Pin)
     uint8_t GPIO_AF_x = 0;
     TIM_TypeDef* TIMx = PIN_MAP[Pin].TIMx;
 
-    if(TIMx == TIM14 || TIMx == TIM15 || TIMx == TIM17)
+    if(/*TIMx == TIM14 || */TIMx == TIM15 || TIMx == TIM17)
     {
         GPIO_AF_x = GPIO_AF_0;
     }

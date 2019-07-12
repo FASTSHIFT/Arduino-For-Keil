@@ -27,6 +27,9 @@
 #include "Servo.h"
 #include "timer.h"
 
+#define __Map(x,in_min,in_max,out_min,out_max) \
+    ((x-in_min)*(out_max-out_min)/(in_max-in_min)+out_min)
+
 // 20 millisecond period config.  For a 1-based prescaler,
 //
 //    (prescaler * overflow / CYC_MSEC) msec = 1 timer cycle = 20 msec
@@ -34,22 +37,19 @@
 //
 // This picks the smallest prescaler that allows an overflow < 2^16.
 #define MAX_OVERFLOW    ((1 << 16) - 1)
-#define CYC_MSEC        (1000 * CYCLES_PER_MICROSECOND)
-#define TAU_MSEC        20
-#define TAU_USEC        (TAU_MSEC * 1000)
+#define CYC_MSEC        (1000.0f * CYCLES_PER_MICROSECOND)
+#define TAU_MSEC        2.0f//@Frequency = 500Hz
+#define TAU_USEC        (TAU_MSEC * 1000.0f)
 #define TAU_CYC         (TAU_MSEC * CYC_MSEC)
-#define SERVO_PRESCALER (TAU_CYC / MAX_OVERFLOW + 1)
-#define SERVO_OVERFLOW  ((uint16)round((double)TAU_CYC / SERVO_PRESCALER))
-    
-#define __Map(x,in_min,in_max,out_min,out_max) \
-    ((x-in_min)*(out_max-out_min)/(in_max-in_min)+out_min)
+#define SERVO_PRESCALER (uint16_t)(TAU_CYC / (double)MAX_OVERFLOW + 1.0f)
+#define SERVO_OVERFLOW  ((uint16_t)round((double)TAU_CYC / SERVO_PRESCALER))
 
 // Unit conversions
-#define US_TO_COMPARE(us) ((uint16)__Map((us), 0, TAU_USEC, 0, SERVO_OVERFLOW))
-#define COMPARE_TO_US(c)  ((uint32)__Map((c), 0, SERVO_OVERFLOW, 0, TAU_USEC))
-#define ANGLE_TO_US(a)    ((uint16)(__Map((a), this->minAngle, this->maxAngle, \
+#define US_TO_COMPARE(us) ((uint16_t)__Map((us), 0, TAU_USEC, 0, SERVO_OVERFLOW))
+#define COMPARE_TO_US(c)  ((uint32_t)__Map((c), 0, SERVO_OVERFLOW, 0, TAU_USEC))
+#define ANGLE_TO_US(a)    ((uint16_t)(__Map((a), this->minAngle, this->maxAngle, \
                                         this->minPW, this->maxPW)))
-#define US_TO_ANGLE(us)   ((int16)(__Map((us), this->minPW, this->maxPW,  \
+#define US_TO_ANGLE(us)   ((int16_t)(__Map((us), this->minPW, this->maxPW,  \
                                        this->minAngle, this->maxAngle)))
 										   
 // Unit conversions	(float)

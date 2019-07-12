@@ -64,13 +64,20 @@ uint16_t analogRead(uint8_t Pin)
 }
 
 /**
-  * @brief  从指定的模拟引脚读取值(DMA方式)
-  * @param  Pin: 引脚编号
+  * @brief  从指定的DMA通道读取值(DMA方式)
+  * @param  DMA_Channel: DMA通道编号
   * @retval ADC值：0~4095
   */
-uint16_t analogRead_DMA(uint8_t Pin)
+uint16_t analogRead_DMA(uint8_t DMA_Channel)
 {
-	return (IS_ADC_PIN(Pin) ? Get_DMA_ADC(PIN_MAP[Pin].ADC_Channel) : 0);
+    if(DMA_Channel < (sizeof(ADC_ConvertedValue) / sizeof(ADC_ConvertedValue[0])))
+    {
+        return(Get_DMA_ADC(DMA_Channel));
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /**

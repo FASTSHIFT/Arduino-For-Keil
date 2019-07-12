@@ -8,7 +8,7 @@
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
 
-#define __KEILDUINO__ 180
+#define __KEILDUINO__ 190
 
 #define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRRL  = PIN_MAP[Pin].GPIO_Pin_x)
 #define digitalWrite_LOW(Pin)  (PIN_MAP[Pin].GPIOx->BSRRH  = PIN_MAP[Pin].GPIO_Pin_x)
