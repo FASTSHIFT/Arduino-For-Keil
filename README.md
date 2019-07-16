@@ -16,7 +16,7 @@
 
 [STM32F4xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F4xx_DFP.1.0.8.pack)
 
-> **注意** 如果您已经安装了更高版本的pack，需要使用keil自带的包管理器将高版本的pack进行Remove
+**注意** 如果您已经安装了更高版本的pack，需要使用keil自带的包管理器将高版本的pack进行Remove
 
 >这个项目大部分核心函数是重构的，有部分源代码参考了 [stm32duino](https://github.com/stm32duino)。
 
