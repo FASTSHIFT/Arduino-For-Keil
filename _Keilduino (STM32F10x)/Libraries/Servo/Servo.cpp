@@ -34,7 +34,7 @@
 // This picks the smallest prescaler that allows an overflow < 2^16.
 #define MAX_OVERFLOW    ((1 << 16) - 1)
 #define CYC_MSEC        (1000.0 * CYCLES_PER_MICROSECOND)
-#define TAU_MSEC        2.0
+#define TAU_MSEC        20
 #define TAU_USEC        (TAU_MSEC * 1000.0)
 #define TAU_CYC         (TAU_MSEC * CYC_MSEC)
 #define SERVO_PRESCALER (uint16_t)(TAU_CYC / (float)MAX_OVERFLOW + 1.0)

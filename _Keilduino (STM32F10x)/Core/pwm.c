@@ -1,4 +1,5 @@
 #include "pwm.h"
+#include "timer.h"
 #include "Arduino.h"
 
 /**
@@ -9,19 +10,15 @@
   * @param  TimerChannel: 定时器通道
   * @retval 无
   */
-void TIMx_Init(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChannel)
+void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChannel)
 {
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
     TIM_OCInitTypeDef  TIM_OCInitStructure;
+    
+    if(!IS_TIM_ALL_PERIPH(TIMx))
+        return;
 
-    if(TIMx == TIM1)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
-    else if(TIMx == TIM2)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-    else if(TIMx == TIM3)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-    else if(TIMx == TIM4)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
-    else if(TIMx == TIM5)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
-    else if(TIMx == TIM6)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
-    else if(TIMx == TIM7)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
-	else if(TIMx == TIM8)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);
+    TimerClockCmd(TIMx, ENABLE);
 
     TIM_TimeBaseStructure.TIM_Period = arr;
     TIM_TimeBaseStructure.TIM_Prescaler = psc;
@@ -85,7 +82,7 @@ uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint32_t PWM_Frequency)
     pinMode(Pin, GPIO_Mode_AF_PP);
     
     TIM_Cmd(PIN_MAP[Pin].TIMx, DISABLE);
-    TIMx_Init(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
+    TIMx_OCxInit(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
     return PIN_MAP[Pin].TimerChannel;
 }
 
@@ -113,6 +110,32 @@ uint16_t pwmWrite(uint8_t Pin, uint16_t val)
         break;
     }
     return val;
+}
+
+/**
+  * @brief  获取TIM_Channel编号
+  * @param  Pin: 引脚编号
+  * @retval TIM_Channel_x
+  */
+uint16_t Get_TIM_Channel_x(uint8_t Pin)
+{
+    uint16_t TIM_Channel_x = 0xFFFF;
+    switch(PIN_MAP[Pin].TimerChannel)
+    {
+    case 1:
+        TIM_Channel_x = TIM_Channel_1;
+        break;
+    case 2:
+        TIM_Channel_x = TIM_Channel_2;
+        break;
+    case 3:
+        TIM_Channel_x = TIM_Channel_3;
+        break;
+    case 4:
+        TIM_Channel_x = TIM_Channel_4;
+        break;
+    }
+    return TIM_Channel_x;
 }
 
 /**

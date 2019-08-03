@@ -12,8 +12,9 @@ extern "C" {
 	
 typedef void(*Timer_CallbackFunction_t)(void);
 
-void TimerSet(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function);
+void TimerClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState);
 void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function, uint8_t PreemptionPriority, uint8_t SubPriority);
+void TimerSet(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function);
 void TimerSet_InterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t InterruptTime_us);
 	
 #ifdef __cplusplus

@@ -22,9 +22,7 @@
 #ifndef String_class_h
 #define String_class_h
 #ifdef __cplusplus
-extern "C"
-{
-
+extern "C"{
 #include "dtostrf.h"
 #include <stdlib.h>
 #include <string.h>
@@ -32,6 +30,7 @@ extern "C"
 }
 #include "itoa.h"
 
+#define SUPPORTS_WSTRING_SPRINTF
 
 //#include <pgmspace.h>
 
@@ -263,6 +262,9 @@ public:
     // parsing/conversion
     long toInt(void) const;
     float toFloat(void) const;
+    
+    //sprintf support
+    int sprintf(const char *__restrict __format, ...);
 
 protected:
     char *buffer;	        // the actual char array

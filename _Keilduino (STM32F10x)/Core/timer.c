@@ -1,12 +1,95 @@
 #include "timer.h"
 
+/*定时器编号枚举*/
 typedef enum {
     TIMER1, TIMER2, TIMER3, TIMER4, 
     TIMER5, TIMER6, TIMER7, TIMER8, 
     TIMER_MAX
-}TIMERx_Type;//定时器编号枚举
+}TIMERx_Type;
 
-static Timer_CallbackFunction_t TIMx_Function[TIMER_MAX] = {0};//定时中断回调函数指针数组
+/*定时中断回调函数指针数组*/
+static Timer_CallbackFunction_t TIMx_Function[TIMER_MAX] = {0};
+
+/**
+  * @brief  启动或关闭指定定时器的时钟
+  * @param  TIMx:定时器地址
+  * @param  NewState: ENABLE启动，DISABLE关闭
+  * @retval 无
+  */
+void TimerClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState)
+{
+    if (TIMx == TIM1)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, NewState);
+    }
+    else if (TIMx == TIM2)
+    {
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, NewState);
+    }
+    else if (TIMx == TIM3)
+    {
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, NewState);
+    }
+    else if (TIMx == TIM4)
+    {
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, NewState);
+    }
+    else if (TIMx == TIM5)
+    {
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, NewState);
+    }
+    else if (TIMx == TIM6)
+    {
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, NewState);
+    }
+    else if (TIMx == TIM7)
+    {
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, NewState);
+    }
+    else if (TIMx == TIM8)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, NewState);
+    }
+    else if (TIMx == TIM9)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM9, NewState);
+    }
+    else if (TIMx == TIM10)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM10, NewState);
+    }
+    else if (TIMx == TIM11)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM11, NewState);
+    }
+    else if (TIMx == TIM12)
+    {
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM12, NewState);
+    }
+    else if (TIMx == TIM13)
+    {
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM13, NewState);
+    }
+    else if (TIMx == TIM14)
+    {
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM14, NewState);
+    }
+    else if (TIMx == TIM15)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM15, NewState);
+    }
+    else if (TIMx == TIM16)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM16, NewState);
+    }
+    else
+    {
+        if (TIMx == TIM17)
+        {
+            RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM17, NewState);
+        }
+    }
+}
 
 /**
   * @brief  定时中断配置
@@ -73,59 +156,51 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     NVIC_InitTypeDef NVIC_InitStructure;
 
     uint32_t arr, psc;
-    uint32_t RCC_APBxPeriph_TIMx;
     IRQn_Type TIMx_IRQn;
     TIMERx_Type TIMERx;
 
-    if(!IS_TIM_ALL_PERIPH(TIMx))return;
+    if(!IS_TIM_ALL_PERIPH(TIMx))
+        return;
 
     if(TIMx == TIM1)
     {
         TIMERx = TIMER1;
-        RCC_APBxPeriph_TIMx = RCC_APB2Periph_TIM1;
         TIMx_IRQn = TIM1_UP_IRQn;
     }
     else if(TIMx == TIM2)
     {
         TIMERx = TIMER2;
-        RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM2;
         TIMx_IRQn = TIM2_IRQn;
     }
     else if(TIMx == TIM3)
     {
         TIMERx = TIMER3;
-        RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM3;
         TIMx_IRQn = TIM3_IRQn;
     }
     else if(TIMx == TIM4)
     {
         TIMERx = TIMER4;
-        RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM4;
         TIMx_IRQn = TIM4_IRQn;
     }
 #ifdef STM32F10X_HD
     else if(TIMx == TIM5)
     {
         TIMERx = TIMER5;
-        RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM5;
         TIMx_IRQn = TIM5_IRQn;
     }
     else if(TIMx == TIM6)
     {
         TIMERx = TIMER6;
-        RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM6;
         TIMx_IRQn = TIM6_IRQn;
     }
     else if(TIMx == TIM7)
     {
         TIMERx = TIMER5;
-        RCC_APBxPeriph_TIMx = RCC_APB1Periph_TIM7;
         TIMx_IRQn = TIM7_IRQn;
     }
     else if(TIMx == TIM8)
     {
         TIMERx = TIMER8;
-        RCC_APBxPeriph_TIMx = RCC_APB2Periph_TIM8;
         TIMx_IRQn = TIM8_UP_IRQn;
     }
 #endif
@@ -152,14 +227,7 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
 
     //Enable PeriphClock
     TIM_DeInit(TIMx);
-    if(TIMx == TIM1 || TIMx == TIM8)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APBxPeriph_TIMx, ENABLE);
-    }
-    else
-    {
-        RCC_APB1PeriphClockCmd(RCC_APBxPeriph_TIMx, ENABLE); //时钟使能
-    }
+    TimerClockCmd(TIMx, ENABLE);
     
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
     TIM_TimeBaseStructure.TIM_Period = arr - 1; 		//设置在下一个更新事件装入活动的自动重装载寄存器周期的值

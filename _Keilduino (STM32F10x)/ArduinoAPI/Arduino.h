@@ -51,6 +51,8 @@ extern "C" {
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
+#define _BV(bit) (1<<bit)
+
 #define delay(ms) delay_ms(ms)
 #define delayMicroseconds(us) delay_us(us)
 
