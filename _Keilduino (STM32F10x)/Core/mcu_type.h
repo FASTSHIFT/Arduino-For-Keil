@@ -28,7 +28,7 @@ typedef struct{
     uint32_t RCC_PLLMul_x;
 }SysClock_TypeDef;
 
-#define __KEILDUINO__ 680
+#define __KEILDUINO__ 690
 #define __STM32F1__
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
@@ -52,6 +52,7 @@ typedef enum
     INPUT_PULLUP = GPIO_Mode_IPU,
     INPUT_PULLDOWN = GPIO_Mode_IPD,
     INPUT_ANALOG = GPIO_Mode_AIN,
+    INPUT_ANALOG_DMA,
     PWM
 } pinMode_Type;
 
