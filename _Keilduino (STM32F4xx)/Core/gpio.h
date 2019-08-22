@@ -44,6 +44,7 @@ typedef enum
     INPUT_PULLUP,
     INPUT_PULLDOWN,
     INPUT_ANALOG,
+    INPUT_ANALOG_DMA,
     OUTPUT,
     OUTPUT_OPEN_DRAIN,
     OUTPUT_AF,
@@ -52,9 +53,9 @@ typedef enum
 
 extern const PinInfo_TypeDef PIN_MAP[PIN_MAX];
 
-#define IS_ADC_PIN(Pin) (PIN_MAP[Pin].ADCx != NULL && PIN_MAP[Pin].ADC_Channel  != ADC_Channel_X)
-#define IS_PWM_PIN(Pin) (PIN_MAP[Pin].TIMx != NULL && PIN_MAP[Pin].TimerChannel != 0)
-#define IS_PIN(Pin)     (Pin<PIN_MAX)
+#define IS_PIN(Pin)     (Pin < PIN_MAX)
+#define IS_ADC_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].ADCx != NULL && PIN_MAP[Pin].ADC_Channel  != ADC_Channel_X)
+#define IS_PWM_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].TIMx != NULL && PIN_MAP[Pin].TimerChannel != 0)
 
 void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMode_x, GPIOSpeed_TypeDef GPIO_Speed_x);
 void GPIO_JTAG_Disable(void);

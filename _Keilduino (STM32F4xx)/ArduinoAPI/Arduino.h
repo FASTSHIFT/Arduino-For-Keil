@@ -1,5 +1,5 @@
 #ifndef __ARDUINO_H
-#define	__ARDUINO_H
+#define __ARDUINO_H
 
 //访问 https://www.arduino.cc/reference/en/ 获得更完整的语法介绍
 
@@ -12,7 +12,7 @@ extern "C" {
 #include "binary.h"
 #include "avr/pgmspace.h"
 
-#include "mcu_type.h"	
+#include "mcu_type.h"
 #include "gpio.h"
 #include "pwm.h"
 #include "adc.h"
@@ -51,6 +51,8 @@ extern "C" {
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
+#define _BV(bit) (1<<bit)
+
 #define delay(x) delay_ms(x)
 #define delayMicroseconds(x) delay_us(x)
 
@@ -78,12 +80,12 @@ typedef enum {LOW = 0, HIGH = !LOW} GPIO_State_Type;
 typedef enum {Off = 0, On = !Off} _Switch_Type;
 typedef enum {OFF = 0, ON = !OFF} _SWITCH_Type;
 
-void pinMode(uint8_t Pin, pinMode_TypeDef GPIO_Mode_x);
+void pinMode(uint8_t Pin, pinMode_TypeDef pinMode_x);
 void digitalWrite(uint8_t Pin, uint8_t val);
 uint8_t digitalRead(uint8_t Pin);
 uint16_t analogWrite(uint8_t Pin, uint16_t val);
 uint16_t analogRead(uint8_t Pin);
-uint16_t analogRead_DMA(uint8_t DMA_Channel);
+uint16_t analogRead_DMA(uint8_t Pin);
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value);
 uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder);
 uint32_t pulseIn(uint32_t Pin, uint32_t State, uint32_t Timeout);
@@ -96,9 +98,9 @@ double fmap(double x, double in_min, double in_max, double out_min, double out_m
 #endif
 
 #ifdef __cplusplus
-	#include "WCharacter.h"
-	#include "WString.h"
-	#include "HardwareSerial.h"
+#include "WCharacter.h"
+#include "WString.h"
+#include "HardwareSerial.h"
 #endif
 
 #endif

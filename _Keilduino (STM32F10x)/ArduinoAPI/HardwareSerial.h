@@ -13,9 +13,9 @@
 typedef uint16_t rx_buffer_index_t;
 typedef void(*USART_CallbackFunction_t)(void);
 
-#define Get_USART_WordLength_x(SERIAL_x) 	((uint16_t)(SERIAL_x&0xF000))
-#define Get_USART_Parity_x(SERIAL_x) 		((uint16_t)(SERIAL_x&0x0F00))
-#define Get_USART_StopBits_x(SERIAL_x) 		((uint16_t)((SERIAL_x&0x00F0)<<8))
+#define Get_USART_WordLength_x(SERIAL_x)    ((uint16_t)(SERIAL_x&0xF000))
+#define Get_USART_Parity_x(SERIAL_x)        ((uint16_t)(SERIAL_x&0x0F00))
+#define Get_USART_StopBits_x(SERIAL_x)      ((uint16_t)((SERIAL_x&0x00F0)<<8))
 
 typedef enum {
     SERIAL_8N1 = USART_WordLength_8b | USART_Parity_No | (USART_StopBits_1 >> 8),

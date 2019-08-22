@@ -20,7 +20,7 @@ void pinMode(uint8_t Pin, uint8_t GPIO_Mode_x)
             GPIO_Speed_50MHz
         );
     }
-	else if(GPIO_Mode_x == INPUT_ANALOG_DMA)
+    else if(GPIO_Mode_x == INPUT_ANALOG_DMA)
     {
         if(!IS_ADC_PIN(Pin))
             return;
@@ -28,7 +28,7 @@ void pinMode(uint8_t Pin, uint8_t GPIO_Mode_x)
         pinMode(Pin, INPUT_ANALOG);
         ADC_DMA_Register(PIN_MAP[Pin].ADC_Channel);
     }
-	else if(GPIO_Mode_x == PWM)
+    else if(GPIO_Mode_x == PWM)
     {
         PWM_Init(Pin, 1000, 10000);
     }

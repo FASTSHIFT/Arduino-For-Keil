@@ -26,6 +26,9 @@
 
 #include "Servo.h"
 
+#define __Map(x,in_min,in_max,out_min,out_max) \
+    ((x-in_min)*(out_max-out_min)/(in_max-in_min)+out_min)
+
 // 20 millisecond period config.  For a 1-based prescaler,
 //
 //    (prescaler * overflow / CYC_MSEC) msec = 1 timer cycle = 20 msec
@@ -33,27 +36,27 @@
 //
 // This picks the smallest prescaler that allows an overflow < 2^16.
 #define MAX_OVERFLOW    ((1 << 16) - 1)
-#define CYC_MSEC        (1000.0 * CYCLES_PER_MICROSECOND)
-#define TAU_MSEC        20
-#define TAU_USEC        (TAU_MSEC * 1000.0)
+#define CYC_MSEC        (1000.0f * CYCLES_PER_MICROSECOND)
+#define TAU_MSEC        20.0f//@Frequency = 50Hz
+#define TAU_USEC        (TAU_MSEC * 1000.0f)
 #define TAU_CYC         (TAU_MSEC * CYC_MSEC)
-#define SERVO_PRESCALER (uint16_t)(TAU_CYC / (float)MAX_OVERFLOW + 1.0)
+#define SERVO_PRESCALER (uint16_t)(TAU_CYC / (double)MAX_OVERFLOW + 1.0f)
 #define SERVO_OVERFLOW  ((uint16_t)round((double)TAU_CYC / SERVO_PRESCALER))
 
 // Unit conversions
-#define US_TO_COMPARE(us) ((uint16)map((us), 0, TAU_USEC, 0, SERVO_OVERFLOW))
-#define COMPARE_TO_US(c)  ((uint32)map((c), 0, SERVO_OVERFLOW, 0, TAU_USEC))
-#define ANGLE_TO_US(a)    ((uint16)(map((a), this->minAngle, this->maxAngle, \
+#define US_TO_COMPARE(us) ((uint16_t)__Map((us), 0, TAU_USEC, 0, SERVO_OVERFLOW))
+#define COMPARE_TO_US(c)  ((uint32_t)__Map((c), 0, SERVO_OVERFLOW, 0, TAU_USEC))
+#define ANGLE_TO_US(a)    ((uint16_t)(__Map((a), this->minAngle, this->maxAngle, \
                                         this->minPW, this->maxPW)))
-#define US_TO_ANGLE(us)   ((int16)(map((us), this->minPW, this->maxPW,  \
+#define US_TO_ANGLE(us)   ((int16_t)(__Map((us), this->minPW, this->maxPW,  \
                                        this->minAngle, this->maxAngle)))
 										   
 // Unit conversions	(float)
-#define US_TO_COMPARE_F(us) ((float)fmap((us), 0, TAU_USEC, 0, SERVO_OVERFLOW))
-#define COMPARE_TO_US_F(c)  ((float)fmap((c), 0, SERVO_OVERFLOW, 0, TAU_USEC))
-#define ANGLE_TO_US_F(a)    ((float)(fmap((a), this->minAngle, this->maxAngle, \
+#define US_TO_COMPARE_F(us) ((float)__Map((us), 0, TAU_USEC, 0, SERVO_OVERFLOW))
+#define COMPARE_TO_US_F(c)  ((float)__Map((c), 0, SERVO_OVERFLOW, 0, TAU_USEC))
+#define ANGLE_TO_US_F(a)    ((float)(__Map((a), this->minAngle, this->maxAngle, \
                                         this->minPW, this->maxPW)))
-#define US_TO_ANGLE_F(us)   ((float)(fmap((us), this->minPW, this->maxPW,  \
+#define US_TO_ANGLE_F(us)   ((float)(__Map((us), this->minPW, this->maxPW,  \
                                        this->minAngle, this->maxAngle)))
 
 Servo::Servo() {

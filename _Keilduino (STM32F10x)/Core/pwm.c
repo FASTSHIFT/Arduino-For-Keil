@@ -29,12 +29,13 @@ void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerCh
     TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
     TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
     TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
-	if(TIMx == TIM1 || TIMx == TIM8)
-	{
-		TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
-		TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCNIdleState_Reset;
-		TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Disable;
-	}
+    if(TIMx == TIM1 || TIMx == TIM8)
+    {
+        TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
+        TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCNIdleState_Reset;
+        TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Disable;
+    }
+    
     switch(TimerChannel)
     {
     case 1:
@@ -56,7 +57,11 @@ void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerCh
     }
 
     TIM_Cmd(TIMx, ENABLE);
-    if(TIMx == TIM1 || TIMx == TIM8)TIM_CtrlPWMOutputs(TIMx, ENABLE);
+    
+    if(TIMx == TIM1 || TIMx == TIM8)
+    {
+        TIM_CtrlPWMOutputs(TIMx, ENABLE);
+    }
 }
 
 /**

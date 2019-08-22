@@ -1,68 +1,142 @@
 #include "ButtonEvent.h"
 
+using namespace ButtonEvent_Type;
+
+#ifdef ARDUINO
+#include "Arduino.h"
+#define ButtonEvent_Millis millis()
+#else
+#error "Please set the system clock used by ButtonEvent"
+#endif
+
+#define TriggerEvent(event) if(event)event()
+
+/**
+  * @brief  按键事件构造函数
+  * @param  NoPressState: 按键未按下时的状态
+  * @param  LongPressTimeMs_Set: 按键长按触发超时设置
+  * @retval 无
+  */
 ButtonEvent::ButtonEvent(bool NoPressState, uint16_t LongPressTimeMs_Set)
 {
     Button_NoPressState = NoPressState;
     LongPressTimeMs = LongPressTimeMs_Set;
 
-    PressKey_TimePoint = 0;
-    IS_Pressed = false;
-
-    ButtonPress_Function = 0;
-    ButtonLongPress_Function = 0;
-    ButtonRelease_Function = 0;
-    ButtonChange_Function = 0;
+    LastClick_TimePoint = LastPress_TimePoint = 0;
+    IS_LongPressed = IS_Pressed = false;
+	
+	for(uint8_t i = 0; i < EVENT_MAX; i++)
+	{
+		CallbackGroup[i] = 0;
+	}
 }
 
-//说明：按键按下事件绑定
-//参数：回调函数指针
-void ButtonEvent::EventAttach_Press(ButtonEvent_FuncCallBack_t Function)
+/**
+  * @brief  按键按下事件绑定
+  * @param  Function: 回调函数指针
+  * @retval 无
+  */
+void ButtonEvent::EventAttach_Press(ButtonEvent_FuncCallBack_t function)
 {
-    ButtonPress_Function = Function;
+    CallbackGroup[EVENT_ButtonPress] = function;
 }
 
-//说明：按键长按事件绑定
-//参数：回调函数指针
-void ButtonEvent::EventAttach_LongPress(ButtonEvent_FuncCallBack_t Function)
+/**
+  * @brief  按键长按事件绑定
+  * @param  Function: 回调函数指针
+  * @retval 无
+  */
+void ButtonEvent::EventAttach_LongPress(ButtonEvent_FuncCallBack_t function)
 {
-    ButtonLongPress_Function = Function;
+	CallbackGroup[EVENT_ButtonLongPress] = function;
 }
 
-//说明：按键释放事件绑定
-//参数：回调函数指针
-void ButtonEvent::EventAttach_Release(ButtonEvent_FuncCallBack_t Function)
+/**
+  * @brief  按键释放事件绑定
+  * @param  Function: 回调函数指针
+  * @retval 无
+  */
+void ButtonEvent::EventAttach_Release(ButtonEvent_FuncCallBack_t function)
 {
-    ButtonRelease_Function = Function;
+	CallbackGroup[EVENT_ButtonRelease] = function;
 }
 
-//说明：按键改变事件绑定
-//参数：回调函数指针
-void ButtonEvent::EventAttach_Change(ButtonEvent_FuncCallBack_t Function)
+/**
+  * @brief  按键状态改变事件绑定
+  * @param  Function: 回调函数指针
+  * @retval 无
+  */
+void ButtonEvent::EventAttach_Change(ButtonEvent_FuncCallBack_t function)
 {
-    ButtonChange_Function = Function;
+	CallbackGroup[EVENT_ButtonChange] = function;
 }
 
-//说明：直接读取按键
-//参数：按键IO的状态
-void ButtonEvent::Read_NoWipeShake(uint8_t NowState)
+/**
+  * @brief  按键状态改变事件绑定
+  * @param  event: 事件类型
+  * @param  Function: 回调函数指针
+  * @retval 无
+  */
+void ButtonEvent::EventAttach(Event_Type event, ButtonEvent_FuncCallBack_t function)
+{
+	if(event != EVENT_MAX)
+	{
+		CallbackGroup[event] = function;
+	}
+}
+
+/**
+  * @brief  获取连按次数
+  * @param  无
+  * @retval 连按次数
+  */
+uint8_t ButtonEvent::GetClickCnt()
+{
+	uint8_t cnt = Click_Cnt + 1;
+	Click_Cnt = 0;
+	return cnt;
+}
+
+/**
+  * @brief  监控事件，建议扫描周期10ms
+  * @param  NowState: 当前按键引脚状态
+  * @retval 无
+  */
+void ButtonEvent::EventMonitor(uint8_t NowState)
 {
     if (!IS_Pressed && (NowState != Button_NoPressState))
     {
-        Button_NowState = IS_Pressed = true;
-        PressKey_TimePoint = millis() + LongPressTimeMs;
-        if(ButtonPress_Function) ButtonPress_Function();
-        if(ButtonChange_Function)ButtonChange_Function();
+        IS_Pressed = true;
+        Button_NowState = Press;
+        LastPress_TimePoint = ButtonEvent_Millis;
+		
+        TriggerEvent(CallbackGroup[EVENT_ButtonPress]);
+        TriggerEvent(CallbackGroup[EVENT_ButtonChange]);
     }
-    else if (IS_Pressed && millis() >= PressKey_TimePoint && (NowState != Button_NoPressState))
+    else if (IS_Pressed && ButtonEvent_Millis - LastPress_TimePoint > LongPressTimeMs && (NowState != Button_NoPressState))
     {
-        Button_NowState = 2;
-        if(ButtonLongPress_Function) ButtonLongPress_Function();
+        Button_NowState = LongPress;
+		if(!IS_LongPressed)
+		{
+			TriggerEvent(CallbackGroup[EVENT_ButtonLongPressOnce]);
+			IS_LongPressed = true;
+		}
+		TriggerEvent(CallbackGroup[EVENT_ButtonLongPress]);
     }
     else if (IS_Pressed && (NowState == Button_NoPressState))
     {
-        Button_NowState = IS_Pressed = false;
-        if(ButtonRelease_Function) ButtonRelease_Function();
-        if(ButtonChange_Function) ButtonChange_Function();
+        IS_LongPressed = IS_Pressed = false;
+        Button_NowState = NoPress;
+		LastClick_TimePoint = ButtonEvent_Millis;
+		
+		TriggerEvent(CallbackGroup[EVENT_ButtonRelease]);
+		TriggerEvent(CallbackGroup[EVENT_ButtonChange]);
     }
+	
+	if(IS_Pressed && ButtonEvent_Millis - LastClick_TimePoint < 200)
+	{
+		Click_Cnt++;
+		TriggerEvent(CallbackGroup[EVENT_ButtonDoubleClick]);
+	}
 }
 

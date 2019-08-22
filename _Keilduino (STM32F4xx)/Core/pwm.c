@@ -10,26 +10,15 @@
   * @param  TimerChannel: 定时器通道
   * @retval 无
   */
-void TIMx_Init(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChannel)
+void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChannel)
 {
-    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-    TIM_OCInitTypeDef  TIM_OCInitStructure;
-
-    if(TIMx == TIM1)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
-    else if(TIMx == TIM2)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-    else if(TIMx == TIM3)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-    else if(TIMx == TIM4)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
-    else if(TIMx == TIM5)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
-    else if(TIMx == TIM6)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
-    else if(TIMx == TIM7)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
-    else if(TIMx == TIM8)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);
-    else if(TIMx == TIM9)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM9, ENABLE);
-    else if(TIMx == TIM10)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM10, ENABLE);
-    else if(TIMx == TIM11)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM11, ENABLE);
-    else if(TIMx == TIM12)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM12, ENABLE);
-    else if(TIMx == TIM13)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM13, ENABLE);
-    else if(TIMx == TIM14)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM14, ENABLE);
-
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+    TIM_OCInitTypeDef TIM_OCInitStructure;
+    
+    if(!IS_TIM_ALL_PERIPH(TIMx))
+        return;
+    
+    TimerClockCmd(TIMx, ENABLE);
 
     TIM_TimeBaseStructure.TIM_Period = arr;
     TIM_TimeBaseStructure.TIM_Prescaler = psc;
@@ -95,7 +84,7 @@ uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint32_t PWM_Frequency)
         psc /= 2;
 
     TIM_Cmd(PIN_MAP[Pin].TIMx, DISABLE);
-    TIMx_Init(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
+    TIMx_OCxInit(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
     return PIN_MAP[Pin].TimerChannel;
 }
 

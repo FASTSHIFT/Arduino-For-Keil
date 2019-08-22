@@ -744,3 +744,29 @@ float String::toFloat(void) const
 	if (buffer) return float(atof(buffer));
 	return 0;
 }
+
+extern "C"{
+#include <stdio.h>
+#include <stdarg.h>
+}
+
+#ifdef SUPPORTS_WSTRING_SPRINTF
+
+#define SPRINTF_BUFFER_LENGTH 100
+
+// Work in progress to support printf.
+// Need to implement stream FILE to write individual chars to chosen serial port
+int String::sprintf (const char *__restrict __format, ...)
+{
+	char printf_buff[SPRINTF_BUFFER_LENGTH];
+
+	va_list args;
+ 	va_start(args, __format);
+	int ret_status = vsnprintf(printf_buff, sizeof(printf_buff), __format, args);
+	va_end(args);
+	copy(printf_buff,strlen(printf_buff));
+	
+	return ret_status;
+}
+
+#endif

@@ -31,7 +31,7 @@ typedef struct{
 #define __KEILDUINO__ 690
 #define __STM32F1__
 #define F_CPU SystemCoreClock
-#define CYCLES_PER_MICROSECOND	(F_CPU / 1000000U)
+#define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
 //*************** GPIO ***************//
 #define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRR = PIN_MAP[Pin].GPIO_Pin_x)
@@ -39,10 +39,10 @@ typedef struct{
 #define digitalRead_FAST(Pin) ((PIN_MAP[Pin].GPIOx->IDR  & PIN_MAP[Pin].GPIO_Pin_x)!=0)
 #define togglePin(Pin)         (PIN_MAP[Pin].GPIOx->ODR ^= PIN_MAP[Pin].GPIO_Pin_x)
 
-#define GPIO_HIGH(GPIOx,GPIO_Pin_x)		(GPIOx->BSRR = GPIO_Pin_x)
-#define GPIO_LOW(GPIOx,GPIO_Pin_x)   	(GPIOx->BRR  = GPIO_Pin_x)
+#define GPIO_HIGH(GPIOx,GPIO_Pin_x)     (GPIOx->BSRR = GPIO_Pin_x)
+#define GPIO_LOW(GPIOx,GPIO_Pin_x)      (GPIOx->BRR  = GPIO_Pin_x)
 #define GPIO_READ(GPIOx,GPIO_Pin_x)    ((GPIOx->IDR  & GPIO_Pin_x)!=0)
-#define GPIO_TOGGLE(GPIOx,GPIO_Pin_x) 	(GPIOx->ODR ^= GPIO_Pin_x)
+#define GPIO_TOGGLE(GPIOx,GPIO_Pin_x)   (GPIOx->ODR ^= GPIO_Pin_x)
 
 typedef enum
 {
@@ -57,12 +57,12 @@ typedef enum
 } pinMode_Type;
 
 //*************** USART ***************//
-#define IS_USARTx_SendDone(USARTx)	(USARTx->SR & USART_SR_TXE)
+#define IS_USARTx_SendDone(USARTx) (USARTx->SR & USART_SR_TXE)
 
 //*************** SPI ***************//
-#define IS_SPIx_TxRxDone(SPIx,SPI_I2S_FLAG)	(SPIx->SR & SPI_I2S_FLAG)
+#define IS_SPIx_TxRxDone(SPIx,SPI_I2S_FLAG) (SPIx->SR & SPI_I2S_FLAG)
 
-#define SPIx_FastSendData(SPIx,Data)	(SPIx->DR = Data)
-#define SPIx_FastRecvData(SPIx)			(SPIx->DR)
+#define SPIx_FastSendData(SPIx,Data)    (SPIx->DR = Data)
+#define SPIx_FastRecvData(SPIx)         (SPIx->DR)
 
 #endif

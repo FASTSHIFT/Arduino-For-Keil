@@ -8,7 +8,22 @@
   */
 void pinMode(uint8_t Pin, pinMode_TypeDef pinMode_x)
 {
-    if(pinMode_x != PWM)
+    if(!IS_PIN(Pin))
+        return;
+    
+    if(pinMode_x == INPUT_ANALOG_DMA)
+    {
+        if(!IS_ADC_PIN(Pin))
+            return;
+        
+        pinMode(Pin, INPUT_ANALOG);
+        ADC_DMA_Register(PIN_MAP[Pin].ADC_Channel);
+    }
+    else if(pinMode_x == PWM)
+    {
+        PWM_Init(Pin, 1000, 10000);
+    }
+    else
     {
         GPIOx_Init(
             PIN_MAP[Pin].GPIOx, 
@@ -17,8 +32,6 @@ void pinMode(uint8_t Pin, pinMode_TypeDef pinMode_x)
             GPIO_Speed_100MHz
         );
     }
-    else if(pinMode_x == PWM)
-        PWM_Init(Pin, 1000, 8000);
 }
 
 /**
@@ -29,6 +42,9 @@ void pinMode(uint8_t Pin, pinMode_TypeDef pinMode_x)
   */
 void digitalWrite(uint8_t Pin, uint8_t val)
 {
+    if(!IS_PIN(Pin))
+        return;
+    
     val ? digitalWrite_HIGH(Pin) : digitalWrite_LOW(Pin);
 }
 
@@ -39,6 +55,9 @@ void digitalWrite(uint8_t Pin, uint8_t val)
   */
 uint8_t digitalRead(uint8_t Pin)
 {
+    if(!IS_PIN(Pin))
+        return 0;
+    
     return(GPIO_READ(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x));
 }
 
@@ -50,6 +69,9 @@ uint8_t digitalRead(uint8_t Pin)
   */
 uint16_t analogWrite(uint8_t Pin, uint16_t val)
 {
+    if(!IS_PIN(Pin))
+        return 0;
+    
     return (IS_PWM_PIN(Pin) ? pwmWrite(Pin, val) : 0);
 }
 
@@ -64,20 +86,16 @@ uint16_t analogRead(uint8_t Pin)
 }
 
 /**
-  * @brief  从指定的DMA通道读取值(DMA方式)
-  * @param  DMA_Channel: DMA通道编号
+  * @brief  从指定的引脚读取值(DMA方式)
+  * @param  Pin: 引脚编号
   * @retval ADC值：0~4095
   */
-uint16_t analogRead_DMA(uint8_t DMA_Channel)
+uint16_t analogRead_DMA(uint8_t Pin)
 {
-    if(DMA_Channel < (sizeof(ADC_ConvertedValue) / sizeof(ADC_ConvertedValue[0])))
-    {
-        return(Get_DMA_ADC(DMA_Channel));
-    }
-    else
-    {
+    if(!IS_ADC_PIN(Pin))
         return 0;
-    }
+    
+    return ADC_DMA_GetValue(PIN_MAP[Pin].ADC_Channel);
 }
 
 /**
@@ -91,6 +109,9 @@ uint16_t analogRead_DMA(uint8_t DMA_Channel)
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value)
 {
     uint8_t i;
+    if(!(IS_PIN(dataPin) && IS_PIN(clockPin)))
+        return;
+    
     digitalWrite_LOW(clockPin);
     for (i = 0; i < 8; i++)
     {
@@ -112,6 +133,10 @@ uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
 {
     uint8_t value = 0 ;
     uint8_t i ;
+    
+    if(!(IS_PIN(dataPin) && IS_PIN(clockPin)))
+        return 0;
+    
     for ( i = 0 ; i < 8 ; ++i )
     {
         digitalWrite_HIGH(clockPin) ;
@@ -181,6 +206,9 @@ uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout )
    uint32_t numloops = 0;
    uint32_t maxloops =  timeout * ( F_CPU / 16000000);
    volatile uint32_t dummyWidth=0;
+    
+   if(!IS_PIN(pin))
+        return 0;
    
    // wait for any previous pulse to end
    while ((*idr & bit) == stateMask)   {

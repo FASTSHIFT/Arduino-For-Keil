@@ -1,14 +1,15 @@
 #include "gpio.h"
 
 //GPIO 基本信息
-const PinInfo_TypeDef PIN_MAP[PIN_MAX] = {
-    /*GPIO_TypeDef* GPIOx;	//	对应GPIOx地址
-    TIM_TypeDef* TIMx;		//	对应TIMx地址
-    ADC_TypeDef* ADCx;		//	对应ADCx地址
+const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
+{
+    /*GPIO_TypeDef* GPIOx;  //对应GPIOx地址
+    TIM_TypeDef* TIMx;      //对应TIMx地址
+    ADC_TypeDef* ADCx;      //对应ADCx地址
 
-    uint16_t GPIO_Pin_x;	//	对应GPIO_Pin位
-    uint8_t TimerChannel;	//	对应定时器通道
-    uint8_t ADC_Channel;*/	//	对应ADC通道
+    uint16_t GPIO_Pin_x;    //对应GPIO_Pin位
+    uint8_t TimerChannel;   //对应定时器通道
+    uint8_t ADC_Channel;*/  //对应ADC通道
     {GPIOA, TIM2, ADC1,  GPIO_Pin_0, 1, ADC_Channel_0}, /* PA0 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_1, 2, ADC_Channel_1}, /* PA1 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_2, 3, ADC_Channel_2}, /* PA2 */

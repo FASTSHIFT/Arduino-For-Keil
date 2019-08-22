@@ -1,11 +1,12 @@
 #include "timer.h"
 
 /*定时器编号枚举*/
-typedef enum {
-    TIMER1, TIMER2, TIMER3, TIMER4, 
-    TIMER5, TIMER6, TIMER7, TIMER8, 
+typedef enum
+{
+    TIMER1, TIMER2, TIMER3, TIMER4,
+    TIMER5, TIMER6, TIMER7, TIMER8,
     TIMER_MAX
-}TIMERx_Type;
+} TIMERx_Type;
 
 /*定时中断回调函数指针数组*/
 static Timer_CallbackFunction_t TIMx_Function[TIMER_MAX] = {0};
@@ -101,10 +102,10 @@ void TimerClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState)
 void TimerSet(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function)
 {
     Timer_Init(
-        TIMx, 
-        InterruptTime_us, 
-        function, 
-        Timer_PreemptionPriority_Default, 
+        TIMx,
+        InterruptTime_us,
+        function,
+        Timer_PreemptionPriority_Default,
         Timer_SubPriority_Default
     );
 }
@@ -117,8 +118,12 @@ void TimerSet(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFuncti
   */
 void TimerSet_InterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t InterruptTime_us)
 {
-	uint32_t arr, psc;
-	//Calculate TIM_Period and TIM_Prescaler
+    uint32_t arr, psc;
+    
+    if(!IS_TIM_ALL_PERIPH(TIMx))
+        return;
+    
+    //Calculate TIM_Period and TIM_Prescaler
     InterruptTime_us *= CYCLES_PER_MICROSECOND;
     if(InterruptTime_us < CYCLES_PER_MICROSECOND * 30)
     {
@@ -135,10 +140,10 @@ void TimerSet_InterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t InterruptTime_us)
         arr = InterruptTime_us / 20000;
         psc = InterruptTime_us / arr;
     }
-	
-	TIMx->ARR = arr - 1;
+
+    TIMx->ARR = arr - 1;
     TIMx->PSC = psc - 1;
-	TIMx->EGR = TIM_PSCReloadMode_Immediate;
+    TIMx->EGR = TIM_PSCReloadMode_Immediate;
 }
 
 /**
@@ -205,9 +210,10 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     }
 #endif
 
-    TIMx_Function[TIMERx] = function;//Callback Functions
+    /*register callback function*/
+    TIMx_Function[TIMERx] = function;
 
-    //Calculate TIM_Period and TIM_Prescaler
+    /*Calculate TIM_Period and TIM_Prescaler*/
     InterruptTime_us *= CYCLES_PER_MICROSECOND;
     if(InterruptTime_us < CYCLES_PER_MICROSECOND * 30)
     {
@@ -228,11 +234,11 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     //Enable PeriphClock
     TIM_DeInit(TIMx);
     TimerClockCmd(TIMx, ENABLE);
-    
+
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseStructure.TIM_Period = arr - 1; 		//设置在下一个更新事件装入活动的自动重装载寄存器周期的值
-    TIM_TimeBaseStructure.TIM_Prescaler = psc - 1; 	//设置用来作为TIMx时钟频率除数的预分频值  10Khz的计数频率
-    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1; 	//设置时钟分割:TDTS = Tck_tim
+    TIM_TimeBaseStructure.TIM_Period = arr - 1;         //设置在下一个更新事件装入活动的自动重装载寄存器周期的值
+    TIM_TimeBaseStructure.TIM_Prescaler = psc - 1;  //设置用来作为TIMx时钟频率除数的预分频值  10Khz的计数频率
+    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;     //设置时钟分割:TDTS = Tck_tim
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //TIM向上计数模式
     TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure); //根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
 
@@ -242,10 +248,10 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;  //从优先级
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能
     NVIC_Init(&NVIC_InitStructure);  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
-  
+
     TIM_ClearFlag(TIMx, TIM_FLAG_Update);
     TIM_ClearITPendingBit(TIMx, TIM_IT_Update);
-    TIM_ITConfig(TIMx, TIM_IT_Update, ENABLE);	//使能TIM中断
+    TIM_ITConfig(TIMx, TIM_IT_Update, ENABLE);  //使能TIM中断
 }
 
 /**
@@ -255,10 +261,10 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
   */
 void TIM1_UP_IRQHandler(void)
 {
-    if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET) 		//检查指定的TIM中断发生与否:TIM 中断源
+    if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)      //检查指定的TIM中断发生与否:TIM 中断源
     {
         if(TIMx_Function[TIMER1]) TIMx_Function[TIMER1]();
-        TIM_ClearITPendingBit(TIM1, TIM_IT_Update);  	//清除TIMx的中断待处理位:TIM 中断源
+        TIM_ClearITPendingBit(TIM1, TIM_IT_Update);     //清除TIMx的中断待处理位:TIM 中断源
     }
 }
 

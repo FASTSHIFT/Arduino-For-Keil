@@ -19,4 +19,5 @@
 //Upgrade   2019.3.22   V_1.6 为SysTick设置最高中断优先级，防止被其他中断打断(非常重要!)
 //Upgrade   2019.5.9    V_1.7 更新:ADC库、PWM库、定时器库、Servo库、PIN_MAP引脚外设映射表，Tone库已可以正常工作
 //Upgrade   2019.6.3    V_1.8 pwm.c库将频率设定值从16位改为32位，并加入参数合法范围判断，ARDUINO宏定义从Arduino.h转至全局宏定义
-//Upgrade   2019.7.12   V_1.9 Arduino.h里yield()与digitalPinToInterrupt(Pin)定义，更改analogRead_DMA()合法参数判断方式
+//Upgrade   2019.7.12   V_1.9 Arduino.h里添加yield()与digitalPinToInterrupt(Pin)定义，更改analogRead_DMA()合法参数判断方式
+//Upgrade   2019.8.22   V_2.0 同步_Keilduino(STM32F10x) V_6.9代码

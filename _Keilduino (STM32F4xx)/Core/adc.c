@@ -1,21 +1,77 @@
 #include "adc.h"
 #include "Arduino.h"
 
-uint16_t ADC_ConvertedValue[ADC_CHANNEL_NUM];//ADC DMA Buffer
+#define ADC_DMA_REGMAX 18
 
-static void ADCx_GPIO_Config(void)
+/*ADC通道注册个数*/
+static uint8_t ADC_DMA_RegCnt = 0;
+
+/*ADC通道注册列表*/
+static uint16_t ADC_DMA_RegChannelList[ADC_DMA_REGMAX] = {0};
+
+/*ADC DMA缓存数组*/
+static uint16_t ADC_DMA_ConvertedValue[ADC_DMA_REGMAX] = {0};
+
+/**
+  * @brief  搜索注册列表，找出ADC通道对应的索引号
+  * @param  ADC_Channel:ADC通道号
+  * @retval ADC通道注册列表对应索引号，-1:未找到对应通道号
+  */
+static int16_t ADC_DMA_SearchChannel(uint16_t ADC_Channel)
 {
-    pinMode(PA0, INPUT_ANALOG);
-    pinMode(PA1, INPUT_ANALOG);
-    pinMode(PA2, INPUT_ANALOG);
-    pinMode(PA3, INPUT_ANALOG);
-    pinMode(PA4, INPUT_ANALOG);
-    pinMode(PA5, INPUT_ANALOG);
-    pinMode(PA6, INPUT_ANALOG);
-    pinMode(PA7, INPUT_ANALOG);
+    uint8_t index;
+
+    for(index = 0; index < ADC_DMA_RegCnt; index++)
+    {
+        if(ADC_Channel == ADC_DMA_RegChannelList[index])
+        {
+            return index;
+        }
+    }
+    return -1;
 }
 
-static void Init_ADC_DMA()
+/**
+  * @brief  注册需要DMA搬运的ADC通道
+  * @param  ADC_Channel:ADC通道号
+  * @retval 引脚注册列表对应索引号，-1:不支持ADC，-2:引脚重复注册，-3:超出最大注册个数
+  */
+int16_t ADC_DMA_Register(uint8_t ADC_Channel)
+{
+    /*初始化ADC通道列表*/
+    static uint8_t IsInit = 0;
+    if(!IsInit)
+    {
+        uint8_t i;
+        for(i = 0; i < ADC_DMA_REGMAX; i++)
+        {
+            ADC_DMA_RegChannelList[i] = 0xFF;
+        }
+        IsInit = 1;
+    }
+
+    /*是否是合法ADC通道*/
+    if(!IS_ADC_CHANNEL(ADC_Channel))
+        return -1;
+
+    /*是否已在引脚列表重复注册*/
+    if(ADC_DMA_SearchChannel(ADC_Channel) != -1)
+        return -2;
+
+    /*是否超出最大注册个数*/
+    if(ADC_DMA_RegCnt >= ADC_DMA_REGMAX)
+        return -3;
+
+    /*写入注册列表*/
+    ADC_DMA_RegChannelList[ADC_DMA_RegCnt] = ADC_Channel;
+
+    /*注册个数+1*/
+    ADC_DMA_RegCnt++;
+
+    return ADC_DMA_RegCnt - 1;
+}
+
+static void ADC_DMA_Config()
 {
     DMA_InitTypeDef DMA_InitStructure;
 
@@ -27,9 +83,9 @@ static void Init_ADC_DMA()
 
     DMA_InitStructure.DMA_Channel = DMA_Channel_0;/*DMA通道0*/
     DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR; /*外设地址*/
-    DMA_InitStructure.DMA_Memory0BaseAddr    = (uint32_t)ADC_ConvertedValue;/*存取器地址*/
+    DMA_InitStructure.DMA_Memory0BaseAddr    = (uint32_t)ADC_DMA_ConvertedValue;/*存取器地址*/
     DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;/*方向从外设到内存*/
-    DMA_InitStructure.DMA_BufferSize = ADC_CHANNEL_NUM;/*数据传输的数量为3*/
+    DMA_InitStructure.DMA_BufferSize = ADC_DMA_RegCnt;/*数据传输的数量为3*/
     DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;/*地址不增加*/
     DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;/*地址不增加*/
     DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;/*数据长度半字*/
@@ -44,14 +100,20 @@ static void Init_ADC_DMA()
     DMA_Cmd(DMA2_Stream0, ENABLE); //开启DMA传输
 }
 
-void ADCx_DMA_Config()
+/**
+  * @brief  ADC DMA 配置
+  * @param  无
+  * @retval 无
+  */
+void ADC_DMA_Init()
 {
     ADC_CommonInitTypeDef ADC_CommonInitStructure;
     ADC_InitTypeDef ADC_InitStructure;
+    uint16_t index;
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE); //使能ADC时钟
 
-    Init_ADC_DMA();
+    ADC_DMA_Config();
 
     ADC_DeInit();
     
@@ -67,61 +129,68 @@ void ADCx_DMA_Config()
     ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;/*连续转换*/
     ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;/*禁止触发检测 使用软件触发*/
     ADC_InitStructure.ADC_DataAlign    = ADC_DataAlign_Right;/*右对齐*/
-    ADC_InitStructure.ADC_NbrOfConversion = ADC_CHANNEL_NUM;/*只使用1通道 规则通为1*/
+    ADC_InitStructure.ADC_NbrOfConversion = ADC_DMA_RegCnt;/*只使用1通道 规则通为1*/
     ADC_Init(ADC1, &ADC_InitStructure); /*初始化*/
 
     ADC_Cmd(ADC1, ENABLE); /*开启转换*/
     
-    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA0].ADC_Channel, 1, ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA1].ADC_Channel, 2, ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA2].ADC_Channel, 3, ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA3].ADC_Channel, 4, ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA4].ADC_Channel, 5, ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA5].ADC_Channel, 6, ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA6].ADC_Channel, 7, ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, PIN_MAP[PA7].ADC_Channel, 8, ADC_SampleTime_480Cycles);
+    for(index = 0; index < ADC_DMA_RegCnt; index++)
+    {
+        ADC_RegularChannelConfig(
+            ADC1,
+            ADC_DMA_RegChannelList[index],
+            index + 1,
+            ADC_SampleTime_480Cycles
+        );
+
+        if(ADC_DMA_RegChannelList[index] == ADC_Channel_TempSensor)
+        {
+            ADC_TempSensorVrefintCmd(ENABLE);
+        }
+    }
     
     ADC_DMARequestAfterLastTransferCmd(ADC1, ENABLE); //源数据变化时开启DMA传输
     ADC_DMACmd(ADC1, ENABLE); //使能ADC传输 /*设置规则通道2 1个序列 采样时间 */
     ADC_SoftwareStartConv(ADC1);/*启动软件转换*/
 }
 
-
-
-void ADCx_DMA_Init(void)
+/**
+  * @brief  获取DMA搬运的ADC值
+  * @param  ADC_Channel:ADC通道号
+  * @retval ADC值
+  */
+uint16_t ADC_DMA_GetValue(uint8_t ADC_Channel)
 {
-    ADCx_GPIO_Config();
-	ADCx_DMA_Config();
-}
+    int16_t index;
 
-uint16_t Get_DMA_ADC(uint8_t Channel)
-{
-    if(Channel < ADC_CHANNEL_NUM)
-        return ADC_ConvertedValue[Channel];
-    else
+    if(!IS_ADC_CHANNEL(ADC_Channel))
         return 0;
+
+    index = ADC_DMA_SearchChannel(ADC_Channel);
+    if(index == -1)
+        return 0;
+
+    return ADC_DMA_ConvertedValue[index];
 }
 
 void ADCx_Init(ADC_TypeDef* ADCx)
 {
     ADC_CommonInitTypeDef ADC_CommonInitStructure;
     ADC_InitTypeDef       ADC_InitStructure;
-    
-    ADCx_GPIO_Config();
 
     if(ADCx == ADC1)
     {
-        RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC1, DISABLE);	//复位结束
+        RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC1, DISABLE);//复位结束
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE); //使能ADC1时钟
     }
     else if(ADCx == ADC2)
     {
-        RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC2, DISABLE);	//复位结束
+        RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC2, DISABLE);//复位结束
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE); //使能ADC2时钟
     }
     else if(ADCx == ADC3)
     {
-        RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC3, DISABLE);	//复位结束
+        RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC3, DISABLE);//复位结束
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC3, ENABLE); //使能ADC3时钟
     }
 
@@ -145,7 +214,7 @@ void ADCx_Init(ADC_TypeDef* ADCx)
 
 uint16_t Get_ADC(ADC_TypeDef* ADCx, uint8_t ADC_Channel)
 {
-    ADC_RegularChannelConfig(ADCx, ADC_Channel, 1, ADC_SampleTime_144Cycles );
+    ADC_RegularChannelConfig(ADCx, ADC_Channel, 1, ADC_SampleTime_144Cycles);
     ADC_SoftwareStartConv(ADCx);
     while(!ADC_GetFlagStatus(ADCx, ADC_FLAG_EOC));
     return ADC_GetConversionValue(ADCx);

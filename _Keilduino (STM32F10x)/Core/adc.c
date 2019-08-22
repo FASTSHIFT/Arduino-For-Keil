@@ -217,10 +217,16 @@ uint16_t ADC_DMA_GetValue(uint8_t ADC_Channel)
 void ADCx_Init(ADC_TypeDef* ADCx)
 {
     ADC_InitTypeDef ADC_InitStructure;
-    if(ADCx == ADC1)RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE );
-    else if(ADCx == ADC2)RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE );
-    else if(ADCx == ADC3)RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC3, ENABLE );
-    else return;
+    
+    if(ADCx == ADC1)
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE );
+    else if(ADCx == ADC2)
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE );
+    else if(ADCx == ADC3)
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC3, ENABLE );
+    else 
+        return;
+    
     RCC_ADCCLKConfig(RCC_PCLK2_Div6);
 
     ADC_DeInit(ADCx);
@@ -247,16 +253,9 @@ void ADCx_Init(ADC_TypeDef* ADCx)
   */
 uint16_t Get_ADC(ADC_TypeDef* ADCx, uint16_t ADC_Channel)
 {
-    uint32_t result = 0;
-    uint16_t i;
-
     ADC_RegularChannelConfig(ADCx, ADC_Channel, 1, ADC_SampleTime_1Cycles5 );
-    for(i = 0; i < ADC_AverageTimes; i++)
-    {
-        ADC_SoftwareStartConvCmd(ADCx, ENABLE);
-        while(!ADC_GetFlagStatus(ADCx, ADC_FLAG_EOC));
-        result += ADC_GetConversionValue(ADCx);
-    }
-    result = result / ADC_AverageTimes;
-    return result;
+
+    ADC_SoftwareStartConvCmd(ADCx, ENABLE);
+    while(!ADC_GetFlagStatus(ADCx, ADC_FLAG_EOC));
+    return ADC_GetConversionValue(ADCx);
 }

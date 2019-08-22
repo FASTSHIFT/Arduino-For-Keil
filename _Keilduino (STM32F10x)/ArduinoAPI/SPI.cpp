@@ -13,7 +13,7 @@ SPIClass::SPIClass(SPI_TypeDef* _SPIx)
     SPIx = _SPIx;
 }
 
-void SPIClass::SPI_Settings(	SPI_TypeDef* SPIx,
+void SPIClass::SPI_Settings(    SPI_TypeDef* SPIx,
                                 uint16_t SPI_Mode_x,
                                 uint16_t SPI_DataSize_x,
                                 uint16_t SPI_MODEx,
@@ -91,7 +91,7 @@ void SPIClass::begin(void)
         GPIO_Init(GPIOB, &GPIO_InitStructure);
     }
 
-    SPI_Settings(	SPIx,
+    SPI_Settings(   SPIx,
                     SPI_Mode_Master,
                     SPI_DataSize_8b,
                     SPI_MODE0,
@@ -121,7 +121,7 @@ void SPIClass::begin(SPISettings settings)
 void SPIClass::beginSlave(void)
 {
     begin();
-    SPI_Settings(	SPIx,
+    SPI_Settings(   SPIx,
                     SPI_Mode_Slave,
                     SPI_DataSize_8b,
                     SPI_MODE0,

@@ -1,21 +1,22 @@
 #include "gpio.h"
 
-const PinInfo_TypeDef PIN_MAP[PIN_MAX] = {
-    /*GPIO_TypeDef* GPIOx;	//	对应GPIOx地址
-    TIM_TypeDef* TIMx;		//	对应TIMx地址
-    ADC_TypeDef* ADCx;		//	对应ADCx地址
+const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
+{
+    /*GPIO_TypeDef* GPIOx;  //对应GPIOx地址
+    TIM_TypeDef* TIMx;      //对应TIMx地址
+    ADC_TypeDef* ADCx;      //对应ADCx地址
 
-    uint16_t GPIO_Pin_x;	//	对应GPIO_Pin位
-    uint8_t TimerChannel;	//	对应定时器通道
-    uint8_t ADC_Channel;*/	//	对应ADC通道
+    uint16_t GPIO_Pin_x;    //对应GPIO_Pin位
+    uint8_t TimerChannel;   //对应定时器通道
+    uint8_t ADC_Channel;*/  //对应ADC通道
     {GPIOA, TIM2, ADC1,  GPIO_Pin_0, 1, ADC_Channel_0}, /* PA0 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_1, 2, ADC_Channel_1}, /* PA1 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_2, 3, ADC_Channel_2}, /* PA2 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_3, 4, ADC_Channel_3}, /* PA3 */
     {GPIOA, NULL, ADC1,  GPIO_Pin_4, 0, ADC_Channel_4}, /* PA4 */
-    {GPIOA, NULL, ADC1,  GPIO_Pin_5, 0,	ADC_Channel_5}, /* PA5 */
+    {GPIOA, NULL, ADC1,  GPIO_Pin_5, 0, ADC_Channel_5}, /* PA5 */
     {GPIOA, TIM3, ADC1,  GPIO_Pin_6, 1, ADC_Channel_6}, /* PA6 */
-    {GPIOA, TIM3, ADC1,  GPIO_Pin_7, 2,	ADC_Channel_7}, /* PA7 */
+    {GPIOA, TIM3, ADC1,  GPIO_Pin_7, 2, ADC_Channel_7}, /* PA7 */
     {GPIOA, TIM1, NULL,  GPIO_Pin_8, 1, ADC_Channel_X}, /* PA8 */
     {GPIOA, TIM1, NULL,  GPIO_Pin_9, 2, ADC_Channel_X}, /* PA9 */
     {GPIOA, TIM1, NULL, GPIO_Pin_10, 3, ADC_Channel_X}, /* PA10 */
@@ -39,7 +40,7 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] = {
     {GPIOB, TIM2, NULL, GPIO_Pin_11, 4, ADC_Channel_X}, /* PB11 */
     {GPIOB, NULL, NULL, GPIO_Pin_12, 0, ADC_Channel_X}, /* PB12 */
     {GPIOB, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PB13 */
-    {GPIOB, TIM12,NULL, GPIO_Pin_14, 1, ADC_Channel_X}, /* PB14 */
+    {GPIOB, TIM12, NULL, GPIO_Pin_14, 1, ADC_Channel_X}, /* PB14 */
     {GPIOB, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PB15 */
 
     {GPIOC, NULL, ADC1,  GPIO_Pin_0, 0, ADC_Channel_10}, /* PC0 */
@@ -99,10 +100,10 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] = {
     {GPIOF, NULL, ADC3,  GPIO_Pin_3, 0, ADC_Channel_9}, /* PF3 */
     {GPIOF, NULL, ADC3,  GPIO_Pin_4, 0, ADC_Channel_14},/* PF4 */
     {GPIOF, NULL, ADC3,  GPIO_Pin_5, 0, ADC_Channel_15},/* PF5 */
-    {GPIOF, TIM10,ADC3,  GPIO_Pin_6, 1, ADC_Channel_4}, /* PF6 */
-    {GPIOF, TIM11,ADC3,  GPIO_Pin_7, 1, ADC_Channel_5}, /* PF7 */
-    {GPIOF, TIM13,ADC3,  GPIO_Pin_8, 1, ADC_Channel_6}, /* PF8 */
-    {GPIOF, TIM14,ADC3,  GPIO_Pin_9, 1, ADC_Channel_7}, /* PF9 */
+    {GPIOF, TIM10, ADC3,  GPIO_Pin_6, 1, ADC_Channel_4}, /* PF6 */
+    {GPIOF, TIM11, ADC3,  GPIO_Pin_7, 1, ADC_Channel_5}, /* PF7 */
+    {GPIOF, TIM13, ADC3,  GPIO_Pin_8, 1, ADC_Channel_6}, /* PF8 */
+    {GPIOF, TIM14, ADC3,  GPIO_Pin_9, 1, ADC_Channel_7}, /* PF9 */
     {GPIOF, NULL, ADC3, GPIO_Pin_10, 0, ADC_Channel_8}, /* PF10 */
     {GPIOF, NULL, NULL, GPIO_Pin_11, 0, ADC_Channel_X}, /* PF11 */
     {GPIOF, NULL, NULL, GPIO_Pin_12, 0, ADC_Channel_X}, /* PF12 */
@@ -126,7 +127,7 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] = {
     {GPIOG, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PG13 */
     {GPIOG, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PG14 */
     {GPIOG, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PG15 */
-    
+
     {GPIOH, NULL, NULL,  GPIO_Pin_0, 0, ADC_Channel_X}, /* PH0 */
     {GPIOH, NULL, NULL,  GPIO_Pin_1, 0, ADC_Channel_X}, /* PH1 */
     {GPIOH, NULL, NULL,  GPIO_Pin_2, 0, ADC_Channel_X}, /* PH2 */
@@ -143,7 +144,7 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] = {
     {GPIOH, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PH13 */
     {GPIOH, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PH14 */
     {GPIOH, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PH15 */
-    
+
     {GPIOI, NULL, NULL,  GPIO_Pin_0, 0, ADC_Channel_X}, /* PI0 */
     {GPIOI, NULL, NULL,  GPIO_Pin_1, 0, ADC_Channel_X}, /* PI1 */
     {GPIOI, NULL, NULL,  GPIO_Pin_2, 0, ADC_Channel_X}, /* PI2 */
@@ -160,7 +161,7 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] = {
     {GPIOI, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PI13 */
     {GPIOI, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PI14 */
     {GPIOI, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PI15 */
-    
+
     {GPIOJ, NULL, NULL,  GPIO_Pin_0, 0, ADC_Channel_X}, /* PJ0 */
     {GPIOJ, NULL, NULL,  GPIO_Pin_1, 0, ADC_Channel_X}, /* PJ1 */
     {GPIOJ, NULL, NULL,  GPIO_Pin_2, 0, ADC_Channel_X}, /* PJ2 */
@@ -177,7 +178,7 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] = {
     {GPIOJ, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PJ13 */
     {GPIOJ, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PJ14 */
     {GPIOJ, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PJ15 */
-    
+
     {GPIOK, NULL, NULL,  GPIO_Pin_0, 0, ADC_Channel_X}, /* PK0 */
     {GPIOK, NULL, NULL,  GPIO_Pin_1, 0, ADC_Channel_X}, /* PK1 */
     {GPIOK, NULL, NULL,  GPIO_Pin_2, 0, ADC_Channel_X}, /* PK2 */
@@ -262,6 +263,10 @@ void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMod
         GPIO_Mode_x  = GPIO_Mode_AF;
         GPIO_OType_x = GPIO_OType_PP;
         GPIO_PuPd_x  = GPIO_PuPd_NOPULL;
+    }
+    else
+    {
+        return;
     }
 
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_x;

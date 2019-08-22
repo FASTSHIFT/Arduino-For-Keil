@@ -1,5 +1,5 @@
 #ifndef __ARDUINO_H
-#define	__ARDUINO_H
+#define __ARDUINO_H
 
 //访问 https://www.arduino.cc/reference/en/ 获得更完整的语法介绍
 
