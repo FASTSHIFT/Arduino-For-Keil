@@ -219,13 +219,21 @@ void ADCx_Init(ADC_TypeDef* ADCx)
     ADC_InitTypeDef ADC_InitStructure;
     
     if(ADCx == ADC1)
-        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE );
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    }
     else if(ADCx == ADC2)
-        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE );
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE);
+    }
     else if(ADCx == ADC3)
-        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC3, ENABLE );
-    else 
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC3, ENABLE);
+    }
+    else
+    {
         return;
+    }
     
     RCC_ADCCLKConfig(RCC_PCLK2_Div6);
 
@@ -253,7 +261,7 @@ void ADCx_Init(ADC_TypeDef* ADCx)
   */
 uint16_t Get_ADC(ADC_TypeDef* ADCx, uint16_t ADC_Channel)
 {
-    ADC_RegularChannelConfig(ADCx, ADC_Channel, 1, ADC_SampleTime_1Cycles5 );
+    ADC_RegularChannelConfig(ADCx, ADC_Channel, 1, ADC_SampleTime_41Cycles5);
 
     ADC_SoftwareStartConvCmd(ADCx, ENABLE);
     while(!ADC_GetFlagStatus(ADCx, ADC_FLAG_EOC));

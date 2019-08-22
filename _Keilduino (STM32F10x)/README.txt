@@ -66,3 +66,4 @@
 //Upgrade   2019.7.12  V_6.7 Arduino.h里添加yield()与digitalPinToInterrupt(Pin)定义，更改analogRead_DMA()合法参数判断方式
 //Upgrade   2019.8.1   V_6.8 更新pwm库和timer库,添加_BV(bit)宏，WString类添加sprintf成员
 //Upgrade   2019.8.5   V_6.9 ADC DMA搬运已支持注册模式，可参考Example文件夹ADC_DMA.cpp，更新Example，更严格的引脚合法性检查
+//Upgrade   2019.8.22  V_7.0 整理代码制表符全部替换为空格，去除analogRead求均值，延长ADC采样保持时间
