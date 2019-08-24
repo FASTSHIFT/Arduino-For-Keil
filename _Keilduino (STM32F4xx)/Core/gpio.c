@@ -40,15 +40,15 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
     {GPIOB, TIM2, NULL, GPIO_Pin_11, 4, ADC_Channel_X}, /* PB11 */
     {GPIOB, NULL, NULL, GPIO_Pin_12, 0, ADC_Channel_X}, /* PB12 */
     {GPIOB, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PB13 */
-    {GPIOB, TIM12, NULL, GPIO_Pin_14, 1, ADC_Channel_X}, /* PB14 */
+    {GPIOB, TIM12, NULL, GPIO_Pin_14, 1, ADC_Channel_X},/* PB14 */
     {GPIOB, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PB15 */
 
-    {GPIOC, NULL, ADC1,  GPIO_Pin_0, 0, ADC_Channel_10}, /* PC0 */
-    {GPIOC, NULL, ADC1,  GPIO_Pin_1, 0, ADC_Channel_11}, /* PC1 */
-    {GPIOC, NULL, ADC1,  GPIO_Pin_2, 0, ADC_Channel_12}, /* PC2 */
-    {GPIOC, NULL, NULL,  GPIO_Pin_3, 0, ADC_Channel_X}, /* PC3 */
-    {GPIOC, NULL, NULL,  GPIO_Pin_4, 0, ADC_Channel_14}, /* PC4 */
-    {GPIOC, NULL, NULL,  GPIO_Pin_5, 0, ADC_Channel_X}, /* PC5 */
+    {GPIOC, NULL, ADC1,  GPIO_Pin_0, 0, ADC_Channel_10},/* PC0 */
+    {GPIOC, NULL, ADC1,  GPIO_Pin_1, 0, ADC_Channel_11},/* PC1 */
+    {GPIOC, NULL, ADC1,  GPIO_Pin_2, 0, ADC_Channel_12},/* PC2 */
+    {GPIOC, NULL, ADC1,  GPIO_Pin_3, 0, ADC_Channel_13},/* PC3 */
+    {GPIOC, NULL, ADC1,  GPIO_Pin_4, 0, ADC_Channel_14},/* PC4 */
+    {GPIOC, NULL, ADC1,  GPIO_Pin_5, 0, ADC_Channel_15},/* PC5 */
     {GPIOC, TIM3, NULL,  GPIO_Pin_6, 1, ADC_Channel_X}, /* PC6 */
     {GPIOC, TIM3, NULL,  GPIO_Pin_7, 2, ADC_Channel_X}, /* PC7 */
     {GPIOC, TIM3, NULL,  GPIO_Pin_8, 3, ADC_Channel_X}, /* PC8 */
@@ -56,7 +56,7 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
     {GPIOC, NULL, NULL, GPIO_Pin_10, 0, ADC_Channel_X}, /* PC10 */
     {GPIOC, NULL, NULL, GPIO_Pin_11, 0, ADC_Channel_X}, /* PC11 */
     {GPIOC, NULL, NULL, GPIO_Pin_12, 0, ADC_Channel_X}, /* PC12 */
-    {GPIOC, NULL, ADC1, GPIO_Pin_13, 0, ADC_Channel_13},/* PC13 */
+    {GPIOC, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PC13 */
     {GPIOC, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PC14 */
     {GPIOC, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PC15 */
 

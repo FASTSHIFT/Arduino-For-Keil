@@ -58,7 +58,7 @@ uint8_t digitalRead(uint8_t Pin)
     if(!IS_PIN(Pin))
         return 0;
     
-    return(GPIO_READ(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x));
+    return digitalRead_FAST(Pin);
 }
 
 /**

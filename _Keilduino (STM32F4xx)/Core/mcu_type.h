@@ -8,11 +8,11 @@
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
-#define __KEILDUINO__ 200
+#define __KEILDUINO__ 210
 
 #define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRRL  = PIN_MAP[Pin].GPIO_Pin_x)
 #define digitalWrite_LOW(Pin)  (PIN_MAP[Pin].GPIOx->BSRRH  = PIN_MAP[Pin].GPIO_Pin_x)
-#define digitalRead_Fast(Pin) ((PIN_MAP[Pin].GPIOx->IDR    & PIN_MAP[Pin].GPIO_Pin_x)!=0)
+#define digitalRead_FAST(Pin) ((PIN_MAP[Pin].GPIOx->IDR    & PIN_MAP[Pin].GPIO_Pin_x)!=0)
 #define togglePin(Pin)         (PIN_MAP[Pin].GPIOx->ODR   ^= PIN_MAP[Pin].GPIO_Pin_x)
 
 #define GPIO_HIGH(GPIOX,GPIO_PIN_X)    (GPIOX->BSRRL = GPIO_PIN_X)
