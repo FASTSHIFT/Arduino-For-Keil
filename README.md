@@ -42,6 +42,7 @@ void loop()
 
 ## 注意： 
      1.请不要删除"main.cpp"中的FileGroup.h和main函数。 
-     2.添加第三方库函数的时候要加入完整的路径，以及.cpp源文件 [详细移植过程点击这里](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/How%20to%20use%20Arduino%20library). 
+     2.添加第三方库函数的时候要加入完整的路径，以及.cpp源文件. 
      3.由于平台的不同，所以不能保证兼容所有的Arduino第三方库函数，有的函数库可能要进行修改才能正常运行，
        具体修改方式请按照编译器的提示，或者可以提交Issues。 
+  >[详细移植过程点击这里](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/How%20to%20use%20Arduino%20library)
