@@ -24,11 +24,11 @@ ButtonEvent::ButtonEvent(bool NoPressState, uint16_t LongPressTimeMs_Set)
 
     LastClick_TimePoint = LastPress_TimePoint = 0;
     IS_LongPressed = IS_Pressed = false;
-	
-	for(uint8_t i = 0; i < EVENT_MAX; i++)
-	{
-		CallbackGroup[i] = 0;
-	}
+
+    for(uint8_t i = 0; i < EVENT_MAX; i++)
+    {
+        CallbackGroup[i] = 0;
+    }
 }
 
 /**
@@ -48,7 +48,7 @@ void ButtonEvent::EventAttach_Press(ButtonEvent_FuncCallBack_t function)
   */
 void ButtonEvent::EventAttach_LongPress(ButtonEvent_FuncCallBack_t function)
 {
-	CallbackGroup[EVENT_ButtonLongPress] = function;
+    CallbackGroup[EVENT_ButtonLongPress] = function;
 }
 
 /**
@@ -58,7 +58,7 @@ void ButtonEvent::EventAttach_LongPress(ButtonEvent_FuncCallBack_t function)
   */
 void ButtonEvent::EventAttach_Release(ButtonEvent_FuncCallBack_t function)
 {
-	CallbackGroup[EVENT_ButtonRelease] = function;
+    CallbackGroup[EVENT_ButtonRelease] = function;
 }
 
 /**
@@ -68,7 +68,7 @@ void ButtonEvent::EventAttach_Release(ButtonEvent_FuncCallBack_t function)
   */
 void ButtonEvent::EventAttach_Change(ButtonEvent_FuncCallBack_t function)
 {
-	CallbackGroup[EVENT_ButtonChange] = function;
+    CallbackGroup[EVENT_ButtonChange] = function;
 }
 
 /**
@@ -79,22 +79,10 @@ void ButtonEvent::EventAttach_Change(ButtonEvent_FuncCallBack_t function)
   */
 void ButtonEvent::EventAttach(Event_Type event, ButtonEvent_FuncCallBack_t function)
 {
-	if(event != EVENT_MAX)
-	{
-		CallbackGroup[event] = function;
-	}
-}
-
-/**
-  * @brief  获取连按次数
-  * @param  无
-  * @retval 连按次数
-  */
-uint8_t ButtonEvent::GetClickCnt()
-{
-	uint8_t cnt = Click_Cnt + 1;
-	Click_Cnt = 0;
-	return cnt;
+    if(event != EVENT_MAX)
+    {
+        CallbackGroup[event] = function;
+    }
 }
 
 /**
@@ -106,37 +94,38 @@ void ButtonEvent::EventMonitor(uint8_t NowState)
 {
     if (!IS_Pressed && (NowState != Button_NoPressState))
     {
-        IS_Pressed = true;
+        IsPressed = IS_Pressed = true;
         Button_NowState = Press;
         LastPress_TimePoint = ButtonEvent_Millis;
-		
+
         TriggerEvent(CallbackGroup[EVENT_ButtonPress]);
         TriggerEvent(CallbackGroup[EVENT_ButtonChange]);
     }
     else if (IS_Pressed && ButtonEvent_Millis - LastPress_TimePoint > LongPressTimeMs && (NowState != Button_NoPressState))
     {
         Button_NowState = LongPress;
-		if(!IS_LongPressed)
-		{
-			TriggerEvent(CallbackGroup[EVENT_ButtonLongPressOnce]);
-			IS_LongPressed = true;
-		}
-		TriggerEvent(CallbackGroup[EVENT_ButtonLongPress]);
+        if(!IS_LongPressed)
+        {
+            TriggerEvent(CallbackGroup[EVENT_ButtonLongPressOnce]);
+            IsLongPressed = IS_LongPressed = true;
+        }
+        TriggerEvent(CallbackGroup[EVENT_ButtonLongPress]);
     }
     else if (IS_Pressed && (NowState == Button_NoPressState))
     {
         IS_LongPressed = IS_Pressed = false;
+        IsClicked = true;
         Button_NowState = NoPress;
-		LastClick_TimePoint = ButtonEvent_Millis;
-		
-		TriggerEvent(CallbackGroup[EVENT_ButtonRelease]);
-		TriggerEvent(CallbackGroup[EVENT_ButtonChange]);
+        LastClick_TimePoint = ButtonEvent_Millis;
+
+        TriggerEvent(CallbackGroup[EVENT_ButtonRelease]);
+        TriggerEvent(CallbackGroup[EVENT_ButtonChange]);
     }
-	
-	if(IS_Pressed && ButtonEvent_Millis - LastClick_TimePoint < 200)
-	{
-		Click_Cnt++;
-		TriggerEvent(CallbackGroup[EVENT_ButtonDoubleClick]);
-	}
+
+    if(IS_Pressed && ButtonEvent_Millis - LastClick_TimePoint < 200)
+    {
+        Click_Cnt++;
+        TriggerEvent(CallbackGroup[EVENT_ButtonDoubleClick]);
+    }
 }
 

@@ -334,7 +334,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--gnu</MiscControls>
               <Define>USE_STDPERIPH_DERIVER,ARDUINO=111</Define>
               <Undefine></Undefine>
               <IncludePath>..\USER;..\ArduinoAPI;..\Core</IncludePath>

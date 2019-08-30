@@ -10,11 +10,14 @@
 //Update   2019.2.5   v1.5 添加析构函数，用于释放内存
 //Update   2019.3.4   v1.6 将FuncPos改为ID，添加TaskFind(void_TaskFunction_t Function)
 //Update   2019.3.21  v1.7 支持设定优先级，优先级排列为任务ID号，数字越小优先级越高 
+//Update   2019.4.24  v1.8 添加GetCPU_Useage()可获得CPU占用率
+//Update   2019.5.8   v1.9 为TaskRegister添加防冲突判断
 
 #ifndef __MILLISTASKMANAGER_H
 #define __MILLISTASKMANAGER_H
 
-#define _MILLISTASKMANAGER_VERSION "v1.7"
+#define _MILLISTASKMANAGER_VERSION "v1.9"
+#define _SUPPORT_CPU_USAGE
 
 #include "stdint.h"
 
@@ -40,11 +43,15 @@ public:
     bool TaskStateCtrl(TaskNum_t ID, bool TaskState);
     bool TaskSetIntervalTime(void_TaskFunction_t Function, uint32_t TimeSetMs);
     bool TaskSetIntervalTime(TaskNum_t ID, uint32_t TimeSetMs);
+#ifdef _SUPPORT_CPU_USAGE
+    float GetCPU_Usage();
+#endif
     void Running(uint32_t MillisSeed);
-    bool PriorityEnable;
+
 private:
     MillisTaskManager_TypeDef* TaskList;//任务列表
     TaskNum_t TaskNum_MAX;//任务列表长度
+    bool PriorityEnable;
     void TaskClear(TaskNum_t ID);//清除任务
 };
 

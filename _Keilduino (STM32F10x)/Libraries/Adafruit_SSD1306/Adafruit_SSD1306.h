@@ -166,7 +166,7 @@ public:
     void stopscroll(void);
 
     void dim(boolean dim);
-    uint8_t *getBuffer();
+//    uint8_t *getBuffer();
 
     virtual void drawPixel(int16_t x, int16_t y, uint16_t color);
 
@@ -189,7 +189,7 @@ private:
     void fastSPIwrite(uint8_t c);
 
     boolean hwSPI;
-    uint8_t buffer[SSD1306_LCDHEIGHT * SSD1306_LCDWIDTH / 8];
+    //uint8_t buffer[SSD1306_LCDHEIGHT * SSD1306_LCDWIDTH / 8];
 #ifdef HAVE_PORTREG
     PortReg *mosiport, *clkport, *csport, *dcport;
     PortMask mosipinmask, clkpinmask, cspinmask, dcpinmask;
