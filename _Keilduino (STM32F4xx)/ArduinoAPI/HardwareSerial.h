@@ -10,11 +10,12 @@
 #define USART_PreemptionPriority_Default 1
 #define USART_SubPriority_Default 3
 
-#define Get_USART_WordLength_x(SERIAL_x) 	((uint16_t)(SERIAL_x&0xF000))
-#define Get_USART_Parity_x(SERIAL_x) 		((uint16_t)(SERIAL_x&0x0F00))
-#define Get_USART_StopBits_x(SERIAL_x) 		((uint16_t)((SERIAL_x&0x00F0)<<8))
+#define Get_USART_WordLength_x(SERIAL_x)    ((uint16_t)(SERIAL_x&0xF000))
+#define Get_USART_Parity_x(SERIAL_x)        ((uint16_t)(SERIAL_x&0x0F00))
+#define Get_USART_StopBits_x(SERIAL_x)      ((uint16_t)((SERIAL_x&0x00F0)<<8))
 
-typedef enum {
+typedef enum
+{
     SERIAL_8N1 = USART_WordLength_8b | USART_Parity_No | (USART_StopBits_1 >> 8),
     SERIAL_8N2 = USART_WordLength_8b | USART_Parity_No | (USART_StopBits_2 >> 8),
     SERIAL_8E1 = USART_WordLength_8b | USART_Parity_Even | (USART_StopBits_1 >> 8),
@@ -60,26 +61,31 @@ public:
     virtual void flush(void);
 
     virtual size_t write(uint8_t n);
-    inline size_t write(unsigned long n) {
+    inline size_t write(unsigned long n)
+    {
         return write((uint8_t)n);
     }
-    inline size_t write(long n) {
+    inline size_t write(long n)
+    {
         return write((uint8_t)n);
     }
-    inline size_t write(unsigned int n) {
+    inline size_t write(unsigned int n)
+    {
         return write((uint8_t)n);
     }
-    inline size_t write(int n) {
+    inline size_t write(int n)
+    {
         return write((uint8_t)n);
     }
     using Print::write; // pull in write(str) and write(buf, size) from Print
-    operator bool() {
+    operator bool()
+    {
         return true;
     }
 
 private:
     USART_TypeDef *USARTx;
-	USART_CallbackFunction_t USART_Function;
+    USART_CallbackFunction_t USART_Function;
     volatile uint16_t _rx_buffer_head;
     volatile uint16_t _rx_buffer_tail;
     uint8_t _rx_buffer[SERIAL_RX_BUFFER_SIZE];

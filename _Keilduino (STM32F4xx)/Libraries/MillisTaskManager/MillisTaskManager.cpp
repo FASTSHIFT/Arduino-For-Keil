@@ -3,10 +3,12 @@
 /**
   * @brief  初始化任务列表
   * @param  TaskNum_MAX_Set:设定任务列表总长度
+  * @param  priorityEnable:设定是否开启优先级
   * @retval 无
   */
-MillisTaskManager::MillisTaskManager(TaskNum_t TaskNum_MAX_Set)
+MillisTaskManager::MillisTaskManager(TaskNum_t TaskNum_MAX_Set, bool priorityEnable)
 {
+    PriorityEnable = priorityEnable;
     if(TaskList != 0) delete TaskList;//清空列表
     TaskList = new MillisTaskManager_TypeDef[TaskNum_MAX_Set];//为任务列表申请内存
     TaskNum_MAX = TaskNum_MAX_Set;//记录任务列表总长度
@@ -48,6 +50,9 @@ void MillisTaskManager::TaskClear(TaskNum_t ID)
   */
 bool MillisTaskManager::TaskRegister(TaskNum_t ID, void_TaskFunction_t Function, uint32_t TimeSetMs, bool TaskState)
 {
+    if(TaskList[ID].Function != 0)//判断是否占用
+        return false;
+    
     if(ID < TaskNum_MAX)//判断是否越界
     {
         TaskList[ID].Function = Function;//注册函数指针
@@ -55,7 +60,8 @@ bool MillisTaskManager::TaskRegister(TaskNum_t ID, void_TaskFunction_t Function,
         TaskList[ID].IntervalTime = TimeSetMs;//注册时间
         return true;//注册成功
     }
-    else return false;//注册失败
+    else 
+        return false;//注册失败
 }
 
 /**
@@ -177,6 +183,23 @@ bool MillisTaskManager::TaskSetIntervalTime(void_TaskFunction_t Function, uint32
         return false;
 }
 
+#ifdef _SUPPORT_CPU_USAGE
+#include "Arduino.h"
+static uint32_t UserFuncLoopUs;
+float MillisTaskManager::GetCPU_Usage()
+{
+    static uint32_t MtmStartUs;
+    float usage = (float)UserFuncLoopUs / (micros() - MtmStartUs) * 100.0f;
+    
+    if(usage > 100.0f)
+        usage = 100.0f;
+    
+    MtmStartUs = micros();
+    UserFuncLoopUs = 0;
+    return usage;
+}
+#endif
+
 /**
   * @brief  任务间隔时间设置
   * @param  ID:任务注册的位置
@@ -208,7 +231,18 @@ void MillisTaskManager::Running(uint32_t MillisSeed)
             if(TaskList[i].State && (MillisSeed - TaskList[i].TimePoint >= TaskList[i].IntervalTime))//判断是否运行任务，是否到达触发时间点
             {
                 TaskList[i].TimePoint = MillisSeed;//标记下一个时间点
+                
+#ifdef _SUPPORT_CPU_USAGE                
+                uint32_t start = micros();
+#endif
                 TaskList[i].Function();//执行任务
+                
+#ifdef _SUPPORT_CPU_USAGE
+                UserFuncLoopUs += micros() - start;
+#endif
+
+                if(PriorityEnable)//判断是否开启优先级
+                    break;
             }
         }
     }

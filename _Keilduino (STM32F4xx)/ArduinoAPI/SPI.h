@@ -85,11 +85,6 @@ private:
     uint8_t dataMode;
     uint8_t _SSPin;
     volatile spi_mode_t state;
-//	spi_dev *spi_d;
-//	//dma_channel spiRxDmaChannel, spiTxDmaChannel;
-//	//dma_dev* spiDmaDev;
-//  void (*receiveCallback)(void) = NULL;
-//  void (*transmitCallback)(void) = NULL;
 
     friend class SPIClass;
 };
@@ -123,10 +118,12 @@ public:
     void setDataMode(uint8_t dataMode);
     void setDataSize(uint16_t datasize);
 
-    uint8_t read(void);
+    uint16_t read(void);
     void read(uint8_t *buffer, uint32_t length);
     void write(uint16_t data);
-    void write(const uint8_t *buffer, uint32_t length);
+    void write(uint16_t data, uint32_t n);
+    void write(const uint8_t *data, uint32_t length);
+    void write(const uint16_t *data, uint32_t length);
     uint8_t transfer(uint8_t data) const;
     uint16_t transfer16(uint16_t data) const;
     uint8_t send(uint8_t data);

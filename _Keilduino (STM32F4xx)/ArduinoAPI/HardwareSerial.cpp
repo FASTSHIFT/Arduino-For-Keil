@@ -9,7 +9,7 @@ HardwareSerial::HardwareSerial(USART_TypeDef *_USARTx)
 {
     this->USARTx = _USARTx;
     USART_Function = 0;
-	_rx_buffer_head = _rx_buffer_tail = 0;
+    _rx_buffer_head = _rx_buffer_tail = 0;
 }
 
 /**
@@ -125,9 +125,9 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
     //Usart NVIC 配置
     NVIC_InitStructure.NVIC_IRQChannel = ItChannel;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority ;//抢占优先级
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;		//子优先级
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
-    NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;        //子优先级
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;         //IRQ通道使能
+    NVIC_Init(&NVIC_InitStructure); //根据指定的参数初始化VIC寄存器
 
     //USART 初始化设置
 
@@ -136,7 +136,7 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
     USART_InitStructure.USART_StopBits = Get_USART_Parity_x(Config);//一个停止位
     USART_InitStructure.USART_Parity = Get_USART_StopBits_x(Config);//无奇偶校验位
     USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
-    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
+    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx; //收发模式
 
     USART_Init(USARTx, &USART_InitStructure); //初始化串口
     USART_ITConfig(USARTx, USART_IT_RXNE, ENABLE);//开启串口接受中断

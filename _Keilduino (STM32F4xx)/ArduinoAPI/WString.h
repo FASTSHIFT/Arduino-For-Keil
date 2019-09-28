@@ -22,7 +22,7 @@
 #ifndef String_class_h
 #define String_class_h
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #include "dtostrf.h"
 #include <stdlib.h>
 #include <string.h>
@@ -91,7 +91,8 @@ public:
     // is left unchanged).  reserve(0), if successful, will validate an
     // invalid string (i.e., "if (s)" will be true afterwards)
     unsigned char reserve(unsigned int size);
-    inline unsigned int length(void) const {
+    inline unsigned int length(void) const
+    {
         return len;
     }
 
@@ -125,47 +126,58 @@ public:
 
     // if there's not enough memory for the concatenated value, the string
     // will be left unchanged (but this isn't signalled in any way)
-    String & operator += (const String &rhs)	{
+    String & operator += (const String &rhs)
+    {
         concat(rhs);
         return (*this);
     }
-    String & operator += (const char *cstr)		{
+    String & operator += (const char *cstr)
+    {
         concat(cstr);
         return (*this);
     }
-    String & operator += (char c)			{
+    String & operator += (char c)
+    {
         concat(c);
         return (*this);
     }
-    String & operator += (unsigned char num)		{
+    String & operator += (unsigned char num)
+    {
         concat(num);
         return (*this);
     }
-    String & operator += (int num)			{
+    String & operator += (int num)
+    {
         concat(num);
         return (*this);
     }
-    String & operator += (unsigned int num)		{
+    String & operator += (unsigned int num)
+    {
         concat(num);
         return (*this);
     }
-    String & operator += (long num)			{
+    String & operator += (long num)
+    {
         concat(num);
         return (*this);
     }
-    String & operator += (unsigned long num)	{
+    String & operator += (unsigned long num)
+    {
         concat(num);
         return (*this);
     }
-    String & operator += (float num)		{
+    String & operator += (float num)
+    {
         concat(num);
         return (*this);
     }
-    String & operator += (double num)		{
+    String & operator += (double num)
+    {
         concat(num);
         return (*this);
     }
-    String & operator += (const __FlashStringHelper *str) {
+    String & operator += (const __FlashStringHelper *str)
+    {
         concat(str);
         return (*this);
     }
@@ -183,22 +195,27 @@ public:
     friend StringSumHelper & operator + (const StringSumHelper &lhs, const __FlashStringHelper *rhs);
 
     // comparison (only works w/ Strings and "strings")
-    operator StringIfHelperType() const {
+    operator StringIfHelperType() const
+    {
         return buffer ? &String::StringIfHelper : 0;
     }
     int compareTo(const String &s) const;
     unsigned char equals(const String &s) const;
     unsigned char equals(const char *cstr) const;
-    unsigned char operator == (const String &rhs) const {
+    unsigned char operator == (const String &rhs) const
+    {
         return equals(rhs);
     }
-    unsigned char operator == (const char *cstr) const {
+    unsigned char operator == (const char *cstr) const
+    {
         return equals(cstr);
     }
-    unsigned char operator != (const String &rhs) const {
+    unsigned char operator != (const String &rhs) const
+    {
         return !equals(rhs);
     }
-    unsigned char operator != (const char *cstr) const {
+    unsigned char operator != (const char *cstr) const
+    {
         return !equals(cstr);
     }
     unsigned char operator <  (const String &rhs) const;
@@ -220,19 +237,24 @@ public:
     {
         getBytes((unsigned char *)buf, bufsize, index);
     }
-    const char * c_str() const {
+    const char * c_str() const
+    {
         return buffer;
     }
-    char* begin() {
+    char* begin()
+    {
         return buffer;
     }
-    char* end() {
+    char* end()
+    {
         return buffer + length();
     }
-    const char* begin() const {
+    const char* begin() const
+    {
         return c_str();
     }
-    const char* end() const {
+    const char* end() const
+    {
         return c_str() + length();
     }
 
@@ -245,7 +267,8 @@ public:
     int lastIndexOf( char ch, unsigned int fromIndex ) const;
     int lastIndexOf( const String &str ) const;
     int lastIndexOf( const String &str, unsigned int fromIndex ) const;
-    String substring( unsigned int beginIndex ) const {
+    String substring( unsigned int beginIndex ) const
+    {
         return substring(beginIndex, len);
     };
     String substring( unsigned int beginIndex, unsigned int endIndex ) const;
@@ -262,12 +285,12 @@ public:
     // parsing/conversion
     long toInt(void) const;
     float toFloat(void) const;
-    
+
     //sprintf support
     int sprintf(const char *__restrict __format, ...);
 
 protected:
-    char *buffer;	        // the actual char array
+    char *buffer;           // the actual char array
     unsigned int capacity;  // the array length minus one (for the '\0')
     unsigned int len;       // the String length (not counting the '\0')
 protected:

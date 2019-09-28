@@ -3,10 +3,9 @@
 
 # https://github.com/FASTSHIFT/Arduino-For-Keil
 
-注意{ 
-	此版本的标准外设库默认晶振频率是25MHz;
-	若板载晶振为8MHz,需要将system_stm32f4xx.c -> 第254行 -> PLL_M定义 25 改为 8
-}
+注意: 
+    此版本的标准外设库默认晶振频率是25MHz;
+    若板载晶振为8MHz,需要将system_stm32f4xx.c -> 第254行 -> PLL_M定义 25 改为 8
 
 //*********************************UPGRADE LOGS************************************//
 
@@ -22,3 +21,4 @@
 //Upgrade   2019.7.12   V_1.9 Arduino.h里添加yield()与digitalPinToInterrupt(Pin)定义，更改analogRead_DMA()合法参数判断方式
 //Upgrade   2019.8.22   V_2.0 同步_Keilduino(STM32F10x) V_7.0代码
 //Upgrade   2019.8.24   V_2.1 digitalRead_Fast修改为digitalRead_FAST，修复 gpio.c 内 PIN_MAP 的 PC3、PC4、PC5 ADC通道的错误定义
+//Upgrade   2019.9.28   V_2.2 更新SPI库 
