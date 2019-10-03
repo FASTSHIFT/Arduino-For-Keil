@@ -16,4 +16,4 @@
 //Upgrade   2019.6.3   V_1.8 pwm.c库将频率设定值从16位改为32位，并加入参数合法范围判断，ARDUINO宏定义从Arduino.h转至全局宏定义
 //Upgrade   2019.6.18  V_1.9 PA4已可以输出PWM
 //Upgrade   2019.7.12  V_2.0 Arduino.h里添加yield()与digitalPinToInterrupt(Pin)定义，更改analogRead_DMA()合法参数判断方式
-//Upgrade   2019.10.3  V_2.1 同步_Keilduino(STM32F10x) V_7.0部分代码，暂时去除ADC DMA，将STM32F030F4P6串口1映射到PA9和PA10
+//Upgrade   2019.10.3  V_2.1 同步_Keilduino(STM32F10x) V_7.0部分代码，暂时去除ADC DMA，将STM32F030F4P6串口1映射到PA9和PA10，添加TIM6定时中断

@@ -158,7 +158,6 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     }
 
     //Enable PeriphClock
-    TIM_DeInit(TIMx);
     TimerClockCmd(TIMx, ENABLE);
 
     TIM_DeInit(TIMx);
