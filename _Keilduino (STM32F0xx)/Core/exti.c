@@ -1,15 +1,15 @@
 #include "exti.h"
 #include "gpio.h"
 
-EXTI_CallbackFunction_t EXTI_Function[16] = {0};
-//外部中断回调函数指针数组
+/*外部中断回调函数指针数组*/
+static EXTI_CallbackFunction_t EXTI_Function[16] = {0};
 
 /**
   * @brief  外部中断初始化
   * @param  Pin: 引脚编号
-			function: 回调函数
-			Trigger_Mode: 触发方式
-			ChannelPriority: 通道优先级
+  * @param  function: 回调函数
+  * @param  Trigger_Mode: 触发方式
+  * @param  ChannelPriority: 通道优先级
   * @retval 无
   */
 void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_TypeDef Trigger_Mode, uint8_t ChannelPriority)
@@ -17,64 +17,95 @@ void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_TypeD
     EXTI_InitTypeDef EXTI_InitStructure;
     NVIC_InitTypeDef NVIC_InitStructure;
     IRQn_Type EXTIx_IRQn;
-    uint8_t Pinx = Get_Pinx(Pin);
+    uint8_t Pinx;
 
-    if(Pinx > 15)return;
+    if(!IS_PIN(Pin))
+        return;
+
+    Pinx = Get_Pinx(Pin);
+
+    if(Pinx > 15)
+        return;
+
     EXTI_Function[Pinx] = function;
 
     //GPIO中断线以及中断初始化配置
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
     SYSCFG_EXTILineConfig(Get_EXTI_PortSourceGPIOx(Pin), Get_EXTI_PinSourcex(Pin));
 
-    EXTI_InitStructure.EXTI_Line = Get_EXTI_Linex(Pin);						//设置中断线
-    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;				//设置触发模式，中断触发（事件触发）
-    EXTI_InitStructure.EXTI_Trigger = Trigger_Mode;			//设置触发方式
+    EXTI_InitStructure.EXTI_Line = Get_EXTI_Linex(Pin);//设置中断线
+    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//设置触发模式，中断触发（事件触发）
+    EXTI_InitStructure.EXTI_Trigger = Trigger_Mode;//设置触发方式
     EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-    EXTI_Init(&EXTI_InitStructure);	 	//根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
+    EXTI_Init(&EXTI_InitStructure);//根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
 
     if(Pinx <= 1)
     {
         EXTIx_IRQn = EXTI0_1_IRQn;
     }
-    else if(Pinx >= 2 && Pinx <= 3) EXTIx_IRQn = EXTI2_3_IRQn;
-    else if(Pinx >= 4 && Pinx <= 15) EXTIx_IRQn = EXTI4_15_IRQn;
+    else if(Pinx >= 2 && Pinx <= 3)
+    {
+        EXTIx_IRQn = EXTI2_3_IRQn;
+    }
+    else if(Pinx >= 4 && Pinx <= 15)
+    {
+        EXTIx_IRQn = EXTI4_15_IRQn;
+    }
 
-    NVIC_InitStructure.NVIC_IRQChannel = EXTIx_IRQn;					//使能所在的外部中断通道
+    NVIC_InitStructure.NVIC_IRQChannel = EXTIx_IRQn;//使能所在的外部中断通道
     NVIC_InitStructure.NVIC_IRQChannelPriority = ChannelPriority;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;						//使能外部中断通道
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;//使能外部中断通道
     NVIC_Init(&NVIC_InitStructure);
 }
 
 /**
-  * @brief  外部中断初始化 (Arduino)
+  * @brief  外部中断初始化
   * @param  Pin: 引脚编号
-			function: 回调函数
-			Trigger_Mode: 触发方式
+  * @param  function: 回调函数
+  * @param  Trigger_Mode: 触发方式
   * @retval 无
   */
 void attachInterrupt(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_TypeDef Trigger_Mode)
 {
-    EXTIx_Init(Pin, function, Trigger_Mode, EXTI_ChannelPriority_Default);
+    EXTIx_Init(
+        Pin, 
+        function, 
+        Trigger_Mode, 
+        EXTI_ChannelPriority_Default
+    );
 }
 /**
-  * @brief  关闭给定的中断 (Arduino)
+  * @brief  关闭给定的中断
   * @param  Pin: 引脚编号
   * @retval 无
   */
 void detachInterrupt(uint8_t Pin)
 {
-	EXTI_InitTypeDef EXTI_InitStructure;
-    uint8_t Pinx = Get_Pinx(Pin);
+    IRQn_Type EXTIx_IRQn;
+    uint8_t Pinx;
 
-    if(Pinx > 15)return;
+    if(!IS_PIN(Pin))
+        return;
 
-    //GPIO中断线以及中断初始化配置
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
-    SYSCFG_EXTILineConfig(Get_EXTI_PortSourceGPIOx(Pin), Get_EXTI_PinSourcex(Pin));
+    Pinx = Get_Pinx(Pin);
 
-    EXTI_InitStructure.EXTI_Line = Get_EXTI_Linex(Pin);						//设置中断线
-    EXTI_InitStructure.EXTI_LineCmd = DISABLE;
-    EXTI_Init(&EXTI_InitStructure);
+    if(Pinx > 15)
+        return;
+    
+    if(Pinx <= 1)
+    {
+        EXTIx_IRQn = EXTI0_1_IRQn;
+    }
+    else if(Pinx >= 2 && Pinx <= 3)
+    {
+        EXTIx_IRQn = EXTI2_3_IRQn;
+    }
+    else if(Pinx >= 4 && Pinx <= 15)
+    {
+        EXTIx_IRQn = EXTI4_15_IRQn;
+    }
+
+    NVIC_DisableIRQ(EXTIx_IRQn);
 }
 
 /**

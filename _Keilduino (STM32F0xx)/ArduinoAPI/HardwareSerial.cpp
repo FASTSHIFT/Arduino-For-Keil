@@ -50,7 +50,7 @@ void HardwareSerial::begin(uint32_t BaudRate)
 /**
   * @brief  串口初始化
   * @param  BaudRate: 波特率
-			Config: 配置参数
+  * @param  Config: 配置参数
   * @retval 无
   */
 void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config)
@@ -61,8 +61,8 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config)
 /**
   * @brief  串口初始化
   * @param  BaudRate: 波特率
-			Config: 配置参数
-			ChannelPriority: 通道优先级
+  * @param  Config: 配置参数
+  * @param  ChannelPriority: 通道优先级
   * @retval 无
   */
 void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t ChannelPriority)
@@ -78,13 +78,9 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Chan
 
     if(USARTx == USART1)
     {
-#if defined (STM32F030F4P6)
-        Tx_Pin = GPIO_Pin_2;
-        Rx_Pin = GPIO_Pin_3;
-#else
         Tx_Pin = GPIO_Pin_9;
         Rx_Pin = GPIO_Pin_10;
-#endif
+
         GPIOx = GPIOA;
         RCC_AHBPeriph_GPIOx = RCC_AHBPeriph_GPIOA;
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
@@ -94,6 +90,7 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Chan
     {
         Tx_Pin = GPIO_Pin_2;
         Rx_Pin = GPIO_Pin_3;
+        
         GPIOx = GPIOA;
         RCC_AHBPeriph_GPIOx = RCC_AHBPeriph_GPIOA;
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);

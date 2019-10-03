@@ -2,7 +2,7 @@
 #include "Arduino.h"
 
 static TIM_TypeDef *ToneTimer_Last = 0, *ToneTimer = ToneTimer_Default;
-static uint8_t tone_State = Off;
+static bool IsToneEnable = false;
 static uint8_t tone_Pin;
 static uint32_t tone_StopTimePoint;
 
@@ -14,7 +14,7 @@ static uint32_t tone_StopTimePoint;
 void tone_TimerHandler()
 {
     togglePin(tone_Pin);
-    if(millis() > tone_StopTimePoint && !tone_State)
+    if(millis() > tone_StopTimePoint && !IsToneEnable)
     {
         noTone(tone_Pin);
     }
@@ -33,37 +33,43 @@ void toneSetTimer(TIM_TypeDef* TIMx)
 /**
   * @brief  在Pin上生成指定频率 (50%占空比的方波)
   * @param  pin: 产生音调的 Pin
-			freq: 频率(Hz)
-			Time_ms: 音调的持续时间 (以毫秒为单位)
+  * @param  freq: 频率(Hz)
+  * @param  Time_ms: 音调的持续时间 (以毫秒为单位)
   * @retval 无
   */
 void tone(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
 {
-    if(freq == 0 || freq > 500000 || Time_ms == 0)
+    if(!IS_PIN(Pin))
+        return;
+
+    if(freq == 0 || freq > 500000)
     {
         noTone(Pin);
         return;
     }
     tone(Pin, freq);
     tone_StopTimePoint = millis() + Time_ms;
-    tone_State = Off;
+    IsToneEnable = false;
 }
 
 /**
   * @brief  在Pin上生成指定频率 (50%占空比的方波)
   * @param  pin: 产生音调的引脚编号
-			freq: 频率(Hz)
+  * @param  freq: 频率(Hz)
   * @retval 无
   */
 void tone(uint8_t Pin, uint32_t freq)
 {
+    if(!IS_PIN(Pin))
+        return;
+
     if(freq == 0 || freq > 500000)
     {
         noTone(Pin);
         return;
     }
     tone_Pin = Pin;
-    tone_State = On;
+    IsToneEnable = true;
 
     if(ToneTimer != ToneTimer_Last)
     {
@@ -87,14 +93,14 @@ void noTone(uint8_t Pin)
 {
     TIM_Cmd(ToneTimer, DISABLE);
     digitalWrite_LOW(Pin);
-    tone_State = Off;
+    IsToneEnable = Off;
 }
 
 /**
-* @brief  在Pin上生成指定频率 (50%占空比的方波，阻塞式不占用定时器)
+  * @brief  在Pin上生成指定频率 (50%占空比的方波，阻塞式不占用定时器)
   * @param  pin: 产生音调的引脚编号
-			freq: 频率(Hz)
-			Time_ms: 音调的持续时间 (以毫秒为单位)
+  * @param  freq: 频率(Hz)
+  * @param  Time_ms: 音调的持续时间 (以毫秒为单位)
   * @retval 无
   */
 void toneBlock(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
@@ -108,16 +114,17 @@ void toneBlock(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
         delayMicroseconds(dlyus);
         digitalWrite_LOW(Pin);
         delayMicroseconds(dlyus);
-    } while(millis() < TimePoint);
+    }
+    while(millis() < TimePoint);
     digitalWrite_LOW(Pin);
 }
 
 /**
-  * @brief  在Pin上生成指定频率和音量 (50%占空比的方波，阻塞式不占用定时器)
+  * @brief  在Pin上生成指定频率和音量 (可调占空比的方波，阻塞式不占用定时器)
   * @param  pin: 产生音调的引脚编号
-			freq: 频率(Hz)
-			Time_ms: 音调的持续时间 (以毫秒为单位)
-			vol: 音量(0-100)
+  * @param  freq: 频率(Hz)
+  * @param  Time_ms: 音调的持续时间 (以毫秒为单位)
+  * @param  vol: 音量(0.0~1.0对应占空比0%~100%)
   * @retval 无
   */
 void toneBlock_Volumn(uint8_t Pin, uint32_t freq, uint32_t Time_ms, uint32_t vol)
@@ -133,16 +140,17 @@ void toneBlock_Volumn(uint8_t Pin, uint32_t freq, uint32_t Time_ms, uint32_t vol
         delayMicroseconds(dlHigh);
         digitalWrite_LOW(Pin);
         delayMicroseconds(dlLow);
-    } while(millis() < TimePoint);
+    }
+    while(millis() < TimePoint);
     digitalWrite_LOW(Pin);
 }
 
 /**
-  * @brief  在Pin上生成指定频率和音量 (50%占空比的方波，阻塞式不占用定时器)
+  * @brief  在Pin上生成指定频率和音量 (可调占空比的方波，阻塞式不占用定时器)
   * @param  pin: 产生音调的引脚编号
-			freq: 频率(Hz)
-			Time_us: 音调的持续时间 (以微秒为单位)
-			vol: 音量(0-100)
+  * @param  freq: 频率(Hz)
+  * @param  Time_us: 音调的持续时间 (以微秒为单位)
+  * @param  vol: 音量(0.0~1.0对应占空比0%~100%)
   * @retval 无
   */
 void toneBlock_Volumn_us(uint8_t Pin, uint32_t freq, uint32_t Time_us, uint32_t vol)
@@ -158,6 +166,7 @@ void toneBlock_Volumn_us(uint8_t Pin, uint32_t freq, uint32_t Time_us, uint32_t 
         delayMicroseconds(dlHigh);
         digitalWrite_LOW(Pin);
         delayMicroseconds(dlLow);
-    } while(micros() < TimePoint);
+    }
+    while(micros() < TimePoint);
     digitalWrite_LOW(Pin);
 }

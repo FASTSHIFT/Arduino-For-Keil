@@ -1,8 +1,11 @@
 #include "delay.h"
 
-#define SysTick_LoadValue (F_CPU / 1000U) //根据当前时钟频率自动计算Systick初始值
+/*根据当前时钟频率自动计算Systick初始值*/
+#define SysTick_LoadValue (F_CPU / 1000U)
 
-volatile static uint32_t System_ms = 0; //系统时钟计时变量
+/*系统时钟计时变量*/
+volatile static uint32_t System_ms = 0;
+
 static SysClock_TypeDef SysClock[] = {
     {16000000, RCC_PLLMul_2},//16MHz, 2倍频
     {24000000, RCC_PLLMul_3},//24MHz, 3倍频

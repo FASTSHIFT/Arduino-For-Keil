@@ -1,6 +1,6 @@
 #include "gpio.h"
 
-//GPIO 基本信息
+/*GPIO 基本信息*/
 const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
 {
     /*GPIO_TypeDef* GPIOx;  //对应GPIOx地址

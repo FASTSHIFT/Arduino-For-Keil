@@ -1,22 +1,23 @@
 #include "gpio.h"
 
-//GPIO 基本信息
-const PinInfo_TypeDef PIN_MAP[] = {
-    /*GPIO_TypeDef* GPIOx;	//	对应GPIOx地址
-    TIM_TypeDef* TIMx;		//	对应TIMx地址
-    ADC_TypeDef* ADCx;		//	对应ADCx地址
+/*GPIO 基本信息*/
+const PinInfo_TypeDef PIN_MAP[] =
+{
+    /*GPIO_TypeDef* GPIOx;  //  对应GPIOx地址
+    TIM_TypeDef* TIMx;      //  对应TIMx地址
+    ADC_TypeDef* ADCx;      //  对应ADCx地址
 
-    uint16_t GPIO_Pin_x;	//	对应GPIO_Pin位
-    uint8_t TimerChannel;	//	对应定时器通道
-    uint8_t ADC_Channel;*/	//	对应ADC通道
+    uint16_t GPIO_Pin_x;    //  对应GPIO_Pin位
+    uint8_t TimerChannel;   //  对应定时器通道
+    uint8_t ADC_Channel;*/  //  对应ADC通道
     {GPIOA, TIM2, ADC1,  GPIO_Pin_0, 1, ADC_Channel_0}, /* PA0 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_1, 2, ADC_Channel_1}, /* PA1 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_2, 3, ADC_Channel_2}, /* PA2 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_3, 4, ADC_Channel_3}, /* PA3 */
     {GPIOA, TIM14,ADC1,  GPIO_Pin_4, 1, ADC_Channel_4}, /* PA4 */
-    {GPIOA, NULL, ADC1,  GPIO_Pin_5, 0,	ADC_Channel_5}, /* PA5 */
+    {GPIOA, NULL, ADC1,  GPIO_Pin_5, 0, ADC_Channel_5}, /* PA5 */
     {GPIOA, TIM3, ADC1,  GPIO_Pin_6, 1, ADC_Channel_6}, /* PA6 */
-    {GPIOA, TIM3, ADC1,  GPIO_Pin_7, 2,	ADC_Channel_7}, /* PA7 */
+    {GPIOA, TIM3, ADC1,  GPIO_Pin_7, 2, ADC_Channel_7}, /* PA7 */
     {GPIOA, TIM1, NULL,  GPIO_Pin_8, 1, ADC_Channel_X}, /* PA8 */
     {GPIOA, TIM1, NULL,  GPIO_Pin_9, 2, ADC_Channel_X}, /* PA9 */
     {GPIOA, TIM1, NULL, GPIO_Pin_10, 3, ADC_Channel_X}, /* PA10 */
@@ -117,9 +118,9 @@ const PinInfo_TypeDef PIN_MAP[] = {
 /**
   * @brief  GPIO初始化
   * @param  GPIOx: GPIO地址
-			GPIO_Pin_x: GPIO对应位
-			GPIO_Mode_x: GPIO模式
-			GPIO_Speed_x: GPIO速度
+  * @param  GPIO_Pin_x: GPIO对应位
+  * @param  GPIO_Mode_x: GPIO模式
+  * @param  GPIO_Speed_x: GPIO速度
   * @retval 无
   */
 void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMode_x, GPIOSpeed_TypeDef GPIO_Speed_x)
@@ -177,7 +178,6 @@ void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMod
         GPIO_Mode_x  = GPIO_Mode_AF;
         GPIO_OType_x = GPIO_OType_PP;
         GPIO_PuPd_x  = GPIO_PuPd_NOPULL;
-        //GPIO_PinAFConfig(GPIOx, Get_GPIO_PinSource(GPIO_Pin_x), GPIO_AF_1);
     }
 
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_x;

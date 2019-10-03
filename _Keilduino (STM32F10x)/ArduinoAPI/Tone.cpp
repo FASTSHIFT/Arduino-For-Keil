@@ -14,7 +14,9 @@ static void toneTimer_Handler()
 {
     togglePin(tone_Pin);
     if(millis() > tone_StopTimePoint && !IsToneEnable)
+    {
         noTone(tone_Pin);
+    }
 }
 
 /**
@@ -97,7 +99,7 @@ void noTone(uint8_t Pin)
 }
 
 /**
-* @brief  在Pin上生成指定频率 (50%占空比的方波，阻塞式不占用定时器)
+  * @brief  在Pin上生成指定频率 (50%占空比的方波，阻塞式不占用定时器)
   * @param  pin: 产生音调的引脚编号
   * @param  freq: 频率(Hz)
   * @param  Time_ms: 音调的持续时间 (以毫秒为单位)

@@ -1,8 +1,10 @@
 #include "delay.h"
 #include "Arduino.h"
 
+/*根据当前时钟频率自动计算Systick初始值*/
 #define SysTick_LoadValue (F_CPU / 1000U)
 
+/*系统时钟计时变量*/
 volatile static uint32_t System_ms = 0;
 
 /**

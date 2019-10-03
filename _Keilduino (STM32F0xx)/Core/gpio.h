@@ -22,7 +22,8 @@ typedef enum {
     PE0, PE1, PE2, PE3, PE4, PE5, PE6, PE7, PE8, PE9, PE10, PE11, PE12, PE13, PE14, PE15,
 #endif
     PF0, PF1, PF2, PF3, PF4, PF5, PF6, PF7, PF8, PF9, PF10, PF11, PF12, PF13, PF14, PF15,
-    PG0, PG1, PG2, PG3, PG4, PG5, PG6, PG7, PG8, PG9, PG10, PG11, PG12, PG13, PG14, PG15
+    PG0, PG1, PG2, PG3, PG4, PG5, PG6, PG7, PG8, PG9, PG10, PG11, PG12, PG13, PG14, PG15,
+    PIN_MAX
 } Pxx_TypeDef;
 
 typedef struct STM32_PinInfo {
@@ -48,10 +49,11 @@ typedef enum
 } pinMode_TypeDef;
 
 
-extern const PinInfo_TypeDef PIN_MAP[];
+extern const PinInfo_TypeDef PIN_MAP[PIN_MAX];
 
-#define IS_ADC_PIN(Pin) (PIN_MAP[Pin].ADC_Channel != ADC_Channel_X)
-#define IS_PWM_PIN(Pin) (PIN_MAP[Pin].TimerChannel != 0)
+#define IS_PIN(Pin)     (Pin < PIN_MAX)
+#define IS_ADC_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].ADC_Channel  != ADC_Channel_X)
+#define IS_PWM_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].TimerChannel != 0)
 
 void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMode_x, GPIOSpeed_TypeDef GPIO_Speed_x);
 uint8_t Get_GPIOx(uint8_t Pin);
