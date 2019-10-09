@@ -106,7 +106,9 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
         GPIO_AF_USARTx = GPIO_AF_USART3;
         RCC_AHB1Periph_GPIOx = RCC_AHB1Periph_GPIOB;
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+#if defined (STM32F40_41xxx) || defined (STM32F427_437xx) || defined (STM32F429_439xx)
         ItChannel = USART3_IRQn;
+#endif
     }
     else return;
 

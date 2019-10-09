@@ -1,6 +1,10 @@
 #ifndef __MCU_TYPE
 #define __MCU_TYPE
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stm32f4xx.h"
 #include "stm32f4xx_conf.h"
 
@@ -8,7 +12,7 @@
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
-#define __KEILDUINO__ 220
+#define __KEILDUINO__ 230
 
 #define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRRL  = PIN_MAP[Pin].GPIO_Pin_x)
 #define digitalWrite_LOW(Pin)  (PIN_MAP[Pin].GPIOx->BSRRH  = PIN_MAP[Pin].GPIO_Pin_x)
@@ -27,5 +31,9 @@
 #define IS_SPIx_TxRxDone(SPIx,SPI_I2S_FLAG) (SPIx->SR & SPI_I2S_FLAG)
 #define SPIx_FastSendData(SPIx,Data)        (SPIx->DR = Data)
 #define SPIx_FastRecvData(SPIx)             (SPIx->DR)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
