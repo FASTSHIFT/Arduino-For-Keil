@@ -6,8 +6,9 @@
 
 #define __STM32F3__
 #define F_CPU SystemCoreClock
+#define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
-#define __KEILDUINO__ 110
+#define __KEILDUINO__ 120
 
 #define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRR = PIN_MAP[Pin].GPIO_Pin_x)
 #define digitalWrite_LOW(Pin)  (PIN_MAP[Pin].GPIOx->BRR  = PIN_MAP[Pin].GPIO_Pin_x)
@@ -19,6 +20,12 @@
 #define GPIO_READ(GPIOX,GPIO_PIN_X)  ((GPIOX->IDR   & GPIO_PIN_X)!=0)
 #define GPIO_TOGGLE(GPIOX,GPIO_PIN_X) (GPIOX->ODR  ^= GPIO_PIN_X)
 
-#define IS_USARTx_SendDone(USARTx)	(USARTx->ISR & USART_ISR_TC)
+//*************** USART ***************//
+#define IS_USARTx_SendDone(USARTx) (USARTx->ISR & USART_ISR_TXE)
+
+//*************** SPI ***************//
+#define IS_SPIx_TxRxDone(SPIx,SPI_I2S_FLAG) (SPIx->SR & SPI_I2S_FLAG)
+#define SPIx_FastSendData(SPIx,Data)        (SPIx->DR = Data)
+#define SPIx_FastRecvData(SPIx)             (SPIx->DR)
 
 #endif

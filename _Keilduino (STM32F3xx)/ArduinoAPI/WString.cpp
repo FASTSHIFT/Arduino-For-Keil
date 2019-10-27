@@ -1,4 +1,4 @@
-﻿/*
+/*
   WString.cpp - String library for Wiring & Arduino
   ...mostly rewritten by Paul Stoffregen...
   Copyright (c) 2009-10 Hernando Barragan.  All rights reserved.
@@ -146,7 +146,8 @@ void String::invalidate(void)
 unsigned char String::reserve(unsigned int size)
 {
     if (buffer && capacity >= size) return 1;
-    if (changeBuffer(size)) {
+    if (changeBuffer(size))
+    {
         if (len == 0) buffer[0] = 0;
         return 1;
     }
@@ -156,7 +157,8 @@ unsigned char String::reserve(unsigned int size)
 unsigned char String::changeBuffer(unsigned int maxStrLen)
 {
     char *newbuffer = (char *)realloc(buffer, maxStrLen + 1);
-    if (newbuffer) {
+    if (newbuffer)
+    {
         buffer = newbuffer;
         capacity = maxStrLen;
         return 1;
@@ -170,7 +172,8 @@ unsigned char String::changeBuffer(unsigned int maxStrLen)
 
 String & String::copy(const char *cstr, unsigned int length)
 {
-    if (!reserve(length)) {
+    if (!reserve(length))
+    {
         invalidate();
         return *this;
     }
@@ -181,7 +184,8 @@ String & String::copy(const char *cstr, unsigned int length)
 
 String & String::copy(const __FlashStringHelper *pstr, unsigned int length)
 {
-    if (!reserve(length)) {
+    if (!reserve(length))
+    {
         invalidate();
         return *this;
     }
@@ -193,13 +197,17 @@ String & String::copy(const __FlashStringHelper *pstr, unsigned int length)
 #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
 void String::move(String &rhs)
 {
-    if (buffer) {
-        if (rhs && capacity >= rhs.len) {
+    if (buffer)
+    {
+        if (rhs && capacity >= rhs.len)
+        {
             strcpy(buffer, rhs.buffer);
             len = rhs.len;
             rhs.len = 0;
             return;
-        } else {
+        }
+        else
+        {
             free(buffer);
         }
     }
@@ -424,7 +432,7 @@ StringSumHelper & operator + (const StringSumHelper &lhs, double num)
 StringSumHelper & operator + (const StringSumHelper &lhs, const __FlashStringHelper *rhs)
 {
     StringSumHelper &a = const_cast<StringSumHelper&>(lhs);
-    if (!a.concat(rhs))	a.invalidate();
+    if (!a.concat(rhs)) a.invalidate();
     return a;
 }
 
@@ -434,7 +442,8 @@ StringSumHelper & operator + (const StringSumHelper &lhs, const __FlashStringHel
 
 int String::compareTo(const String &s) const
 {
-    if (!buffer || !s.buffer) {
+    if (!buffer || !s.buffer)
+    {
         if (s.buffer && s.len > 0) return 0 - *(unsigned char *)s.buffer;
         if (buffer && len > 0) return *(unsigned char *)buffer;
         return 0;
@@ -481,7 +490,8 @@ unsigned char String::equalsIgnoreCase( const String &s2 ) const
     if (len == 0) return 1;
     const char *p1 = buffer;
     const char *p2 = s2.buffer;
-    while (*p1) {
+    while (*p1)
+    {
         if (tolower(*p1++) != tolower(*p2++)) return 0;
     }
     return 1;
@@ -522,7 +532,8 @@ void String::setCharAt(unsigned int loc, char c)
 char & String::operator[](unsigned int index)
 {
     static char dummy_writable_char;
-    if (index >= len || !buffer) {
+    if (index >= len || !buffer)
+    {
         dummy_writable_char = 0;
         return dummy_writable_char;
     }
@@ -538,7 +549,8 @@ char String::operator[]( unsigned int index ) const
 void String::getBytes(unsigned char *buf, unsigned int bufsize, unsigned int index) const
 {
     if (!bufsize || !buf) return;
-    if (index >= len) {
+    if (index >= len)
+    {
         buf[0] = 0;
         return;
     }
@@ -604,7 +616,8 @@ int String::lastIndexOf(const String &s2, unsigned int fromIndex) const
     if (s2.len == 0 || len == 0 || s2.len > len) return -1;
     if (fromIndex >= len) fromIndex = len - 1;
     int found = -1;
-    for (char *p = buffer; p <= buffer + fromIndex; p++) {
+    for (char *p = buffer; p <= buffer + fromIndex; p++)
+    {
         p = strstr(p, s2.buffer);
         if (!p) break;
         if ((unsigned int)(p - buffer) <= fromIndex) found = p - buffer;
@@ -614,7 +627,8 @@ int String::lastIndexOf(const String &s2, unsigned int fromIndex) const
 
 String String::substring(unsigned int left, unsigned int right) const
 {
-    if (left > right) {
+    if (left > right)
+    {
         unsigned int temp = right;
         right = left;
         left = temp;
@@ -636,7 +650,8 @@ String String::substring(unsigned int left, unsigned int right) const
 void String::replace(char find, char replace)
 {
     if (!buffer) return;
-    for (char *p = buffer; *p; p++) {
+    for (char *p = buffer; *p; p++)
+    {
         if (*p == find) *p = replace;
     }
 }
@@ -647,14 +662,19 @@ void String::replace(const String& find, const String& replace)
     int diff = replace.len - find.len;
     char *readFrom = buffer;
     char *foundAt;
-    if (diff == 0) {
-        while ((foundAt = strstr(readFrom, find.buffer)) != NULL) {
+    if (diff == 0)
+    {
+        while ((foundAt = strstr(readFrom, find.buffer)) != NULL)
+        {
             memcpy(foundAt, replace.buffer, replace.len);
             readFrom = foundAt + replace.len;
         }
-    } else if (diff < 0) {
+    }
+    else if (diff < 0)
+    {
         char *writeTo = buffer;
-        while ((foundAt = strstr(readFrom, find.buffer)) != NULL) {
+        while ((foundAt = strstr(readFrom, find.buffer)) != NULL)
+        {
             unsigned int n = foundAt - readFrom;
             memcpy(writeTo, readFrom, n);
             writeTo += n;
@@ -664,16 +684,20 @@ void String::replace(const String& find, const String& replace)
             len += diff;
         }
         strcpy(writeTo, readFrom);
-    } else {
+    }
+    else
+    {
         unsigned int size = len; // compute size needed for result
-        while ((foundAt = strstr(readFrom, find.buffer)) != NULL) {
+        while ((foundAt = strstr(readFrom, find.buffer)) != NULL)
+        {
             readFrom = foundAt + find.len;
             size += diff;
         }
         if (size == len) return;
         if (size > capacity && !changeBuffer(size)) return; // XXX: tell user!
         int index = len - 1;
-        while (index >= 0 && (index = lastIndexOf(find, index)) >= 0) {
+        while (index >= 0 && (index = lastIndexOf(find, index)) >= 0)
+        {
             readFrom = buffer + index + find.len;
             memmove(readFrom + diff, readFrom, len - (readFrom - buffer));
             len += diff;
@@ -684,21 +708,26 @@ void String::replace(const String& find, const String& replace)
     }
 }
 
-void String::remove(unsigned int index) {
+void String::remove(unsigned int index)
+{
     // Pass the biggest integer as the count. The remove method
     // below will take care of truncating it at the end of the
     // string.
     remove(index, (unsigned int) -1);
 }
 
-void String::remove(unsigned int index, unsigned int count) {
-    if (index >= len) {
+void String::remove(unsigned int index, unsigned int count)
+{
+    if (index >= len)
+    {
         return;
     }
-    if (count <= 0) {
+    if (count <= 0)
+    {
         return;
     }
-    if (count > len - index) {
+    if (count > len - index)
+    {
         count = len - index;
     }
     char *writeTo = buffer + index;
@@ -710,7 +739,8 @@ void String::remove(unsigned int index, unsigned int count) {
 void String::toLowerCase(void)
 {
     if (!buffer) return;
-    for (char *p = buffer; *p; p++) {
+    for (char *p = buffer; *p; p++)
+    {
         *p = tolower(*p);
     }
 }
@@ -718,7 +748,8 @@ void String::toLowerCase(void)
 void String::toUpperCase(void)
 {
     if (!buffer) return;
-    for (char *p = buffer; *p; p++) {
+    for (char *p = buffer; *p; p++)
+    {
         *p = toupper(*p);
     }
 }
@@ -750,3 +781,27 @@ float String::toFloat(void) const
     if (buffer) return float(atof(buffer));
     return 0;
 }
+
+#ifdef SUPPORTS_WSTRING_SPRINTF
+extern "C" {
+#include <stdio.h>
+#include <stdarg.h>
+}
+#define SPRINTF_BUFFER_LENGTH 100
+
+// Work in progress to support printf.
+// Need to implement stream FILE to write individual chars to chosen serial port
+int String::sprintf (const char *__restrict __format, ...)
+{
+    char printf_buff[SPRINTF_BUFFER_LENGTH];
+
+    va_list args;
+    va_start(args, __format);
+    int ret_status = vsnprintf(printf_buff, sizeof(printf_buff), __format, args);
+    va_end(args);
+    copy(printf_buff, strlen(printf_buff));
+
+    return ret_status;
+}
+
+#endif

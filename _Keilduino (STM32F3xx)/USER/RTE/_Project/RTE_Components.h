@@ -14,7 +14,7 @@
 /*
  * Define the Device Header File: 
  */
-#define CMSIS_device_header "stm32f30x.h"
+#define CMSIS_device_header "stm32f3xx.h"
 
 
 #endif /* RTE_COMPONENTS_H */

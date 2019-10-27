@@ -16,14 +16,14 @@
         <TargetCommonOption>
           <Device>STM32F302C8</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F3xx_DFP.1.2.0</PackID>
+          <PackID>Keil.STM32F3xx_DFP.1.4.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
-          <Cpu>IRAM(0x20000000,0x4000) IROM(0x08000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
+          <Cpu>IRAM(0x20000000,0x00004000) IROM(0x08000000,0x00010000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32F3xx_256 -FS08000000 -FL010000 -FP0($$Device:STM32F302C8$Flash\STM32F3xx_256.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
-          <RegisterFile>$$Device:STM32F302C8$Device\Include\stm32f30x.h</RegisterFile>
+          <RegisterFile>$$Device:STM32F302C8$Device\Include\stm32f3xx.h</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -311,8 +311,8 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
-            <oTime>1</oTime>
+            <Optim>4</Optim>
+            <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
             <Strict>0</Strict>
@@ -335,7 +335,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_STDPERIPH_DRIVER</Define>
+              <Define>USE_STDPERIPH_DRIVER,ARDUINO=111</Define>
               <Undefine></Undefine>
               <IncludePath>.\RTE;..\USER;..\ArduinoAPI;..\Core;..\Core\STM32F30x_StdPeriph_Driver\inc;..\Core\CMSIS\Device\ST\STM32F30x\Include</IncludePath>
             </VariousControls>
@@ -460,6 +460,11 @@
               <FilePath>..\Core\gpio.c</FilePath>
             </File>
             <File>
+              <FileName>exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\exti.c</FilePath>
+            </File>
+            <File>
               <FileName>pwm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\pwm.c</FilePath>
@@ -468,11 +473,6 @@
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\timer.c</FilePath>
-            </File>
-            <File>
-              <FileName>exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\exti.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -612,27 +612,10 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Startup</GroupName>
-          <Files>
-            <File>
-              <FileName>startup_stm32f30x.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\Core\CMSIS\Device\ST\STM32F30x\Source\Templates\arm\startup_stm32f30x.s</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>CMSIS</GroupName>
-          <Files>
-            <File>
-              <FileName>system_stm32f30x.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\system_stm32f30x.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>::CMSIS</GroupName>
+        </Group>
+        <Group>
+          <GroupName>::Device</GroupName>
         </Group>
       </Groups>
     </Target>
@@ -641,8 +624,14 @@
   <RTE>
     <apis/>
     <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.1.1" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.3.0"/>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.2.0" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.5.1"/>
+        <targetInfos>
+          <targetInfo name="Project"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.3.0" condition="STM32F302x8 CMSIS">
+        <package name="STM32F3xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.4.0"/>
         <targetInfos>
           <targetInfo name="Project"/>
         </targetInfos>
@@ -804,6 +793,22 @@
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32F1xx CMSIS Device"/>
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
         <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="Compiler ARMCC" name="Device\Source\ARM\startup_stm32f302x8.s" version="1.3.0">
+        <instance index="0">RTE\Device\STM32F302C8\startup_stm32f302x8.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.3.0" condition="STM32F302x8 CMSIS"/>
+        <package name="STM32F3xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.4.0"/>
+        <targetInfos>
+          <targetInfo name="Project"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_stm32f3xx.c" version="1.1.0">
+        <instance index="0">RTE\Device\STM32F302C8\system_stm32f3xx.c</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.3.0" condition="STM32F302x8 CMSIS"/>
+        <package name="STM32F3xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.4.0"/>
+        <targetInfos>
+          <targetInfo name="Project"/>
+        </targetInfos>
       </file>
       <file attr="config" category="source" condition="Compiler ARMCC" name="Device\Source\ARM\startup_stm32f303xc.s" version="1.3.0">
         <instance index="0" removed="1">RTE\Device\STM32F303CB\startup_stm32f303xc.s</instance>

@@ -1,26 +1,24 @@
 #include "pwm.h"
+#include "timer.h"
 #include "Arduino.h"
 
 /**
   * @brief  定时器输出捕获初始化
   * @param  TIMx: 定时器地址
-			arr: 自动重装值
-			psc: 时钟预分频数
-			TimerChannel: 定时器通道
+  * @param  arr: 自动重装值
+  * @param  psc: 时钟预分频数
+  * @param  TimerChannel: 定时器通道
   * @retval 无
   */
-void TIMx_Init(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChannel)
+void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChannel)
 {
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
     TIM_OCInitTypeDef  TIM_OCInitStructure;
-	
-    if(TIMx == TIM1)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
-    else if(TIMx == TIM2)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-    else if(TIMx == TIM3)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-    else if(TIMx == TIM4)RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
-    else if(TIMx == TIM15)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM15, ENABLE);
-    else if(TIMx == TIM16)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM16, ENABLE);
-    else if(TIMx == TIM17)RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM17, ENABLE);
+    
+    if(!IS_TIM_ALL_PERIPH(TIMx))
+        return;
+
+    TimerClockCmd(TIMx, ENABLE);
 
     TIM_TimeBaseStructure.TIM_Period = arr;
     TIM_TimeBaseStructure.TIM_Prescaler = psc;
@@ -53,6 +51,14 @@ void TIMx_Init(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChann
         TIM_OC4Init(TIMx, &TIM_OCInitStructure);
         TIM_OC4PreloadConfig(TIMx, TIM_OCPreload_Enable);
         break;
+    case 5:
+        TIM_OC5Init(TIMx, &TIM_OCInitStructure);
+        TIM_OC5PreloadConfig(TIMx, TIM_OCPreload_Enable);
+        break;
+    case 6:
+        TIM_OC6Init(TIMx, &TIM_OCInitStructure);
+        TIM_OC6PreloadConfig(TIMx, TIM_OCPreload_Enable);
+        break;
     }
 
     TIM_Cmd(TIMx, ENABLE);
@@ -62,31 +68,35 @@ void TIMx_Init(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChann
 /**
   * @brief  PWM输出初始化
   * @param  Pin:引脚编号
-			PWM_DutyCycle: PWM分级数
-			PWM_Frequency: PWM频率
+  * @param  PWM_DutyCycle: PWM分级数
+  * @param  PWM_Frequency: PWM频率
   * @retval 引脚对应的定时器通道
   */
 uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint16_t PWM_Frequency)
 {
     uint32_t arr, psc;
 
-    if(!IS_PWM_PIN(Pin))return 0;
+    if(!IS_PWM_PIN(Pin))
+        return 0;
+    
+    if(PWM_DutyCycle == 0 || PWM_Frequency == 0 || (PWM_DutyCycle * PWM_Frequency) > F_CPU)
+        return 0;
 
     pinMode(Pin, OUTPUT_AF);
-    GPIO_PinAFConfig(PIN_MAP[Pin].GPIOx, Get_Pinx(Pin), Get_TIMx_GPIO_AF_x(Pin));
+    GPIO_PinAFConfig(PIN_MAP[Pin].GPIOx, Get_TIM_PinSourcex(Pin), Get_TIMx_GPIO_AF_x(Pin));
 
     arr = PWM_DutyCycle;
     psc = F_CPU / PWM_DutyCycle / PWM_Frequency;
 
     TIM_Cmd(PIN_MAP[Pin].TIMx, DISABLE);
-    TIMx_Init(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
+    TIMx_OCxInit(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
     return PIN_MAP[Pin].TimerChannel;
 }
 
 /**
   * @brief  输出PWM信号
   * @param  Pin: 引脚编号
-			val:PWM占空比值
+            val:PWM占空比值
   * @retval PWM占空比值
   */
 uint16_t pwmWrite(uint8_t Pin, uint16_t val)
@@ -104,6 +114,12 @@ uint16_t pwmWrite(uint8_t Pin, uint16_t val)
         break;
     case 4:
         PIN_MAP[Pin].TIMx->CCR4 = val;
+        break;
+    case 5:
+        PIN_MAP[Pin].TIMx->CCR5 = val;
+        break;
+    case 6:
+        PIN_MAP[Pin].TIMx->CCR6 = val;
         break;
     }
     return val;
@@ -123,17 +139,17 @@ uint8_t Get_TIMx_GPIO_AF_x(uint8_t Pin)
     {
         GPIO_AF_x = GPIO_AF_1;
     }
-    else if(TIMx == TIM1 || TIMx == TIM2 || TIMx == TIM16 || TIMx == TIM17)
-    {
-        GPIO_AF_x = GPIO_AF_2;
-    }
-    else if(TIMx == TIM15)
-    {
-        GPIO_AF_x = GPIO_AF_3;
-    }
     else if(TIMx == TIM16 || TIMx == TIM17)
     {
         GPIO_AF_x = GPIO_AF_5;
+    }
+    else if(TIMx == TIM1)
+    {
+        GPIO_AF_x = GPIO_AF_6;
+    }
+    else if(TIMx == TIM15)
+    {
+        GPIO_AF_x = GPIO_AF_9;
     }
 
     return GPIO_AF_x;
@@ -142,7 +158,7 @@ uint8_t Get_TIMx_GPIO_AF_x(uint8_t Pin)
 /**
   * @brief  获取捕获值
   * @param  TIMx: 定时器地址
-			TimerChannel: 定时器通道
+  * @param  TimerChannel: 定时器通道
   * @retval 捕获值
   */
 uint16_t timer_get_compare(TIM_TypeDef* TIMx, uint8_t TimerChannel)
@@ -161,8 +177,8 @@ uint16_t timer_get_compare(TIM_TypeDef* TIMx, uint8_t TimerChannel)
         break;
     case 4:
         compare = TIMx->CCR4;
-		break;
-	case 5:
+        break;
+    case 5:
         compare = TIMx->CCR5;
         break;
     case 6:
@@ -175,7 +191,7 @@ uint16_t timer_get_compare(TIM_TypeDef* TIMx, uint8_t TimerChannel)
 /**
   * @brief  更新定时器时钟预分频数
   * @param  TIMx: 定时器地址
-			psc: 时钟预分频数
+  * @param  psc: 时钟预分频数
   * @retval 无
   */
 void timer_set_prescaler(TIM_TypeDef* TIMx, uint16_t psc)
@@ -186,7 +202,7 @@ void timer_set_prescaler(TIM_TypeDef* TIMx, uint16_t psc)
 /**
   * @brief  更新定时器自动重装值
   * @param  TIMx: 定时器地址
-			arr: 自动重装值
+  * @param  arr: 自动重装值
   * @retval 无
   */
 void timer_set_reload(TIM_TypeDef* TIMx, uint16_t arr)

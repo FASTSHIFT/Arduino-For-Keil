@@ -58,9 +58,7 @@
 #ifndef extEEPROM_h
 #define extEEPROM_h
 
-extern"C"{
 #include "Arduino.h"
-}
 #include "Wire.h"
 
 //EEPROM size in kilobits. EEPROM part numbers are usually designated in k-bits.
