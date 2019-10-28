@@ -1,18 +1,35 @@
+/**
+  ******************************************************************************
+  * @file    DigitalFilter.h
+  * @author  FASTSHIFT
+  * @version V1.1.0
+  * @date    2019-6-28
+  * @brief   通用数字滤波器，采用模版类编写，支持泛型
+  * @Upgrade 2019.10.28 添加注释和例程
+  ******************************************************************************
+  * @attention
+  ******************************************************************************
+  */
+
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __DIGITALFILTER_H
 #define __DIGITALFILTER_H
 
 #include "stdint.h"
 
+/*取两个数最小值*/
 #ifndef min
 #define min(a,b) ((a)<(b)?(a):(b))
 #endif
 
+/*取两个数最大值*/
 #ifndef max
 #define max(a,b) ((a)>(b)?(a):(b))
 #endif
 
 /******************* 均值滤波器 *******************/
-template <class T> class FilterAverage {
+template <class T> class FilterAverage
+{
 public:
     FilterAverage(uint32_t _filterSamples);
     ~FilterAverage();
@@ -40,7 +57,7 @@ template <class T> FilterAverage<T>::~FilterAverage()
 
 template <class T> T FilterAverage<T>::getNext(T rawIn)
 {
-    int j, k, top, bottom;
+    int32_t j, k, top, bottom;
     T total;
     bool done;
 
@@ -48,18 +65,21 @@ template <class T> T FilterAverage<T>::getNext(T rawIn)
     sensSmoothArray[cnt] = rawIn;                 // input new data into the oldest slot
 
     for (j = 0; j < filterSamples; j++)
-    {   // transfer data array into anther array for sorting and averaging
+    {
+        // transfer data array into anther array for sorting and averaging
         sorted[j] = sensSmoothArray[j];
     }
 
     done = false;                // flag to know when we're done sorting
     while(!done)
-    {   // simple swap sort, sorts numbers from lowest to highest
+    {
+        // simple swap sort, sorts numbers from lowest to highest
         done = true;
         for (j = 0; j < (filterSamples - 1); j++)
         {
             if (sorted[j] > sorted[j + 1])
-            {   // numbers are out of order - swap
+            {
+                // numbers are out of order - swap
                 T temp = sorted[j + 1];
                 sorted [j + 1] =  sorted[j] ;
                 sorted [j] = temp;
@@ -82,26 +102,27 @@ template <class T> T FilterAverage<T>::getNext(T rawIn)
 }
 
 /******************* 滞回滤波器 *******************/
-template <class T> class FilterHysteresis {
+template <class T> class FilterHysteresis
+{
 public:
-	FilterHysteresis(T hysNum);
-	T getNext(T now);
+    FilterHysteresis(T hysNum);
+    T getNext(T now);
 private:
-	T HysNum, LastNum;	
+    T HysNum, LastNum;
 };
 
 template <class T> FilterHysteresis<T>::FilterHysteresis(T hysNum)
 {
-	HysNum = hysNum;
+    HysNum = hysNum;
 }
 
 template <class T> T FilterHysteresis<T>::getNext(T now)
 {
-	if(ABS(now - LastNum) > HysNum)
-	{
-		LastNum = now;
-	}
-	return LastNum;
+    if(ABS(now - LastNum) > HysNum)
+    {
+        LastNum = now;
+    }
+    return LastNum;
 }
 
 #endif
