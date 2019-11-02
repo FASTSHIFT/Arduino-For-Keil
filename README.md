@@ -1,10 +1,8 @@
 # Arduino for Keil
 
->   (一个新的移植项目:https://github.com/FASTSHIFT/Arduino-For-STM32Cube)
-
 >   这是一个跨平台移植的项目，可以在Keil MDK5环境下使用Arduino的函数对**STM32**系列单片机进行编程。
-它本质上是一个建立好的Keil工程，然后在它的基础上封装一套类似于Arduino的底层函数库，可以像在Arduino IDE一样直接调用写好的API，
-只需将Arduino支持的第三方库的文件夹加入 "Libraries" 文件夹下即可，然后打开"USER"文件夹启动keil工程进行编写程序。
+它本质上是个Keil工程模版，然后为STM32的外设封装了一套兼容Arduino的API，可以像玩Arduino一样直接调用写好的库，提升开发效率。
+这套工程模版经测试可以兼容90%以上的Arduino第三方库，用户只需将库的文件夹加入 "Libraries" 文件夹下即可。
 
 >   底层基于 **STM32标准外设库** 二次封装，安装之后才能正常编译，下载链接位于下方。
 
