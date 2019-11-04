@@ -30,10 +30,12 @@ int Stream::timedRead()
 {
     int c;
     _startMillis = millis();
-    do {
+    do
+    {
         c = read();
         if (c >= 0) return c;
-    } while(millis() - _startMillis < _timeout);
+    }
+    while(millis() - _startMillis < _timeout);
     return -1;     // -1 indicates timeout
 }
 
@@ -42,10 +44,12 @@ int Stream::timedPeek()
 {
     int c;
     _startMillis = millis();
-    do {
+    do
+    {
         c = peek();
         if (c >= 0) return c;
-    } while(millis() - _startMillis < _timeout);
+    }
+    while(millis() - _startMillis < _timeout);
     return -1;     // -1 indicates timeout
 }
 
@@ -54,7 +58,8 @@ int Stream::timedPeek()
 int Stream::peekNextDigit()
 {
     int c;
-    while (1) {
+    while (1)
+    {
         c = timedPeek();
         if (c < 0) return c;  // timeout
         if (c == '-') return c;
@@ -101,19 +106,23 @@ bool Stream::findUntil(char *target, size_t targetLen, char *terminator, size_t 
 
     if( *target == 0)
         return true;   // return true if target is a null string
-    while( (c = timedRead()) > 0) {
+    while( (c = timedRead()) > 0)
+    {
 
         if(c != target[index])
             index = 0; // reset index if any char does not match
 
-        if( c == target[index]) {
+        if( c == target[index])
+        {
             //////Serial.print("found "); Serial.write(c); Serial.print("index now"); Serial.println(index+1);
-            if(++index >= targetLen) { // return true if all chars in the target match
+            if(++index >= targetLen)   // return true if all chars in the target match
+            {
                 return true;
             }
         }
 
-        if(termLen > 0 && c == terminator[termIndex]) {
+        if(termLen > 0 && c == terminator[termIndex])
+        {
             if(++termIndex >= termLen)
                 return false;       // return false if terminate string found before target string
         }
@@ -145,7 +154,8 @@ long Stream::parseInt(char skipChar)
     if(c < 0)
         return 0; // zero returned if timeout
 
-    do {
+    do
+    {
         if(c == skipChar)
             ; // ignore this charactor
         else if(c == '-')
@@ -171,7 +181,8 @@ float Stream::parseFloat()
 
 // as above but the given skipChar is ignored
 // this allows format characters (typically commas) in values to be ignored
-float Stream::parseFloat(char skipChar) {
+float Stream::parseFloat(char skipChar)
+{
     boolean isNegative = false;
     boolean isFraction = false;
     long value = 0;
@@ -183,14 +194,16 @@ float Stream::parseFloat(char skipChar) {
     if(c < 0)
         return 0; // zero returned if timeout
 
-    do {
+    do
+    {
         if(c == skipChar)
             ; // ignore
         else if(c == '-')
             isNegative = true;
         else if (c == '.')
             isFraction = true;
-        else if(c >= '0' && c <= '9')  {      // is c a digit?
+        else if(c >= '0' && c <= '9')         // is c a digit?
+        {
             value = value * 10 + c - '0';
             if(isFraction)
                 fraction *= 0.1f;
@@ -216,7 +229,8 @@ float Stream::parseFloat(char skipChar) {
 size_t Stream::readBytes(char *buffer, size_t length)
 {
     size_t count = 0;
-    while (count < length) {
+    while (count < length)
+    {
         int c = timedRead();
         if (c < 0) break;
         *buffer++ = (char)c;
@@ -234,7 +248,8 @@ size_t Stream::readBytesUntil(char terminator, char *buffer, size_t length)
 {
     if (length < 1) return 0;
     size_t index = 0;
-    while (index < length) {
+    while (index < length)
+    {
         int c = timedRead();
         if (c < 0 || c == terminator) break;
         *buffer++ = (char)c;
@@ -268,22 +283,27 @@ String Stream::readStringUntil(char terminator)
 }
 
 
-int Stream::findMulti( struct Stream::MultiTarget *targets, int tCount) {
+int Stream::findMulti( struct Stream::MultiTarget *targets, int tCount)
+{
     // any zero length target string automatically matches and would make
     // a mess of the rest of the algorithm.
-    for (struct MultiTarget *t = targets; t < targets + tCount; ++t) {
+    for (struct MultiTarget *t = targets; t < targets + tCount; ++t)
+    {
         if (t->len <= 0)
             return t - targets;
     }
 
-    while (1) {
+    while (1)
+    {
         int c = timedRead();
         if (c < 0)
             return -1;
 
-        for (struct MultiTarget *t = targets; t < targets + tCount; ++t) {
+        for (struct MultiTarget *t = targets; t < targets + tCount; ++t)
+        {
             // the simple case is if we match, deal with that first.
-            if (c == t->str[t->index]) {
+            if (c == t->str[t->index])
+            {
                 if (++t->index == t->len)
                     return t - targets;
                 else
@@ -298,14 +318,16 @@ int Stream::findMulti( struct Stream::MultiTarget *targets, int tCount) {
                 continue;
 
             int origIndex = t->index;
-            do {
+            do
+            {
                 --t->index;
                 // first check if current char works against the new current index
                 if (c != t->str[t->index])
                     continue;
 
                 // if it's the only char then we're good, nothing more to check
-                if (t->index == 0) {
+                if (t->index == 0)
+                {
                     t->index++;
                     break;
                 }
@@ -313,20 +335,23 @@ int Stream::findMulti( struct Stream::MultiTarget *targets, int tCount) {
                 // otherwise we need to check the rest of the found string
                 int diff = origIndex - t->index;
                 size_t i;
-                for (i = 0; i < t->index; ++i) {
+                for (i = 0; i < t->index; ++i)
+                {
                     if (t->str[i] != t->str[i + diff])
                         break;
                 }
 
                 // if we successfully got through the previous loop then our current
                 // index is good.
-                if (i == t->index) {
+                if (i == t->index)
+                {
                     t->index++;
                     break;
                 }
 
                 // otherwise we just try the next index
-            } while (t->index);
+            }
+            while (t->index);
         }
     }
     // unreachable

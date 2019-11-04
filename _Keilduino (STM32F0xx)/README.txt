@@ -17,3 +17,4 @@
 //Upgrade   2019.6.18  V_1.9 PA4已可以输出PWM
 //Upgrade   2019.7.12  V_2.0 Arduino.h里添加yield()与digitalPinToInterrupt(Pin)定义，更改analogRead_DMA()合法参数判断方式
 //Upgrade   2019.10.3  V_2.1 同步_Keilduino(STM32F10x) V_7.0部分代码，暂时去除ADC DMA，将STM32F030F4P6串口1映射到PA9和PA10，添加TIM6定时中断
+//Upgrade   2019.11.4  V_2.2 更新Print库(移植Georges Menie的printf-stdarg.c)，printf不再有长度限制，添加sprintf成员

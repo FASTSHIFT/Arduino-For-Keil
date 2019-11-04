@@ -29,7 +29,8 @@
   */
 void randomSeed(unsigned long seed)
 {
-    if (seed != 0) {
+    if (seed != 0)
+    {
         srand(seed);
     }
 }
@@ -41,7 +42,8 @@ void randomSeed(unsigned long seed)
   */
 long random(long howbig)
 {
-    if (howbig == 0) {
+    if (howbig == 0)
+    {
         return 0;
     }
     return rand() % howbig;
@@ -50,21 +52,24 @@ long random(long howbig)
 /**
   * @brief  随机函数生成伪随机数
   * @param  howsmall：随机值的下界
-			howbig：随机值的上界
+            howbig：随机值的上界
   * @retval 最小和 max-1 之间的随机数
   */
 long random(long howsmall, long howbig)
 {
-    if (howsmall >= howbig) {
+    if (howsmall >= howbig)
+    {
         return howsmall;
     }
     long diff = howbig - howsmall;
     return random(diff) + howsmall;
 }
 
-unsigned int makeWord(unsigned int w) {
+unsigned int makeWord(unsigned int w)
+{
     return w;
 }
-unsigned int makeWord(unsigned char h, unsigned char l) {
+unsigned int makeWord(unsigned char h, unsigned char l)
+{
     return (h << 8) | l;
 }

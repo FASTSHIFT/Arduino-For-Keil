@@ -19,18 +19,15 @@
  *
  * Modified 12 April 2011 by Marti Bolivar <mbolivar@leaflabs.com>
  */
-
-//#ifndef _WIRISH_PRINT_H_
-//#define _WIRISH_PRINT_H_
-#ifndef _PRINT_H_
-#define _PRINT_H_
+#ifndef __PRINT_H
+#define __PRINT_H
 
 #include "libmaple_types.h"
 #include "WString.h"
 #include "Printable.h"
+#include <stdarg.h>
 
-#define SUPPORTS_PRINTF
-#define PRINTF_BUFFER_LENGTH 100
+#define PRINT_SUPPORTS_PRINTF
 
 enum {
     BYTE = 0,
@@ -42,14 +39,14 @@ enum {
 
 class Print {
 public:
-    virtual size_t write(uint8 ch) = 0;
+    virtual size_t write(uint8_t ch) = 0;
     virtual size_t write(const char *str);
     virtual size_t write(const void *buf, uint32_t len);
 
     size_t print(const String &);
     size_t print(char);
     size_t print(const char[]);
-    size_t print(uint8_t, int = DEC);
+    size_t print(uint8, int = DEC);
     size_t print(int, int = DEC);
     size_t print(unsigned int, int = DEC);
     size_t print(long, int = DEC);
@@ -73,9 +70,9 @@ public:
     size_t println(double, int = 2);
     size_t println(const __FlashStringHelper *);
     size_t println(const Printable&);
-#ifdef SUPPORTS_PRINTF
-// Roger Clark. Work in progress to add printf support
+#ifdef PRINT_SUPPORTS_PRINTF
     int printf(const char * format, ...);
+    int sprintf(char *out, const char *format, ...);
 #endif
     Print() : write_error(0) {}
 
@@ -95,6 +92,12 @@ private:
     int write_error;
     size_t printNumber(unsigned long long, uint8);
     size_t printFloat(double, uint8);
+#ifdef PRINT_SUPPORTS_PRINTF
+    void xprintchar(char **str, int c);
+    int xprints(char **out, const char *string, int width, int pad);
+    int xprinti(char **out, int i, int b, int sg, int width, int pad, int letbase);
+    int xprint( char **out, const char *format, va_list args);
+#endif
 };
 
 template<class T> inline Print &operator << (Print &obj, T arg) {

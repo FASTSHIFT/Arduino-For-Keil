@@ -67,3 +67,4 @@
 //Upgrade   2019.8.1   V_6.8 更新pwm库和timer库,添加_BV(bit)宏，WString类添加sprintf成员
 //Upgrade   2019.8.5   V_6.9 ADC DMA搬运已支持注册模式，可参考Example文件夹ADC_DMA.cpp，更新Example，更严格的引脚合法性检查
 //Upgrade   2019.8.22  V_7.0 整理代码制表符全部替换为空格，去除analogRead求均值，延长ADC采样保持时间
+//Upgrade   2019.11.4  V_7.1 更新Print库(移植Georges Menie的printf-stdarg.c)，printf不再有长度限制，添加sprintf成员

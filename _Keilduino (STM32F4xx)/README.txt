@@ -23,3 +23,4 @@
 //Upgrade   2019.8.24   V_2.1 digitalRead_Fast修改为digitalRead_FAST，修复 gpio.c 内 PIN_MAP 的 PC3、PC4、PC5 ADC通道的错误定义
 //Upgrade   2019.9.28   V_2.2 更新SPI库
 //Upgrade   2019.10.9   V_2.3 添加了STM32F4xx V1.8.0标准库，已支持新的F4型号，但是需要手动添加FLASH烧写算法文件，或者安装新的PACK
+//Upgrade   2019.11.4   V_2.4 更新Print库(移植Georges Menie的printf-stdarg.c)，printf不再有长度限制，添加sprintf成员

@@ -5,7 +5,7 @@ SPIClass::SPIClass(SPI_TypeDef* _SPIx)
     SPIx = _SPIx;
 }
 
-void SPIClass::SPI_Settings(	SPI_TypeDef* SPIx,
+void SPIClass::SPI_Settings(    SPI_TypeDef* SPIx,
                                 uint16_t SPI_Mode_x,
                                 uint16_t SPI_DataSize_x,
                                 uint16_t SPI_MODEx,
@@ -37,14 +37,14 @@ void SPIClass::SPI_Settings(	SPI_TypeDef* SPIx,
     }
 
     SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //设置SPI单向或者双向的数据模式
-    SPI_InitStructure.SPI_Mode = SPI_Mode_x;		//设置SPI工作模式:(SPI_Mode_Master,SPI_Mode_Slave)
-    SPI_InitStructure.SPI_DataSize = SPI_DataSize_x;		//设置SPI的数据大小:SPI发送接收x位帧结构
-    SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;		//选择了串行时钟的稳态
-    SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;	//数据捕获时钟沿
-    SPI_InitStructure.SPI_NSS = SPI_NSS_x;		//NSS信号由硬件（NSS管脚）还是软件（使用SSI位）管理:内部NSS信号有SSI位控制(SPI_NSS_Soft,SPI_NSS_Hard)
-    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;		//定义波特率预分频的值
-    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_x;	//指定数据传输从MSB位还是LSB位开始:数据传输从MSB位开始(SPI_FirstBit_MSB,SPI_FirstBit_LSB)
-    SPI_InitStructure.SPI_CRCPolynomial = 3;	//CRC值计算的多项式
+    SPI_InitStructure.SPI_Mode = SPI_Mode_x;        //设置SPI工作模式:(SPI_Mode_Master,SPI_Mode_Slave)
+    SPI_InitStructure.SPI_DataSize = SPI_DataSize_x;        //设置SPI的数据大小:SPI发送接收x位帧结构
+    SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;        //选择了串行时钟的稳态
+    SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;    //数据捕获时钟沿
+    SPI_InitStructure.SPI_NSS = SPI_NSS_x;      //NSS信号由硬件（NSS管脚）还是软件（使用SSI位）管理:内部NSS信号有SSI位控制(SPI_NSS_Soft,SPI_NSS_Hard)
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;      //定义波特率预分频的值
+    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_x;    //指定数据传输从MSB位还是LSB位开始:数据传输从MSB位开始(SPI_FirstBit_MSB,SPI_FirstBit_LSB)
+    SPI_InitStructure.SPI_CRCPolynomial = 3;    //CRC值计算的多项式
     SPI_Init(SPIx, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
 
     SPI_Cmd(SPIx, ENABLE); //使能SPI外设
@@ -84,7 +84,7 @@ void SPIClass::begin(void)
         GPIO_Init(GPIOB, &GPIO_InitStructure);
     }
 
-    SPI_Settings(	SPIx,
+    SPI_Settings(   SPIx,
                     SPI_Mode_Master,
                     SPI_DataSize_8b,
                     SPI_MODE0,
@@ -105,7 +105,7 @@ void SPIClass::begin(uint32_t clock, uint16_t dataOrder, uint16_t dataMode)
 void SPIClass::beginSlave(void)
 {
     begin();
-    SPI_Settings(	SPIx,
+    SPI_Settings(   SPIx,
                     SPI_Mode_Slave,
                     SPI_DataSize_8b,
                     SPI_MODE0,
@@ -156,8 +156,8 @@ void SPIClass::setBitOrder(uint16_t bitOrder)
     SPI_Init(SPIx, &SPI_InitStructure);
 }
 
-/*	Victor Perez. Added to test changing datasize from 8 to 16 bit modes on the fly.
-*	Input parameter should be SPI_CR1_DFF set to 0 or 1 on a 32bit word.
+/*  Victor Perez. Added to test changing datasize from 8 to 16 bit modes on the fly.
+*   Input parameter should be SPI_CR1_DFF set to 0 or 1 on a 32bit word.
 *
 */
 void SPIClass::setDataSize(uint16_t datasize)
@@ -172,11 +172,11 @@ void SPIClass::setDataMode(uint8_t dataMode)
 
     From the AVR doc http://www.atmel.com/images/doc2585.pdf section 2.4
 
-    SPI Mode 	CPOL 	CPHA 	Shift SCK-edge 	Capture SCK-edge
-    0 			0 		0 		Falling 		Rising
-    1 			0 		1 		Rising 			Falling
-    2 			1 		0 		Rising 			Falling
-    3 			1 		1 		Falling 		Rising
+    SPI Mode    CPOL    CPHA    Shift SCK-edge  Capture SCK-edge
+    0           0       0       Falling         Rising
+    1           0       1       Rising          Falling
+    2           1       0       Rising          Falling
+    3           1       1       Falling         Rising
 
 
     On the STM32 it appears to be

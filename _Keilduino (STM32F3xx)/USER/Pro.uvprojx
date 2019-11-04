@@ -379,6 +379,19 @@
       </TargetOption>
       <Groups>
         <Group>
+          <GroupName>USER</GroupName>
+          <Files>
+            <File>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\main.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Libraries</GroupName>
+        </Group>
+        <Group>
           <GroupName>ArduinoAPI</GroupName>
           <Files>
             <File>
@@ -444,9 +457,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Libraries</GroupName>
-        </Group>
-        <Group>
           <GroupName>Core</GroupName>
           <Files>
             <File>
@@ -473,16 +483,6 @@
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\timer.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>USER</GroupName>
-          <Files>
-            <File>
-              <FileName>main.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\main.cpp</FilePath>
             </File>
           </Files>
         </Group>
