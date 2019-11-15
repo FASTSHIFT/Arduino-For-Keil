@@ -14,15 +14,15 @@
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>AT32F403ZE</Device>
+          <Device>AT32F413C8</Device>
           <Vendor>ArteryTek</Vendor>
           <PackID>Keil.AT32F4xx_DFP.1.2.0</PackID>
-          <Cpu>IRAM(0x20000000,0x38000) IROM(0x08000000,0x80000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
+          <Cpu>IRAM(0x20000000,0x8000) IROM(0x08000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
-          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0AT32F403_512 -FS08000000 -FL080000 -FP0($$Device:AT32F403ZE$Flash\AT32F403_512.FLM))</FlashDriverDll>
+          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0AT32F413_64 -FS08000000 -FL010000 -FP0($$Device:AT32F413C8$Flash\AT32F413_64.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
-          <RegisterFile>$$Device:AT32F403ZE$Device\Include\AT32F403xx.h</RegisterFile>
+          <RegisterFile>$$Device:AT32F413C8$Device\Include\AT32F413xx.h</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -32,7 +32,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>$$Device:AT32F403ZE$SVD\AT32F403xx.svd</SFDFile>
+          <SFDFile>$$Device:AT32F413C8$SVD\AT32F413xx.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -243,12 +243,12 @@
               <IRAM>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x38000</Size>
+                <Size>0x8000</Size>
               </IRAM>
               <IROM>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x80000</Size>
+                <Size>0x10000</Size>
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -273,7 +273,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x80000</Size>
+                <Size>0x10000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -298,7 +298,7 @@
               <OCR_RVCT9>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x38000</Size>
+                <Size>0x8000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -323,10 +323,10 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
-            <uGnu>1</uGnu>
+            <uGnu>0</uGnu>
             <useXO>0</useXO>
-            <v6Lang>1</v6Lang>
-            <v6LangP>1</v6LangP>
+            <v6Lang>3</v6Lang>
+            <v6LangP>3</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
@@ -494,9 +494,9 @@
           <GroupName>Startup</GroupName>
           <Files>
             <File>
-              <FileName>startup_at32f403zx_hd.s</FileName>
+              <FileName>startup_at32f413cx_md.s</FileName>
               <FileType>2</FileType>
-              <FilePath>.\RTE\Device\AT32F403ZE\startup_at32f403zx_hd.s</FilePath>
+              <FilePath>..\Core\startup\startup_at32f413cx_md.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -588,7 +588,19 @@
     </components>
     <files>
       <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
-        <instance index="0">RTE\Device\AT32F403ZE\at32f4xx_conf.h</instance>
+        <instance index="0" removed="1">RTE\Device\AT32F403ZE\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.2.0"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ZE\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS Device"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.2.0"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0">RTE\Device\AT32F413C8\at32f4xx_conf.h</instance>
         <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.2.0"/>
         <targetInfos>
@@ -596,12 +608,24 @@
         </targetInfos>
       </file>
       <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
-        <instance index="0">RTE\Device\AT32F403ZE\system_at32f4xx.c</instance>
+        <instance index="0">RTE\Device\AT32F413C8\system_at32f4xx.c</instance>
         <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS Device"/>
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.2.0"/>
         <targetInfos>
           <targetInfo name="AT32F4xx"/>
         </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F413CB\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.2.0"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F413CB\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS Device"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.2.0"/>
+        <targetInfos/>
       </file>
       <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
         <instance index="0" removed="1">RTE\Device\AT32F413RC\at32f4xx_conf.h</instance>

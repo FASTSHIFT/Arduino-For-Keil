@@ -69,10 +69,11 @@ typedef TMR_Type          TIM_TypeDef;
 #define TIM15             TMR15
 
 #define __AT32F4__
+#define __STM32F4__
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
-#define __KEILDUINO__ 100
+#define __KEILDUINO__ 110
     
 #define GPIO_HIGH(GPIOX,GPIO_PIN_X)    (GPIOX->BSRE    = GPIO_PIN_X)
 #define GPIO_LOW(GPIOX,GPIO_PIN_X)     (GPIOX->BRE     = GPIO_PIN_X)

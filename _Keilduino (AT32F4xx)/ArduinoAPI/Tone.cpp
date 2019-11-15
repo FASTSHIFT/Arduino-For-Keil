@@ -88,13 +88,14 @@ void tone(uint8_t Pin, uint32_t freq)
 
     if(ToneTimer != ToneTimer_Last)
     {
-        Timer_Init(ToneTimer, (500000.0 / freq), tone_TimerHandler, 0, 0);
+        Timer_SetInterruptBase(ToneTimer, 0xFF, 0xFF, tone_TimerHandler, 0, 0);
+        Timer_SetInterruptTimeUpdate(ToneTimer, (500000.0f / freq));
         TMR_Cmd(ToneTimer, ENABLE);
         ToneTimer_Last = ToneTimer;
     }
     else
     {
-        TimerSet_InterruptTimeUpdate(ToneTimer, 500000.0 / freq);
+        Timer_SetInterruptTimeUpdate(ToneTimer, 500000.0f / freq);
         TMR_Cmd(ToneTimer, ENABLE);
     }
 }

@@ -269,12 +269,12 @@ void Print::xprintchar(char **str, int c)
 
 int Print::xprints(char **out, const char *string, int width, int pad)
 {
-    register int pc = 0, padchar = ' ';
+    int pc = 0, padchar = ' ';
 
     if (width > 0)
     {
-        register int len = 0;
-        register const char *ptr;
+        int len = 0;
+        const char *ptr;
         for (ptr = string; *ptr; ++ptr) ++len;
         if (len >= width) width = 0;
         else width -= len;
@@ -307,9 +307,9 @@ int Print::xprinti(char **out, int i, int b, int sg, int width, int pad, int let
     /* the following should be enough for 32 bit int */
     #define PRINT_BUF_LEN 12
     char print_buf[PRINT_BUF_LEN];
-    register char *s;
-    register int t, neg = 0, pc = 0;
-    register unsigned int u = (unsigned int)i;
+    char *s;
+    int t, neg = 0, pc = 0;
+    unsigned int u = (unsigned int)i;
 
     if (i == 0)
     {
@@ -355,8 +355,8 @@ int Print::xprinti(char **out, int i, int b, int sg, int width, int pad, int let
 
 int Print::xprint( char **out, const char *format, va_list args)
 {
-    register int width, pad;
-    register int pc = 0;
+    int width, pad;
+    int pc = 0;
     char scr[2];
 
     for (; *format != 0; ++format)
@@ -384,7 +384,7 @@ int Print::xprint( char **out, const char *format, va_list args)
             }
             if( *format == 's' )
             {
-                register char *s = (char *)va_arg( args, int );
+                char *s = (char *)va_arg( args, int );
                 pc += xprints (out, s ? s : "(null)", width, pad);
                 continue;
             }

@@ -40,7 +40,7 @@ void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerCh
     if(!IS_TMR_ALL_PERIPH(TIMx))
         return;
     
-    TimerClockCmd(TIMx, ENABLE);
+    Timer_ClockCmd(TIMx, ENABLE);
 
     TMR_TimeBaseStructure.TMR_Period = arr;
     TMR_TimeBaseStructure.TMR_DIV = psc;
@@ -72,11 +72,7 @@ void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerCh
     }
 
     TMR_Cmd(TIMx, ENABLE);
-    
-    if(IS_APB2_TIM(TIMx))
-    {
-        TMR_CtrlPWMOutputs(TIMx, ENABLE);
-    }
+    TMR_CtrlPWMOutputs(TIMx, ENABLE);
 }
 
 /**

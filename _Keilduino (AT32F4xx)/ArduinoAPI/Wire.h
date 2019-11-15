@@ -70,12 +70,9 @@
 
 #define BUFFER_LENGTH 32
 
-#pragma diag_suppress 122
-#pragma diag_suppress 136
-
 class TwoWire : public WireBase {
 public:
-    uint8_t 		i2c_delay;
+    uint8_t       i2c_delay;
     uint8_t       scl_pin;
     uint8_t       sda_pin;
 

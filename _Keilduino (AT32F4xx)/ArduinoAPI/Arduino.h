@@ -44,6 +44,7 @@ extern "C" {
 #include "timer.h"
 
 #define __AT32__
+#define __STM32__
 
 #define PI 3.1415926535897932384626433832795f
 #define HALF_PI 1.5707963267948966192313216916398f

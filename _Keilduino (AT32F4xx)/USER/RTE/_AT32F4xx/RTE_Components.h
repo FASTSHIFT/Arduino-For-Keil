@@ -14,7 +14,7 @@
 /*
  * Define the Device Header File: 
  */
-#define CMSIS_device_header "AT32F403xx.h"
+#define CMSIS_device_header "AT32F413xx.h"
 
 #define RTE_DEVICE_STDPERIPH_ADC
 #define RTE_DEVICE_STDPERIPH_DMA
