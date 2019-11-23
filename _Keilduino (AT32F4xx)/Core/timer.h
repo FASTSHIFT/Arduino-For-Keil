@@ -30,9 +30,9 @@ extern "C" {
 #include "mcu_type.h"
     
 #define Timer_PreemptionPriority_Default 0
-#define Timer_SubPriority_Default 3
-//#define IS_APB2_TIM(TIMx) (TIMx==TIM1||TIMx==TIM8||TIMx==TIM9||TIMx==TIM10||TIMx==TIM11||TIMx==TIM15)
-    
+#define Timer_SubPriority_Default        3
+#define Timer_GetClockMax(TIMx)          F_CPU
+   
 typedef void(*Timer_CallbackFunction_t)(void);
     
 void Timer_ClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState);

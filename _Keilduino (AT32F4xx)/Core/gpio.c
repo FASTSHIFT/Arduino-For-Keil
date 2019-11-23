@@ -24,9 +24,9 @@
 
 const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
 {
-    /*GPIO_TypeDef* GPIOx;  //对应GPIOx地址
-    TIM_TypeDef* TIMx;      //对应TIMx地址
-    ADC_TypeDef* ADCx;      //对应ADCx地址
+    /*GPIO_Type* GPIOx;  //对应GPIOx地址
+    TIM_Type* TIMx;      //对应TIMx地址
+    ADC_Type* ADCx;      //对应ADCx地址
 
     uint16_t GPIO_Pin_x;    //对应GPIO_Pin位
     uint8_t TimerChannel;   //对应定时器通道
@@ -226,6 +226,8 @@ void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMod
   */
 void GPIO_JTAG_Disable(void)
 {
+    RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_AFIO, ENABLE);
+    GPIO_PinsRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 }
 
 /**

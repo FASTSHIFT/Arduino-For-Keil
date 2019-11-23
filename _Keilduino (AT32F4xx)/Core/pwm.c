@@ -95,10 +95,7 @@ uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint32_t PWM_Frequency)
     pinMode(Pin, OUTPUT_AF_PP);
 
     arr = PWM_DutyCycle;
-    psc = F_CPU / PWM_DutyCycle / PWM_Frequency;
-    
-//    if(!IS_APB2_TIM(PIN_MAP[Pin].TIMx))
-//        psc /= 2;
+    psc = Timer_GetClockMax(PIN_MAP[Pin].TIMx) / PWM_DutyCycle / PWM_Frequency;
 
     TMR_Cmd(PIN_MAP[Pin].TIMx, DISABLE);
     TIMx_OCxInit(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);

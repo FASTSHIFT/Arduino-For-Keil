@@ -122,7 +122,7 @@ static int32_t Timer_FreqToArrPsc(
 )
 {
     uint32_t prodect;
-    uint16_t psc, arr;
+    uint16_t psc, arr, arr_max;
     uint16_t max_error = 0xFFFF;
  
     if(freq == 0 || freq > clock)
@@ -131,13 +131,16 @@ static int32_t Timer_FreqToArrPsc(
     /*获取arr和psc目标乘积*/
     prodect = clock / freq;
     
-    /*从sqrt(prodect)开始计算*/
+    /*从prodect的平方根开始计算*/
     psc = sqrt(prodect);
+    
+    /*arr必定小于等于prodect，尽量减少arr遍历次数*/
+    arr_max = (prodect < 0xFFFF) ? prodect : 0xFFFF;
     
     /*遍历，使arr*psc足够接近prodect*/
     for(; psc > 1; psc--)
     {
-        for(arr = psc; arr < 0xFFFF; arr++)
+        for(arr = psc; arr < arr_max; arr++)
         {
             /*求误差*/
             int32_t newerr = arr * psc - prodect;
@@ -211,7 +214,7 @@ static void Timer_TimeToArrPsc(
 void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction_t function)
 {
     uint16_t period, prescaler;
-    uint32_t clock = F_CPU / 2;
+    uint32_t clock = Timer_GetClockMax(TIMx);
     
     if(!IS_TMR_ALL_PERIPH(TIMx) || time == 0)
         return;
@@ -244,7 +247,7 @@ void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction
 void Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t freq)
 {
     uint16_t period, prescaler;
-    uint32_t clock = F_CPU / 2;
+    uint32_t clock = Timer_GetClockMax(TIMx);
     
     if(!IS_TMR_ALL_PERIPH(TIMx) || freq == 0)
         return;
@@ -266,7 +269,7 @@ void Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t freq)
   */
 uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx)
 {
-    uint32_t clock = F_CPU / 2;
+    uint32_t clock = Timer_GetClockMax(TIMx);
     if(!IS_TMR_ALL_PERIPH(TIMx))
         return 0;
 
@@ -282,7 +285,7 @@ uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx)
 void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t time)
 {
     uint16_t period, prescaler;
-    uint32_t clock = F_CPU / 2;
+    uint32_t clock = Timer_GetClockMax(TIMx);
 
     if(!IS_TMR_ALL_PERIPH(TIMx))
         return;

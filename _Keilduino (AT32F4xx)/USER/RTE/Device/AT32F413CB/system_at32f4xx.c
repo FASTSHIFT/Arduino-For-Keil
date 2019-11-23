@@ -85,7 +85,7 @@
 /* #define SYSCLK_FREQ_144MHz       144000000 */
 /* #define SYSCLK_FREQ_168MHz       168000000 */
 /* #define SYSCLK_FREQ_176MHz       176000000 */
-#define SYSCLK_FREQ_192MHz       192000000 
+/* #define SYSCLK_FREQ_192MHz       192000000 */
 /* #define SYSCLK_FREQ_200MHz       200000000 */
 /* #define SYSCLK_FREQ_24MHz_HSI    24000000 */
 /* #define SYSCLK_FREQ_36MHz_HSI    36000000 */
@@ -99,7 +99,7 @@
 /* #define SYSCLK_FREQ_168MHz_HSI   168000000 */
 /* #define SYSCLK_FREQ_176MHz_HSI   176000000 */
 /* #define SYSCLK_FREQ_192MHz_HSI   192000000 */
-/* #define SYSCLK_FREQ_200MHz_HSI   200000000 */
+#define SYSCLK_FREQ_200MHz_HSI   200000000
 
 /*!< Uncomment the following line if you need to use external SRAM mounted
      (AT32 High density and XL-density devices) as data memory */
