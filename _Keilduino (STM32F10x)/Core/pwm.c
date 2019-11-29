@@ -40,7 +40,7 @@ void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerCh
     if(!IS_TIM_ALL_PERIPH(TIMx))
         return;
 
-    TimerClockCmd(TIMx, ENABLE);
+    Timer_ClockCmd(TIMx, ENABLE);
 
     TIM_TimeBaseStructure.TIM_Period = arr;
     TIM_TimeBaseStructure.TIM_Prescaler = psc;

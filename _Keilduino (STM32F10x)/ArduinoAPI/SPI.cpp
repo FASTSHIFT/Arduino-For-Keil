@@ -279,76 +279,106 @@ void SPIClass::endTransaction(void)
     //SPI_Cmd(SPIx, DISABLE);
 }
 
+#define SPI_I2S_GET_FLAG(SPI_I2S_FLAG) (SPIx->SR & SPI_I2S_FLAG)
+#define SPI_I2S_RXDATA()               (SPIx->DR)
+#define SPI_I2S_RXDATA_VOLATILE()      volatile uint16_t vn = SPI_I2S_RXDATA()
+#define SPI_I2S_TXDATA(data)           (SPIx->DR = data)
 
-uint8_t SPIClass::read(void)
+uint16_t SPIClass::read(void)
 {
-    uint8_t buf[1];
-    this->read(buf, 1);
-    return buf[0];
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RXNE));
+    return (uint16_t)(SPI_I2S_RXDATA());
 }
 
 void SPIClass::read(uint8_t *buf, uint32_t len)
 {
-    uint32_t rxed = 0;
+    if (len == 0)
+        return;
 
-    while (rxed < len)
+    SPI_I2S_RXDATA_VOLATILE();
+    SPI_I2S_TXDATA(0x00FF);
+
+    while((--len))
     {
-        while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//检查指定的SPI标志位设置与否:接受缓存非空标志位
-        buf[rxed++] = (uint8_t)SPI_I2S_ReceiveData(SPIx); //返回通过SPIx最近接收的数据
+        while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+        noInterrupts();
+        SPI_I2S_TXDATA(0x00FF);
+        while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RXNE));
+        *buf++ = (uint8_t)SPI_I2S_RXDATA();
+        interrupts();
     }
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RXNE));
+    *buf++ = (uint8_t)SPI_I2S_RXDATA();
 }
 
 void SPIClass::write(uint16_t data)
 {
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //检查指定的SPI标志位设置与否:发送缓存空标志位
-    SPI_I2S_SendData(SPIx, data); //通过外设SPIx发送一个数据
+    SPI_I2S_TXDATA(data);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+    while (SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BSY));
+}
+
+void SPIClass::write(uint16_t data, uint32_t n)
+{
+    while ((n--) > 0)
+    {
+        SPI_I2S_TXDATA(data); // write the data to be transmitted into the SPI_DR register (this clears the TXE flag)
+        while (SPI_I2S_GET_FLAG(SPI_SR_TXE) == 0); // wait till Tx empty
+    }
+
+    while (SPI_I2S_GET_FLAG(SPI_SR_BSY) != 0); // wait until BSY=0 before returning
 }
 
 void SPIClass::write(const uint8_t *data, uint32_t length)
 {
-    uint32_t txed = 0;
-    while (txed < length)
+    while (length--)
     {
-        while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //检查指定的SPI标志位设置与否:发送缓存空标志位
-        SPI_I2S_SendData(SPIx, data[txed]);
-        txed++;
+        while (SPI_I2S_GET_FLAG(SPI_SR_TXE) == 0);
+        SPI_I2S_TXDATA(*data++);
     }
+    while (!SPI_I2S_GET_FLAG(SPI_SR_TXE));
+    while ((SPI_I2S_GET_FLAG(SPI_SR_BSY)));
 }
 
-uint16_t SPIClass::transfer16(uint16_t wr_data) const
+void SPIClass::write(const uint16_t *data, uint32_t length)
 {
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //检查指定的SPI标志位设置与否:发送缓存空标志位
-    SPI_I2S_SendData(SPIx, wr_data); //通过外设SPIx发送一个数据
-
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//检查指定的SPI标志位设置与否:接受缓存非空标志位
-    return SPI_I2S_ReceiveData(SPIx); //返回通过SPIx最近接收的数据
+    while (length--)
+    {
+        while (SPI_I2S_GET_FLAG(SPI_SR_TXE) == 0);
+        SPI_I2S_TXDATA(*data++);
+    }
+    while (!SPI_I2S_GET_FLAG(SPI_SR_TXE));
+    while ((SPI_I2S_GET_FLAG(SPI_SR_BSY)));
 }
 
 uint8_t SPIClass::transfer(uint8_t wr_data) const
 {
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //检查指定的SPI标志位设置与否:发送缓存空标志位
-    SPI_I2S_SendData(SPIx, wr_data); //通过外设SPIx发送一个数据
+    SPI_I2S_RXDATA_VOLATILE();
+    SPI_I2S_TXDATA(wr_data);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+    while (SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BSY));
+    return (uint8_t)SPI_I2S_RXDATA();
+}
 
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//检查指定的SPI标志位设置与否:接受缓存非空标志位
-    return SPI_I2S_ReceiveData(SPIx); //返回通过SPIx最近接收的数据
+uint16_t SPIClass::transfer16(uint16_t wr_data) const
+{
+    SPI_I2S_RXDATA_VOLATILE();
+    SPI_I2S_TXDATA(wr_data);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+    while (SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BSY));
+    return (uint16_t)SPI_I2S_RXDATA();
 }
 
 uint8_t SPIClass::send(uint8_t data)
 {
-    uint8_t buf[] = {data};
-    return this->send(buf, 1);
+    this->write(data);
+    return 1;
 }
 
 uint8_t SPIClass::send(uint8_t *buf, uint32_t len)
 {
-    uint32_t txed = 0;
-    uint8_t ret = 0;
-    while (txed < len)
-    {
-        this->write(buf[txed++]);
-        ret = this->read();
-    }
-    return ret;
+    this->write(buf, len);
+    return len;
 }
 
 uint8_t SPIClass::recv(void)

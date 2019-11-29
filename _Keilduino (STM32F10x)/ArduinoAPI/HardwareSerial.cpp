@@ -1,17 +1,17 @@
 /*
  * MIT License
  * Copyright (c) 2019 _VIFEXTech
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -127,7 +127,7 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
     //USART_TX
     GPIO_InitStructure.GPIO_Pin = Tx_Pin;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	//复用推挽输出
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; //复用推挽输出
     GPIO_Init(GPIOx, &GPIO_InitStructure);//初始化
 
     //USART_RX
@@ -138,9 +138,9 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
     //USART NVIC 配置
     NVIC_InitStructure.NVIC_IRQChannel = USARTx_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority ;//抢占优先级
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;		//子优先级
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
-    NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;        //子优先级
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;         //IRQ通道使能
+    NVIC_Init(&NVIC_InitStructure); //根据指定的参数初始化VIC寄存器
 
     //USART 初始化设置
     USART_InitStructure.USART_BaudRate = BaudRate;//串口波特率
@@ -148,7 +148,7 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
     USART_InitStructure.USART_Parity = Get_USART_Parity_x(Config);//奇偶校验位
     USART_InitStructure.USART_StopBits = Get_USART_StopBits_x(Config);//停止位
     USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
-    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
+    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx; //收发模式
 
     USART_Init(USARTx, &USART_InitStructure); //初始化串口
     USART_ITConfig(USARTx, USART_IT_RXNE, ENABLE);//开启串口接受中断
@@ -239,7 +239,7 @@ void HardwareSerial::flush(void)
   */
 size_t HardwareSerial::write(uint8_t n)
 {
-    while(!IS_USARTx_SendDone(USARTx)) {}; //循环发送,直到发送完毕
+    while(!USART_GetFlagStatus(USARTx, USART_FLAG_TXE)){};
     USART_SendData(USARTx, n);
     return n;
 }

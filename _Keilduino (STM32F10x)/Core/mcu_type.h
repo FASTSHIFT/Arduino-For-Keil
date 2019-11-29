@@ -50,21 +50,21 @@ typedef struct{
     uint32_t RCC_PLLMul_x;
 }SysClock_TypeDef;
 
-#define __KEILDUINO__ 710
+#define __KEILDUINO__ 720
 #define __STM32F1__
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
 //*************** GPIO ***************//
-#define digitalWrite_HIGH(Pin) (PIN_MAP[Pin].GPIOx->BSRR = PIN_MAP[Pin].GPIO_Pin_x)
-#define digitalWrite_LOW(Pin)  (PIN_MAP[Pin].GPIOx->BRR  = PIN_MAP[Pin].GPIO_Pin_x)
-#define digitalRead_FAST(Pin) ((PIN_MAP[Pin].GPIOx->IDR  & PIN_MAP[Pin].GPIO_Pin_x)!=0)
-#define togglePin(Pin)         (PIN_MAP[Pin].GPIOx->ODR ^= PIN_MAP[Pin].GPIO_Pin_x)
-
 #define GPIO_HIGH(GPIOx,GPIO_Pin_x)     (GPIOx->BSRR = GPIO_Pin_x)
 #define GPIO_LOW(GPIOx,GPIO_Pin_x)      (GPIOx->BRR  = GPIO_Pin_x)
 #define GPIO_READ(GPIOx,GPIO_Pin_x)    ((GPIOx->IDR  & GPIO_Pin_x)!=0)
 #define GPIO_TOGGLE(GPIOx,GPIO_Pin_x)   (GPIOx->ODR ^= GPIO_Pin_x)
+
+#define digitalWrite_HIGH(Pin) (GPIO_HIGH(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define digitalWrite_LOW(Pin)  (GPIO_HIGH(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define digitalRead_FAST(Pin)  (GPIO_READ(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define togglePin(Pin)         (GPIO_TOGGLE(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 
 typedef enum
 {
@@ -77,14 +77,5 @@ typedef enum
     INPUT_ANALOG_DMA,
     PWM
 } pinMode_Type;
-
-//*************** USART ***************//
-#define IS_USARTx_SendDone(USARTx) (USARTx->SR & USART_SR_TXE)
-
-//*************** SPI ***************//
-#define IS_SPIx_TxRxDone(SPIx,SPI_I2S_FLAG) (SPIx->SR & SPI_I2S_FLAG)
-
-#define SPIx_FastSendData(SPIx,Data)    (SPIx->DR = Data)
-#define SPIx_FastRecvData(SPIx)         (SPIx->DR)
 
 #endif
