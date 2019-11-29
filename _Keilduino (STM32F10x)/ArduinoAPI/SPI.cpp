@@ -26,10 +26,6 @@
 #define SPI2_CLOCK (F_CPU/2)
 #define SPI3_CLOCK (F_CPU/2)
 
-#define SPI_I2S_GetFlagStatus(SPIx,FLAG) IS_SPIx_TxRxDone(SPIx,FLAG)
-#define SPI_I2S_SendData(SPIx,Data)      SPIx_FastSendData(SPIx,Data)
-#define SPI_I2S_ReceiveData(SPIx)        SPIx_FastRecvData(SPIx)
-
 SPIClass::SPIClass(SPI_TypeDef* _SPIx)
 {
     SPIx = _SPIx;
