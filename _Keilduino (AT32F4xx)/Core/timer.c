@@ -103,10 +103,24 @@ void Timer_ClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState)
     }
 }
 
-/*包含math用于计算sqrt()*/
-#include "math.h"
 /*取绝对值*/
 #define CLOCK_ABS(x) (((x)>0)?(x):-(x))
+
+/*快速求平方根*/
+static float Qsqrt(float number)
+{
+    long i;
+    float x2, y;
+    const float threehalfs = 1.5f;
+    x2 = number * 0.5f;
+    y  = number;
+    i  = *(long*)&y;
+    i  = 0x5f3759df - (i >> 1);
+    y  = *(float*)&i;
+    y  = y * (threehalfs - (x2 * y * y));
+    y  = y * (threehalfs - (x2 * y * y));
+    return 1.0f / y;
+}
 
 /**
   * @brief  将定时中断频率转换为重装值和时钟分频值
@@ -132,7 +146,7 @@ static int32_t Timer_FreqToArrPsc(
     prodect = clock / freq;
     
     /*从prodect的平方根开始计算*/
-    psc = sqrt(prodect);
+    psc = Qsqrt(prodect);
     
     /*arr必定小于等于prodect，尽量减少arr遍历次数*/
     arr_max = (prodect < 0xFFFF) ? prodect : 0xFFFF;
@@ -386,7 +400,7 @@ do{\
     if (TMR_GetINTStatus(TMR##n, TMR_INT_Overflow) != RESET)\
     {\
         if(TIMx_Function[TIMER##n]) TIMx_Function[TIMER##n]();\
-        TMR_ClearITPendingBit(TIM##n, TMR_INT_Overflow);\
+        TMR_ClearITPendingBit(TMR##n, TMR_INT_Overflow);\
     }\
 }while(0)
 

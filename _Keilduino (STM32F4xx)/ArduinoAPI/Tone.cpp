@@ -22,7 +22,7 @@
  */
 #include "Tone.h"
 
-static TIM_TypeDef *ToneTimer_Last = 0,*ToneTimer = ToneTimer_Default;
+static TIM_TypeDef *ToneTimer_Last = 0, *ToneTimer = ToneTimer_Default;
 static uint8_t tone_State = Off;
 static uint8_t tone_Pin;
 static uint32_t tone_StopTimePoint;
@@ -32,7 +32,7 @@ static uint32_t tone_StopTimePoint;
   * @param  无
   * @retval 无
   */
-void tone_TimerHandler()
+static void tone_TimerHandler()
 {
     togglePin(tone_Pin);
     if(millis() > tone_StopTimePoint && !tone_State)
@@ -48,7 +48,8 @@ void tone_TimerHandler()
   */
 void toneSetTimer(TIM_TypeDef* TIMx)
 {
-    ToneTimer = TIMx;
+    if(IS_TIM_ALL_PERIPH(TIMx))
+        ToneTimer = TIMx;
 }
 
 /**
@@ -60,7 +61,7 @@ void toneSetTimer(TIM_TypeDef* TIMx)
   */
 void tone(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
 {
-    if(freq == 0 || freq > 500000 || Time_ms == 0)
+    if(freq == 0 || Time_ms == 0 || freq > 500000)
     {
         noTone(Pin);
         return;
@@ -85,18 +86,24 @@ void tone(uint8_t Pin, uint32_t freq)
     }
     tone_Pin = Pin;
     tone_State = On;
-	
-	if(ToneTimer != ToneTimer_Last)
-	{
-		Timer_Init(ToneTimer, (500000.0 / freq), tone_TimerHandler, 0, 0);
-		TIM_Cmd(ToneTimer, ENABLE);
-		ToneTimer_Last = ToneTimer;
-	}
-	else 
-	{
-		TimerSet_InterruptTimeUpdate(ToneTimer, 500000.0 / freq);
-		TIM_Cmd(ToneTimer, ENABLE);
-	}
+
+    if(ToneTimer != ToneTimer_Last)
+    {
+        Timer_SetInterruptBase(
+            ToneTimer, 
+            0xFF, 0xFF,
+            tone_TimerHandler, 
+            0, 0
+        );
+        Timer_SetInterruptTimeUpdate(ToneTimer, (500000.0f / freq));
+        TIM_Cmd(ToneTimer, ENABLE);
+        ToneTimer_Last = ToneTimer;
+    }
+    else
+    {
+        Timer_SetInterruptTimeUpdate(ToneTimer, (500000.0f / freq));
+        TIM_Cmd(ToneTimer, ENABLE);
+    }
 }
 
 /**
@@ -107,7 +114,7 @@ void tone(uint8_t Pin, uint32_t freq)
 void noTone(uint8_t Pin)
 {
     TIM_Cmd(ToneTimer, DISABLE);
-    digitalWrite_LOW(Pin);
+    digitalWrite(Pin, LOW);
     tone_State = Off;
 }
 
@@ -129,7 +136,8 @@ void toneBlock(uint8_t Pin, uint32_t freq, uint32_t Time_ms)
         delayMicroseconds(dlyus);
         digitalWrite_LOW(Pin);
         delayMicroseconds(dlyus);
-    } while(millis() < TimePoint);
+    }
+    while(millis() < TimePoint);
     digitalWrite_LOW(Pin);
 }
 
@@ -154,7 +162,8 @@ void toneBlock_Volumn(uint8_t Pin, uint32_t freq, uint32_t Time_ms, uint32_t vol
         delayMicroseconds(dlHigh);
         digitalWrite_LOW(Pin);
         delayMicroseconds(dlLow);
-    } while(millis() < TimePoint);
+    }
+    while(millis() < TimePoint);
     digitalWrite_LOW(Pin);
 }
 
@@ -179,6 +188,7 @@ void toneBlock_Volumn_us(uint8_t Pin, uint32_t freq, uint32_t Time_us, uint32_t 
         delayMicroseconds(dlHigh);
         digitalWrite_LOW(Pin);
         delayMicroseconds(dlLow);
-    } while(micros() < TimePoint);
+    }
+    while(micros() < TimePoint);
     digitalWrite_LOW(Pin);
 }

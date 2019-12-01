@@ -32,7 +32,7 @@ static uint32_t tone_StopTimePoint;
   * @param  无
   * @retval 无
   */
-void tone_TimerHandler()
+static void tone_TimerHandler()
 {
     togglePin(tone_Pin);
     if(millis() > tone_StopTimePoint && !tone_State)

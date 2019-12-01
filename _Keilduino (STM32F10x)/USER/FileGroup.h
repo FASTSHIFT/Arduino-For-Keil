@@ -39,12 +39,4 @@
 #include "Wire.h"
 #include "WMath.h"
 
-//************* STM32 Core Library **************//
-#include "adc.h"
-#include "delay.h"
-#include "exti.h"
-#include "gpio.h"
-#include "pwm.h"
-#include "timer.h"
-
 #endif

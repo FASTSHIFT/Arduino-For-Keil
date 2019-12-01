@@ -251,7 +251,7 @@ void HardwareSerial::flush(void)
   */
 size_t HardwareSerial::write(uint8_t n)
 {
-    while(!IS_USARTx_SendDone(USARTx)) {}; //循环发送,直到发送完毕
+    while(!USART_GetFlagStatus(USARTx, USART_FLAG_TXE)){};
     USART_SendData(USARTx, n);
     return n;
 }

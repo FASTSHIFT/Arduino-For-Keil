@@ -296,11 +296,15 @@ void SPIClass::endTransaction(void)
     SPI_Cmd(SPIx, DISABLE);
 }
 
+#define SPI_I2S_GET_FLAG(SPI_I2S_FLAG) (SPIx->SR & SPI_I2S_FLAG)
+#define SPI_I2S_RXDATA()               (SPIx->DR)
+#define SPI_I2S_RXDATA_VOLATILE()      volatile uint16_t vn = SPI_I2S_RXDATA()
+#define SPI_I2S_TXDATA(data)           (SPIx->DR = data)
 
 uint16_t SPIClass::read(void)
 {
-    while (!(SPIx->SR & SPI_I2S_FLAG_RXNE));
-    return (uint16_t)(SPIx->DR);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RXNE));
+    return (uint16_t)SPI_I2S_RXDATA();
 }
 
 void SPIClass::read(uint8_t *buf, uint32_t len)
@@ -308,78 +312,78 @@ void SPIClass::read(uint8_t *buf, uint32_t len)
     if (len == 0)
         return;
 
-    SPI_I2S_ReceiveData(SPIx);
-    SPIx->DR = 0x00FF;
+    SPI_I2S_RXDATA_VOLATILE();
+    SPI_I2S_TXDATA(0x00FF);
 
     while((--len))
     {
-        while (!(SPIx->SR & SPI_I2S_FLAG_TXE));
+        while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
         noInterrupts();
-        SPIx->DR = 0x00FF;
-        while (!(SPIx->SR & SPI_I2S_FLAG_RXNE));
-        *buf++ = (uint8_t)(SPIx->DR);
+        SPI_I2S_TXDATA(0x00FF);
+        while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RXNE));
+        *buf++ = (uint8_t)SPI_I2S_RXDATA();
         interrupts();
     }
-    while (!(SPIx->SR & SPI_I2S_FLAG_RXNE));
-    *buf++ = (uint8_t)(SPIx->DR);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RXNE));
+    *buf++ = (uint8_t)SPI_I2S_RXDATA();
 }
 
 void SPIClass::write(uint16_t data)
 {
-    SPIx->DR = data;
-    while (!(SPIx->SR & SPI_I2S_FLAG_TXE));
-    while (SPIx->SR & SPI_I2S_FLAG_BSY);
+    SPI_I2S_TXDATA(data);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+    while SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BSY);
 }
 
 void SPIClass::write(uint16_t data, uint32_t n)
 {
     while ((n--) > 0)
     {
-        SPIx->DR = data; // write the data to be transmitted into the SPI_DR register (this clears the TXE flag)
-        while ((SPIx->SR & SPI_SR_TXE) == 0); // wait till Tx empty
+        SPI_I2S_TXDATA(data); // write the data to be transmitted into the SPI_DR register (this clears the TXE flag)
+        while (SPI_I2S_GET_FLAG(SPI_SR_TXE) == 0); // wait till Tx empty
     }
 
-    while ((SPIx->SR & SPI_SR_BSY) != 0); // wait until BSY=0 before returning
+    while (SPI_I2S_GET_FLAG(SPI_SR_BSY) != 0); // wait until BSY=0 before returning
 }
 
 void SPIClass::write(const uint8_t *data, uint32_t length)
 {
     while (length--)
     {
-        while ((SPIx->SR & SPI_SR_TXE) == 0);
-        SPIx->DR = *data++;
+        while (SPI_I2S_GET_FLAG(SPI_SR_TXE) == 0);
+        SPI_I2S_TXDATA(*data++);
     }
-    while (!(SPIx->SR & SPI_SR_TXE));
-    while ((SPIx->SR & SPI_SR_BSY));
+    while (!SPI_I2S_GET_FLAG(SPI_SR_TXE));
+    while (SPI_I2S_GET_FLAG(SPI_SR_BSY));
 }
 
 void SPIClass::write(const uint16_t *data, uint32_t length)
 {
     while (length--)
     {
-        while ((SPIx->SR & SPI_SR_TXE) == 0);
-        SPIx->DR = *data++;
+        while (SPI_I2S_GET_FLAG(SPI_SR_TXE) == 0);
+        SPI_I2S_TXDATA(*data++);
     }
-    while (!(SPIx->SR & SPI_SR_TXE));
-    while ((SPIx->SR & SPI_SR_BSY));
+    while (!SPI_I2S_GET_FLAG(SPI_SR_TXE));
+    while (SPI_I2S_GET_FLAG(SPI_SR_BSY));
 }
 
 uint8_t SPIClass::transfer(uint8_t wr_data) const
 {
-    SPI_I2S_ReceiveData(SPIx);
-    SPIx->DR = wr_data;
-    while (!(SPIx->SR & SPI_I2S_FLAG_TXE));
-    while (SPIx->SR & SPI_I2S_FLAG_BSY);
-    return (uint8_t)(SPIx->DR);
+    SPI_I2S_RXDATA_VOLATILE();
+    SPI_I2S_TXDATA(wr_data);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+    while SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BSY);
+    return (uint8_t)SPI_I2S_RXDATA();
 }
 
 uint16_t SPIClass::transfer16(uint16_t wr_data) const
 {
-    SPI_I2S_ReceiveData(SPIx);
-    SPIx->DR = wr_data;
-    while (!(SPIx->SR & SPI_I2S_FLAG_TXE));
-    while (SPIx->SR & SPI_I2S_FLAG_BSY);
-    return (uint16_t)(SPIx->DR);
+    SPI_I2S_RXDATA_VOLATILE();
+    SPI_I2S_TXDATA(wr_data);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+    while SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BSY);
+    return (uint16_t)SPI_I2S_RXDATA();
 }
 
 uint8_t SPIClass::send(uint8_t data)

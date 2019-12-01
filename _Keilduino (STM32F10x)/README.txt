@@ -69,3 +69,4 @@
 //Upgrade   2019.8.22  V_7.0 整理代码制表符全部替换为空格，去除analogRead求均值，延长ADC采样保持时间
 //Upgrade   2019.11.4  V_7.1 更新Print库(移植Georges Menie的printf-stdarg.c)，printf不再有长度限制，添加sprintf成员
 //Upgrade   2019.11.29 V_7.2 更新SPI库,更新Timer库
+//Upgrade   2019.12.1  V_7.3 更新timer库，使用独立的开根号运算函数，不依赖math.h库 

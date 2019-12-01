@@ -47,9 +47,9 @@ void Timer_SetInterruptBase(
     uint8_t PreemptionPriority, uint8_t SubPriority
 );
 
-#define TimerClockCmd(TIMx,EN) Timer_ClockCmd(TIMx,EN)
-#define TimerSet(TIMx,time,function) Timer_SetInterrupt(TIMx,time,function)
-#define Timer_Init(TIMx,time,function,pre,sub) Timer_SetInterruptBase(TIMx,0xFF,0xFF,function,pre,sub),Timer_SetInterruptTimeUpdate(TIMx,time)
+#define TimerClockCmd(TIMx,EN)                  Timer_ClockCmd(TIMx,EN)
+#define TimerSet(TIMx,time,function)            Timer_SetInterrupt(TIMx,time,function)
+#define Timer_Init(TIMx,time,function,pre,sub)  Timer_SetInterruptBase(TIMx,0xFF,0xFF,function,pre,sub),Timer_SetInterruptTimeUpdate(TIMx,time)
 #define TimerSet_InterruptTimeUpdate(TIMx,time) Timer_SetInterruptTimeUpdate(TIMx,time)
 
 #ifdef __cplusplus

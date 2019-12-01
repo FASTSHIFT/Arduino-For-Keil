@@ -24,3 +24,4 @@
 //Upgrade   2019.9.28   V_2.2 更新SPI库
 //Upgrade   2019.10.9   V_2.3 添加了STM32F4xx V1.8.0标准库，已支持新的F4型号，但是需要手动添加FLASH烧写算法文件，或者安装新的PACK
 //Upgrade   2019.11.4   V_2.4 更新Print库(移植Georges Menie的printf-stdarg.c)，printf不再有长度限制，添加sprintf成员
+//Upgrade   2019.12.1   V_2.5 更新timer库，使用独立的开根号运算函数，不依赖math.h库 

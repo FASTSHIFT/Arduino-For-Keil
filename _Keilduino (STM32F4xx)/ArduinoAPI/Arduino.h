@@ -23,8 +23,6 @@
 #ifndef __ARDUINO_H
 #define __ARDUINO_H
 
-//访问 https://www.arduino.cc/reference/en/ 获得更完整的语法介绍
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -35,11 +33,12 @@ extern "C" {
 #include "avr/pgmspace.h"
 
 #include "mcu_type.h"
+#include "adc.h"
+#include "delay.h"
+#include "exti.h"
 #include "gpio.h"
 #include "pwm.h"
-#include "adc.h"
-#include "exti.h"
-#include "delay.h"
+#include "timer.h"
 
 #define __STM32__
 

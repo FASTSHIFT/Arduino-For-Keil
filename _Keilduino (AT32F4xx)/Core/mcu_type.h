@@ -74,7 +74,7 @@ typedef TMR_Type          TIM_TypeDef;
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
-#define __KEILDUINO__ 120
+#define __KEILDUINO__ 130
     
 #define GPIO_HIGH(GPIOX,GPIO_PIN_X)    (GPIOX->BSRE    = GPIO_PIN_X)
 #define GPIO_LOW(GPIOX,GPIO_PIN_X)     (GPIOX->BRE     = GPIO_PIN_X)

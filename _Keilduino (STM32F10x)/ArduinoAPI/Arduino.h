@@ -33,11 +33,12 @@ extern "C" {
 #include "avr/pgmspace.h"
 
 #include "mcu_type.h"
+#include "adc.h"
+#include "delay.h"
+#include "exti.h"
 #include "gpio.h"
 #include "pwm.h"
-#include "adc.h"
-#include "exti.h"
-#include "delay.h"
+#include "timer.h"
 
 #define __STM32__
 
