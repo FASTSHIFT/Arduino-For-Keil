@@ -62,7 +62,7 @@ typedef struct{
 #define GPIO_TOGGLE(GPIOx,GPIO_Pin_x)   (GPIOx->ODR ^= GPIO_Pin_x)
 
 #define digitalWrite_HIGH(Pin) (GPIO_HIGH(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
-#define digitalWrite_LOW(Pin)  (GPIO_HIGH(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define digitalWrite_LOW(Pin)  (GPIO_LOW(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 #define digitalRead_FAST(Pin)  (GPIO_READ(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 #define togglePin(Pin)         (GPIO_TOGGLE(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 

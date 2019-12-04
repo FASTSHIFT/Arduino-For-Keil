@@ -16,7 +16,7 @@
 #define GPIO_TOGGLE(GPIOX,GPIO_PIN_X)  (GPIOX->ODR  ^= GPIO_PIN_X)
 
 #define digitalWrite_HIGH(Pin) (GPIO_HIGH(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
-#define digitalWrite_LOW(Pin)  (GPIO_HIGH(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define digitalWrite_LOW(Pin)  (GPIO_LOW(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 #define digitalRead_FAST(Pin)  (GPIO_READ(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 #define togglePin(Pin)         (GPIO_TOGGLE(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 
