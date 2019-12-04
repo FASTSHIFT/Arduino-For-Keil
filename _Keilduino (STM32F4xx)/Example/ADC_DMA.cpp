@@ -3,7 +3,7 @@
 void setup()
 {
     Serial.begin(115200);
-	pinMode(PA0, INPUT_ANALOG_DMA);
+    pinMode(PA0, INPUT_ANALOG_DMA);
     pinMode(PA1, INPUT_ANALOG_DMA);
     pinMode(PA2, INPUT_ANALOG_DMA);
     pinMode(PA3, INPUT_ANALOG_DMA);

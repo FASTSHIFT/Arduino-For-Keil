@@ -50,7 +50,7 @@ typedef struct{
     uint32_t RCC_PLLMul_x;
 }SysClock_TypeDef;
 
-#define __KEILDUINO__ 730
+#define __KEILDUINO__ 740
 #define __STM32F1__
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
