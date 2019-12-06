@@ -32,9 +32,9 @@
 #define USART_PreemptionPriority_Default 1
 #define USART_SubPriority_Default 3
 
-#define Get_USART_WordLength_x(SERIAL_x)    ((uint16_t)(SERIAL_x&0xF000))
-#define Get_USART_Parity_x(SERIAL_x)        ((uint16_t)(SERIAL_x&0x0F00))
-#define Get_USART_StopBits_x(SERIAL_x)      ((uint16_t)((SERIAL_x&0x00F0)<<8))
+#define USART_GetWordLength(SERIAL_x)    ((uint16_t)(SERIAL_x&0xF000))
+#define USART_GetParity(SERIAL_x)        ((uint16_t)(SERIAL_x&0x0F00))
+#define USART_GetStopBits(SERIAL_x)      ((uint16_t)((SERIAL_x&0x00F0)<<8))
 
 typedef enum
 {

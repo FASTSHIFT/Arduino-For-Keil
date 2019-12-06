@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'Pro' 
+ * Project: 'proj' 
  * Target:  'AT32F4xx' 
  */
 

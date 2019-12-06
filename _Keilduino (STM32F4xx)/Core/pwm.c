@@ -97,7 +97,7 @@ uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint32_t PWM_Frequency)
         return 0;
 
     pinMode(Pin, OUTPUT_AF);
-    GPIO_PinAFConfig(PIN_MAP[Pin].GPIOx, Get_TIM_PinSourcex(Pin), Get_TIMx_GPIO_AF_x(Pin));
+    GPIO_PinAFConfig(PIN_MAP[Pin].GPIOx, TIM_GetPinSourcex(Pin), TIM_GetGPIO_AF(Pin));
 
     arr = PWM_DutyCycle;
     psc = F_CPU / PWM_DutyCycle / PWM_Frequency;
@@ -115,77 +115,54 @@ uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint32_t PWM_Frequency)
   * @param  Pin: 引脚编号
   * @retval 定时器复用编号
   */
-uint8_t Get_TIMx_GPIO_AF_x(uint8_t Pin)
+uint8_t TIM_GetGPIO_AF(uint8_t Pin)
 {
     uint8_t GPIO_AF_x = 0;
     TIM_TypeDef* TIMx = PIN_MAP[Pin].TIMx;
+    
+    if(!IS_TIM_ALL_PERIPH(TIMx))
+        return 0;
 
-    switch((int)TIMx)
-    {
-    case (int)TIM1:
-        GPIO_AF_x = GPIO_AF_TIM1;
-        break;
-    case (int)TIM2:
-        GPIO_AF_x = GPIO_AF_TIM2;
-        break;
-    case (int)TIM3:
-        GPIO_AF_x = GPIO_AF_TIM3;
-        break;
-    case (int)TIM4:
-        GPIO_AF_x = GPIO_AF_TIM4;
-        break;
-    case (int)TIM5:
-        GPIO_AF_x = GPIO_AF_TIM5;
-        break;
-#if defined (GPIO_AF_TIM6)
-    case (int)TIM6:
-        GPIO_AF_x = GPIO_AF_TIM6;
-        break;
+#define TIMx_GPIO_AF_DEF(n)\
+do{\
+    if(TIMx == TIM##n)\
+    {\
+        GPIO_AF_x = GPIO_AF_TIM##n;\
+    }\
+}while(0)
+
+    TIMx_GPIO_AF_DEF(1);
+    TIMx_GPIO_AF_DEF(2);
+    TIMx_GPIO_AF_DEF(3);
+    TIMx_GPIO_AF_DEF(4);
+    TIMx_GPIO_AF_DEF(5);
+#ifdef GPIO_AF_TIM6
+    TIMx_GPIO_AF_DEF(6);
 #endif
-#if defined (GPIO_AF_TIM7)
-    case (int)TIM7:
-        GPIO_AF_x = GPIO_AF_TIM7;
-        break;
+#ifdef GPIO_AF_TIM7
+    TIMx_GPIO_AF_DEF(7);
 #endif
-#if defined (GPIO_AF_TIM8)
-    case (int)TIM8:
-        GPIO_AF_x = GPIO_AF_TIM8;
-        break;
+#ifdef GPIO_AF_TIM8
+    TIMx_GPIO_AF_DEF(8);
 #endif
-#if defined (GPIO_AF_TIM9)
-    case (int)TIM9:
-        GPIO_AF_x = GPIO_AF_TIM9;
-        break;
+#ifdef GPIO_AF_TIM9
+    TIMx_GPIO_AF_DEF(9);
 #endif
-#if defined (GPIO_AF_TIM10)
-    case (int)TIM10:
-        GPIO_AF_x = GPIO_AF_TIM10;
-        break;
+#ifdef GPIO_AF_TIM10
+    TIMx_GPIO_AF_DEF(10);
 #endif
-#if defined (GPIO_AF_TIM11)
-    case (int)TIM11:
-        GPIO_AF_x = GPIO_AF_TIM11;
-        break;
+#ifdef GPIO_AF_TIM11
+    TIMx_GPIO_AF_DEF(11);
 #endif
-#if defined (GPIO_AF_TIM12)
-    case (int)TIM12:
-        GPIO_AF_x = GPIO_AF_TIM12;
-        break;
+#ifdef GPIO_AF_TIM12
+    TIMx_GPIO_AF_DEF(12);
 #endif
-#if defined (GPIO_AF_TIM13)
-    case (int)TIM13:
-        GPIO_AF_x = GPIO_AF_TIM13;
-        break;
+#ifdef GPIO_AF_TIM13
+    TIMx_GPIO_AF_DEF(13);
 #endif
-#if defined (GPIO_AF_TIM14)
-    case (int)TIM14:
-        GPIO_AF_x = GPIO_AF_TIM14;
-        break;
+#ifdef GPIO_AF_TIM14
+    TIMx_GPIO_AF_DEF(14);
 #endif
-    default:
-        GPIO_AF_x = 0;
-        break;
-    }
 
     return GPIO_AF_x;
 }

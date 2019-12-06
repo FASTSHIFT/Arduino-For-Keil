@@ -29,13 +29,13 @@ extern "C" {
     
 #include "mcu_type.h"
 
-#define	CHANGE EXTI_Trigger_Rising_Falling
-#define	FALLING EXTI_Trigger_Falling
-#define	RISING EXTI_Trigger_Rising
+#define CHANGE EXTI_Trigger_Rising_Falling
+#define FALLING EXTI_Trigger_Falling
+#define RISING EXTI_Trigger_Rising
 
 #define EXTI_PreemptionPriority_Default 2
 #define EXTI_SubPriority_Default 1
-#define Get_EXTI_Line_x(Pin) (1 << Pin)
+#define EXTI_GetLine(Pin) (1 << Pin)
 
 typedef void(*EXTI_CallbackFunction_t)(void);
 

@@ -31,9 +31,9 @@ extern "C" {
 
 #include "mcu_type.h"
 
-#define Get_EXTI_Linex(Pin) (1 << Pinx)
-#define Get_EXTI_PortSourceGPIOx(Pin) (Get_GPIOx(Pin))
-#define Get_EXTI_PinSourcex(Pin) (Get_Pinx(Pin))
+#define EXTI_GetLine(Pin)           (1 << Pinx)
+#define EXTI_GetPortSourceGPIOx(Pin) (GPIO_GetPortNum(Pin))
+#define EXTI_GetPinSourcex(Pin)      (GPIO_GetPinNum(Pin))
 
 #define CHANGE EXTI_Trigger_Rising_Falling
 #define FALLING EXTI_Trigger_Falling

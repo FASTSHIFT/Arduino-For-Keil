@@ -142,9 +142,9 @@ uint16_t pwmWrite(uint8_t Pin, uint16_t val)
 /**
   * @brief  获取TIM_Channel编号
   * @param  Pin: 引脚编号
-  * @retval TIM_Channel_x
+  * @retval TIM_Channel
   */
-uint16_t Get_TIM_Channel_x(uint8_t Pin)
+uint16_t TIM_GetChannel(uint8_t Pin)
 {
     uint16_t TIM_Channel_x = 0xFFFF;
     switch(PIN_MAP[Pin].TimerChannel)

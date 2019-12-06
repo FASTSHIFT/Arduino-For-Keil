@@ -234,7 +234,7 @@ void ADCx_Init(ADC_TypeDef* ADCx)
     ADC_Cmd(ADCx, ENABLE);//开启AD转换器
 }
 
-uint16_t Get_ADC(ADC_TypeDef* ADCx, uint8_t ADC_Channel)
+uint16_t ADCx_GetValue(ADC_TypeDef* ADCx, uint8_t ADC_Channel)
 {
     ADC_RegularChannelConfig(ADCx, ADC_Channel, 1, ADC_SampleTime_144Cycles);
     ADC_SoftwareStartConv(ADCx);

@@ -26,40 +26,14 @@
 static EXTI_CallbackFunction_t EXTI_Function[16] = {0};
 
 /**
-  * @brief  外部中断初始化
+  * @brief  获取外部中断的中断通道
   * @param  Pin: 引脚编号
-  * @param  function: 回调函数
-  * @param  Trigger_Mode: 触发方式
-  * @param  PreemptionPriority: 抢占优先级
-  * @param  SubPriority: 子优先级
-  * @retval 无
+  * @retval 通道编号
   */
-void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_TypeDef Trigger_Mode, uint8_t PreemptionPriority, uint8_t SubPriority)
+static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
 {
-    EXTI_InitTypeDef EXTI_InitStructure;
-    NVIC_InitTypeDef NVIC_InitStructure;
     IRQn_Type EXTIx_IRQn;
-    uint8_t Pinx;
-
-    if(!IS_PIN(Pin))
-        return;
-
-    Pinx = Get_Pinx(Pin);
-
-    if(Pinx > 15)
-        return;
-    
-    EXTI_Function[Pinx] = function;
-
-    //GPIO中断线以及中断初始化配置
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
-    SYSCFG_EXTILineConfig(Get_EXTI_PortSourceGPIOx(Pin), Get_EXTI_PinSourcex(Pin));//选择GPIO作为外部中断线路
-
-    EXTI_InitStructure.EXTI_Line = Get_EXTI_Linex(Pin);//设置中断线
-    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//设置触发模式，中断触发（事件触发）
-    EXTI_InitStructure.EXTI_Trigger = Trigger_Mode;//设置触发方式
-    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-    EXTI_Init(&EXTI_InitStructure);     //根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
+    uint8_t Pinx = GPIO_GetPinNum(Pin);
 
     if(Pinx <= 4)
     {
@@ -86,8 +60,46 @@ void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_TypeD
         EXTIx_IRQn = EXTI9_5_IRQn;
     else if(Pinx >= 10 && Pinx <= 15)
         EXTIx_IRQn = EXTI15_10_IRQn;
+    
+    return EXTIx_IRQn;
+}
 
-    NVIC_InitStructure.NVIC_IRQChannel = EXTIx_IRQn;                    //使能所在的外部中断通道
+/**
+  * @brief  外部中断初始化
+  * @param  Pin: 引脚编号
+  * @param  function: 回调函数
+  * @param  Trigger_Mode: 触发方式
+  * @param  PreemptionPriority: 抢占优先级
+  * @param  SubPriority: 子优先级
+  * @retval 无
+  */
+void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_TypeDef Trigger_Mode, uint8_t PreemptionPriority, uint8_t SubPriority)
+{
+    EXTI_InitTypeDef EXTI_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
+    uint8_t Pinx;
+
+    if(!IS_PIN(Pin))
+        return;
+
+    Pinx = GPIO_GetPinNum(Pin);
+
+    if(Pinx > 15)
+        return;
+    
+    EXTI_Function[Pinx] = function;
+
+    //GPIO中断线以及中断初始化配置
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+    SYSCFG_EXTILineConfig(EXTI_GetPortSourceGPIOx(Pin), EXTI_GetPinSourcex(Pin));//选择GPIO作为外部中断线路
+
+    EXTI_InitStructure.EXTI_Line = EXTI_GetLine(Pin);//设置中断线
+    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//设置触发模式，中断触发（事件触发）
+    EXTI_InitStructure.EXTI_Trigger = Trigger_Mode;//设置触发方式
+    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+    EXTI_Init(&EXTI_InitStructure);     //根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
+
+    NVIC_InitStructure.NVIC_IRQChannel = EXTI_GetIRQn(Pin);                    //使能所在的外部中断通道
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;      //抢占优先级
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;                //子优先级
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;                     //使能外部中断通道
@@ -113,25 +125,20 @@ void attachInterrupt(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_
   */
 void detachInterrupt(uint8_t Pin)
 {
-    EXTI_InitTypeDef EXTI_InitStructure;
-    uint8_t Pinx;
-
     if(!IS_PIN(Pin))
         return;
-
-    Pinx = Get_Pinx(Pin);
-
-    if(Pinx > 15)
-        return;
-
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
-    SYSCFG_EXTILineConfig(Get_EXTI_PortSourceGPIOx(Pin), Get_EXTI_PinSourcex(Pin));     //选择GPIO作为外部中断线路
-
-    EXTI_InitStructure.EXTI_Line = 1 << Pinx;                       //设置中断线
-    EXTI_InitStructure.EXTI_LineCmd = DISABLE;
-    EXTI_Init(&EXTI_InitStructure);
+    
+    NVIC_DisableIRQ(EXTI_GetIRQn(Pin));
 }
 
+#define EXTIx_IRQHANDLER(n) \
+do{\
+    if(EXTI_GetITStatus(EXTI_Line##n) != RESET)\
+    {\
+        if(EXTI_Function[n]) EXTI_Function[n]();\
+        EXTI_ClearITPendingBit(EXTI_Line##n);\
+    }\
+}while(0)
 
 /**
   * @brief  外部中断入口，通道0
@@ -140,11 +147,7 @@ void detachInterrupt(uint8_t Pin)
   */
 void EXTI0_IRQHandler(void)
 {
-    if(EXTI_GetITStatus(EXTI_Line0) != RESET)
-    {
-        if(EXTI_Function[0]) EXTI_Function[0]();
-        EXTI_ClearITPendingBit(EXTI_Line0);
-    }
+    EXTIx_IRQHANDLER(0);
 }
 
 /**
@@ -154,11 +157,7 @@ void EXTI0_IRQHandler(void)
   */
 void EXTI1_IRQHandler(void)
 {
-    if(EXTI_GetITStatus(EXTI_Line1) != RESET)
-    {
-        if(EXTI_Function[1]) EXTI_Function[1]();
-        EXTI_ClearITPendingBit(EXTI_Line1);
-    }
+    EXTIx_IRQHANDLER(1);
 }
 
 /**
@@ -168,11 +167,7 @@ void EXTI1_IRQHandler(void)
   */
 void EXTI2_IRQHandler(void)
 {
-    if(EXTI_GetITStatus(EXTI_Line2) != RESET)
-    {
-        if(EXTI_Function[2]) EXTI_Function[2]();
-        EXTI_ClearITPendingBit(EXTI_Line2);
-    }
+    EXTIx_IRQHANDLER(2);
 }
 
 /**
@@ -182,11 +177,7 @@ void EXTI2_IRQHandler(void)
   */
 void EXTI3_IRQHandler(void)
 {
-    if(EXTI_GetITStatus(EXTI_Line3) != RESET)
-    {
-        if(EXTI_Function[3]) EXTI_Function[3]();
-        EXTI_ClearITPendingBit(EXTI_Line3);
-    }
+    EXTIx_IRQHANDLER(3);
 }
 
 /**
@@ -196,11 +187,7 @@ void EXTI3_IRQHandler(void)
   */
 void EXTI4_IRQHandler(void)
 {
-    if(EXTI_GetITStatus(EXTI_Line4) != RESET)
-    {
-        if(EXTI_Function[4]) EXTI_Function[4]();
-        EXTI_ClearITPendingBit(EXTI_Line4);
-    }
+    EXTIx_IRQHANDLER(4);
 }
 
 /**
@@ -210,31 +197,11 @@ void EXTI4_IRQHandler(void)
   */
 void EXTI9_5_IRQHandler(void)
 {
-    if(EXTI_GetITStatus(EXTI_Line5) != RESET)
-    {
-        if(EXTI_Function[5]) EXTI_Function[5]();
-        EXTI_ClearITPendingBit(EXTI_Line5);
-    }
-    if(EXTI_GetITStatus(EXTI_Line6) != RESET)
-    {
-        if(EXTI_Function[6]) EXTI_Function[6]();
-        EXTI_ClearITPendingBit(EXTI_Line6);
-    }
-    if(EXTI_GetITStatus(EXTI_Line7) != RESET)
-    {
-        if(EXTI_Function[7]) EXTI_Function[7]();
-        EXTI_ClearITPendingBit(EXTI_Line7);
-    }
-    if(EXTI_GetITStatus(EXTI_Line8) != RESET)
-    {
-        if(EXTI_Function[8]) EXTI_Function[8]();
-        EXTI_ClearITPendingBit(EXTI_Line8);
-    }
-    if(EXTI_GetITStatus(EXTI_Line9) != RESET)
-    {
-        if(EXTI_Function[9]) EXTI_Function[9]();
-        EXTI_ClearITPendingBit(EXTI_Line9);
-    }
+    EXTIx_IRQHANDLER(5);
+    EXTIx_IRQHANDLER(6);
+    EXTIx_IRQHANDLER(7);
+    EXTIx_IRQHANDLER(8);
+    EXTIx_IRQHANDLER(9);
 }
 
 /**
@@ -244,34 +211,10 @@ void EXTI9_5_IRQHandler(void)
   */
 void EXTI15_10_IRQHandler(void)
 {
-    if(EXTI_GetITStatus(EXTI_Line10) != RESET)
-    {
-        if(EXTI_Function[10]) EXTI_Function[10]();
-        EXTI_ClearITPendingBit(EXTI_Line10);
-    }
-    if(EXTI_GetITStatus(EXTI_Line11) != RESET)
-    {
-        if(EXTI_Function[11]) EXTI_Function[11]();
-        EXTI_ClearITPendingBit(EXTI_Line11);
-    }
-    if(EXTI_GetITStatus(EXTI_Line12) != RESET)
-    {
-        if(EXTI_Function[12]) EXTI_Function[12]();
-        EXTI_ClearITPendingBit(EXTI_Line12);
-    }
-    if(EXTI_GetITStatus(EXTI_Line13) != RESET)
-    {
-        if(EXTI_Function[13]) EXTI_Function[13]();
-        EXTI_ClearITPendingBit(EXTI_Line13);
-    }
-    if(EXTI_GetITStatus(EXTI_Line14) != RESET)
-    {
-        if(EXTI_Function[14]) EXTI_Function[14]();
-        EXTI_ClearITPendingBit(EXTI_Line14);
-    }
-    if(EXTI_GetITStatus(EXTI_Line15) != RESET)
-    {
-        if(EXTI_Function[15]) EXTI_Function[15]();
-        EXTI_ClearITPendingBit(EXTI_Line15);
-    }
+    EXTIx_IRQHANDLER(10);
+    EXTIx_IRQHANDLER(11);
+    EXTIx_IRQHANDLER(12);
+    EXTIx_IRQHANDLER(13);
+    EXTIx_IRQHANDLER(14);
+    EXTIx_IRQHANDLER(15);
 }

@@ -78,9 +78,9 @@ extern const PinInfo_TypeDef PIN_MAP[PIN_MAX];
 
 void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMode_x, GPIOMaxSpeed_Type GPIO_Speed_x);
 void GPIO_JTAG_Disable(void);
-uint8_t Get_GPIOx(uint8_t Pin);
-uint8_t Get_GPIO_PinSource(uint16_t GPIO_Pin_x);
-uint8_t Get_Pinx(uint8_t Pin);
+uint8_t GPIO_GetPortNum(uint8_t Pin);
+uint8_t GPIO_GetPinNum(uint8_t Pin);
+uint8_t GPIO_GetPinSource(uint16_t GPIO_Pin_x);
 
 #ifdef __cplusplus
 }// extern "C"

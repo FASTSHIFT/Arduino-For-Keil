@@ -333,7 +333,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--gnu</MiscControls>
               <Define>LIBRARY_VERSION,AT32F403Zx_HD,ARDUINO=111</Define>
               <Undefine></Undefine>
               <IncludePath>..\ArduinoAPI;..\Core;..\USER</IncludePath>
@@ -383,7 +383,7 @@
             <File>
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\main.cpp</FilePath>
+              <FilePath>..\USER\main.cpp</FilePath>
             </File>
           </Files>
         </Group>

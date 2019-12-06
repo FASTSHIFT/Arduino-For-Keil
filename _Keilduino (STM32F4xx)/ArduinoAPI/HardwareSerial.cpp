@@ -136,8 +136,8 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
 
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOx, ENABLE);
 
-    GPIO_PinAFConfig(GPIOx, Get_GPIO_PinSource(Tx_Pin), GPIO_AF_USARTx);
-    GPIO_PinAFConfig(GPIOx, Get_GPIO_PinSource(Rx_Pin), GPIO_AF_USARTx);
+    GPIO_PinAFConfig(GPIOx, GPIO_GetPinSource(Tx_Pin), GPIO_AF_USARTx);
+    GPIO_PinAFConfig(GPIOx, GPIO_GetPinSource(Rx_Pin), GPIO_AF_USARTx);
 
     GPIO_InitStructure.GPIO_Pin =  Tx_Pin | Rx_Pin;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
@@ -154,11 +154,10 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
     NVIC_Init(&NVIC_InitStructure); //根据指定的参数初始化VIC寄存器
 
     //USART 初始化设置
-
     USART_InitStructure.USART_BaudRate = BaudRate;//串口波特率
-    USART_InitStructure.USART_WordLength = Get_USART_WordLength_x(Config);//字长为8位数据格式
-    USART_InitStructure.USART_StopBits = Get_USART_Parity_x(Config);//一个停止位
-    USART_InitStructure.USART_Parity = Get_USART_StopBits_x(Config);//无奇偶校验位
+    USART_InitStructure.USART_WordLength = USART_GetWordLength(Config);//字长为8位数据格式
+    USART_InitStructure.USART_StopBits = USART_GetParity(Config);//一个停止位
+    USART_InitStructure.USART_Parity = USART_GetStopBits(Config);//无奇偶校验位
     USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
     USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx; //收发模式
 

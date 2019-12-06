@@ -62,11 +62,16 @@ extern const PinInfo_TypeDef PIN_MAP[PIN_MAX];
 #define IS_ADC_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].ADC_Channel  != ADC_Channel_X)
 #define IS_PWM_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].TimerChannel != 0)
 
-void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, GPIOMode_TypeDef GPIO_Mode_x, GPIOSpeed_TypeDef GPIO_Speed_x);
+void GPIOx_Init(
+    GPIO_TypeDef* GPIOx, 
+    uint16_t GPIO_Pin_x, 
+    GPIOMode_TypeDef GPIO_Mode_x, 
+    GPIOSpeed_TypeDef GPIO_Speed_x
+);
 void GPIO_JTAG_Disable(void);
-uint8_t Get_GPIOx(uint8_t Pin);
-uint8_t Get_GPIO_PinSource(uint16_t GPIO_Pin_x);
-uint8_t Get_Pinx(uint8_t Pin);
+uint8_t GPIO_GetPortNum(uint8_t Pin);
+uint8_t GPIO_GetPinNum(uint8_t Pin);
+uint8_t GPIO_GetPinSource(uint16_t GPIO_Pin_x);
 
 #ifdef __cplusplus
 }

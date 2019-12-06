@@ -34,7 +34,7 @@ int16_t ADC_DMA_Register(uint8_t ADC_Channel);
 uint16_t ADC_DMA_GetValue(uint8_t ADC_Channel);
 
 void ADCx_Init(ADC_Type* ADCx);
-uint16_t Get_ADC(ADC_Type* ADCx, uint16_t ADC_Channel);
+uint16_t ADCx_GetValue(ADC_Type* ADCx, uint16_t ADC_Channel);
 
 #ifdef __cplusplus
 }
