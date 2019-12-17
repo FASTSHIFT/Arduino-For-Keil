@@ -8,7 +8,7 @@
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
   See the GNU Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public
@@ -19,9 +19,8 @@
 #ifndef _ITOA_
 #define _ITOA_
 
-#include <string.h>
 #ifdef __cplusplus
-extern "C" {
+extern "C"{
 #endif // __cplusplus
 
 #if 0
@@ -32,11 +31,11 @@ extern void itoa( int n, char s[] ) ;
 
 extern char* itoa( int value, char *string, int radix ) ;
 extern char* ltoa( long value, char *string, int radix ) ;
-#if 0/*__GNUC__ > 4 || (__GNUC__ == 4 && (__GNUC_MINOR__ > 9 || \
-   (__GNUC_MINOR__ == 9 && __GNUC_PATCHLEVEL__ > 2)))*/
+#if __GNUC__ > 4 || (__GNUC__ == 4 && (__GNUC_MINOR__ > 9 || \
+   (__GNUC_MINOR__ == 9 && __GNUC_PATCHLEVEL__ > 2)))
 extern char* utoa( unsigned value, char *string, int radix ) ;
 #else
-extern char* utoa( unsigned long value, char *string, int radix ) ;
+extern char* utoa( unsigned int value, char *string, int radix ) ;
 #endif
 extern char* ultoa( unsigned long value, char *string, int radix ) ;
 #endif /* 0 */
