@@ -55,7 +55,8 @@
 
 struct i2c_msg;
 
-typedef struct i2c_msg {
+typedef struct i2c_msg
+{
     uint16_t addr;                /**< Address */
 
 #define I2C_MSG_READ            0x1
@@ -71,7 +72,8 @@ typedef struct i2c_msg {
     uint8_t *data;                /**< Data */
 } i2c_msg;
 
-class WireBase { // Abstraction is awesome!
+class WireBase   // Abstraction is awesome!
+{
 protected:
     i2c_msg itc_msg;
     uint8_t rx_buf[WIRE_BUFSIZ];      /* receive buffer */

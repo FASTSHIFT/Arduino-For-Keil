@@ -51,21 +51,25 @@
  * - always start with i2c_delay rather than end
  */
 
-void TwoWire::set_scl(bool state) {
+void TwoWire::set_scl(bool state)
+{
     I2C_DELAY(this->i2c_delay);
     digitalWrite(this->scl_pin, state);
     //Allow for clock stretching - dangerous currently
-    if (state == HIGH) {
+    if (state == HIGH)
+    {
         while(digitalRead(this->scl_pin) == 0);
     }
 }
 
-void TwoWire::set_sda(bool state) {
+void TwoWire::set_sda(bool state)
+{
     I2C_DELAY(this->i2c_delay);
     digitalWrite(this->sda_pin, state);
 }
 
-void TwoWire::i2c_start() {
+void TwoWire::i2c_start()
+{
 #ifdef FULL_SPEED_I2C
     digitalWrite_LOW(this->sda_pin);
     digitalWrite_LOW(this->scl_pin);
@@ -75,7 +79,8 @@ void TwoWire::i2c_start() {
 #endif
 }
 
-void TwoWire::i2c_stop() {
+void TwoWire::i2c_stop()
+{
 #ifdef FULL_SPEED_I2C
     digitalWrite_LOW(this->sda_pin);
     digitalWrite_HIGH(this->scl_pin);
@@ -87,7 +92,8 @@ void TwoWire::i2c_stop() {
 #endif
 }
 
-bool TwoWire::i2c_get_ack() {
+bool TwoWire::i2c_get_ack()
+{
 #ifdef FULL_SPEED_I2C
     digitalWrite_LOW(this->scl_pin);
     digitalWrite_HIGH(this->sda_pin);
@@ -107,7 +113,8 @@ bool TwoWire::i2c_get_ack() {
     return ret;
 }
 
-void TwoWire::i2c_send_ack() {
+void TwoWire::i2c_send_ack()
+{
 #ifdef FULL_SPEED_I2C
     digitalWrite_LOW(this->sda_pin);
     digitalWrite_HIGH(this->scl_pin);
@@ -119,7 +126,8 @@ void TwoWire::i2c_send_ack() {
 #endif
 }
 
-void TwoWire::i2c_send_nack() {
+void TwoWire::i2c_send_nack()
+{
 #ifdef FULL_SPEED_I2C
     digitalWrite_HIGH(this->sda_pin);
     digitalWrite_HIGH(this->scl_pin);
@@ -131,7 +139,8 @@ void TwoWire::i2c_send_nack() {
 #endif
 }
 
-uint8_t TwoWire::i2c_shift_in() {
+uint8_t TwoWire::i2c_shift_in()
+{
     uint8_t data = 0;
 #ifdef FULL_SPEED_I2C
     digitalWrite_HIGH(this->sda_pin);
@@ -155,9 +164,11 @@ uint8_t TwoWire::i2c_shift_in() {
     return data;
 }
 
-void TwoWire::i2c_shift_out(uint8_t val) {
+void TwoWire::i2c_shift_out(uint8_t val)
+{
     int i;
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i < 8; i++)
+    {
         set_sda(!!(val & (1 << (7 - i)) ) );
 #ifdef FULL_SPEED_I2C
         digitalWrite_HIGH(this->scl_pin);
@@ -169,11 +180,13 @@ void TwoWire::i2c_shift_out(uint8_t val) {
     }
 }
 
-uint8_t TwoWire::process(void) {
+uint8_t TwoWire::process(void)
+{
     itc_msg.xferred = 0;
 
     uint8_t sla_addr = (itc_msg.addr << 1);
-    if (itc_msg.flags == I2C_MSG_READ) {
+    if (itc_msg.flags == I2C_MSG_READ)
+    {
         sla_addr |= I2C_READ;
     }
     i2c_start();
@@ -185,8 +198,10 @@ uint8_t TwoWire::process(void) {
         return ENACKADDR;
     }
     // Recieving
-    if (itc_msg.flags == I2C_MSG_READ) {
-        while (itc_msg.xferred < itc_msg.length) {
+    if (itc_msg.flags == I2C_MSG_READ)
+    {
+        while (itc_msg.xferred < itc_msg.length)
+        {
             itc_msg.data[itc_msg.xferred++] = i2c_shift_in();
             if (itc_msg.xferred < itc_msg.length)
             {
@@ -199,8 +214,10 @@ uint8_t TwoWire::process(void) {
         }
     }
     // Sending
-    else {
-        for (uint8_t i = 0; i < itc_msg.length; i++) {
+    else
+    {
+        for (uint8_t i = 0; i < itc_msg.length; i++)
+        {
             i2c_shift_out(itc_msg.data[i]);
             if (!i2c_get_ack())
             {
@@ -216,12 +233,14 @@ uint8_t TwoWire::process(void) {
 
 // TODO: Add in Error Handling if pins is out of range for other Maples
 // TODO: Make delays more capable
-TwoWire::TwoWire(uint8_t scl, uint8_t sda, uint8_t delay) : i2c_delay(delay) {
+TwoWire::TwoWire(uint8_t scl, uint8_t sda, uint8_t delay) : i2c_delay(delay)
+{
     this->scl_pin = scl;
     this->sda_pin = sda;
 }
 
-void TwoWire::begin(uint8_t self_addr) {
+void TwoWire::begin(uint8_t self_addr)
+{
     tx_buf_idx = 0;
     tx_buf_overflow = false;
     rx_buf_idx = 0;
@@ -232,7 +251,8 @@ void TwoWire::begin(uint8_t self_addr) {
     set_sda(HIGH);
 }
 
-TwoWire::~TwoWire() {
+TwoWire::~TwoWire()
+{
     this->scl_pin = 0;
     this->sda_pin = 0;
 }
