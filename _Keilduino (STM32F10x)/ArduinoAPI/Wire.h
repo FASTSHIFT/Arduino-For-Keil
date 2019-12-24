@@ -67,6 +67,8 @@
 #define I2C_DELAY(x) delay_us(x)
 #endif
 
+#define BUFFER_LENGTH 32
+
 class TwoWire : public WireBase
 {
 public:
