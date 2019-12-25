@@ -60,22 +60,17 @@
 
 #define FULL_SPEED_I2C
 
-//#define I2C_DELAY(x) {uint32 time=micros(); while(time>(micros()+x));}
-//#define I2C_DELAY(x) do{for(int i=0;i<x;i++) {asm volatile("nop");}}while(0)
 #ifdef FULL_SPEED_I2C
 #define I2C_DELAY(x) {}
 #else
-#define I2C_DELAY(x) {delay_us(x);}
+#define I2C_DELAY(x) delayMicroseconds(x)
 #endif
 
 #define BUFFER_LENGTH 32
 
-#pragma diag_suppress 122
-#pragma diag_suppress 136
-
 class TwoWire : public WireBase {
 public:
-    uint8_t 		i2c_delay;
+    uint8_t       i2c_delay;
     uint8_t       scl_pin;
     uint8_t       sda_pin;
 

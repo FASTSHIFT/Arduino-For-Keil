@@ -23,12 +23,14 @@
 #ifndef __SPI_H
 #define __SPI_H
 
-#include "stm32f0xx.h"
-#include "stm32f0xx_spi.h"
 #include "Arduino.h"
 
-#define __builtin_constant_p(x) 1
-
+/**
+  *@SPI1: SCK->PA5  MISO->PA6  MOSI->PA7
+  *@SPI2: SCK->PB13 MISO->PB14 MOSI->PB15
+  *@SPI3: SCK->PB3  MISO->PB4  MOSI->PB5
+  */
+  
 #ifndef LSBFIRST
 #define LSBFIRST 0
 #endif
@@ -63,25 +65,13 @@ class SPISettings
 {
 public:
     SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode) {
-        if (__builtin_constant_p(clock)) {
-            init_AlwaysInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
-        } else {
-            init_MightInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
-        }
+        init_AlwaysInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
     }
     SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode, uint32_t dataSize) {
-        if (__builtin_constant_p(clock)) {
-            init_AlwaysInline(clock, bitOrder, dataMode, dataSize);
-        } else {
-            init_MightInline(clock, bitOrder, dataMode, dataSize);
-        }
+        init_AlwaysInline(clock, bitOrder, dataMode, dataSize);
     }
     SPISettings(uint32_t clock) {
-        if (__builtin_constant_p(clock)) {
-            init_AlwaysInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
-        } else {
-            init_MightInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
-        }
+        init_AlwaysInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
     }
     SPISettings() {
         init_AlwaysInline(4000000, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
@@ -103,11 +93,6 @@ private:
     uint8_t dataMode;
     uint8_t _SSPin;
     volatile spi_mode_t state;
-//	spi_dev *spi_d;
-//	//dma_channel spiRxDmaChannel, spiTxDmaChannel;
-//	//dma_dev* spiDmaDev;
-//  void (*receiveCallback)(void) = NULL;
-//  void (*transmitCallback)(void) = NULL;
 
     friend class SPIClass;
 };
@@ -117,7 +102,7 @@ class SPIClass
 {
 public:
     SPIClass(SPI_TypeDef* _SPIx);
-    void SPI_Settings(	SPI_TypeDef* SPIx,
+    void SPI_Settings(  SPI_TypeDef* SPIx,
                         uint16_t SPI_Mode_x,
                         uint16_t SPI_DataSize_x,
                         uint16_t SPI_MODEx,
@@ -126,6 +111,7 @@ public:
                         uint16_t SPI_FirstBit_x);
     void begin(void);
     void begin(uint32_t clock, uint16_t dataOrder, uint16_t dataMode);
+    void begin(SPISettings settings);
     void beginSlave(uint32_t bitOrder, uint32_t mode);
     void beginSlave(void);
     void beginTransactionSlave(void);
@@ -140,10 +126,12 @@ public:
     void setDataMode(uint8_t dataMode);
     void setDataSize(uint16_t datasize);
 
-    uint8_t read(void);
+    uint16_t read(void);
     void read(uint8_t *buffer, uint32_t length);
     void write(uint16_t data);
-    void write(const uint8_t *buffer, uint32_t length);
+    void write(uint16_t data, uint32_t n);
+    void write(const uint8_t *data, uint32_t length);
+    void write(const uint16_t *data, uint32_t length);
     uint8_t transfer(uint8_t data) const;
     uint16_t transfer16(uint16_t data) const;
     uint8_t send(uint8_t data);
@@ -152,7 +140,9 @@ public:
 
 private:
     SPI_TypeDef* SPIx;
+    volatile uint8_t *SPIx_DR;
     SPI_InitTypeDef  SPI_InitStructure;
+    uint32_t SPI_Clock;
 };
 
 extern SPIClass SPI;

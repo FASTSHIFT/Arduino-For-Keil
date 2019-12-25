@@ -22,9 +22,15 @@
  */
 #include "SPI.h"
 
+#define SPI1_CLOCK (F_CPU)
+#define SPI2_CLOCK (F_CPU/2)
+
 SPIClass::SPIClass(SPI_TypeDef* _SPIx)
 {
     SPIx = _SPIx;
+    uint32_t spixbase =(uint32_t)SPIx;
+    spixbase += 0x0C;
+    SPIx_DR = (__IO uint8_t *) spixbase;
 }
 
 void SPIClass::SPI_Settings(    SPI_TypeDef* SPIx,
@@ -66,44 +72,41 @@ void SPIClass::SPI_Settings(    SPI_TypeDef* SPIx,
     SPI_InitStructure.SPI_NSS = SPI_NSS_x;      //NSS信号由硬件（NSS管脚）还是软件（使用SSI位）管理:内部NSS信号有SSI位控制(SPI_NSS_Soft,SPI_NSS_Hard)
     SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;      //定义波特率预分频的值
     SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_x;    //指定数据传输从MSB位还是LSB位开始:数据传输从MSB位开始(SPI_FirstBit_MSB,SPI_FirstBit_LSB)
-    SPI_InitStructure.SPI_CRCPolynomial = 3;    //CRC值计算的多项式
+    SPI_InitStructure.SPI_CRCPolynomial = 7;    //CRC值计算的多项式
     SPI_Init(SPIx, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
-
+    
+    SPI_RxFIFOThresholdConfig(SPIx, SPI_RxFIFOThreshold_QF);
+    
     SPI_Cmd(SPIx, ENABLE); //使能SPI外设
 }
 
 void SPIClass::begin(void)
 {
-    GPIO_InitTypeDef GPIO_InitStructure;
     if(SPIx == SPI1)
     {
+        SPI_Clock = SPI1_CLOCK;
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
-        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-        GPIO_PinAFConfig(GPIOA, Get_GPIO_PinSource(GPIO_Pin_5), GPIO_AF_1);
-        GPIO_PinAFConfig(GPIOA, Get_GPIO_PinSource(GPIO_Pin_6), GPIO_AF_1);
-        GPIO_PinAFConfig(GPIOA, Get_GPIO_PinSource(GPIO_Pin_7), GPIO_AF_1);
 
-        GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
-        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-        GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-        GPIO_Init(GPIOA, &GPIO_InitStructure);
+        pinMode(PA5, OUTPUT_AF);
+        pinMode(PA6, OUTPUT_AF);
+        pinMode(PA7, OUTPUT_AF);
+
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF_0);
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF_0);
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF_0);
     }
     else if(SPIx == SPI2)
     {
+        SPI_Clock = SPI2_CLOCK;
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
-        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
-        GPIO_PinAFConfig(GPIOB, Get_GPIO_PinSource(GPIO_Pin_13), GPIO_AF_0);
-        GPIO_PinAFConfig(GPIOB, Get_GPIO_PinSource(GPIO_Pin_14), GPIO_AF_0);
-        GPIO_PinAFConfig(GPIOB, Get_GPIO_PinSource(GPIO_Pin_15), GPIO_AF_0);
+        
+        pinMode(PB3, OUTPUT_AF);
+        pinMode(PB4, OUTPUT_AF);
+        pinMode(PB5, OUTPUT_AF);
 
-        GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-        GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-        GPIO_Init(GPIOB, &GPIO_InitStructure);
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource13, GPIO_AF_0);
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource14, GPIO_AF_0);
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_0);
     }
 
     SPI_Settings(   SPIx,
@@ -111,7 +114,7 @@ void SPIClass::begin(void)
                     SPI_DataSize_8b,
                     SPI_MODE0,
                     SPI_NSS_Soft,
-                    SPI_BaudRatePrescaler_16,
+                    SPI_BaudRatePrescaler_8,
                     SPI_FirstBit_MSB);
 }
 
@@ -121,6 +124,15 @@ void SPIClass::begin(uint32_t clock, uint16_t dataOrder, uint16_t dataMode)
     setClock(clock);
     setBitOrder(dataOrder);
     setDataMode(dataMode);
+    SPI_Cmd(SPIx, ENABLE);
+}
+
+void SPIClass::begin(SPISettings settings)
+{
+    begin();
+    setClock(settings.clock);
+    setBitOrder(settings.bitOrder);
+    setDataMode(settings.dataMode);
     SPI_Cmd(SPIx, ENABLE);
 }
 
@@ -145,7 +157,7 @@ void SPIClass::end(void)
 void SPIClass::setClock(uint32_t clock)
 {
     uint16_t SPI_BaudRatePrescaler_x;
-    uint16_t clock_div = F_CPU / clock;
+    uint16_t clock_div = SPI_Clock / clock;
     if(clock_div <= 2)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_2;
     else if(clock_div <= 4)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_4;
     else if(clock_div <= 8)SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_8;
@@ -156,11 +168,12 @@ void SPIClass::setClock(uint32_t clock)
     else SPI_BaudRatePrescaler_x = SPI_BaudRatePrescaler_256;
     SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;
     SPI_Init(SPIx, &SPI_InitStructure);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPIClass::setClockDivider(uint32_t Div) //For AVR compatibility
 {
-    //For AVR:16MHz, STM32F0:48MHz
+    // AVR:16MHz
     if(Div == 0)
     {
         setClock(16000000);
@@ -176,6 +189,7 @@ void SPIClass::setBitOrder(uint16_t bitOrder)
     if(bitOrder == MSBFIRST)SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;//MSBFIRST 1
     else SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_LSB;
     SPI_Init(SPIx, &SPI_InitStructure);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 /*  Victor Perez. Added to test changing datasize from 8 to 16 bit modes on the fly.
@@ -186,6 +200,7 @@ void SPIClass::setDataSize(uint16_t datasize)
 {
     SPI_InitStructure.SPI_DataSize = datasize;
     SPI_Init(SPIx, &SPI_InitStructure);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPIClass::setDataMode(uint8_t dataMode)
@@ -241,12 +256,18 @@ void SPIClass::setDataMode(uint8_t dataMode)
     SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;
     SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;
     SPI_Init(SPIx, &SPI_InitStructure);
+    SPI_Cmd(SPIx, ENABLE);
 }
 
 void SPIClass::beginTransaction(SPISettings settings)
 {
-    //SPISettings(settings.clock, settings.bitOrder, settings.dataMode);
-    //setDataSize(settings.dataSize);
+    SPISettings(settings.clock, settings.bitOrder, settings.dataMode);
+
+    setClock(settings.clock);
+    setBitOrder(settings.bitOrder);
+    setDataMode(settings.dataMode);
+    setDataSize(settings.dataSize);
+
     SPI_Cmd(SPIx, ENABLE);
 }
 
@@ -257,84 +278,116 @@ void SPIClass::beginTransactionSlave(void)
 
 void SPIClass::endTransaction(void)
 {
-    //SPI_Cmd(SPIx, DISABLE);
+    SPI_Cmd(SPIx, DISABLE);
 }
 
+#define SPI_I2S_GET_FLAG(SPI_I2S_FLAG) (SPIx->SR & SPI_I2S_FLAG)
+#define SPI_I2S_RXDATA()               (*SPIx_DR)
+#define SPI_I2S_RXDATA_VOLATILE()      volatile uint16_t vn = SPI_I2S_RXDATA()
+#define SPI_I2S_TXDATA(data)           (*SPIx_DR = data)
 
-uint8_t SPIClass::read(void)
+uint16_t SPIClass::read(void)
 {
-    uint8_t buf[1];
-    this->read(buf, 1);
-    return buf[0];
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RXNE));
+    return (uint16_t)SPI_I2S_RXDATA();
 }
 
 void SPIClass::read(uint8_t *buf, uint32_t len)
 {
-    uint32_t rxed = 0;
+    if (len == 0)
+        return;
 
-    while (rxed < len)
+    SPI_I2S_RXDATA_VOLATILE();
+    SPI_I2S_TXDATA(0x00FF);
+
+    while((--len))
     {
-        while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//检查指定的SPI标志位设置与否:接受缓存非空标志位
-        buf[rxed++] = (uint8_t)SPI_ReceiveData8(SPIx); //返回通过SPIx最近接收的数据
+        while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+        noInterrupts();
+        SPI_I2S_TXDATA(0x00FF);
+        while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RXNE));
+        *buf++ = (uint8_t)SPI_I2S_RXDATA();
+        interrupts();
     }
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RXNE));
+    *buf++ = (uint8_t)SPI_I2S_RXDATA();
 }
 
 void SPIClass::write(uint16_t data)
 {
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //检查指定的SPI标志位设置与否:发送缓存空标志位
-    SPI_SendData8(SPIx, data); //通过外设SPIx发送一个数据
+    SPI_I2S_TXDATA(data >> 8);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+    SPI_I2S_TXDATA(data);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+    
+    while SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BSY);
+}
+
+void SPIClass::write(uint16_t data, uint32_t n)
+{
+    while ((n--) > 0)
+    {
+        SPI_I2S_TXDATA(data >> 8); // write the data to be transmitted into the SPI_DR register (this clears the TXE flag)
+        while (!SPI_I2S_GET_FLAG(SPI_SR_TXE)); // wait till Tx empty
+        SPI_I2S_TXDATA(data); 
+        while (!SPI_I2S_GET_FLAG(SPI_SR_TXE)); 
+    }
+
+    while (SPI_I2S_GET_FLAG(SPI_SR_BSY) != 0); // wait until BSY=0 before returning
 }
 
 void SPIClass::write(const uint8_t *data, uint32_t length)
 {
-    uint32_t txed = 0;
-    while (txed < length)
+    while (length--)
     {
-        while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //检查指定的SPI标志位设置与否:发送缓存空标志位
-        SPI_SendData8(SPIx, data[txed]);
-        txed++;
-        //txed += spi_tx(_currentSetting->spi_d, data + txed, length - txed);
+        while (!SPI_I2S_GET_FLAG(SPI_SR_TXE));
+        SPI_I2S_TXDATA(*data++);
     }
+    while (!SPI_I2S_GET_FLAG(SPI_SR_TXE));
+    
+    while (SPI_I2S_GET_FLAG(SPI_SR_BSY));
 }
 
-uint16_t SPIClass::transfer16(uint16_t wr_data) const
+void SPIClass::write(const uint16_t *data, uint32_t length)
 {
-    uint16_t rd_data;
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //检查指定的SPI标志位设置与否:发送缓存空标志位
-    SPI_SendData8(SPIx, wr_data); //通过外设SPIx发送一个数据
-
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//检查指定的SPI标志位设置与否:接受缓存非空标志位
-    rd_data = SPI_ReceiveData8(SPIx); //返回通过SPIx最近接收的数据
-    return rd_data;
+    uint8_t *pdata = (uint8_t*)data;
+    while (length--)
+    {
+        while (!SPI_I2S_GET_FLAG(SPI_SR_TXE));
+        SPI_I2S_TXDATA(*pdata++);
+        while (!SPI_I2S_GET_FLAG(SPI_SR_TXE));
+        SPI_I2S_TXDATA(*pdata++);
+    }
+    while (!SPI_I2S_GET_FLAG(SPI_SR_TXE));
+    
+    while (SPI_I2S_GET_FLAG(SPI_SR_BSY));
 }
 
 uint8_t SPIClass::transfer(uint8_t wr_data) const
 {
-    uint8_t rd_data;
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET); //检查指定的SPI标志位设置与否:发送缓存空标志位
-    SPI_SendData8(SPIx, wr_data); //通过外设SPIx发送一个数据
+    SPI_I2S_RXDATA_VOLATILE();
+    SPI_I2S_TXDATA(wr_data);
+    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TXE));
+    while SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BSY);
+    return (uint8_t)SPI_I2S_RXDATA();
+}
 
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);//检查指定的SPI标志位设置与否:接受缓存非空标志位
-    rd_data = SPI_ReceiveData8(SPIx); //返回通过SPIx最近接收的数据
-    return rd_data;
+uint16_t SPIClass::transfer16(uint16_t wr_data) const
+{
+    transfer(wr_data >> 8);
+    return transfer(wr_data);
 }
 
 uint8_t SPIClass::send(uint8_t data)
 {
-    uint8_t buf[] = {data};
-    return this->send(buf, 1);
+    this->write(data);
+    return 1;
 }
 
 uint8_t SPIClass::send(uint8_t *buf, uint32_t len)
 {
-    uint32_t txed = 0;
-    uint8_t ret = 0;
-    while (txed < len)
-    {
-        this->write(buf[txed++]);
-        ret = this->read();
-    }
-    return ret;
+    this->write(buf, len);
+    return len;
 }
 
 uint8_t SPIClass::recv(void)

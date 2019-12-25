@@ -17,6 +17,7 @@ void loop()
   */
 int main(void)
 {
+//  InternalClocks_Init();
     Delay_Init();
     ADCx_Init(ADC1);
     setup();

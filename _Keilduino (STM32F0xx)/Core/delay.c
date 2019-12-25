@@ -30,6 +30,26 @@
 volatile static uint32_t System_ms = 0;
 
 /**
+  * @brief  初始化内部RC作为时钟源
+  * @param  无
+  * @retval 无
+  */
+void InternalClocks_Init(void)
+{
+    /*@48MHz*/
+    RCC_HSICmd(ENABLE);
+    RCC_SYSCLKConfig(RCC_SYSCLKSource_HSI);
+    while(RCC_GetSYSCLKSource());
+    RCC_PLLCmd(DISABLE);
+    RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_12);
+    RCC_PLLCmd(ENABLE);
+    while(!RCC_GetFlagStatus(RCC_FLAG_PLLRDY));
+    RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+    RCC_HCLKConfig(RCC_SYSCLK_Div1);
+    RCC_PCLKConfig(RCC_SYSCLK_Div1);
+}
+
+/**
   * @brief  系统滴答定时器初始化，定时1ms
   * @param  无
   * @retval 无

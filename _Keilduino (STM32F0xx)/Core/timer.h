@@ -30,13 +30,26 @@ extern "C" {
 #include "mcu_type.h"
 
 #define Timer_ChannelPriority_Default   2
+#define Timer_GetClockMax(TIMx)         F_CPU
 
 typedef void(*Timer_CallbackFunction_t)(void);
 
-void TimerClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState);
-void TimerSet(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function);
-void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function, uint8_t ChannelPriority);
-void TimerSet_InterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t InterruptTime_us);
+void Timer_ClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState);
+uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx);
+void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction_t function);
+void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t time);
+void Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t freq);
+void Timer_SetInterruptBase(
+    TIM_TypeDef* TIMx, 
+    uint16_t period, uint16_t prescaler, 
+    Timer_CallbackFunction_t function, 
+    uint8_t ChannelPriority
+);
+
+#define TimerClockCmd(TIMx,EN)                  Timer_ClockCmd(TIMx,EN)
+#define TimerSet(TIMx,time,function)            Timer_SetInterrupt(TIMx,time,function)
+#define Timer_Init(TIMx,time,function,chp)      Timer_SetInterruptBase(TIMx,0xFF,0xFF,function,chp),Timer_SetInterruptTimeUpdate(TIMx,time)
+#define TimerSet_InterruptTimeUpdate(TIMx,time) Timer_SetInterruptTimeUpdate(TIMx,time)
 
 #ifdef __cplusplus
 }

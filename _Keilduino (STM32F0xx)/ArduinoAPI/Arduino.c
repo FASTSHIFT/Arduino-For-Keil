@@ -93,7 +93,7 @@ uint16_t analogWrite(uint8_t Pin, uint16_t val)
   */
 uint16_t analogRead(uint8_t Pin)
 {
-    return (IS_ADC_PIN(Pin) ? Get_ADC(PIN_MAP[Pin].ADCx, PIN_MAP[Pin].ADC_Channel) : 0);
+    return (IS_ADC_PIN(Pin) ? ADCx_GetValue(PIN_MAP[Pin].ADCx, PIN_MAP[Pin].ADC_Channel) : 0);
 }
 
 /**

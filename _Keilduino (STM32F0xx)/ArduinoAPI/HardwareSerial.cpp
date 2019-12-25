@@ -121,8 +121,8 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Chan
 
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOx, ENABLE);
 
-    GPIO_PinAFConfig(GPIOx, Get_GPIO_PinSource(Tx_Pin), GPIO_AF_1);
-    GPIO_PinAFConfig(GPIOx, Get_GPIO_PinSource(Rx_Pin), GPIO_AF_1);
+    GPIO_PinAFConfig(GPIOx, GPIO_GetPinSource(Tx_Pin), GPIO_AF_1);
+    GPIO_PinAFConfig(GPIOx, GPIO_GetPinSource(Rx_Pin), GPIO_AF_1);
 
     GPIO_InitStructure.GPIO_Pin =  Tx_Pin | Rx_Pin;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -234,7 +234,7 @@ void HardwareSerial::flush(void)
   */
 size_t HardwareSerial::write(uint8_t n)
 {
-    while(!IS_USARTx_SendDone(USARTx)) {}; //循环发送,直到发送完毕
+    while(!USART_GetFlagStatus(USARTx, USART_FLAG_TXE)){};
     USART_SendData(USARTx, n);
     return n;
 }

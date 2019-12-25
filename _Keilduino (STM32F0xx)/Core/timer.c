@@ -32,7 +32,7 @@ typedef enum
 } TIMERx_Type;
 
 /*定时中断回调函数指针数组*/
-static Timer_CallbackFunction_t TIM_Function[TIMER_MAX] = {0};
+static Timer_CallbackFunction_t TIMx_Function[TIMER_MAX] = {0};
 
 /**
   * @brief  启动或关闭指定定时器的时钟
@@ -40,7 +40,7 @@ static Timer_CallbackFunction_t TIM_Function[TIMER_MAX] = {0};
   * @param  NewState: ENABLE启动，DISABLE关闭
   * @retval 无
   */
-void TimerClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState)
+void Timer_ClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState)
 {
     if (TIMx == TIM1)
     {
@@ -79,113 +79,239 @@ void TimerClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState)
     }
 }
 
-/**
-  * @brief  定时中断配置
-  * @param  TIMx:定时器地址
-  * @param  InterruptTime_us: 中断时间(微秒)
-  * @param  function: 定时中断回调函数
-  * @retval 无
-  */
-void TimerSet(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function)
+/*取绝对值*/
+#define CLOCK_ABS(x) (((x)>0)?(x):-(x))
+
+/*快速求平方根*/
+static float Qsqrt(float number)
 {
-    Timer_Init(
-        TIMx,
-        InterruptTime_us,
-        function,
-        Timer_ChannelPriority_Default
-    );
+    long i;
+    float x2, y;
+    const float threehalfs = 1.5f;
+    x2 = number * 0.5f;
+    y  = number;
+    i  = *(long*)&y;
+    i  = 0x5f3759df - (i >> 1);
+    y  = *(float*)&i;
+    y  = y * (threehalfs - (x2 * y * y));
+    y  = y * (threehalfs - (x2 * y * y));
+    return 1.0f / y;
 }
 
 /**
-  * @brief  定时中断配置
-  * @param  TIMx:定时器地址
-  * @param  InterruptTime_us: 中断时间(微秒)
-  * @param  function: 定时中断回调函数
-  * @param  PreemptionPriority: 抢占优先级
-  * @param  SubPriority: 子优先级
+  * @brief  将定时中断频率转换为重装值和时钟分频值
+  * @param  freq: 中断频率(Hz)
+  * @param  clock: 定时器时钟
+  * @param  *period: 重装值地址
+  * @param  *prescaler: 时钟分频值地址
+  * @retval 误差值(Hz)
+  */
+static int32_t Timer_FreqToArrPsc(
+    uint32_t freq, uint32_t clock,
+    uint16_t *period, uint16_t *prescaler
+)
+{
+    uint32_t prodect;
+    uint16_t psc, arr, arr_max;
+    uint16_t max_error = 0xFFFF;
+
+    if(freq == 0 || freq > clock)
+        goto failed;
+
+    /*获取arr和psc目标乘积*/
+    prodect = clock / freq;
+
+    /*从prodect的平方根开始计算*/
+    psc = Qsqrt(prodect);
+
+    /*arr必定小于等于prodect，尽量减少arr遍历次数*/
+    arr_max = (prodect < 0xFFFF) ? prodect : 0xFFFF;
+
+    /*遍历，使arr*psc足够接近prodect*/
+    for(; psc > 1; psc--)
+    {
+        for(arr = psc; arr < arr_max; arr++)
+        {
+            /*求误差*/
+            int32_t newerr = arr * psc - prodect;
+            newerr = CLOCK_ABS(newerr);
+            if(newerr < max_error)
+            {
+                /*保存最小误差*/
+                max_error = newerr;
+                /*保存arr和psc*/
+                *period = arr;
+                *prescaler = psc;
+                /*最佳*/
+                if(max_error == 0)
+                    goto success;
+            }
+        }
+    }
+
+    /*计算成功*/
+success:
+    return (freq - clock / ((*period) * (*prescaler)));
+
+    /*失败*/
+failed:
+    return (freq - clock);
+}
+
+/**
+  * @brief  将定时中断时间转换为重装值和时钟分频值
+  * @param  time: 中断时间(微秒)
+  * @param  clock: 定时器时钟
+  * @param  *period: 重装值地址
+  * @param  *prescaler: 时钟分频值地址
   * @retval 无
   */
-void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunction_t function, uint8_t ChannelPriority)
+static void Timer_TimeToArrPsc(
+    uint32_t time, uint32_t clock,
+    uint16_t *period, uint16_t *prescaler
+)
+{
+    uint32_t cyclesPerMicros = clock / 1000000U;
+    uint32_t prodect = time * cyclesPerMicros;
+    uint16_t arr, psc;
+
+    if(prodect < cyclesPerMicros * 30)
+    {
+        arr = 10;
+        psc = prodect / arr;
+    }
+    else if(prodect < 65535 * 1000)
+    {
+        arr = prodect / 1000;
+        psc = prodect / arr;
+    }
+    else
+    {
+        arr = prodect / 20000;
+        psc = prodect / arr;
+    }
+    *period = arr;
+    *prescaler = psc;
+}
+
+/**
+  * @brief  更新定时中断频率
+  * @param  TIMx:定时器地址
+  * @param  freq:中断频率
+  * @retval 无
+  */
+void Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t freq)
+{
+    uint16_t period, prescaler;
+    uint32_t clock = Timer_GetClockMax(TIMx);
+
+    if(!IS_TIM_ALL_PERIPH(TIMx) || freq == 0)
+        return;
+
+    Timer_FreqToArrPsc(
+        freq,
+        clock,
+        &period,
+        &prescaler
+    );
+    TIM_SetAutoreload(TIMx, period - 1);
+    TIM_PrescalerConfig(TIMx, prescaler - 1, TIM_PSCReloadMode_Immediate);
+}
+
+/**
+  * @brief  获取定时器中断频率
+  * @param  TIMx:定时器地址
+  * @retval 中断频率
+  */
+uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx)
+{
+    uint32_t clock = Timer_GetClockMax(TIMx);
+    if(!IS_TIM_ALL_PERIPH(TIMx))
+        return 0;
+
+    return (clock / ((TIMx->ARR + 1) * (TIMx->PSC + 1)));
+}
+
+/**
+  * @brief  更新定时中断时间
+  * @param  TIMx:定时器地址
+  * @param  time: 中断时间(微秒)
+  * @retval 无
+  */
+void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t time)
+{
+    uint16_t period, prescaler;
+    uint32_t clock = Timer_GetClockMax(TIMx);
+
+    if(!IS_TIM_ALL_PERIPH(TIMx))
+        return;
+
+    Timer_TimeToArrPsc(
+        time,
+        clock,
+        &period,
+        &prescaler
+    );
+    TIM_SetAutoreload(TIMx, period - 1);
+    TIM_PrescalerConfig(TIMx, prescaler - 1, TIM_PSCReloadMode_Immediate);
+}
+
+/**
+  * @brief  定时中断基本配置
+  * @param  TIMx:定时器地址
+  * @param  period:重装值
+  * @param  prescaler:时钟分频值
+  * @param  function: 定时中断回调函数
+  * @param  ChannelPriority: 通道优先级
+  * @retval 无
+  */
+void Timer_SetInterruptBase(
+    TIM_TypeDef* TIMx,
+    uint16_t period, uint16_t prescaler,
+    Timer_CallbackFunction_t function,
+    uint8_t ChannelPriority
+)
 {
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
     NVIC_InitTypeDef NVIC_InitStructure;
-
-    uint32_t arr, psc;
     uint8_t TIMx_IRQn;
     TIMERx_Type TIMERx;
 
     if(!IS_TIM_ALL_PERIPH(TIMx))
         return;
 
-    if(TIMx == TIM1)
-    {
-        TIMERx = TIMER1;
-        TIMx_IRQn = TIM1_BRK_UP_TRG_COM_IRQn;
-    }
-    else if(TIMx == TIM2)
-    {
-        TIMERx = TIMER2;
-        TIMx_IRQn = TIM2_IRQn;
-    }
-    else if(TIMx == TIM3)
-    {
-        TIMERx = TIMER3;
-        TIMx_IRQn = TIM3_IRQn;
-    }
-    else if(TIMx == TIM6)
-    {
-        TIMERx = TIMER6;
-        TIMx_IRQn = TIM6_DAC_IRQn;
-    }
-    else if(TIMx == TIM14)
-    {
-        TIMERx = TIMER14;
-        TIMx_IRQn = TIM14_IRQn;
-    }
-    else if(TIMx == TIM15)
-    {
-        TIMERx = TIMER15;
-        TIMx_IRQn = TIM15_IRQn;
-    }
-    else if(TIMx == TIM16)
-    {
-        TIMERx = TIMER16;
-        TIMx_IRQn = TIM16_IRQn;
-    }
-    else if(TIMx == TIM17)
-    {
-        TIMERx = TIMER17;
-        TIMx_IRQn = TIM17_IRQn;
-    }
+#define TIMx_IRQ_DEF(n,x_IRQn)\
+do{\
+    if(TIMx == TIM##n)\
+    {\
+        TIMERx = TIMER##n;\
+        TIMx_IRQn = x_IRQn;\
+    }\
+}\
+while(0)
+
+    TIMx_IRQ_DEF(1, TIM1_BRK_UP_TRG_COM_IRQn);
+    TIMx_IRQ_DEF(2, TIM2_IRQn);
+    TIMx_IRQ_DEF(3, TIM3_IRQn);
+    TIMx_IRQ_DEF(6, TIM6_DAC_IRQn);
+    TIMx_IRQ_DEF(14, TIM14_IRQn);
+    TIMx_IRQ_DEF(15, TIM15_IRQn);
+    TIMx_IRQ_DEF(16, TIM16_IRQn);
+    TIMx_IRQ_DEF(17, TIM17_IRQn);
+
+    if(TIMx_IRQn == 0)
+        return;
 
     /*register callback function*/
-    TIM_Function[TIMERx] = function;//Callback Functions
+    TIMx_Function[TIMERx] = function;
 
-    /*Calculate TIM_Period and TIM_Prescaler*/
-    InterruptTime_us *= CYCLES_PER_MICROSECOND;
-    if(InterruptTime_us < CYCLES_PER_MICROSECOND * 30)
-    {
-        arr = 10;
-        psc = InterruptTime_us / arr;
-    }
-    else if(InterruptTime_us < 65535 * 1000)
-    {
-        arr = InterruptTime_us / 1000;
-        psc = InterruptTime_us / arr;
-    }
-    else
-    {
-        arr = InterruptTime_us / 20000;
-        psc = InterruptTime_us / arr;
-    }
-
-    //Enable PeriphClock
-    TimerClockCmd(TIMx, ENABLE);
-
+    /*Enable PeriphClock*/
     TIM_DeInit(TIMx);
+    Timer_ClockCmd(TIMx, ENABLE);
+    
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseStructure.TIM_Period = arr - 1;                 //设置在下一个更新事件装入活动的自动重装载寄存器周期的值
-    TIM_TimeBaseStructure.TIM_Prescaler = psc - 1;              //设置用来作为TIMx时钟频率除数的预分频值  10Khz的计数频率
+    TIM_TimeBaseStructure.TIM_Period = period - 1;                 //设置在下一个更新事件装入活动的自动重装载寄存器周期的值
+    TIM_TimeBaseStructure.TIM_Prescaler = prescaler - 1;              //设置用来作为TIMx时钟频率除数的预分频值  10Khz的计数频率
     TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;     //设置时钟分割:TDTS = Tck_tim
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; //TIM向上计数模式
     TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure);             //根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
@@ -197,44 +323,18 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
     NVIC_Init(&NVIC_InitStructure);  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
 
     TIM_ClearFlag(TIMx, TIM_FLAG_Update);
+    TIM_ClearITPendingBit(TIMx, TIM_IT_Update);
     TIM_ITConfig(TIMx, TIM_IT_Update, ENABLE);  //使能TIM中断
 }
 
-/**
-  * @brief  更新定时中断时间
-  * @param  TIMx:定时器地址
-  * @param  InterruptTime_us: 中断时间(微秒)
-  * @retval 无
-  */
-void TimerSet_InterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t InterruptTime_us)
-{
-    uint32_t arr, psc;
-
-    if(!IS_TIM_ALL_PERIPH(TIMx))
-        return;
-
-    /*Calculate TIM_Period and TIM_Prescaler*/
-    InterruptTime_us *= CYCLES_PER_MICROSECOND;
-    if(InterruptTime_us < CYCLES_PER_MICROSECOND * 30)
-    {
-        arr = 10;
-        psc = InterruptTime_us / arr;
-    }
-    else if(InterruptTime_us < 65535 * 1000)
-    {
-        arr = InterruptTime_us / 1000;
-        psc = InterruptTime_us / arr;
-    }
-    else
-    {
-        arr = InterruptTime_us / 20000;
-        psc = InterruptTime_us / arr;
-    }
-
-    TIMx->ARR = arr - 1;
-    TIMx->PSC = psc - 1;
-    TIMx->EGR = TIM_PSCReloadMode_Immediate;
-}
+#define TIMx_IRQHANDLER(n)\
+do{\
+    if(TIM_GetITStatus(TIM##n, TIM_IT_Update) != RESET)\
+    {\
+        if(TIMx_Function[TIMER##n]) TIMx_Function[TIMER##n]();\
+        TIM_ClearITPendingBit(TIM##n, TIM_IT_Update);\
+    }\
+}while(0)
 
 /**
   * @brief  定时中断入口，定时器1
@@ -243,11 +343,7 @@ void TimerSet_InterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t InterruptTime_us)
   */
 void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
 {
-    if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)
-    {
-        TIM_Function[TIMER1]();
-        TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
-    }
+    TIMx_IRQHANDLER(1);
 }
 
 /**
@@ -257,11 +353,7 @@ void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
   */
 void TIM2_IRQHandler(void)
 {
-    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
-    {
-        TIM_Function[TIMER2]();
-        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-    }
+    TIMx_IRQHANDLER(2);
 }
 
 /**
@@ -271,11 +363,7 @@ void TIM2_IRQHandler(void)
   */
 void TIM3_IRQHandler(void)
 {
-    if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
-    {
-        TIM_Function[TIMER3]();
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
-    }
+    TIMx_IRQHANDLER(3);
 }
 
 /**
@@ -285,11 +373,7 @@ void TIM3_IRQHandler(void)
   */
 void TIM6_DAC_IRQHandler(void)
 {
-    if (TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET)
-    {
-        TIM_Function[TIMER6]();
-        TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
-    }
+    TIMx_IRQHANDLER(6);
 }
 
 /**
@@ -299,11 +383,7 @@ void TIM6_DAC_IRQHandler(void)
   */
 void TIM14_IRQHandler(void)
 {
-    if (TIM_GetITStatus(TIM14, TIM_IT_Update) != RESET)
-    {
-        TIM_Function[TIMER14]();
-        TIM_ClearITPendingBit(TIM14, TIM_IT_Update);
-    }
+    TIMx_IRQHANDLER(14);
 }
 
 /**
@@ -313,11 +393,7 @@ void TIM14_IRQHandler(void)
   */
 void TIM15_IRQHandler(void)
 {
-    if (TIM_GetITStatus(TIM15, TIM_IT_Update) != RESET)
-    {
-        TIM_Function[TIMER15]();
-        TIM_ClearITPendingBit(TIM15, TIM_IT_Update);
-    }
+    TIMx_IRQHANDLER(15);
 }
 
 /**
@@ -327,11 +403,7 @@ void TIM15_IRQHandler(void)
   */
 void TIM16_IRQHandler(void)
 {
-    if (TIM_GetITStatus(TIM16, TIM_IT_Update) != RESET)
-    {
-        TIM_Function[TIMER16]();
-        TIM_ClearITPendingBit(TIM16, TIM_IT_Update);
-    }
+    TIMx_IRQHANDLER(16);
 }
 
 /**
@@ -341,9 +413,5 @@ void TIM16_IRQHandler(void)
   */
 void TIM17_IRQHandler(void)
 {
-    if (TIM_GetITStatus(TIM17, TIM_IT_Update) != RESET)
-    {
-        TIM_Function[TIMER17]();
-        TIM_ClearITPendingBit(TIM17, TIM_IT_Update);
-    }
+    TIMx_IRQHANDLER(17);
 }

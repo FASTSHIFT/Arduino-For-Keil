@@ -40,7 +40,7 @@ void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerCh
    if(!IS_TIM_ALL_PERIPH(TIMx))
         return;
 
-    TimerClockCmd(TIMx, ENABLE);
+    Timer_ClockCmd(TIMx, ENABLE);
 
     TIM_TimeBaseStructure.TIM_Period = arr;
     TIM_TimeBaseStructure.TIM_Prescaler = psc;
@@ -100,7 +100,7 @@ uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint32_t PWM_Frequency)
     psc = F_CPU / PWM_DutyCycle / PWM_Frequency;
 
     pinMode(Pin, OUTPUT_AF);
-    GPIO_PinAFConfig(PIN_MAP[Pin].GPIOx, Get_Pinx(Pin), Get_TIMx_GPIO_AF_x(Pin));
+    GPIO_PinAFConfig(PIN_MAP[Pin].GPIOx, GPIO_GetPinNum(Pin), TIM_GetGPIO_AF(Pin));
 
     TIM_Cmd(PIN_MAP[Pin].TIMx, DISABLE);
     TIMx_OCxInit(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
@@ -138,7 +138,7 @@ uint16_t pwmWrite(uint8_t Pin, uint16_t val)
   * @param  Pin: 引脚编号
   * @retval GPIO复用地址
   */
-uint8_t Get_TIMx_GPIO_AF_x(uint8_t Pin)
+uint8_t TIM_GetGPIO_AF(uint8_t Pin)
 {
     uint8_t GPIO_AF_x = 0;
     TIM_TypeDef* TIMx = PIN_MAP[Pin].TIMx;

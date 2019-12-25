@@ -33,7 +33,7 @@ static uint32_t tone_StopTimePoint;
   * @param  无
   * @retval 无
   */
-void tone_TimerHandler()
+static void toneTimer_Handler()
 {
     togglePin(tone_Pin);
     if(millis() > tone_StopTimePoint && !IsToneEnable)
@@ -95,13 +95,14 @@ void tone(uint8_t Pin, uint32_t freq)
 
     if(ToneTimer != ToneTimer_Last)
     {
-        Timer_Init(ToneTimer, (500000.0 / freq), tone_TimerHandler, 0);
+        Timer_SetInterruptBase(ToneTimer, 0xFF, 0xFF, toneTimer_Handler, 0);
+        Timer_SetInterruptTimeUpdate(ToneTimer, (500000.0f / freq));
         TIM_Cmd(ToneTimer, ENABLE);
         ToneTimer_Last = ToneTimer;
     }
     else
     {
-        TimerSet_InterruptTimeUpdate(ToneTimer, 500000.0 / freq);
+        Timer_SetInterruptTimeUpdate(ToneTimer, 500000.0 / freq);
         TIM_Cmd(ToneTimer, ENABLE);
     }
 }

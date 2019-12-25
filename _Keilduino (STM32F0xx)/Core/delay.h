@@ -29,6 +29,7 @@ extern "C" {
 
 #include "mcu_type.h"
 
+void InternalClocks_Init(void);
 void Delay_Init(void);
 uint32_t millis(void);
 uint32_t micros(void);

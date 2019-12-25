@@ -217,7 +217,7 @@ void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMod
   * @param  Pin: 引脚编号
   * @retval 无
   */
-uint8_t Get_GPIOx(uint8_t Pin)
+uint8_t GPIO_GetPortNum(uint8_t Pin)
 {
     if(PIN_MAP[Pin].GPIOx == GPIOA)return 0;
     else if(PIN_MAP[Pin].GPIOx == GPIOB)return 1;
@@ -231,11 +231,21 @@ uint8_t Get_GPIOx(uint8_t Pin)
 }
 
 /**
-  * @brief  获取当前引脚对应的 PinSource
-  * @param  GPIO_Pin_x: GPIO对应位
+  * @brief  获取当前引脚对应的编号
+  * @param  Pin: 引脚编号
   * @retval 无
   */
-uint8_t Get_GPIO_PinSource(uint16_t GPIO_Pin_x)
+uint8_t GPIO_GetPinNum(uint8_t Pin)
+{
+    return GPIO_GetPinSource(PIN_MAP[Pin].GPIO_Pin_x);
+}
+
+/**
+  * @brief  获取当前引脚对应的 PinSource
+  * @param  GPIO_Pin_x: GPIO对应位
+  * @retval PinSource
+  */
+uint8_t GPIO_GetPinSource(uint16_t GPIO_Pin_x)
 {
     uint16_t PinSource = 0;
     while(GPIO_Pin_x > 1)
@@ -244,14 +254,4 @@ uint8_t Get_GPIO_PinSource(uint16_t GPIO_Pin_x)
         PinSource++;
     }
     return PinSource;
-}
-
-/**
-  * @brief  获取当前引脚对应的编号
-  * @param  Pin: 引脚编号
-  * @retval 无
-  */
-uint8_t Get_Pinx(uint8_t Pin)
-{
-    return Get_GPIO_PinSource(PIN_MAP[Pin].GPIO_Pin_x);
 }

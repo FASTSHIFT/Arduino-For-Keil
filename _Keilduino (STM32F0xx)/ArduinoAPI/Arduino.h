@@ -33,11 +33,12 @@ extern "C" {
 #include "avr/pgmspace.h"
 
 #include "mcu_type.h"
+#include "adc.h"
+#include "delay.h"
+#include "exti.h"
 #include "gpio.h"
 #include "pwm.h"
-#include "adc.h"
-#include "exti.h"
-#include "delay.h"
+#include "timer.h"
 
 #define __STM32__
 
@@ -71,9 +72,9 @@ extern "C" {
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
-#define _BV(bit) (1<<bit)
+#define _BV(bit) (1<<(bit))
 
-#define delay(ms) delay_ms(ms)
+#define delay(ms)             delay_ms(ms)
 #define delayMicroseconds(us) delay_us(us)
 
 #define sei() __set_PRIMASK(0)
@@ -86,8 +87,8 @@ extern "C" {
 #define digitalPinToInterrupt(Pin)  (Pin)
 #define digitalPinToPort(Pin)       (PIN_MAP[Pin].GPIOx)
 #define digitalPinToBitMask(Pin)    (PIN_MAP[Pin].GPIO_Pin_x)
-#define portInputRegister(Port)     (&(Port->IDR))
-#define portOutputRegister(Port)    (&(Port->ODR))
+#define portInputRegister(Port)     (&((Port)->IDR))
+#define portOutputRegister(Port)    (&((Port)->ODR))
 
 #define NOT_A_PIN 0
 #define NOT_A_PORT 0

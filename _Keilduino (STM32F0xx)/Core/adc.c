@@ -49,7 +49,7 @@ void ADCx_Init(ADC_TypeDef* ADCx)
   * @param  ADC_Channel: ADC通道
   * @retval 无
   */
-uint16_t Get_ADC(ADC_TypeDef* ADCx, uint32_t ADC_Channel)
+uint16_t ADCx_GetValue(ADC_TypeDef* ADCx, uint32_t ADC_Channel)
 {
     uint16_t ADCConvertedValue;
     //Select channel to scan
