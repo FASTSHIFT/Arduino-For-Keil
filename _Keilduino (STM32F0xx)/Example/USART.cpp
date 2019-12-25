@@ -14,12 +14,16 @@ void loop()
 	Serial3.println("USART3 Print...");
 }
 
-//*****************MAIN******************//
+/**
+  * @brief  Main Function
+  * @param  None
+  * @retval None
+  */
 int main(void)
 {
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	Delay_Init();
 	ADCx_Init(ADC1);
-//	ADCx_DMA_Init();
 	setup();
 	for(;;)loop();
 }
