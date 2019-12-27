@@ -48,14 +48,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>..\OBJ\</OutputDirectory>
-          <OutputName>Pro</OutputName>
+          <OutputDirectory>.\Objects\</OutputDirectory>
+          <OutputName>proj</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>..\LIST\</ListingPath>
+          <ListingPath>.\Listings\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -323,7 +323,7 @@
             <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>3</v6Lang>
@@ -334,10 +334,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--gnu</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,ARDUINO=111</Define>
               <Undefine></Undefine>
-              <IncludePath>.\RTE;..\USER;..\ArduinoAPI;..\Core;..\Core\STM32F30x_StdPeriph_Driver\inc;..\Core\CMSIS\Device\ST\STM32F30x\Include</IncludePath>
+              <IncludePath>..\USER;..\ArduinoAPI;..\Core;..\Core\STM32F30x_StdPeriph_Driver\inc;..\Core\CMSIS\Device\ST\STM32F30x\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -384,7 +384,7 @@
             <File>
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\main.cpp</FilePath>
+              <FilePath>..\USER\main.cpp</FilePath>
             </File>
           </Files>
         </Group>
