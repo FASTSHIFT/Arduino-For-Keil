@@ -57,38 +57,37 @@ extern "C" {
 
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
-#define ABS(x) (((x)>0)?(x):-(x))//abs(x) is define in stdlib.h
+#define ABS(x)  (((x)>0)?(x):-(x))//abs(x) is define in stdlib.h
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 #define round(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 #define radians(deg) ((deg)*DEG_TO_RAD)
 #define degrees(rad) ((rad)*RAD_TO_DEG)
-#define sq(x) ((x)*(x))
+#define sq(x)        ((x)*(x))
 
-#define lowByte(w) ((uint8_t) ((w) & 0xff))
+#define lowByte(w)  ((uint8_t) ((w) & 0xff))
 #define highByte(w) ((uint8_t) ((w) >> 8))
 
 #define bitRead(value, bit) (((value) >> (bit)) & 0x01)
-#define bitSet(value, bit) ((value) |= (1UL << (bit)))
+#define bitSet(value, bit)  ((value) |= (1UL << (bit)))
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
-#define _BV(bit) (1<<bit)
+#define _BV(bit) (1<<(bit))
 
-#define delay(x) delay_ms(x)
-#define delayMicroseconds(x) delay_us(x)
+#define delay(ms)             delay_ms(ms)
+#define delayMicroseconds(us) delay_us(us)
 
-#define interrupts() __set_PRIMASK(0)
-#define noInterrupts() __set_PRIMASK(1)
-#define sei() __set_PRIMASK(0)
-#define cli() __set_PRIMASK(1)
-#define yield()
+#define sei()          __set_PRIMASK(0)
+#define cli()          __set_PRIMASK(1)
+#define interrupts()   sei()
+#define noInterrupts() cli()
 
 #define analogInPinToBit(Pin)       (Pin)
 #define digitalPinToInterrupt(Pin)  (Pin)
 #define digitalPinToPort(Pin)       (PIN_MAP[Pin].GPIOx)
 #define digitalPinToBitMask(Pin)    (PIN_MAP[Pin].GPIO_Pin_x)
-#define portInputRegister(Port)     (&(Port->IDR))
-#define portOutputRegister(Port)    (&(Port->ODR))
+#define portInputRegister(Port)     (&((Port)->IDR))
+#define portOutputRegister(Port)    (&((Port)->ODR))
 
 #define NOT_A_PIN 0
 #define NOT_A_PORT 0
@@ -113,6 +112,7 @@ uint32_t pulseIn(uint32_t Pin, uint32_t State, uint32_t Timeout);
 
 long map(long x, long in_min, long in_max, long out_min, long out_max);
 double fmap(double x, double in_min, double in_max, double out_min, double out_max);
+void yield(void);
 
 #ifdef __cplusplus
 }// extern "C"

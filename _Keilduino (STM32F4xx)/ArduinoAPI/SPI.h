@@ -47,8 +47,16 @@ typedef enum
     SPI_MODE3
 } SPI_MODE_TypeDef;
 
-#define DATA_SIZE_8BIT SPI_DataSize_8b
-#define DATA_SIZE_16BIT SPI_DataSize_16b
+#define DATA_SIZE_8BIT   SPI_DataSize_8b
+#define DATA_SIZE_16BIT  SPI_DataSize_16b
+
+#define SPI_CLOCK_DIV2   2
+#define SPI_CLOCK_DIV4   4
+#define SPI_CLOCK_DIV8   8
+#define SPI_CLOCK_DIV16  16
+#define SPI_CLOCK_DIV32  32
+#define SPI_CLOCK_DIV64  64
+#define SPI_CLOCK_DIV128 128
 
 typedef uint16_t BitOrder;
 typedef SPI_TypeDef spi_dev;
@@ -61,31 +69,17 @@ typedef enum {
     SPI_STATE_TRANSFER
 } spi_mode_t;
 
-#define __builtin_constant_p(x) 1
-
 class SPISettings
 {
 public:
     SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode) {
-        if (__builtin_constant_p(clock)) {
-            init_AlwaysInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
-        } else {
-            init_MightInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
-        }
+        init_AlwaysInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
     }
     SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode, uint32_t dataSize) {
-        if (__builtin_constant_p(clock)) {
-            init_AlwaysInline(clock, bitOrder, dataMode, dataSize);
-        } else {
-            init_MightInline(clock, bitOrder, dataMode, dataSize);
-        }
+        init_AlwaysInline(clock, bitOrder, dataMode, dataSize);
     }
     SPISettings(uint32_t clock) {
-        if (__builtin_constant_p(clock)) {
-            init_AlwaysInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
-        } else {
-            init_MightInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
-        }
+        init_AlwaysInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
     }
     SPISettings() {
         init_AlwaysInline(4000000, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
@@ -116,7 +110,7 @@ class SPIClass
 {
 public:
     SPIClass(SPI_TypeDef* _SPIx);
-    void SPI_Settings(	SPI_TypeDef* SPIx,
+    void SPI_Settings(  SPI_TypeDef* SPIx,
                         uint16_t SPI_Mode_x,
                         uint16_t SPI_DataSize_x,
                         uint16_t SPI_MODEx,

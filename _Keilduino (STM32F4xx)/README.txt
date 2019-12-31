@@ -30,3 +30,4 @@
 //Upgrade   2019.12.1   V_2.5 更新timer库，使用独立的开根号运算函数，不依赖math.h库
 //Upgrade   2019.12.4   V_2.6 工程框架修改，工程文件与代码文件分离，修复了digitalWrite_LOW复制粘贴导致的BUG
 //Upgrade   2019.12.6   V_2.7 使Core里的一些函数命名更加规范更贴近标准库，EXTI中断入口更换了EXTIx_IRQHANDLER写法，添加了GNU支持
+//Upgrade   2019.12.31  V_2.8 更新SPI库的setClockDivider

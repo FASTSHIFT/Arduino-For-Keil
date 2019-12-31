@@ -31,7 +31,7 @@ extern "C" {
 
 #include "mcu_type.h"
 
-#define EXTI_GetLine(Pin)           (1 << Pinx)
+#define EXTI_GetLine(Pin)            (1 << Pinx)
 #define EXTI_GetPortSourceGPIOx(Pin) (GPIO_GetPortNum(Pin))
 #define EXTI_GetPinSourcex(Pin)      (GPIO_GetPinNum(Pin))
 

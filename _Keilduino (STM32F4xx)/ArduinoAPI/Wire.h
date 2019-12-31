@@ -41,7 +41,6 @@
 #define _WIRE_H_
 
 #include "WireBase.h"
-//#include "wirish.h"
 
 /*
  * On the Maple, let the default pins be in the same location as the Arduino
@@ -63,7 +62,7 @@
 #ifndef FULL_SPEED_I2C
 #define I2C_DELAY(x) {}
 #else
-#define I2C_DELAY(x) {delayMicroseconds(x);}
+#define I2C_DELAY(x) delayMicroseconds(x)
 #endif
 
 #define BUFFER_LENGTH 32

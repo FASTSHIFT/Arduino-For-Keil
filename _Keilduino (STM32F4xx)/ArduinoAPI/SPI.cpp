@@ -186,17 +186,9 @@ void SPIClass::setClock(uint32_t clock)
     SPI_Cmd(SPIx, ENABLE);
 }
 
-void SPIClass::setClockDivider(uint32_t Div) //For AVR compatibility
+void SPIClass::setClockDivider(uint32_t Div)
 {
-    // AVR:16MHz
-    if(Div == 0)
-    {
-        setClock(16000000);
-    }
-    else
-    {
-        setClock(16000000 / Div);
-    }
+    setClock(SPI_Clock / Div);
 }
 
 void SPIClass::setBitOrder(uint16_t bitOrder)
