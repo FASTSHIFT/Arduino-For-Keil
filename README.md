@@ -2,9 +2,13 @@
 ## 1.概要
 >   这是一个跨平台移植的项目，使**STM32**系列单片机兼容Arduino语法。
 
->   它本质上是个Keil工程模版，然后为STM32的外设封装了一套兼容Arduino的API，某些关键操作使用了寄存器级别优化。用户可以像玩Arduino一样直接调用写好的库，降低学习门槛，提升开发效率。
-
->   该工程模版经测试可以兼容90%以上的Arduino第三方库，用户只需将库的文件夹加入 "Libraries" 文件夹下即可。
+> **优点:**
+>
+>   1.简化的Arduino框架，相对stm32duino与HAL库，拥有更小的代码体积、更快的编译速度。
+>
+>   2.使用**寄存器+宏**进行优化，减少函数调用开销，提升运行效率。
+>
+>   3.与Arduino共用生态，降低学习门槛，提升开发效率。
 
 ## 2.使用
 >   底层基于 **STM32标准外设库** 二次封装，安装之后才能正常编译，下载链接位于下方。
@@ -21,7 +25,11 @@
 
 >这个项目大部分核心函数是重构的，有部分源代码参考了 [stm32duino](https://github.com/stm32duino)。
 
->一般用法可以直接参照[Arduino语法](https://www.arduino.cc/reference/en/)，高级用法参考[Example](https://github.com/FASTSHIFT/Arduino-For-Keil/tree/master/Example)内的示例。
+>一般用法可以直接参照[Arduino语法](https://www.arduino.cc/reference/en/)。
+>
+>高级用法参考[Example](https://github.com/FASTSHIFT/Arduino-For-Keil/tree/master/Example)内的示例。
+>
+>第三方库移植参考[第三方库移植示例](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/How%20to%20use%20Arduino%20library)。
 
 支持与寄存器和标准外设库的函数混用，**保证开发的灵活性**:
 ```C
@@ -46,4 +54,3 @@ void loop()
      1.请不要删除"main.cpp"中的FileGroup.h和main函数。 
      2.添加第三方库函数的时候要加入完整的路径，以及.cpp源文件. 
      3.由于平台的不同，有的函数库可能要进行修改才能正常编译，具体修改方式请按照编译器的提示，或者可以提交Issues。 
-  >[第三方库移植示例](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/How%20to%20use%20Arduino%20library)
