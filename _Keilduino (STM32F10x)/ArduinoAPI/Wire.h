@@ -41,7 +41,6 @@
 #define _WIRE_H_
 
 #include "WireBase.h"
-//#include "wirish.h"
 
 /*
  * On the Maple, let the default pins be in the same location as the Arduino

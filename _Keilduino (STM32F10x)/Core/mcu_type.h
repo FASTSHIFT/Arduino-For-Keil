@@ -50,7 +50,7 @@ typedef struct{
     uint32_t RCC_PLLMul_x;
 }SysClock_TypeDef;
 
-#define __KEILDUINO__ 750
+#define __KEILDUINO__ 760
 #define __STM32F1__
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
@@ -65,17 +65,5 @@ typedef struct{
 #define digitalWrite_LOW(Pin)  (GPIO_LOW(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 #define digitalRead_FAST(Pin)  (GPIO_READ(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 #define togglePin(Pin)         (GPIO_TOGGLE(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
-
-typedef enum
-{
-    INPUT = GPIO_Mode_IN_FLOATING,
-    OUTPUT = GPIO_Mode_Out_PP,
-    OUTPUT_OPEN_DRAIN = GPIO_Mode_Out_OD,
-    INPUT_PULLUP = GPIO_Mode_IPU,
-    INPUT_PULLDOWN = GPIO_Mode_IPD,
-    INPUT_ANALOG = GPIO_Mode_AIN,
-    INPUT_ANALOG_DMA,
-    PWM
-} pinMode_Type;
 
 #endif

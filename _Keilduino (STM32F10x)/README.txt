@@ -72,3 +72,4 @@
 //Upgrade   2019.12.1  V_7.3 更新timer库，使用独立的开根号运算函数，不依赖math.h库
 //Upgrade   2019.12.4  V_7.4 工程框架修改，工程文件与代码文件分离，修复了digitalWrite_LOW复制粘贴导致的BUG
 //Upgrade   2019.12.6  V_7.5 使Core里的一些函数命名更加规范更贴近标准库，EXTI中断入口更换了EXTIx_IRQHANDLER写法
+//Upgrade   2020.1.15  V_7.6 由于Print库的printf不支持浮点输出，将Print库还原，使用vsnprintf转换printf 

@@ -56,6 +56,18 @@ typedef struct STM32_PinInfo {
     uint8_t ADC_Channel;
 } PinInfo_TypeDef;
 
+typedef enum
+{
+    INPUT = GPIO_Mode_IN_FLOATING,
+    OUTPUT = GPIO_Mode_Out_PP,
+    OUTPUT_OPEN_DRAIN = GPIO_Mode_Out_OD,
+    INPUT_PULLUP = GPIO_Mode_IPU,
+    INPUT_PULLDOWN = GPIO_Mode_IPD,
+    INPUT_ANALOG = GPIO_Mode_AIN,
+    INPUT_ANALOG_DMA,
+    PWM
+} pinMode_Type;
+
 extern const PinInfo_TypeDef PIN_MAP[PIN_MAX];
 
 #define IS_PIN(Pin)     (Pin < PIN_MAX)

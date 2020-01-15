@@ -249,206 +249,34 @@ size_t Print::println(const Printable& x)
     return n;
 }
 
-#ifdef PRINT_SUPPORTS_PRINTF
+#ifdef SUPPORTS_PRINTF
 
-#define PAD_RIGHT 1
-#define PAD_ZERO 2
-
-void Print::xprintchar(char **str, int c)
-{
-    if (str)
-    {
-        **str = (char)c;
-        ++(*str);
-    }
-    else
-    {
-        write(c);
-    }
+extern "C" {
+#include <stdio.h>
+#include <stdarg.h>
 }
 
-int Print::xprints(char **out, const char *string, int width, int pad)
-{
-    register int pc = 0, padchar = ' ';
-
-    if (width > 0)
-    {
-        register int len = 0;
-        register const char *ptr;
-        for (ptr = string; *ptr; ++ptr) ++len;
-        if (len >= width) width = 0;
-        else width -= len;
-        if (pad & PAD_ZERO) padchar = '0';
-    }
-    if (!(pad & PAD_RIGHT))
-    {
-        for ( ; width > 0; --width)
-        {
-            xprintchar (out, padchar);
-            ++pc;
-        }
-    }
-    for ( ; *string ; ++string)
-    {
-        xprintchar (out, *string);
-        ++pc;
-    }
-    for ( ; width > 0; --width)
-    {
-        xprintchar (out, padchar);
-        ++pc;
-    }
-
-    return pc;
-}
-
-int Print::xprinti(char **out, int i, int b, int sg, int width, int pad, int letbase)
-{
-    /* the following should be enough for 32 bit int */
-    #define PRINT_BUF_LEN 12
-    char print_buf[PRINT_BUF_LEN];
-    register char *s;
-    register int t, neg = 0, pc = 0;
-    register unsigned int u = (unsigned int)i;
-
-    if (i == 0)
-    {
-        print_buf[0] = '0';
-        print_buf[1] = '\0';
-        return xprints (out, print_buf, width, pad);
-    }
-
-    if (sg && b == 10 && i < 0)
-    {
-        neg = 1;
-        u = (unsigned int) - i;
-    }
-
-    s = print_buf + PRINT_BUF_LEN - 1;
-    *s = '\0';
-
-    while (u)
-    {
-        t = (unsigned int)u % b;
-        if( t >= 10 )
-            t += letbase - '0' - 10;
-        *--s = (char)(t + '0');
-        u /= b;
-    }
-
-    if (neg)
-    {
-        if( width && (pad & PAD_ZERO) )
-        {
-            xprintchar (out, '-');
-            ++pc;
-            --width;
-        }
-        else
-        {
-            *--s = '-';
-        }
-    }
-
-    return pc + xprints (out, s, width, pad);
-}
-
-int Print::xprint( char **out, const char *format, va_list args)
-{
-    register int width, pad;
-    register int pc = 0;
-    char scr[2];
-
-    for (; *format != 0; ++format)
-    {
-        if (*format == '%')
-        {
-            ++format;
-            width = pad = 0;
-            if (*format == '\0') break;
-            if (*format == '%') goto out;
-            if (*format == '-')
-            {
-                ++format;
-                pad = PAD_RIGHT;
-            }
-            while (*format == '0')
-            {
-                ++format;
-                pad |= PAD_ZERO;
-            }
-            for ( ; *format >= '0' && *format <= '9'; ++format)
-            {
-                width *= 10;
-                width += *format - '0';
-            }
-            if( *format == 's' )
-            {
-                register char *s = (char *)va_arg( args, int );
-                pc += xprints (out, s ? s : "(null)", width, pad);
-                continue;
-            }
-            if( *format == 'd' )
-            {
-                pc += xprinti (out, va_arg( args, int ), 10, 1, width, pad, 'a');
-                continue;
-            }
-            if( *format == 'x' )
-            {
-                pc += xprinti (out, va_arg( args, int ), 16, 0, width, pad, 'a');
-                continue;
-            }
-            if( *format == 'X' )
-            {
-                pc += xprinti (out, va_arg( args, int ), 16, 0, width, pad, 'A');
-                continue;
-            }
-            if( *format == 'u' )
-            {
-                pc += xprinti (out, va_arg( args, int ), 10, 0, width, pad, 'a');
-                continue;
-            }
-            if( *format == 'c' )
-            {
-                /* char are converted to int then pushed on the stack */
-                scr[0] = (char)va_arg( args, int );
-                scr[1] = '\0';
-                pc += xprints (out, scr, width, pad);
-                continue;
-            }
-        }
-        else
-        {
-out:
-            xprintchar (out, *format);
-            ++pc;
-        }
-    }
-    if (out) **out = '\0';
-    va_end( args );
-    return pc;
-}
-
+// Work in progress to support printf.
+// Need to implement stream FILE to write individual chars to chosen serial port
 int Print::printf (const char *__restrict __format, ...)
 {
+    char printf_buff[PRINTF_BUFFER_LENGTH];
+
     va_list args;
     va_start(args, __format);
-    return xprint(0, __format, args);
+    int ret_status = vsnprintf(printf_buff, sizeof(printf_buff), __format, args);
+    //int ret_status = vsprintf(printf_buff,__format, args);
+    va_end(args);
+    print(printf_buff);
+
+    return ret_status;
 }
-
-int Print::sprintf(char *out, const char *format, ...)
-{
-    va_list args;
-
-    va_start( args, format );
-    return xprint(&out, format, args );
-}
-
 #endif
 
 /*
  * Private methods
  */
+
 size_t Print::printNumber(unsigned long long n, uint8 base)
 {
     unsigned char buf[CHAR_BIT * sizeof(long long)];

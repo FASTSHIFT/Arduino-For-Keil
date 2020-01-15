@@ -26,7 +26,7 @@
 #include "stm32f0xx.h"
 #include "stm32f0xx_conf.h"
 
-#define __KEILDUINO__ 230
+#define __KEILDUINO__ 240
 #define __STM32F0__
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND  (F_CPU / 1000000U)

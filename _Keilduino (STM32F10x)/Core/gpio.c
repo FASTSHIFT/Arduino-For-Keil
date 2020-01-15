@@ -223,21 +223,13 @@ uint8_t GPIO_GetPortNum(uint8_t Pin)
   */
 uint8_t GPIO_GetPinNum(uint8_t Pin)
 {
-    uint8_t digit = 0;
-    uint16_t GPIO_Pin_x = PIN_MAP[Pin].GPIO_Pin_x;
-
-    while(GPIO_Pin_x > 1)
-    {
-        GPIO_Pin_x >>= 1;
-        digit++;
-    }
-    return digit;
+    return GPIO_GetPinSource(PIN_MAP[Pin].GPIO_Pin_x);
 }
 
 /**
   * @brief  获取当前引脚对应的 PinSource
   * @param  GPIO_Pin_x: GPIO对应位
-  * @retval 无
+  * @retval PinSource
   */
 uint8_t GPIO_GetPinSource(uint16_t GPIO_Pin_x)
 {

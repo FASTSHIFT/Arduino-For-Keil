@@ -60,8 +60,6 @@
 
 //#define FULL_SPEED_I2C
 
-//#define I2C_DELAY(x) {uint32 time=micros(); while(time>(micros()+x));}
-//#define I2C_DELAY(x) do{for(int i=0;i<x;i++) {asm volatile("nop");}}while(0)
 #ifndef FULL_SPEED_I2C
 #define I2C_DELAY(x) {}
 #else

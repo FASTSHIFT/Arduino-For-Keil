@@ -19,17 +19,19 @@
  *
  * Modified 12 April 2011 by Marti Bolivar <mbolivar@leaflabs.com>
  */
-#ifndef __PRINT_H
-#define __PRINT_H
+
+#ifndef _PRINT_H_
+#define _PRINT_H_
 
 #include "libmaple_types.h"
 #include "WString.h"
 #include "Printable.h"
-#include <stdarg.h>
 
-#define PRINT_SUPPORTS_PRINTF
+#define SUPPORTS_PRINTF
+#define PRINTF_BUFFER_LENGTH 128
 
-enum {
+enum
+{
     BYTE = 0,
     BIN  = 2,
     OCT  = 8,
@@ -37,7 +39,8 @@ enum {
     HEX  = 16
 };
 
-class Print {
+class Print
+{
 public:
     virtual size_t write(uint8_t ch) = 0;
     virtual size_t write(const char *str);
@@ -70,21 +73,24 @@ public:
     size_t println(double, int = 2);
     size_t println(const __FlashStringHelper *);
     size_t println(const Printable&);
-#ifdef PRINT_SUPPORTS_PRINTF
+#ifdef SUPPORTS_PRINTF
+// Roger Clark. Work in progress to add printf support
     int printf(const char * format, ...);
-    int sprintf(char *out, const char *format, ...);
 #endif
     Print() : write_error(0) {}
 
-    int getWriteError() {
+    int getWriteError()
+    {
         return write_error;
     }
-    void clearWriteError() {
+    void clearWriteError()
+    {
         setWriteError(0);
     }
 
 protected:
-    void setWriteError(int err = 1) {
+    void setWriteError(int err = 1)
+    {
         write_error = err;
     }
 
@@ -92,15 +98,10 @@ private:
     int write_error;
     size_t printNumber(unsigned long long, uint8);
     size_t printFloat(double, uint8);
-#ifdef PRINT_SUPPORTS_PRINTF
-    void xprintchar(char **str, int c);
-    int xprints(char **out, const char *string, int width, int pad);
-    int xprinti(char **out, int i, int b, int sg, int width, int pad, int letbase);
-    int xprint( char **out, const char *format, va_list args);
-#endif
 };
 
-template<class T> inline Print &operator << (Print &obj, T arg) {
+template<class T> inline Print &operator << (Print &obj, T arg)
+{
     obj.print(arg);
     return obj;
 }
