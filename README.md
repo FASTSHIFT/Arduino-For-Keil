@@ -1,6 +1,6 @@
 # Arduino for Keil
 ## 1.概要
->这是一个简化版的Arduino框架，使**STM32**系列单片机兼容Arduino语法，在Keil上进行编译调试。
+>这是一个轻量级的Arduino框架，使**STM32**系列单片机兼容Arduino语法，在Keil上进行编译调试。
 
 相对于传统开发方式的优势:
 >
