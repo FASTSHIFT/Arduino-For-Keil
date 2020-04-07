@@ -1,14 +1,14 @@
 # Arduino for Keil
 ## 1.概要
->这是一个跨平台移植的项目，使**STM32**系列单片机兼容Arduino语法。
+>这是一个轻量级的Arduino框架，使**STM32**系列单片机兼容Arduino语法，在Keil上进行编译调试。
 
-相对于传统开发方式的**优势**:
+相对于传统开发方式的优势:
 >
->   1.与Arduino共用生态，降低学习门槛，简化开发过程。
+>   1.与Arduino共用[生态](https://github.com/topics/arduino-library)，降低学习门槛，简化开发过程。
 >
 >   2.关键部分使用了 **寄存器+宏** 的优化方式，减少函数调用开销，提升运行效率。
 >
->   3.简化的Arduino框架，相对stm32duino与HAL库，拥有更小的代码体积、更快的编译和执行速度。
+>   3.简化的Arduino框架，相对[stm32duino](https://github.com/stm32duino)与HAL库，拥有更小的代码体积、更快的编译和执行速度。
 
 ## 2.使用
 >   底层基于 **STM32标准外设库** 二次封装，安装之后才能正常编译，下载链接位于下方。
@@ -22,8 +22,6 @@
 [STM32F4xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F4xx_DFP.1.0.8.pack)
 
 **注意** 如果您已经安装了更高版本的pack，需要使用keil自带的包管理器将高版本的pack进行Remove
-
->这个项目大部分核心函数是重构的，有部分源代码参考了 [stm32duino](https://github.com/stm32duino)。
 
 >一般用法可以直接参照[Arduino语法](https://www.arduino.cc/reference/en/)。
 >
@@ -54,3 +52,4 @@ void loop()
      1.请不要删除"main.cpp"中的FileGroup.h和main函数。 
      2.添加第三方库函数的时候要加入完整的路径，以及.cpp源文件. 
      3.由于平台的不同，有的函数库可能要进行修改才能正常编译，具体修改方式请按照编译器的提示，或者可以提交Issues。 
+
