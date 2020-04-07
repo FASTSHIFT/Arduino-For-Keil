@@ -15,6 +15,7 @@ void loop() {
   */
 int main(void)
 {
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
     Delay_Init();
     ADCx_Init(ADC1);
     setup();
