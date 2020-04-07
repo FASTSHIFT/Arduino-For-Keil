@@ -323,7 +323,7 @@
             <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
@@ -337,7 +337,7 @@
               <MiscControls>--gnu</MiscControls>
               <Define>USE_STDPERIPH_DERIVER,ARDUINO=111</Define>
               <Undefine></Undefine>
-              <IncludePath>..\USER;..\ArduinoAPI;..\Core</IncludePath>
+              <IncludePath>..\ArduinoAPI;..\Core;..\Libraries;..\USER</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -488,6 +488,16 @@
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\timer.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>README</GroupName>
+          <Files>
+            <File>
+              <FileName>README.md</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\README.md</FilePath>
             </File>
           </Files>
         </Group>

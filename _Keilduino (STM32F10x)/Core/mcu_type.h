@@ -50,16 +50,16 @@ typedef struct{
     uint32_t RCC_PLLMul_x;
 }SysClock_TypeDef;
 
-#define __KEILDUINO__ 760
+#define __KEILDUINO__ 770
 #define __STM32F1__
-#define F_CPU SystemCoreClock
+#define F_CPU                  SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
 //*************** GPIO ***************//
-#define GPIO_HIGH(GPIOx,GPIO_Pin_x)     (GPIOx->BSRR = GPIO_Pin_x)
-#define GPIO_LOW(GPIOx,GPIO_Pin_x)      (GPIOx->BRR  = GPIO_Pin_x)
-#define GPIO_READ(GPIOx,GPIO_Pin_x)    ((GPIOx->IDR  & GPIO_Pin_x)!=0)
-#define GPIO_TOGGLE(GPIOx,GPIO_Pin_x)   (GPIOx->ODR ^= GPIO_Pin_x)
+#define GPIO_HIGH(GPIOx,GPIO_Pin_x)     ((GPIOx)->BSRR = (GPIO_Pin_x))
+#define GPIO_LOW(GPIOx,GPIO_Pin_x)      ((GPIOx)->BRR  = (GPIO_Pin_x))
+#define GPIO_READ(GPIOx,GPIO_Pin_x)    (((GPIOx)->IDR  & (GPIO_Pin_x))!=0)
+#define GPIO_TOGGLE(GPIOx,GPIO_Pin_x)   ((GPIOx)->ODR ^= (GPIO_Pin_x))
 
 #define digitalWrite_HIGH(Pin) (GPIO_HIGH(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 #define digitalWrite_LOW(Pin)  (GPIO_LOW(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
