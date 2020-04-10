@@ -74,12 +74,12 @@ typedef TMR_Type          TIM_TypeDef;
 #define F_CPU SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
-#define __KEILDUINO__ 150
+#define __KEILDUINO__ 160
     
-#define GPIO_HIGH(GPIOX,GPIO_PIN_X)    (GPIOX->BSRE    = GPIO_PIN_X)
-#define GPIO_LOW(GPIOX,GPIO_PIN_X)     (GPIOX->BRE     = GPIO_PIN_X)
-#define GPIO_READ(GPIOX,GPIO_PIN_X)   ((GPIOX->IPTDT   & GPIO_PIN_X)!=0)
-#define GPIO_TOGGLE(GPIOX,GPIO_PIN_X)  (GPIOX->OPTDT  ^= GPIO_PIN_X)
+#define GPIO_HIGH(GPIOX,GPIO_PIN_X)    ((GPIOX)->BSRE    = (GPIO_PIN_X))
+#define GPIO_LOW(GPIOX,GPIO_PIN_X)     ((GPIOX)->BRE     = (GPIO_PIN_X))
+#define GPIO_READ(GPIOX,GPIO_PIN_X)   (((GPIOX)->IPTDT   & (GPIO_PIN_X))!=0)
+#define GPIO_TOGGLE(GPIOX,GPIO_PIN_X)  ((GPIOX)->OPTDT  ^= (GPIO_PIN_X))
 
 #define digitalWrite_HIGH(Pin) GPIO_HIGH  (PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x)
 #define digitalWrite_LOW(Pin)  GPIO_LOW   (PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x)

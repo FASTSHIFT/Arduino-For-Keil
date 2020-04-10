@@ -336,7 +336,7 @@
               <MiscControls>--gnu</MiscControls>
               <Define>LIBRARY_VERSION,AT32F403Zx_HD,ARDUINO=111</Define>
               <Undefine></Undefine>
-              <IncludePath>..\ArduinoAPI;..\Core;..\USER</IncludePath>
+              <IncludePath>..\ArduinoAPI;..\Core;..\Libraries;..\USER</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -401,7 +401,7 @@
             <File>
               <FileName>dtostrf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ArduinoAPI\avr\dtostrf.c</FilePath>
+              <FilePath>..\ArduinoAPI\dtostrf.c</FilePath>
             </File>
             <File>
               <FileName>itoa.c</FileName>
@@ -1572,6 +1572,16 @@
                   </Aads>
                 </FileArmAds>
               </FileOption>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>README</GroupName>
+          <Files>
+            <File>
+              <FileName>README.md</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\README.md</FilePath>
             </File>
           </Files>
         </Group>

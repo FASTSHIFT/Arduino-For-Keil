@@ -76,16 +76,21 @@ extern "C" {
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
-#define _BV(bit) (1<<bit)
+#ifndef _BV
+#define _BV(bit) (1 << (bit))
+#endif 
 
-#define delay(x) delay_ms(x)
-#define delayMicroseconds(x) delay_us(x)
+#define clockCyclesPerMicrosecond()  ( F_CPU / 1000000L )
+#define clockCyclesToMicroseconds(a) ( ((a) * 1000L) / (F_CPU / 1000L) )
+#define microsecondsToClockCycles(a) ( (a) * (F_CPU / 1000000L) )
 
-#define interrupts() __set_PRIMASK(0)
+#define delay(ms)             delay_ms(ms)
+#define delayMicroseconds(us) delay_us(us)
+
+#define interrupts()   __set_PRIMASK(0)
 #define noInterrupts() __set_PRIMASK(1)
 #define sei() __set_PRIMASK(0)
 #define cli() __set_PRIMASK(1)
-#define yield()
 
 #define analogInPinToBit(Pin)       (Pin)
 #define digitalPinToInterrupt(Pin)  (Pin)
@@ -117,15 +122,18 @@ uint32_t pulseIn(uint32_t Pin, uint32_t State, uint32_t Timeout);
 
 long map(long x, long in_min, long in_max, long out_min, long out_max);
 double fmap(double x, double in_min, double in_max, double out_min, double out_max);
+void yield(void);
 
 #ifdef __cplusplus
 }// extern "C"
 #endif
 
 #ifdef __cplusplus
-#include "WCharacter.h"
-#include "WString.h"
-#include "HardwareSerial.h"
+#  include "WCharacter.h"
+#  include "WString.h"
+#  include "WMath.h"
+#  include "Tone.h"
+#  include "HardwareSerial.h"
 #endif
 
 #endif
