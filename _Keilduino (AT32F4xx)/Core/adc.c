@@ -249,10 +249,12 @@ void ADCx_Init(ADC_Type* ADCx)
     {
         RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_ADC2, ENABLE);
     }
+#ifdef ADC3
     else if(ADCx == ADC3)
     {
         RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_ADC3, ENABLE);
     }
+#endif
     else
     {
         return;

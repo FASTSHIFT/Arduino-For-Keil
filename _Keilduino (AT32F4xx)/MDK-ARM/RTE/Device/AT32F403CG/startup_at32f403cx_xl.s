@@ -1,8 +1,8 @@
 ;**************************************************************************
-;* File Name    : startup_at32f403zx_hd.s
-;* Description  : at32f403 startup file for keil
-;* Date         : 2018-02-12
-;* Version      : V1.0.3
+;* File Name    : startup_at32f403cx_xl.s
+;* Description  : at32f4xx startup file for keil
+;* Date         : 2018-02-26
+;* Version      : V1.0.4
 ;**************************************************************************
 ;
 
@@ -105,12 +105,12 @@ __Vectors       DCD     __initial_sp                    ; Top of Stack
                 DCD     TMR8_TRG_HALL_TMR14_IRQHandler  ; TMR8 Trigger and Commutation and TMR14
                 DCD     TMR8_CC_IRQHandler              ; TMR8 Capture Compare
                 DCD     ADC3_IRQHandler                 ; ADC3
-                DCD     XMC_IRQHandler                  ; XMC
-                DCD     SDIO1_IRQHandler                ; SDIO1
+                DCD     0                               ; Reserved
+                DCD     0                				; Reserved
                 DCD     TMR5_GLOBAL_IRQHandler          ; TMR5
                 DCD     SPI3_IRQHandler                 ; SPI3
-                DCD     UART4_IRQHandler                ; UART4
-                DCD     UART5_IRQHandler                ; UART5
+                DCD     0                               ; Reserved
+                DCD     0                               ; Reserved
                 DCD     TMR6_GLOBAL_IRQHandler          ; TMR6
                 DCD     TMR7_GLOBAL_IRQHandler          ; TMR7
                 DCD     DMA2_Channel1_IRQHandler        ; DMA2 Channel1
@@ -120,11 +120,6 @@ __Vectors       DCD     __initial_sp                    ; Top of Stack
                 DCD     SDIO2_IRQHandler                ; SDIO2
                 DCD     I2C3_EV_IRQHandler              ; I2C3 Event
                 DCD     I2C3_ER_IRQHandler              ; I2C3 Error
-                DCD     SPI4_IRQHandler                 ; SPI4
-                DCD     TMR15_BRK_IRQHandler            ; TMR15 Break
-                DCD     TMR15_OV_IRQHandler             ; TMR15 Update
-                DCD     TMR15_TRG_HALL_IRQHandler       ; TMR15 Trigger and Commutation
-                DCD     TMR15_CC_IRQHandler             ; TMR15 Capture Compare
 __Vectors_End
 
 __Vectors_Size  EQU  __Vectors_End - __Vectors
@@ -235,13 +230,9 @@ Default_Handler PROC
                 EXPORT  TMR8_OV_TMR13_IRQHandler   [WEAK]
                 EXPORT  TMR8_TRG_HALL_TMR14_IRQHandler  [WEAK]
                 EXPORT  TMR8_CC_IRQHandler         [WEAK]
-                EXPORT  ADC3_IRQHandler            [WEAK]
-                EXPORT  XMC_IRQHandler             [WEAK]
-                EXPORT  SDIO1_IRQHandler           [WEAK]
-                EXPORT  TMR5_GLOBAL_IRQHandler     [WEAK]
+                EXPORT  ADC3_IRQHandler     	   [WEAK]
+                EXPORT  TMR5_GLOBAL_IRQHandler     [WEAK]				
                 EXPORT  SPI3_IRQHandler            [WEAK]
-                EXPORT  UART4_IRQHandler           [WEAK]
-                EXPORT  UART5_IRQHandler           [WEAK]
                 EXPORT  TMR6_GLOBAL_IRQHandler     [WEAK]
                 EXPORT  TMR7_GLOBAL_IRQHandler     [WEAK]
                 EXPORT  DMA2_Channel1_IRQHandler   [WEAK]
@@ -251,12 +242,6 @@ Default_Handler PROC
                 EXPORT  SDIO2_IRQHandler           [WEAK]
                 EXPORT  I2C3_EV_IRQHandler         [WEAK]
                 EXPORT  I2C3_ER_IRQHandler         [WEAK]
-                EXPORT  SPI4_IRQHandler            [WEAK]
-                EXPORT  TMR15_BRK_IRQHandler       [WEAK]
-                EXPORT  TMR15_OV_IRQHandler        [WEAK]
-                EXPORT  TMR15_TRG_HALL_IRQHandler  [WEAK]
-                EXPORT  TMR15_CC_IRQHandler        [WEAK]
-
 
 
 WWDG_IRQHandler
@@ -307,12 +292,8 @@ TMR8_OV_TMR13_IRQHandler
 TMR8_TRG_HALL_TMR14_IRQHandler
 TMR8_CC_IRQHandler
 ADC3_IRQHandler
-XMC_IRQHandler
-SDIO1_IRQHandler
 TMR5_GLOBAL_IRQHandler
 SPI3_IRQHandler
-UART4_IRQHandler
-UART5_IRQHandler
 TMR6_GLOBAL_IRQHandler
 TMR7_GLOBAL_IRQHandler
 DMA2_Channel1_IRQHandler
@@ -322,11 +303,6 @@ DMA2_Channel4_5_IRQHandler
 SDIO2_IRQHandler
 I2C3_EV_IRQHandler
 I2C3_ER_IRQHandler
-SPI4_IRQHandler
-TMR15_BRK_IRQHandler
-TMR15_OV_IRQHandler
-TMR15_TRG_HALL_IRQHandler
-TMR15_CC_IRQHandler
                 B       .
 
                 ENDP

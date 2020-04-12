@@ -61,14 +61,18 @@ void Timer_ClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState)
     {
         RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR5, NewState);
     }
+#ifdef TMR12
     else if(TIMx == TIM6)
     {
         RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR6, NewState);
     }
+#endif
+#ifdef TMR7
     else if(TIMx == TIM7)
     {
         RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR7, NewState);
     }
+#endif
     else if(TIMx == TIM8)
     {
         RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_TMR8, NewState);
@@ -85,22 +89,30 @@ void Timer_ClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState)
     {
         RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_TMR11, NewState);
     }
+#ifdef TMR12
     else if(TIMx == TIM12)
     {
         RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR12, NewState);
     }
+#endif
+#ifdef TMR13
     else if(TIMx == TIM13)
     {
         RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR13, NewState);
     }
+#endif
+#ifdef TMR14
     else if(TIMx == TIM14)
     {
         RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR14, NewState);
     }
+#endif
+#ifdef TMR15
     else if(TIMx == TIM15)
     {
         RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_TMR15, NewState);
     }
+#endif
 }
 
 /*取绝对值*/
@@ -350,21 +362,35 @@ do{\
 }\
 while(0)
     
+
+    /*如果编译器提示：identifier "xxx_IRQn" is undefined
+     *把未定义的注释掉即可
+     */
     TMRx_IRQ_DEF(1, TMR1_OV_TMR10_IRQn);
     TMRx_IRQ_DEF(2, TMR2_GLOBAL_IRQn);
     TMRx_IRQ_DEF(3, TMR3_GLOBAL_IRQn);
     TMRx_IRQ_DEF(4, TMR4_GLOBAL_IRQn);
     TMRx_IRQ_DEF(5, TMR5_GLOBAL_IRQn);
+#ifdef TMR6
     TMRx_IRQ_DEF(6, TMR6_GLOBAL_IRQn);
+#endif
+#ifdef TMR7
     TMRx_IRQ_DEF(7, TMR7_GLOBAL_IRQn);
-    TMRx_IRQ_DEF(8, TMR8_OV_TMR13_IRQn);
+#endif
+    //TMRx_IRQ_DEF(8, TMR8_OV_TMR13_IRQn);
     TMRx_IRQ_DEF(9, TMR1_BRK_TMR9_IRQn);
     TMRx_IRQ_DEF(10, TMR1_OV_TMR10_IRQn);
     TMRx_IRQ_DEF(11, TMR1_TRG_HALL_TMR11_IRQn);
+#ifdef TMR12
     TMRx_IRQ_DEF(12, TMR8_BRK_TMR12_IRQn);
+#endif
+#ifdef TMR13
     TMRx_IRQ_DEF(13, TMR8_OV_TMR13_IRQn);
+#endif
+#ifdef TMR14
     TMRx_IRQ_DEF(14, TMR8_TRG_HALL_TMR14_IRQn);
-    TMRx_IRQ_DEF(15, TMR15_OV_IRQn);
+#endif
+    //TMRx_IRQ_DEF(15, TMR15_OV_IRQn);
 
     if(TMRx_IRQn == 0)
         return;
@@ -377,19 +403,18 @@ while(0)
     Timer_ClockCmd(TIMx, ENABLE);
 
     TMR_TimeBaseStructure.TMR_RepetitionCounter = 0;
-    TMR_TimeBaseStructure.TMR_Period = period - 1;         //设置在下一个更新事件装入活动的自动重装载寄存器周期的值
-    TMR_TimeBaseStructure.TMR_DIV = prescaler - 1;  //设置用来作为TIMx时钟频率除数的预分频值  10Khz的计数频率
-    TMR_TimeBaseStructure.TMR_ClockDivision = TMR_CKD_DIV1;     //设置时钟分割:TDTS = Tck_tim
-    TMR_TimeBaseStructure.TMR_CounterMode = TMR_CounterDIR_Up;  //TIM向上计数模式
-    TMR_TimeBaseStructure.TMR_Plus = TMR_Plus_Enable;
-    TMR_TimeBaseInit(TIMx, &TMR_TimeBaseStructure); //根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
+    TMR_TimeBaseStructure.TMR_Period = period - 1;//设置在下一个更新事件装入活动的自动重装载寄存器周期的值
+    TMR_TimeBaseStructure.TMR_DIV = prescaler - 1;//设置用来作为TIMx时钟频率除数的预分频值 
+    TMR_TimeBaseStructure.TMR_ClockDivision = TMR_CKD_DIV1;//设置时钟分割
+    TMR_TimeBaseStructure.TMR_CounterMode = TMR_CounterDIR_Up;//TIM向上计数模式
+    TMR_TimeBaseInit(TIMx, &TMR_TimeBaseStructure);
     
     /**********************************设置中断优先级************************************/
-    NVIC_InitStructure.NVIC_IRQChannel = TMRx_IRQn;  //TIM中断
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;  //先占优先级
+    NVIC_InitStructure.NVIC_IRQChannel = TMRx_IRQn;//TIM中断通道
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;//先占优先级
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;  //从优先级
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能
-    NVIC_Init(&NVIC_InitStructure);  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;//IRQ通道被使能
+    NVIC_Init(&NVIC_InitStructure);//根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
 
     TMR_ClearFlag(TIMx, TMR_FLAG_Update);
     TMR_INTConfig(TIMx, TMR_INT_Overflow, ENABLE);  //使能TIM中断
@@ -462,7 +487,9 @@ void TMR5_GLOBAL_IRQHandler(void)
   */
 void TMR6_GLOBAL_IRQHandler(void)
 {
+#ifdef TMR6
     TMRx_IRQHANDLER(6);
+#endif
 }
 
 /**
@@ -472,7 +499,9 @@ void TMR6_GLOBAL_IRQHandler(void)
   */
 void TMR7_GLOBAL_IRQHandler(void)
 {
+#ifdef TMR7
     TMRx_IRQHANDLER(7);
+#endif
 }
 
 /**
@@ -483,7 +512,9 @@ void TMR7_GLOBAL_IRQHandler(void)
 void TMR8_OV_TMR13_IRQHandler(void)
 {
     TMRx_IRQHANDLER(8);
+#ifdef TMR13
     TMRx_IRQHANDLER(13);
+#endif
 }
 
 /**
@@ -493,5 +524,7 @@ void TMR8_OV_TMR13_IRQHandler(void)
   */
 void TMR15_OV_IRQHandler(void)
 {
+#ifdef TMR15
     TMRx_IRQHANDLER(15);
+#endif
 }

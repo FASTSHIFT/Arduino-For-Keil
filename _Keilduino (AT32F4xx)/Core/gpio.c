@@ -62,7 +62,11 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
     {GPIOB, TIM2, NULL, GPIO_Pin_11, 4, ADC_Channel_X}, /* PB11 */
     {GPIOB, NULL, NULL, GPIO_Pin_12, 0, ADC_Channel_X}, /* PB12 */
     {GPIOB, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PB13 */
+#ifdef TMR12
     {GPIOB, TIM12, NULL, GPIO_Pin_14, 1, ADC_Channel_X},/* PB14 */
+#else
+    {GPIOB, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X},/* PB14 */
+#endif
     {GPIOB, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PB15 */
 
     {GPIOC, NULL, ADC1,  GPIO_Pin_0, 0, ADC_Channel_10},/* PC0 */
@@ -99,6 +103,7 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
     {GPIOD, TIM4, NULL, GPIO_Pin_14, 3, ADC_Channel_X}, /* PD14 */
     {GPIOD, TIM4, NULL, GPIO_Pin_15, 4, ADC_Channel_X}, /* PD15 */
 
+#ifdef GPIOE
     {GPIOE, NULL, NULL,  GPIO_Pin_0, 0, ADC_Channel_X}, /* PE0 */
     {GPIOE, NULL, NULL,  GPIO_Pin_1, 0, ADC_Channel_X}, /* PE1 */
     {GPIOE, NULL, NULL,  GPIO_Pin_2, 0, ADC_Channel_X}, /* PE2 */
@@ -115,10 +120,13 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
     {GPIOE, TIM1, NULL, GPIO_Pin_13, 3, ADC_Channel_X}, /* PE13 */
     {GPIOE, TIM1, NULL, GPIO_Pin_14, 4, ADC_Channel_X}, /* PE14 */
     {GPIOE, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PE15 */
+#endif
 
     {GPIOF, NULL, NULL,  GPIO_Pin_0, 0, ADC_Channel_X}, /* PF0 */
     {GPIOF, NULL, NULL,  GPIO_Pin_1, 0, ADC_Channel_X}, /* PF1 */
     {GPIOF, NULL, NULL,  GPIO_Pin_2, 0, ADC_Channel_X}, /* PF2 */
+
+#ifdef ADC3
     {GPIOF, NULL, ADC3,  GPIO_Pin_3, 0, ADC_Channel_9}, /* PF3 */
     {GPIOF, NULL, ADC3,  GPIO_Pin_4, 0, ADC_Channel_14},/* PF4 */
     {GPIOF, NULL, ADC3,  GPIO_Pin_5, 0, ADC_Channel_15},/* PF5 */
@@ -127,12 +135,23 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
     {GPIOF, TIM13, ADC3,  GPIO_Pin_8, 1, ADC_Channel_6}, /* PF8 */
     {GPIOF, TIM14, ADC3,  GPIO_Pin_9, 1, ADC_Channel_7}, /* PF9 */
     {GPIOF, NULL, ADC3, GPIO_Pin_10, 0, ADC_Channel_8}, /* PF10 */
+#else
+    {GPIOF, NULL, NULL,  GPIO_Pin_3, 0, ADC_Channel_X}, /* PF3 */
+    {GPIOF, NULL, NULL,  GPIO_Pin_4, 0, ADC_Channel_X},/* PF4 */
+    {GPIOF, NULL, NULL,  GPIO_Pin_5, 0, ADC_Channel_X},/* PF5 */
+    {GPIOF, TIM10, NULL,  GPIO_Pin_6, 1, ADC_Channel_X}, /* PF6 */
+    {GPIOF, TIM11, NULL,  GPIO_Pin_7, 1, ADC_Channel_X}, /* PF7 */
+    {GPIOF, NULL, NULL,  GPIO_Pin_8, 0, ADC_Channel_X}, /* PF8 */
+    {GPIOF, NULL, NULL,  GPIO_Pin_9, 0, ADC_Channel_X}, /* PF9 */
+    {GPIOF, NULL, NULL, GPIO_Pin_10, 0, ADC_Channel_X}, /* PF10 */
+#endif
     {GPIOF, NULL, NULL, GPIO_Pin_11, 0, ADC_Channel_X}, /* PF11 */
     {GPIOF, NULL, NULL, GPIO_Pin_12, 0, ADC_Channel_X}, /* PF12 */
     {GPIOF, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PF13 */
     {GPIOF, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PF14 */
     {GPIOF, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PF15 */
-
+    
+#ifdef GPIOG
     {GPIOG, NULL, NULL,  GPIO_Pin_0, 0, ADC_Channel_X}, /* PG0 */
     {GPIOG, NULL, NULL,  GPIO_Pin_1, 0, ADC_Channel_X}, /* PG1 */
     {GPIOG, NULL, NULL,  GPIO_Pin_2, 0, ADC_Channel_X}, /* PG2 */
@@ -149,6 +168,7 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
     {GPIOG, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PG13 */
     {GPIOG, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PG14 */
     {GPIOG, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PG15 */
+#endif
 };
 
 /**
@@ -169,9 +189,13 @@ void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMod
     else if(GPIOx == GPIOB)RCC_APB2PERIPH_GPIOx = RCC_APB2PERIPH_GPIOB;
     else if(GPIOx == GPIOC)RCC_APB2PERIPH_GPIOx = RCC_APB2PERIPH_GPIOC;
     else if(GPIOx == GPIOD)RCC_APB2PERIPH_GPIOx = RCC_APB2PERIPH_GPIOD;
+#ifdef GPIOE
     else if(GPIOx == GPIOE)RCC_APB2PERIPH_GPIOx = RCC_APB2PERIPH_GPIOE;
+#endif
     else if(GPIOx == GPIOF)RCC_APB2PERIPH_GPIOx = RCC_APB2PERIPH_GPIOF;
+#ifdef GPIOG
     else if(GPIOx == GPIOG)RCC_APB2PERIPH_GPIOx = RCC_APB2PERIPH_GPIOG;
+#endif
     else return;
 
     if(pinMode_x == INPUT)
@@ -241,9 +265,13 @@ uint8_t GPIO_GetPortNum(uint8_t Pin)
     else if(PIN_MAP[Pin].GPIOx == GPIOB)return 1;
     else if(PIN_MAP[Pin].GPIOx == GPIOC)return 2;
     else if(PIN_MAP[Pin].GPIOx == GPIOD)return 3;
+#ifdef GPIOE
     else if(PIN_MAP[Pin].GPIOx == GPIOE)return 4;
+#endif
     else if(PIN_MAP[Pin].GPIOx == GPIOF)return 5;
+#ifdef GPIOG
     else if(PIN_MAP[Pin].GPIOx == GPIOG)return 6;
+#endif
     else return 0xFF;
 }
 

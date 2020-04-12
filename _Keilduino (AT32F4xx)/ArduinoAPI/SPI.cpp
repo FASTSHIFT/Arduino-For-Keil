@@ -97,6 +97,7 @@ void SPIClass::begin(void)
 
         SPI_I2S_Reset(SPIx);
     }
+#ifdef SPI3
     else if(SPIx == SPI3)
     {
         SPI_Clock = SPI3_CLOCK;
@@ -105,6 +106,7 @@ void SPIClass::begin(void)
         pinMode(PB4, OUTPUT_AF_PP);
         pinMode(PB5, OUTPUT_AF_PP);
     }
+#endif
 
     SPI_Settings(   SPIx,
                     SPI_MODE_MASTER,
@@ -387,4 +389,7 @@ uint8_t SPIClass::recv(void)
 
 SPIClass SPI(SPI1);//SCK-PA5 MISO-PA6 MOSI-PA7
 SPIClass SPI_2(SPI2);//SCK-PB13 MISO-PB14 MOSI-PB15
+
+#ifdef SPI3
 SPIClass SPI_3(SPI3);//SCK-PB3 MISO-PB4 MOSI-PB5
+#endif

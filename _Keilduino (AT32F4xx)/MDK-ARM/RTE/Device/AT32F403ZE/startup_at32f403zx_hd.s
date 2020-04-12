@@ -1,8 +1,8 @@
 ;**************************************************************************
-;* File Name    : startup_at32f403vx_hd.s
-;* Description  : at32f403 startup file for keil
-;* Date         : 2018-02-12
-;* Version      : V1.0.3
+;* File Name    : startup_at32f403zx_hd.s
+;* Description  : at32f4xx startup file for keil
+;* Date         : 2018-02-26
+;* Version      : V1.0.4
 ;**************************************************************************
 ;
 
@@ -121,6 +121,10 @@ __Vectors       DCD     __initial_sp                    ; Top of Stack
                 DCD     I2C3_EV_IRQHandler              ; I2C3 Event
                 DCD     I2C3_ER_IRQHandler              ; I2C3 Error
                 DCD     SPI4_IRQHandler                 ; SPI4
+                DCD     TMR15_BRK_IRQHandler            ; TMR15 Break
+                DCD     TMR15_OV_IRQHandler             ; TMR15 Update
+                DCD     TMR15_TRG_HALL_IRQHandler       ; TMR15 Trigger and Commutation
+                DCD     TMR15_CC_IRQHandler             ; TMR15 Capture Compare
 __Vectors_End
 
 __Vectors_Size  EQU  __Vectors_End - __Vectors
@@ -248,6 +252,10 @@ Default_Handler PROC
                 EXPORT  I2C3_EV_IRQHandler         [WEAK]
                 EXPORT  I2C3_ER_IRQHandler         [WEAK]
                 EXPORT  SPI4_IRQHandler            [WEAK]
+                EXPORT  TMR15_BRK_IRQHandler       [WEAK]
+                EXPORT  TMR15_OV_IRQHandler        [WEAK]
+                EXPORT  TMR15_TRG_HALL_IRQHandler  [WEAK]
+                EXPORT  TMR15_CC_IRQHandler        [WEAK]
 
 
 
@@ -315,6 +323,10 @@ SDIO2_IRQHandler
 I2C3_EV_IRQHandler
 I2C3_ER_IRQHandler
 SPI4_IRQHandler
+TMR15_BRK_IRQHandler
+TMR15_OV_IRQHandler
+TMR15_TRG_HALL_IRQHandler
+TMR15_CC_IRQHandler
                 B       .
 
                 ENDP

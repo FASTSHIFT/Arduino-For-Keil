@@ -1,4 +1,5 @@
-# Arduino-For-Keil AT32F4xx https://github.com/FASTSHIFT/Arduino-For-Keil
+# Arduino-For-Keil AT32F4xx
+> https://github.com/FASTSHIFT/Arduino-For-Keil
 
 # 更新日志
 ## [v1.0] - 2019.11.10
@@ -29,3 +30,9 @@
 * 5.Arduino.h添加WMath.h与Tone.h
 * 6.添加README文件组
 * 7.添加yield()函数实体
+
+## [v1.7] - 2020.4.12
+* 1.更新标准库AT32F4xx_DFP.1.3.1.pack
+* 2.更新adc、gpio、timer库
+* 3.去除工程的startup，使用pack内置的startup_xxx.s文件
+* 4.去除全局芯片宏定义

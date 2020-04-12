@@ -1,8 +1,8 @@
 ;**************************************************************************
-;* File Name    : startup_at32f415rbt7.s
+;* File Name    : startup_at32f413cx_md.s
 ;* Description  : at32f4xx startup file for keil
-;* Date         : 2019-05-30
-;* Version      : V1.0.0
+;* Date         : 2018-09-29
+;* Version      : V1.0.5
 ;**************************************************************************
 ;
 
@@ -59,8 +59,8 @@ __Vectors       DCD     __initial_sp                        ; Top of Stack
                 ; External Interrupts
                 DCD     WWDG_IRQHandler                     ; Window Watchdog
                 DCD     PVD_IRQHandler                      ; PVD through EXTI Line detect
-                DCD     TAMP_STAMP_IRQHandler               ; Tamper and TimeStamps through the EXTI line
-                DCD     ERTC_WKUP_IRQHandler                ; ERTC Wakeup through the EXTI line
+                DCD     TAMPER_IRQHandler                   ; Tamper
+                DCD     RTC_IRQHandler                      ; RTC
                 DCD     FLASH_IRQHandler                    ; Flash
                 DCD     RCC_IRQHandler                      ; RCC
                 DCD     EXTI0_IRQHandler                    ; EXTI Line 0
@@ -76,8 +76,8 @@ __Vectors       DCD     __initial_sp                        ; Top of Stack
                 DCD     DMA1_Channel6_IRQHandler            ; DMA1 Channel 6
                 DCD     DMA1_Channel7_IRQHandler            ; DMA1 Channel 7
                 DCD     ADC1_2_IRQHandler                   ; ADC1 & ADC2
-                DCD     CAN1_TX_IRQHandler                  ; CAN1 TX
-                DCD     CAN1_RX0_IRQHandler                 ; CAN1 RX0
+                DCD     USB_HP_CAN1_TX_IRQHandler           ; USB High Priority or CAN1 TX
+                DCD     USB_LP_CAN1_RX0_IRQHandler          ; USB Low  Priority or CAN1 RX0
                 DCD     CAN1_RX1_IRQHandler                 ; CAN1 RX1
                 DCD     CAN1_SCE_IRQHandler                 ; CAN1 SCE
                 DCD     EXTI9_5_IRQHandler                  ; EXTI Line [9:5]
@@ -98,7 +98,7 @@ __Vectors       DCD     __initial_sp                        ; Top of Stack
                 DCD     USART2_IRQHandler                   ; USART2
                 DCD     USART3_IRQHandler                   ; USART3
                 DCD     EXTI15_10_IRQHandler                ; EXTI Line [15:10]
-                DCD     ERTCAlarm_IRQHandler                ; ERTC Alarm through EXTI Line
+                DCD     RTCAlarm_IRQHandler                 ; RTC Alarm through EXTI Line
                 DCD     USBWakeUp_IRQHandler                ; USB Wakeup from suspend
                 DCD     0                                   ; Reserved
                 DCD     0                                   ; Reserved
@@ -109,8 +109,8 @@ __Vectors       DCD     __initial_sp                        ; Top of Stack
                 DCD     SDIO_IRQHandler                     ; SDIO
                 DCD     TMR5_GLOBAL_IRQHandler              ; TMR5
                 DCD     0                                   ; Reserved
-                DCD     UART4_IRQHandler                    ; UART4
-                DCD     UART5_IRQHandler                    ; UART5
+                DCD     0                                   ; Reserved
+                DCD     0                                   ; Reserved
                 DCD     0                                   ; Reserved
                 DCD     0                                   ; Reserved
                 DCD     DMA2_Channel1_IRQHandler            ; DMA2 Channel1
@@ -124,14 +124,14 @@ __Vectors       DCD     __initial_sp                        ; Top of Stack
                 DCD     0                                   ; Reserved
                 DCD     0                                   ; Reserved
                 DCD     0                                   ; Reserved
-                DCD     USBOTG_IRQHandler                   ; USBOTG
                 DCD     0                                   ; Reserved
-                DCD     0                                   ; Reserved
-                DCD     COMP1_IRQHandler                    ; COMP1
-                DCD     COMP2_IRQHandler                    ; COMP2
+                DCD     CAN2_TX_IRQHandler                  ; CAN2 TX
+                DCD     CAN2_RX0_IRQHandler                 ; CAN2 RX0
+                DCD     CAN2_RX1_IRQHandler                 ; CAN2 RX1
+                DCD     CAN2_SCE_IRQHandler                 ; CAN2 SCE
                 DCD     ACC_IRQHandler                      ; ACC
-                DCD     0                                   ; Reserved
-                DCD     0                                   ; Reserved
+                DCD     USB_HP_IRQHandler                   ; USB_HP
+                DCD     USB_LP_IRQHandler                   ; USB_LP
                 DCD     DMA2_Channel6_7_IRQHandler          ; DMA2 Channel6 & Channel7
 __Vectors_End
 
@@ -198,8 +198,8 @@ Default_Handler PROC
 
                 EXPORT  WWDG_IRQHandler                     [WEAK]
                 EXPORT  PVD_IRQHandler                      [WEAK]
-                EXPORT  TAMP_STAMP_IRQHandler               [WEAK]
-                EXPORT  ERTC_WKUP_IRQHandler                [WEAK]
+                EXPORT  TAMPER_IRQHandler                   [WEAK]
+                EXPORT  RTC_IRQHandler                      [WEAK]
                 EXPORT  FLASH_IRQHandler                    [WEAK]
                 EXPORT  RCC_IRQHandler                      [WEAK]
                 EXPORT  EXTI0_IRQHandler                    [WEAK]
@@ -215,8 +215,8 @@ Default_Handler PROC
                 EXPORT  DMA1_Channel6_IRQHandler            [WEAK]
                 EXPORT  DMA1_Channel7_IRQHandler            [WEAK]
                 EXPORT  ADC1_2_IRQHandler                   [WEAK]
-                EXPORT  CAN1_TX_IRQHandler                  [WEAK]
-                EXPORT  CAN1_RX0_IRQHandler                 [WEAK]
+                EXPORT  USB_HP_CAN1_TX_IRQHandler           [WEAK]
+                EXPORT  USB_LP_CAN1_RX0_IRQHandler          [WEAK]
                 EXPORT  CAN1_RX1_IRQHandler                 [WEAK]
                 EXPORT  CAN1_SCE_IRQHandler                 [WEAK]
                 EXPORT  EXTI9_5_IRQHandler                  [WEAK]
@@ -237,28 +237,29 @@ Default_Handler PROC
                 EXPORT  USART2_IRQHandler                   [WEAK]
                 EXPORT  USART3_IRQHandler                   [WEAK]
                 EXPORT  EXTI15_10_IRQHandler                [WEAK]
-                EXPORT  ERTCAlarm_IRQHandler                [WEAK]
+                EXPORT  RTCAlarm_IRQHandler                 [WEAK]
                 EXPORT  USBWakeUp_IRQHandler                [WEAK]
                 EXPORT  SDIO_IRQHandler                     [WEAK]
                 EXPORT  TMR5_GLOBAL_IRQHandler              [WEAK]
-                EXPORT  UART4_IRQHandler                    [WEAK]
-                EXPORT  UART5_IRQHandler                    [WEAK]
                 EXPORT  DMA2_Channel1_IRQHandler            [WEAK]
                 EXPORT  DMA2_Channel2_IRQHandler            [WEAK]
                 EXPORT  DMA2_Channel3_IRQHandler            [WEAK]
                 EXPORT  DMA2_Channel4_5_IRQHandler          [WEAK]
-                EXPORT  USBOTG_IRQHandler                   [WEAK]
-                EXPORT  COMP1_IRQHandler                    [WEAK]
-                EXPORT  COMP2_IRQHandler                    [WEAK]
+                EXPORT  CAN2_TX_IRQHandler                  [WEAK]
+                EXPORT  CAN2_RX0_IRQHandler                 [WEAK]
+                EXPORT  CAN2_RX1_IRQHandler                 [WEAK]
+                EXPORT  CAN2_SCE_IRQHandler                 [WEAK]
                 EXPORT  ACC_IRQHandler                      [WEAK]
+                EXPORT  USB_HP_IRQHandler                   [WEAK]
+                EXPORT  USB_LP_IRQHandler                   [WEAK]
                 EXPORT  DMA2_Channel6_7_IRQHandler          [WEAK]
 
 
 
 WWDG_IRQHandler
 PVD_IRQHandler
-TAMP_STAMP_IRQHandler
-ERTC_WKUP_IRQHandler
+TAMPER_IRQHandler
+RTC_IRQHandler
 FLASH_IRQHandler
 RCC_IRQHandler
 EXTI0_IRQHandler
@@ -274,8 +275,8 @@ DMA1_Channel5_IRQHandler
 DMA1_Channel6_IRQHandler
 DMA1_Channel7_IRQHandler
 ADC1_2_IRQHandler
-CAN1_TX_IRQHandler
-CAN1_RX0_IRQHandler
+USB_HP_CAN1_TX_IRQHandler
+USB_LP_CAN1_RX0_IRQHandler
 CAN1_RX1_IRQHandler
 CAN1_SCE_IRQHandler
 EXTI9_5_IRQHandler
@@ -296,20 +297,21 @@ USART1_IRQHandler
 USART2_IRQHandler
 USART3_IRQHandler
 EXTI15_10_IRQHandler
-ERTCAlarm_IRQHandler
+RTCAlarm_IRQHandler
 USBWakeUp_IRQHandler
 SDIO_IRQHandler
 TMR5_GLOBAL_IRQHandler
-UART4_IRQHandler
-UART5_IRQHandler
 DMA2_Channel1_IRQHandler
 DMA2_Channel2_IRQHandler
 DMA2_Channel3_IRQHandler
 DMA2_Channel4_5_IRQHandler
-USBOTG_IRQHandler
-COMP1_IRQHandler
-COMP2_IRQHandler
+CAN2_TX_IRQHandler
+CAN2_RX0_IRQHandler
+CAN2_RX1_IRQHandler
+CAN2_SCE_IRQHandler
 ACC_IRQHandler
+USB_HP_IRQHandler
+USB_LP_IRQHandler
 DMA2_Channel6_7_IRQHandler
                 B       .
 
