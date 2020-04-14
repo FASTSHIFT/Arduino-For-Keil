@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 #include "timer.h"
-#include "Arduino.h"
 
 /*定时器编号枚举*/
 typedef enum
@@ -310,17 +309,17 @@ while(0)
     Timer_ClockCmd(TIMx, ENABLE);
     
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseStructure.TIM_Period = period - 1;                 //设置在下一个更新事件装入活动的自动重装载寄存器周期的值
-    TIM_TimeBaseStructure.TIM_Prescaler = prescaler - 1;              //设置用来作为TIMx时钟频率除数的预分频值  10Khz的计数频率
-    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;     //设置时钟分割:TDTS = Tck_tim
+    TIM_TimeBaseStructure.TIM_Period = period - 1;              //设置在下一个更新事件装入活动的自动重装载寄存器周期的值
+    TIM_TimeBaseStructure.TIM_Prescaler = prescaler - 1;        //设置用来作为TIMx时钟频率除数的预分频值
+    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;     //设置分频
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; //TIM向上计数模式
-    TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure);             //根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
+    TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure);
 
     /**********************************设置中断优先级************************************/
     NVIC_InitStructure.NVIC_IRQChannel = TIMx_IRQn;  //TIM中断
     NVIC_InitStructure.NVIC_IRQChannelPriority = ChannelPriority;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能
-    NVIC_Init(&NVIC_InitStructure);  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
+    NVIC_Init(&NVIC_InitStructure);
 
     TIM_ClearFlag(TIMx, TIM_FLAG_Update);
     TIM_ClearITPendingBit(TIMx, TIM_IT_Update);

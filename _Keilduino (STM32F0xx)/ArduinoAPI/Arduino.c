@@ -243,3 +243,7 @@ uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout )
 
     return (uint32_t)( ( (unsigned long long)(width + 5) *  (unsigned long long) 16000000.0) / (unsigned long long)F_CPU ) ;
 }
+
+void yield(void)
+{
+}

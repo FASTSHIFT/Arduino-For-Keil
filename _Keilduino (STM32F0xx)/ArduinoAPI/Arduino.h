@@ -40,8 +40,6 @@ extern "C" {
 #include "pwm.h"
 #include "timer.h"
 
-#define __STM32__
-
 #define PI 3.1415926535897932384626433832795
 #define HALF_PI 1.5707963267948966192313216916398
 #define TWO_PI 6.283185307179586476925286766559
@@ -72,16 +70,21 @@ extern "C" {
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
-#define _BV(bit) (1<<(bit))
+#ifndef _BV
+#define _BV(bit) (1 << (bit))
+#endif 
+
+#define clockCyclesPerMicrosecond()  ( F_CPU / 1000000L )
+#define clockCyclesToMicroseconds(a) ( ((a) * 1000L) / (F_CPU / 1000L) )
+#define microsecondsToClockCycles(a) ( (a) * (F_CPU / 1000000L) )
 
 #define delay(ms)             delay_ms(ms)
 #define delayMicroseconds(us) delay_us(us)
 
-#define sei() __set_PRIMASK(0)
-#define cli() __set_PRIMASK(1)
-#define interrupts() sei()
+#define sei()          __set_PRIMASK(0)
+#define cli()          __set_PRIMASK(1)
+#define interrupts()   sei()
 #define noInterrupts() cli()
-#define yield()
 
 #define analogInPinToBit(Pin)       (Pin)
 #define digitalPinToInterrupt(Pin)  (Pin)
@@ -89,6 +92,11 @@ extern "C" {
 #define digitalPinToBitMask(Pin)    (PIN_MAP[Pin].GPIO_Pin_x)
 #define portInputRegister(Port)     (&((Port)->IDR))
 #define portOutputRegister(Port)    (&((Port)->ODR))
+
+#define digitalWrite_HIGH(Pin) (GPIO_HIGH(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define digitalWrite_LOW(Pin)  (GPIO_LOW(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define digitalRead_FAST(Pin)  (GPIO_READ(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define togglePin(Pin)         (GPIO_TOGGLE(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 
 #define NOT_A_PIN 0
 #define NOT_A_PORT 0
@@ -115,15 +123,18 @@ uint32_t pulseIn(uint32_t Pin, uint32_t State, uint32_t Timeout);
 
 long map(long x, long in_min, long in_max, long out_min, long out_max);
 double fmap(double x, double in_min, double in_max, double out_min, double out_max);
+void yield(void);
 
 #ifdef __cplusplus
 }// extern "C"
 #endif
 
 #ifdef __cplusplus
-#include "WCharacter.h"
-#include "WString.h"
-#include "HardwareSerial.h"
+#  include "WCharacter.h"
+#  include "WString.h"
+#  include "WMath.h"
+#  include "Tone.h"
+#  include "HardwareSerial.h"
 #endif
 
 #endif

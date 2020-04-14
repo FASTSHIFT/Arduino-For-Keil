@@ -37,7 +37,7 @@ const PinInfo_TypeDef PIN_MAP[] =
     {GPIOA, TIM2, ADC1,  GPIO_Pin_2, 3, ADC_Channel_2}, /* PA2 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_3, 4, ADC_Channel_3}, /* PA3 */
     {GPIOA, TIM14,ADC1,  GPIO_Pin_4, 1, ADC_Channel_4}, /* PA4 */
-    {GPIOA, NULL, ADC1,  GPIO_Pin_5, 0, ADC_Channel_5}, /* PA5 */
+    {GPIOA, TIM2, ADC1,  GPIO_Pin_5, 1, ADC_Channel_5}, /* PA5 */
     {GPIOA, TIM3, ADC1,  GPIO_Pin_6, 1, ADC_Channel_6}, /* PA6 */
     {GPIOA, TIM3, ADC1,  GPIO_Pin_7, 2, ADC_Channel_7}, /* PA7 */
     {GPIOA, TIM1, NULL,  GPIO_Pin_8, 1, ADC_Channel_X}, /* PA8 */

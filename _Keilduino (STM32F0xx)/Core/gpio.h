@@ -76,6 +76,11 @@ extern const PinInfo_TypeDef PIN_MAP[PIN_MAX];
 #define IS_ADC_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].ADC_Channel  != ADC_Channel_X)
 #define IS_PWM_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].TimerChannel != 0)
 
+#define GPIO_HIGH(GPIOx,GPIO_Pin_x)     ((GPIOx)->BSRR = (GPIO_Pin_x))
+#define GPIO_LOW(GPIOx,GPIO_Pin_x)      ((GPIOx)->BRR  = (GPIO_Pin_x))
+#define GPIO_READ(GPIOx,GPIO_Pin_x)    (((GPIOx)->IDR  & (GPIO_Pin_x))!=0)
+#define GPIO_TOGGLE(GPIOx,GPIO_Pin_x)   ((GPIOx)->ODR ^= (GPIO_Pin_x))
+
 void GPIOx_Init(
     GPIO_TypeDef* GPIOx, 
     uint16_t GPIO_Pin_x, 

@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 #include "delay.h"
-#include "Arduino.h"
 
 /*根据当前时钟频率自动计算Systick初始值*/
 #define SysTick_LoadValue (F_CPU / 1000U)

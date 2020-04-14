@@ -337,7 +337,7 @@
               <MiscControls>--gnu</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,ARDUINO=111</Define>
               <Undefine></Undefine>
-              <IncludePath>..\USER;..\ArduinoAPI;..\Core;..\Core\STM32F0xx_StdPeriph_Driver\inc;..\Core\CMSIS\Device\ST\STM32F0xx\Include;..\Core\CMSIS\Include</IncludePath>
+              <IncludePath>..\USER;..\Libraries;..\ArduinoAPI;..\Core;..\Core\STM32F0xx_StdPeriph_Driver\inc;..\Core\CMSIS\Device\ST\STM32F0xx\Include;..\Core\CMSIS\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -618,6 +618,16 @@
               <FileName>system_stm32f0xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\CMSIS\Device\ST\STM32F0xx\Source\Templates\system_stm32f0xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>README</GroupName>
+          <Files>
+            <File>
+              <FileName>README.md</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\README.md</FilePath>
             </File>
           </Files>
         </Group>
