@@ -40,8 +40,6 @@ extern "C" {
 #include "pwm.h"
 #include "timer.h"
 
-#define __STM32__
-
 #define PI 3.1415926535897932384626433832795f
 #define HALF_PI 1.5707963267948966192313216916398f
 #define TWO_PI 6.283185307179586476925286766559f
@@ -94,6 +92,11 @@ extern "C" {
 #define digitalPinToBitMask(Pin)    (PIN_MAP[Pin].GPIO_Pin_x)
 #define portInputRegister(Port)     (&((Port)->IDR))
 #define portOutputRegister(Port)    (&((Port)->ODR))
+
+#define digitalWrite_HIGH(Pin) (GPIO_HIGH  (PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define digitalWrite_LOW(Pin)  (GPIO_LOW   (PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define digitalRead_FAST(Pin)  (GPIO_READ  (PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
+#define togglePin(Pin)         (GPIO_TOGGLE(PIN_MAP[Pin].GPIOx,PIN_MAP[Pin].GPIO_Pin_x))
 
 #define NOT_A_PIN 0
 #define NOT_A_PORT 0

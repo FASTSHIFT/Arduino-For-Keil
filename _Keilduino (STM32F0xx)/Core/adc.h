@@ -28,6 +28,10 @@ extern "C" {
 #endif
 
 #include "mcu_type.h"
+    
+void ADC_DMA_Init(void);
+int16_t ADC_DMA_Register(uint32_t ADC_Channel);
+uint16_t ADC_DMA_GetValue(uint32_t ADC_Channel);
 
 void ADCx_Init(ADC_TypeDef* ADCx);
 uint16_t ADCx_GetValue(ADC_TypeDef* ADCx, uint32_t ADC_Channel);

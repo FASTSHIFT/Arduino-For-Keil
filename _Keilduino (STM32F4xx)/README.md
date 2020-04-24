@@ -1,4 +1,5 @@
-# Arduino-For-Keil STM32F4xx https://github.com/FASTSHIFT/Arduino-For-Keil
+# Arduino-For-Keil STM32F4xx
+> https://github.com/FASTSHIFT/Arduino-For-Keil
 
 # 注意: 
 1. 标准外设库默认晶振频率是25MHz。若板载晶振为8MHz,需要将system_stm32f4xx.c 的 PLL_M 定义 25 改为 8。
@@ -87,3 +88,10 @@
 * 3.Arduino.h添加时钟周期与时间转换的宏
 * 4.Arduino.h添加WMath.h与Tone.h
 * 5.添加README文件组
+
+## [v3.1] - 2020.4.16
+* 1.去除FileGroup.h
+* 2.GPIO快速操作宏定义函数从mcu_type.h转移到gpio.h和Arduino.h
+* 3.__STM32__宏定义从Arduino.h转移到mcu_type.h
+* 4.delay.c、adc.c去除#include "Arduino.h"
+* 5.Libraries只保留Servo库

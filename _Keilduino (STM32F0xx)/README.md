@@ -71,5 +71,13 @@
 * 7.添加yield()函数实体
 * 8.GPIO快速操作宏定义函数从mcu_type.h转移到gpio.h和Arduino.h
 * 9.__STM32__宏定义从Arduino.h转移到mcu_type.h
-* 10.delay.c去除#include "Arduino.h"
+* 10.delay.c、adc.c去除#include "Arduino.h"
 * 11.为PA5添加定时器通道定义
+
+## [v2.6] - 2020.4.16
+* 1.去除FileGroup.h
+* 2.Libraries只保留Servo库
+
+## [v2.7] - 2020.4.24
+* 1.adc库只能读一个通道的BUG已解决
+* 2.ADC_DMA模式已支持

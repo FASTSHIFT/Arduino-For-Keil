@@ -61,31 +61,17 @@ typedef enum {
     SPI_STATE_TRANSFER
 } spi_mode_t;
 
-#define __builtin_constant_p(x) 1
-
 class SPISettings
 {
 public:
     SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode) {
-        if (__builtin_constant_p(clock)) {
-            init_AlwaysInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
-        } else {
-            init_MightInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
-        }
+        init_AlwaysInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
     }
     SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode, uint32_t dataSize) {
-        if (__builtin_constant_p(clock)) {
-            init_AlwaysInline(clock, bitOrder, dataMode, dataSize);
-        } else {
-            init_MightInline(clock, bitOrder, dataMode, dataSize);
-        }
+        init_AlwaysInline(clock, bitOrder, dataMode, dataSize);
     }
     SPISettings(uint32_t clock) {
-        if (__builtin_constant_p(clock)) {
-            init_AlwaysInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
-        } else {
-            init_MightInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
-        }
+        init_AlwaysInline(clock, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
     }
     SPISettings() {
         init_AlwaysInline(4000000, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
@@ -110,7 +96,6 @@ private:
 
     friend class SPIClass;
 };
-
 
 class SPIClass
 {

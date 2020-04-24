@@ -37,6 +37,14 @@ void pinMode(uint8_t Pin, pinMode_TypeDef pinMode_x)
     {
         PWM_Init(Pin, 1000, 2000);
     }
+    else if(pinMode_x == INPUT_ANALOG_DMA)
+    {
+        if(!IS_ADC_PIN(Pin))
+            return;
+        
+        pinMode(Pin, INPUT_ANALOG);
+        ADC_DMA_Register(PIN_MAP[Pin].ADC_Channel);
+    }
     else
     {
         GPIOx_Init(
@@ -97,13 +105,16 @@ uint16_t analogRead(uint8_t Pin)
 }
 
 /**
-  * @brief  从指定的DMA通道读取值(DMA方式)
-  * @param  DMA_Channel: DMA通道编号
+  * @brief  模拟引脚读取值(DMA方式)
+  * @param  Pin: 引脚编号
   * @retval ADC值：0~4095
   */
-uint16_t analogRead_DMA(uint8_t DMA_Channel)
+uint16_t analogRead_DMA(uint8_t Pin)
 {
-    return 0;
+    if(!IS_ADC_PIN(Pin))
+        return 0;
+    
+    return ADC_DMA_GetValue(PIN_MAP[Pin].ADC_Channel);
 }
 
 /**

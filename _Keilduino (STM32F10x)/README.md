@@ -1,4 +1,5 @@
-# Arduino-For-Keil STM32F10x https://github.com/FASTSHIFT/Arduino-For-Keil
+# Arduino-For-Keil STM32F10x
+> https://github.com/FASTSHIFT/Arduino-For-Keil
 
 # 更新日志
 ## [v1.0] - 2017.11.20
@@ -251,3 +252,8 @@
 * 4.Arduino.h添加时钟周期与时间转换的宏
 * 5.Arduino.h添加WMath.h与Tone.h
 * 6.添加README文件组
+
+## [v7.8] - 2020.4.23
+* 1.去除FileGroup.h
+* 2.GPIO快速操作宏定义函数从mcu_type.h转移到gpio.h和Arduino.h
+* 3.__STM32__宏定义从Arduino.h转移到mcu_type.h

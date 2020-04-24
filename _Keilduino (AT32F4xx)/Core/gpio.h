@@ -80,6 +80,11 @@ extern const PinInfo_TypeDef PIN_MAP[PIN_MAX];
 #define IS_ADC_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].ADCx != NULL && PIN_MAP[Pin].ADC_Channel  != ADC_Channel_X)
 #define IS_PWM_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].TIMx != NULL && PIN_MAP[Pin].TimerChannel != 0)
 
+#define GPIO_HIGH(GPIOX,GPIO_PIN_X)    ((GPIOX)->BSRE    = (GPIO_PIN_X))
+#define GPIO_LOW(GPIOX,GPIO_PIN_X)     ((GPIOX)->BRE     = (GPIO_PIN_X))
+#define GPIO_READ(GPIOX,GPIO_PIN_X)   (((GPIOX)->IPTDT   & (GPIO_PIN_X))!=0)
+#define GPIO_TOGGLE(GPIOX,GPIO_PIN_X)  ((GPIOX)->OPTDT  ^= (GPIO_PIN_X))
+
 void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMode_x, GPIOMaxSpeed_Type GPIO_Speed_x);
 void GPIO_JTAG_Disable(void);
 uint8_t GPIO_GetPortNum(uint8_t Pin);

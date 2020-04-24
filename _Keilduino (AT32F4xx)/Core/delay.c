@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 #include "delay.h"
-#include "Arduino.h"
 
 #define SysTick_LoadValue (F_CPU / 1000U)
 

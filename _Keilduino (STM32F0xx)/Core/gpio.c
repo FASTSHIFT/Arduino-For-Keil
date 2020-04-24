@@ -31,7 +31,7 @@ const PinInfo_TypeDef PIN_MAP[] =
 
     uint16_t GPIO_Pin_x;    //  对应GPIO_Pin位
     uint8_t TimerChannel;   //  对应定时器通道
-    uint8_t ADC_Channel;*/  //  对应ADC通道
+    uint32_t ADC_Channel;*/  //  对应ADC通道
     {GPIOA, TIM2, ADC1,  GPIO_Pin_0, 1, ADC_Channel_0}, /* PA0 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_1, 2, ADC_Channel_1}, /* PA1 */
     {GPIOA, TIM2, ADC1,  GPIO_Pin_2, 3, ADC_Channel_2}, /* PA2 */

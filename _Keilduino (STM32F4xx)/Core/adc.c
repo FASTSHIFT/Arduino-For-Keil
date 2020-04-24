@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 #include "adc.h"
-#include "Arduino.h"
 
 #define ADC_DMA_REGMAX 18
 
@@ -229,7 +228,6 @@ void ADCx_Init(ADC_TypeDef* ADCx)
     ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;//右对齐
     ADC_InitStructure.ADC_NbrOfConversion = 1;//1个转换在规则序列中 也就是只转换规则序列1
     ADC_Init(ADCx, &ADC_InitStructure);//ADC初始化
-
 
     ADC_Cmd(ADCx, ENABLE);//开启AD转换器
 }
