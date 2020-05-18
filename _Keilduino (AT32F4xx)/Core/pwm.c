@@ -44,13 +44,19 @@ void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerCh
 
     TMR_TimeBaseStructure.TMR_Period = arr;
     TMR_TimeBaseStructure.TMR_DIV = psc;
-    TMR_TimeBaseStructure.TMR_ClockDivision = 0;
+    TMR_TimeBaseStructure.TMR_ClockDivision = TMR_CKD_DIV1;
     TMR_TimeBaseStructure.TMR_CounterMode = TMR_CounterDIR_Up;
     TMR_TimeBaseInit(TIMx, &TMR_TimeBaseStructure);
 
+    TMR_OCStructInit(&TMR_OCInitStructure);
     TMR_OCInitStructure.TMR_OCMode = TMR_OCMode_PWM2;
-    TMR_OCInitStructure.TMR_OutputState = TMR_OutputState_Enable;
     TMR_OCInitStructure.TMR_OCPolarity = TMR_OCPolarity_Low;
+    TMR_OCInitStructure.TMR_OCIdleState = TMR_OCIdleState_Reset;
+    TMR_OCInitStructure.TMR_OCNPolarity = TMR_OCNPolarity_Low;
+    TMR_OCInitStructure.TMR_OCNIdleState = TMR_OCNIdleState_Reset;
+    TMR_OCInitStructure.TMR_OutputState = TMR_OutputState_Enable;
+    TMR_OCInitStructure.TMR_OutputNState = TMR_OutputNState_Disable;
+    TMR_OCInitStructure.TMR_Pulse = 0;
     switch(TimerChannel)
     {
     case 1:
@@ -71,8 +77,8 @@ void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerCh
         break;
     }
 
-    TMR_Cmd(TIMx, ENABLE);
     TMR_CtrlPWMOutputs(TIMx, ENABLE);
+    TMR_Cmd(TIMx, ENABLE);
 }
 
 /**

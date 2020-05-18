@@ -42,3 +42,6 @@
 * 2.GPIO快速操作宏定义函数从mcu_type.h转移到gpio.h和Arduino.h
 * 3.__STM32__宏定义从Arduino.h转移到mcu_type.h
 * 4.delay.c去除#include "Arduino.h"
+
+## [v1.9] - 2020.5.17
+* 1.补全输出捕获配置参数，PA8无法输出PWM的BUG已解决

@@ -76,7 +76,7 @@ typedef TMR_Type          TIM_TypeDef;
 #define F_CPU                   SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
-#define __KEILDUINO__ 180
+#define __KEILDUINO__ 190
 
 #ifdef __cplusplus
 }
