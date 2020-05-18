@@ -21,6 +21,8 @@
 
 [STM32F4xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F4xx_DFP.1.0.8.pack)
 
+[STM32L1xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32L1xx_DFP.1.0.2.pack)
+
 **注意** 如果您已经安装了更高版本的pack，需要使用keil自带的包管理器将高版本的pack进行Remove
 
 >一般用法可以直接参照[Arduino语法](https://www.arduino.cc/reference/en/)。
@@ -49,7 +51,7 @@ void loop()
 ![image](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/Framework.png)
 
 ## 4.注意
-     1.请不要删除"main.cpp"中的FileGroup.h和main函数。 
+     1.请不要删除"main.cpp"中的main函数。 
      2.添加第三方库函数的时候要加入完整的路径，以及.cpp源文件. 
      3.由于平台的不同，有的函数库可能要进行修改才能正常编译，具体修改方式请按照编译器的提示，或者可以提交Issues。 
 
