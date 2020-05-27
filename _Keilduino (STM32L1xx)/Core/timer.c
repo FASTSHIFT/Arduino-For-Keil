@@ -337,7 +337,7 @@ while(0)
     TIMx_IRQ_DEF(2, TIM2_IRQn);
     TIMx_IRQ_DEF(3, TIM3_IRQn);
     TIMx_IRQ_DEF(4, TIM4_IRQn);
-    TIMx_IRQ_DEF(5, TIM5_IRQn);
+//    TIMx_IRQ_DEF(5, TIM5_IRQn);
     TIMx_IRQ_DEF(6, TIM6_IRQn);
     TIMx_IRQ_DEF(7, TIM7_IRQn);
     TIMx_IRQ_DEF(9, TIM9_IRQn);

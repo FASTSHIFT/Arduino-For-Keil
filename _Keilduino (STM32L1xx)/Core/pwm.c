@@ -96,11 +96,60 @@ uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint32_t PWM_Frequency)
     psc = F_CPU / PWM_DutyCycle / PWM_Frequency;
 
     pinMode(Pin, OUTPUT_AF);
+    GPIO_PinAFConfig(PIN_MAP[Pin].GPIOx, TIM_GetPinSourcex(Pin), TIM_GetGPIO_AF(Pin));
     
     TIM_Cmd(PIN_MAP[Pin].TIMx, DISABLE);
     TIMx_OCxInit(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
     return PIN_MAP[Pin].TimerChannel;
 }
+
+/**
+  * @brief  获取引脚对应的定时器复用编号
+  * @param  Pin: 引脚编号
+  * @retval 定时器复用编号
+  */
+uint8_t TIM_GetGPIO_AF(uint8_t Pin)
+{
+    uint8_t GPIO_AF_x = 0;
+    TIM_TypeDef* TIMx = PIN_MAP[Pin].TIMx;
+    
+    if(!IS_TIM_ALL_PERIPH(TIMx))
+        return 0;
+
+#define TIMx_GPIO_AF_DEF(n)\
+do{\
+    if(TIMx == TIM##n)\
+    {\
+        GPIO_AF_x = GPIO_AF_TIM##n;\
+    }\
+}while(0)
+
+    TIMx_GPIO_AF_DEF(2);
+    TIMx_GPIO_AF_DEF(3);
+    TIMx_GPIO_AF_DEF(4);
+    TIMx_GPIO_AF_DEF(5);
+#ifdef GPIO_AF_TIM6
+    TIMx_GPIO_AF_DEF(6);
+#endif
+#ifdef GPIO_AF_TIM7
+    TIMx_GPIO_AF_DEF(7);
+#endif
+#ifdef GPIO_AF_TIM8
+    TIMx_GPIO_AF_DEF(8);
+#endif
+#ifdef GPIO_AF_TIM9
+    TIMx_GPIO_AF_DEF(9);
+#endif
+#ifdef GPIO_AF_TIM10
+    TIMx_GPIO_AF_DEF(10);
+#endif
+#ifdef GPIO_AF_TIM11
+    TIMx_GPIO_AF_DEF(11);
+#endif
+
+    return GPIO_AF_x;
+}
+
 
 /**
   * @brief  输出PWM信号

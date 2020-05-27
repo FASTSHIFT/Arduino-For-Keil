@@ -1,17 +1,17 @@
 /*
  * MIT License
  * Copyright (c) 2019 _VIFEXTech
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -85,6 +85,11 @@ void SPIClass::begin(void)
         pinMode(PA5, OUTPUT_AF);
         pinMode(PA6, OUTPUT_AF);
         pinMode(PA7, OUTPUT_AF);
+
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF_SPI1);
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF_SPI1);
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF_SPI1);
+
     }
     else if(SPIx == SPI2)
     {
@@ -93,6 +98,10 @@ void SPIClass::begin(void)
         pinMode(PB13, OUTPUT_AF);
         pinMode(PB14, OUTPUT_AF);
         pinMode(PB15, OUTPUT_AF);
+
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource13, GPIO_AF_SPI2);
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource14, GPIO_AF_SPI2);
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_SPI2);
     }
     else if(SPIx == SPI3)
     {
@@ -101,6 +110,10 @@ void SPIClass::begin(void)
         pinMode(PB3, OUTPUT_AF);
         pinMode(PB4, OUTPUT_AF);
         pinMode(PB5, OUTPUT_AF);
+
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource3, GPIO_AF_SPI3);
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource4, GPIO_AF_SPI3);
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource5, GPIO_AF_SPI3);
     }
 
     SPI_Settings(   SPIx,

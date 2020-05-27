@@ -97,15 +97,22 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
     {
         pinMode(PA9, OUTPUT_AF);
         pinMode(PA10, OUTPUT_AF);
-        
+
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource9, GPIO_AF_USART1);
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_USART1);
+
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+
         USARTx_IRQn = USART1_IRQn;
     }
     else if(USARTx == USART2)
     {
         pinMode(PA2, OUTPUT_AF);
         pinMode(PA3, OUTPUT_AF);
-        
+
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_USART2);
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_USART2);
+
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
         USARTx_IRQn = USART2_IRQn;
     }
@@ -113,7 +120,10 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
     {
         pinMode(PB10, OUTPUT_AF);
         pinMode(PB11, OUTPUT_AF);
-        
+
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_USART3);
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource11, GPIO_AF_USART3);
+
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
         USARTx_IRQn = USART3_IRQn;
     }
@@ -226,7 +236,7 @@ void HardwareSerial::flush(void)
   */
 size_t HardwareSerial::write(uint8_t n)
 {
-    while(!USART_GetFlagStatus(USARTx, USART_FLAG_TXE)){};
+    while(!USART_GetFlagStatus(USARTx, USART_FLAG_TXE)) {};
     USART_SendData(USARTx, n);
     return n;
 }

@@ -14,16 +14,16 @@
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>STM32L151ZE</Device>
+          <Device>STM32L151C8</Device>
           <Vendor>STMicroelectronics</Vendor>
           <PackID>Keil.STM32L1xx_DFP.1.0.2</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
-          <Cpu>IRAM(0x20000000,0x14000) IROM(0x08000000,0x80000) CPUTYPE("Cortex-M3") CLOCK(12000000) ELITTLE</Cpu>
+          <Cpu>IRAM(0x20000000,0x2800) IROM(0x08000000,0x10000) CPUTYPE("Cortex-M3") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
-          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32L1xx_512 -FS08000000 -FL080000 -FP0($$Device:STM32L151ZE$Flash\STM32L1xx_512.FLM))</FlashDriverDll>
+          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32L1xx_128 -FS08000000 -FL010000 -FP0($$Device:STM32L151C8$Flash\STM32L1xx_128.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
-          <RegisterFile>$$Device:STM32L151ZE$Device\Include\STM32L1xx.h</RegisterFile>
+          <RegisterFile>$$Device:STM32L151C8$Device\Include\STM32L1xx.h</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -33,7 +33,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>$$Device:STM32L151ZE$SVD\STM32L1xx.svd</SFDFile>
+          <SFDFile>$$Device:STM32L151C8$SVD\STM32L1xx.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -244,12 +244,12 @@
               <IRAM>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x14000</Size>
+                <Size>0x2800</Size>
               </IRAM>
               <IROM>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x80000</Size>
+                <Size>0x10000</Size>
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -274,7 +274,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x80000</Size>
+                <Size>0x10000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -299,7 +299,7 @@
               <OCR_RVCT9>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x14000</Size>
+                <Size>0x2800</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -839,6 +839,22 @@
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
         <targetInfos/>
       </file>
+      <file attr="config" category="source" condition="STM32L1_MD" name="Device\Source\ARM\startup_stm32l1xx_md.s">
+        <instance index="0">RTE\Device\STM32L151C8\startup_stm32l1xx_md.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32L1 CMSIS Device"/>
+        <package name="STM32L1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.2"/>
+        <targetInfos>
+          <targetInfo name="Project"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" condition="STM32L1" name="Device\Source\system_stm32l1xx.c">
+        <instance index="0">RTE\Device\STM32L151C8\system_stm32l1xx.c</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32L1 CMSIS Device"/>
+        <package name="STM32L1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.2"/>
+        <targetInfos>
+          <targetInfo name="Project"/>
+        </targetInfos>
+      </file>
       <file attr="config" category="source" condition="STM32L1_HD" name="Device\Source\ARM\startup_stm32l1xx_hd.s">
         <instance index="0" removed="1">RTE\Device\STM32L151ZD\startup_stm32l1xx_hd.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32L1 CMSIS Device"/>
@@ -858,20 +874,16 @@
         <targetInfos/>
       </file>
       <file attr="config" category="source" condition="STM32L1_XL" name="Device\Source\ARM\startup_stm32l1xx_xl.s" version="1.0.0">
-        <instance index="0">RTE\Device\STM32L151ZE\startup_stm32l1xx_xl.s</instance>
+        <instance index="0" removed="1">RTE\Device\STM32L151ZE\startup_stm32l1xx_xl.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32L1 CMSIS Device"/>
         <package name="STM32L1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.2"/>
-        <targetInfos>
-          <targetInfo name="Project"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
       <file attr="config" category="source" condition="STM32L1" name="Device\Source\system_stm32l1xx.c" version="2.0.0">
-        <instance index="0">RTE\Device\STM32L151ZE\system_stm32l1xx.c</instance>
+        <instance index="0" removed="1">RTE\Device\STM32L151ZE\system_stm32l1xx.c</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32L1 CMSIS Device"/>
         <package name="STM32L1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.2"/>
-        <targetInfos>
-          <targetInfo name="Project"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
     </files>
   </RTE>

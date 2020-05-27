@@ -1,17 +1,17 @@
 /*
  * MIT License
  * Copyright (c) 2019 _VIFEXTech
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -61,10 +61,10 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
     {GPIOB, TIM4, NULL,  GPIO_Pin_9, 4, ADC_Channel_X}, /* PB9 */
     {GPIOB, NULL, NULL, GPIO_Pin_10, 0, ADC_Channel_X}, /* PB10 */
     {GPIOB, NULL, NULL, GPIO_Pin_11, 0, ADC_Channel_X}, /* PB11 */
-    {GPIOB, NULL, NULL, GPIO_Pin_12, 0, ADC_Channel_X}, /* PB12 */
-    {GPIOB, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PB13 */
-    {GPIOB, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PB14 */
-    {GPIOB, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PB15 */
+    {GPIOB, TIM10, NULL, GPIO_Pin_12, 1, ADC_Channel_X}, /* PB12 */
+    {GPIOB, TIM9, NULL, GPIO_Pin_13, 1, ADC_Channel_X}, /* PB13 */
+    {GPIOB, TIM9, NULL, GPIO_Pin_14, 2, ADC_Channel_X}, /* PB14 */
+    {GPIOB, TIM11, NULL, GPIO_Pin_15, 1, ADC_Channel_X}, /* PB15 */
 
 
     {GPIOC, NULL, ADC1,  GPIO_Pin_0, 0, ADC_Channel_10}, /* PC0 */
@@ -151,7 +151,7 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
     {GPIOG, NULL, NULL, GPIO_Pin_13, 0, ADC_Channel_X}, /* PG13 */
     {GPIOG, NULL, NULL, GPIO_Pin_14, 0, ADC_Channel_X}, /* PG14 */
     {GPIOG, NULL, NULL, GPIO_Pin_15, 0, ADC_Channel_X}, /* PG15 */
-    
+
     {GPIOH, NULL, NULL,  GPIO_Pin_0, 0, ADC_Channel_X}, /* PH0 */
     {GPIOH, NULL, NULL,  GPIO_Pin_1, 0, ADC_Channel_X}, /* PH1 */
     {GPIOH, NULL, NULL,  GPIO_Pin_2, 0, ADC_Channel_X}, /* PH2 */
