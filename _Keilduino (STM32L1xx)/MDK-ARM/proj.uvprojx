@@ -839,7 +839,7 @@
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.0"/>
         <targetInfos/>
       </file>
-      <file attr="config" category="source" condition="STM32L1_MD" name="Device\Source\ARM\startup_stm32l1xx_md.s">
+      <file attr="config" category="source" condition="STM32L1_MD" name="Device\Source\ARM\startup_stm32l1xx_md.s" version="1.0.0">
         <instance index="0">RTE\Device\STM32L151C8\startup_stm32l1xx_md.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32L1 CMSIS Device"/>
         <package name="STM32L1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.2"/>
@@ -847,7 +847,7 @@
           <targetInfo name="Project"/>
         </targetInfos>
       </file>
-      <file attr="config" category="source" condition="STM32L1" name="Device\Source\system_stm32l1xx.c">
+      <file attr="config" category="source" condition="STM32L1" name="Device\Source\system_stm32l1xx.c" version="1.0.0">
         <instance index="0">RTE\Device\STM32L151C8\system_stm32l1xx.c</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32L1 CMSIS Device"/>
         <package name="STM32L1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.2"/>

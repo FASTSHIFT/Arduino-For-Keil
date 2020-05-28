@@ -27,7 +27,7 @@
 #include "stm32l1xx.h"
 #include "stm32l1xx_conf.h"
 
-#define __KEILDUINO__ 110
+#define __KEILDUINO__ 120
 #define __STM32__
 #define __STM32L1__
 #define F_CPU                  SystemCoreClock

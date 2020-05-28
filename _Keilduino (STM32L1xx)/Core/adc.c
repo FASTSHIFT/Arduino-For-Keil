@@ -1,17 +1,17 @@
 /*
  * MIT License
  * Copyright (c) 2019 _VIFEXTech
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -102,6 +102,9 @@ void ADC_DMA_Init(void)
     DMA_InitTypeDef DMA_InitStructure;
     ADC_InitTypeDef ADC_InitStructure;
     uint16_t index;
+    
+    // 默认配置
+    ADCx_Init(ADC1);
 
     // 打开DMA时钟
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
@@ -153,7 +156,7 @@ void ADC_DMA_Init(void)
 
     // ADC 模式配置
     ADC_StructInit(&ADC_InitStructure);
-    
+
     // 12bit模式
     ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
 
@@ -223,7 +226,15 @@ uint16_t ADC_DMA_GetValue(uint8_t ADC_Channel)
 void ADCx_Init(ADC_TypeDef* ADCx)
 {
     ADC_InitTypeDef ADC_InitStructure;
+    ADC_CommonInitTypeDef ADC_CommonInitStructure;
+
+    /*必须开启HSI，否则无法工作*/
+    RCC_HSICmd(ENABLE);
     
+    /*等待HSI准备好*/
+    while(RCC_GetFlagStatus(RCC_FLAG_HSIRDY) == RESET);
+
+    /*使能ADC外设时钟*/
     if(ADCx == ADC1)
     {
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
@@ -233,15 +244,27 @@ void ADCx_Init(ADC_TypeDef* ADCx)
         return;
     }
 
+    ADC_DeInit(ADCx);
+
+    ADC_BankSelection(ADCx, ADC_Bank_A);
+
+    ADC_CommonStructInit(&ADC_CommonInitStructure);
+    ADC_CommonInit(&ADC_CommonInitStructure);
+
     ADC_StructInit(&ADC_InitStructure);//初始化ADC结构
     ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;//12位精度
-    ADC_InitStructure.ADC_ContinuousConvMode = ENABLE; //规定模式装换工作在连续模式
+    ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
     ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
     ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;//数据对其为右对齐
     ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+    ADC_InitStructure.ADC_NbrOfConversion = 1;
     ADC_Init(ADCx, &ADC_InitStructure);
 
+    ADC_PowerDownCmd(ADCx, ADC_PowerDown_Idle_Delay, DISABLE);
+    ADC_DelaySelectionConfig(ADCx, ADC_DelayLength_None);
+
     ADC_Cmd(ADCx, ENABLE);
+    while(ADC_GetFlagStatus(ADCx, ADC_FLAG_ADONS) == RESET);
 }
 
 /**
