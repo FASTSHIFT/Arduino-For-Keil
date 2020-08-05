@@ -11,7 +11,9 @@
 >   3.简化的Arduino框架，相对[stm32duino](https://github.com/stm32duino)与HAL库，拥有更小的代码体积、更快的编译和执行速度。
 
 ## 2.使用
->   底层基于 **STM32标准外设库** 二次封装，安装之后才能正常编译，下载链接位于下方。
+>   底层基于 **AT32/STM32标准外设库** 二次封装，安装之后才能正常编译，下载链接位于下方。
+
+[AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_V1.3.1.zip)
 
 [STM32F0xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F0xx_DFP.1.0.1.pack)
 
@@ -35,15 +37,15 @@
 ```C
 void setup()
 {
-	pinMode(PA0,OUTPUT);			//使用Arduino函数将配置PA0为输出模式
+    pinMode(PA0,OUTPUT);                //使用Arduino函数将配置PA0为输出模式
 }
 
 void loop()
 {
-	GPIOA -> BSRR = GPIO_Pin_0;		//使用寄存器将PA0电平拉高
-	delay(1000);				//延时一秒
-	GPIO_ResetBits(GPIOA, GPIO_Pin_0);	//使用标准外设库的函数将PA0电平拉低
-	delay(1000);				//延时一秒
+    GPIOA -> BSRR = GPIO_Pin_0;         //使用寄存器将PA0电平拉高
+    delay(1000);                        //延时一秒
+    GPIO_ResetBits(GPIOA, GPIO_Pin_0);  //使用标准外设库的函数将PA0电平拉低
+    delay(1000);                        //延时一秒
 }
 ```
 
