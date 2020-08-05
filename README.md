@@ -42,7 +42,7 @@ void setup()
 
 void loop()
 {
-    GPIOA -> BSRR = GPIO_Pin_0;         //使用寄存器将PA0电平拉高
+    GPIOA->BSRR = GPIO_Pin_0;           //使用寄存器将PA0电平拉高
     delay(1000);                        //延时一秒
     GPIO_ResetBits(GPIOA, GPIO_Pin_0);  //使用标准外设库的函数将PA0电平拉低
     delay(1000);                        //延时一秒
