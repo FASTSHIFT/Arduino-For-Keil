@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __MCU_TYPE
-#define __MCU_TYPE
+#ifndef __MCU_TYPE_H
+#define __MCU_TYPE_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,8 +29,9 @@ extern "C" {
 
 #include "at32f4xx.h"
 #include "at32f4xx_conf.h"
-    
-        /*AT32*/          /*STM32*/
+
+/*********** AT32ºÊ»›STM32∂®“Â ***********/
+/*GPIO*/
 typedef GPIO_Type         GPIO_TypeDef;
 typedef GPIO_InitType     GPIO_InitTypeDef;
 #define GPIO_Pin_0        GPIO_Pins_0
@@ -51,6 +52,7 @@ typedef GPIO_InitType     GPIO_InitTypeDef;
 #define GPIO_Pin_15       GPIO_Pins_15
 #define GPIO_Pin_All      GPIO_Pins_All
 
+/*TIM*/
 typedef TMR_Type          TIM_TypeDef;
 #define TIM1              TMR1
 #define TIM2              TMR2
@@ -76,7 +78,7 @@ typedef TMR_Type          TIM_TypeDef;
 #define F_CPU                   SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 
-#define __KEILDUINO__ 190
+#define __KEILDUINO__ 200
 
 #ifdef __cplusplus
 }

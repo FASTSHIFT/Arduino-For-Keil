@@ -29,8 +29,8 @@
 extern "C" {
 #endif
 
-#include "stdlib.h"
-#include "stdbool.h"
+#include <stdlib.h>
+#include <stdbool.h>
 #include "binary.h"
 #include "avr/pgmspace.h"
 

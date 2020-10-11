@@ -1,17 +1,17 @@
 /*
  * MIT License
  * Copyright (c) 2019 _VIFEXTech
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -153,6 +153,8 @@ void ADC_DMA_Init(void)
 
     // ADC 模式配置
     // 只使用一个ADC，属于单模式
+    ADC_Reset(ADC1);
+    ADC_StructInit(&ADC_InitStructure);
     ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
 
     // 扫描模式
@@ -162,7 +164,7 @@ void ADC_DMA_Init(void)
     ADC_InitStructure.ADC_ContinuousMode = ENABLE;
 
     // 不用外部触发转换，软件开启即可
-    ADC_InitStructure.ADC_ExternalTrig = ADC_ExternalTrigInjec_None;
+    ADC_InitStructure.ADC_ExternalTrig = ADC_ExternalTrig_None;
 
     // 转换结果右对齐
     ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
@@ -200,7 +202,7 @@ void ADC_DMA_Init(void)
 
     // 初始化ADC 校准寄存器
     ADC_RstCalibration(ADC1);
-    
+
     // 等待校准寄存器初始化完成
     while(ADC_GetResetCalibrationStatus(ADC1));
 
@@ -240,7 +242,7 @@ uint16_t ADC_DMA_GetValue(uint8_t ADC_Channel)
 void ADCx_Init(ADC_Type* ADCx)
 {
     ADC_InitType ADC_InitStructure;
-    
+
     if(ADCx == ADC1)
     {
         RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_ADC1, ENABLE);
@@ -259,14 +261,15 @@ void ADCx_Init(ADC_Type* ADCx)
     {
         return;
     }
-    
+
     RCC_ADCCLKConfig(RCC_APB2CLK_Div8);
 
     ADC_Reset(ADCx);
+    ADC_StructInit(&ADC_InitStructure);
     ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
     ADC_InitStructure.ADC_ScanMode = DISABLE;
     ADC_InitStructure.ADC_ContinuousMode = DISABLE;
-    ADC_InitStructure.ADC_ExternalTrig = ADC_ExternalTrigInjec_None;
+    ADC_InitStructure.ADC_ExternalTrig = ADC_ExternalTrig_None;
     ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
     ADC_InitStructure.ADC_NumOfChannel = 1;
     ADC_Init(ADCx, &ADC_InitStructure);
@@ -288,7 +291,7 @@ uint16_t ADCx_GetValue(ADC_Type* ADCx, uint16_t ADC_Channel)
 {
     ADC_RegularChannelConfig(ADCx, ADC_Channel, 1, ADC_SampleTime_41_5);
 
-    ADC_SoftwareStartConvCtrl(ADC1, ENABLE);
+    ADC_SoftwareStartConvCtrl(ADCx, ENABLE);
     while(!ADC_GetFlagStatus(ADCx, ADC_FLAG_EC));
     return ADC_GetConversionValue(ADCx);
 }

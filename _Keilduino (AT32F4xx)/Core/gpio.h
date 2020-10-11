@@ -30,7 +30,7 @@ extern "C" {
 #include "mcu_type.h"
 
 #ifndef NULL
-#define NULL 0
+#  define NULL 0
 #endif
 
 #define ADC_Channel_X ((uint8_t)0xFF)
@@ -43,7 +43,9 @@ typedef enum {
 #ifdef GPIOE
     PE0, PE1, PE2, PE3, PE4, PE5, PE6, PE7, PE8, PE9, PE10, PE11, PE12, PE13, PE14, PE15,
 #endif
+#ifdef GPIOF
     PF0, PF1, PF2, PF3, PF4, PF5, PF6, PF7, PF8, PF9, PF10, PF11, PF12, PF13, PF14, PF15,
+#endif
 #ifdef GPIOG
     PG0, PG1, PG2, PG3, PG4, PG5, PG6, PG7, PG8, PG9, PG10, PG11, PG12, PG13, PG14, PG15,
 #endif
