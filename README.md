@@ -13,7 +13,7 @@
 ## 2.使用
 >   底层基于 **AT32/STM32标准外设库** 二次封装，安装之后才能正常编译，下载链接位于下方。
 
-[AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_V1.3.1.zip)
+[AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_V1.3.4.zip)
 
 [STM32F0xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F0xx_DFP.1.0.1.pack)
 
