@@ -141,7 +141,7 @@ const PinInfo_TypeDef PIN_MAP[] =
   * @brief  GPIO初始化
   * @param  GPIOx: GPIO地址
   * @param  GPIO_Pin_x: GPIO对应位
-  * @param  GPIO_Mode_x: GPIO模式
+  * @param  pinMode_x: GPIO模式
   * @param  GPIO_Speed_x: GPIO速度
   * @retval 无
   */

@@ -31,17 +31,25 @@ void I2Cx_Init(I2C_Type *I2Cx, uint32_t baudRate)
         pinMode(PB6, OUTPUT_AF_OD);
         pinMode(PB7, OUTPUT_AF_OD);
     }
+#ifdef RCC_APB1PERIPH_I2C2
     else if(I2Cx == I2C2)
     {
         RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_I2C2, ENABLE);
         pinMode(PB10, OUTPUT_AF_OD);
         pinMode(PB11, OUTPUT_AF_OD);
     }
+#endif
+#ifdef RCC_APB1PERIPH_I2C3
     else if(I2Cx == I2C3)
     {
         RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_I2C3, ENABLE);
         pinMode(PA8, OUTPUT_AF_OD);
         pinMode(PC9, OUTPUT_AF_OD);
+    }
+#endif
+    else
+    {
+        return;
     }
     
     I2C_InitType i2cInit;

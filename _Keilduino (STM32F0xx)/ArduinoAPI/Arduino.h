@@ -71,7 +71,7 @@ extern "C" {
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
 #ifndef _BV
-#define _BV(bit) (1 << (bit))
+#  define _BV(bit) (1 << (bit))
 #endif 
 
 #define clockCyclesPerMicrosecond()  ( F_CPU / 1000000L )
