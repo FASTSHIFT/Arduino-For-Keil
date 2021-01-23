@@ -15,7 +15,7 @@ void loop() {
   */
 int main(void)
 {
-    NVIC_SetPriorityGrouping(NVIC_PriorityGroup_2);
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
     GPIO_JTAG_Disable();
     Delay_Init();
     ADCx_Init(ADC1);

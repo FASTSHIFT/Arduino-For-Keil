@@ -25,7 +25,6 @@
  *****************************************************************************/
 
 #include "Servo.h"
-#include "timer.h"
 
 #define __Map(x,in_min,in_max,out_min,out_max) \
     ((x-in_min)*(out_max-out_min)/(in_max-in_min)+out_min)
@@ -38,7 +37,7 @@
 // This picks the smallest prescaler that allows an overflow < 2^16.
 #define MAX_OVERFLOW    ((1 << 16) - 1)
 #define CYC_MSEC        (1000.0f * CYCLES_PER_MICROSECOND)
-#define TAU_MSEC        2.0f//@Frequency = 500Hz
+#define TAU_MSEC        20.0f//@Frequency = 50Hz
 #define TAU_USEC        (TAU_MSEC * 1000.0f)
 #define TAU_CYC         (TAU_MSEC * CYC_MSEC)
 #define SERVO_PRESCALER (uint16_t)(TAU_CYC / (double)MAX_OVERFLOW + 1.0f)
@@ -90,14 +89,7 @@ bool Servo::attach(uint8 pin,
     pinMode(pin, PWM);
 
     TIM_Cmd(tdev,DISABLE);
-    if(IS_APB2_TIM(tdev))
-    {
-        timer_set_prescaler(tdev, SERVO_PRESCALER - 1); // prescaler is 1-based
-    }
-    else
-    {
-        timer_set_prescaler(tdev, SERVO_PRESCALER / 2 - 1);
-    }
+    timer_set_prescaler(tdev, SERVO_PRESCALER - 1); // prescaler is 1-based
     timer_set_reload(tdev, SERVO_OVERFLOW);
     timer_generate_update(tdev);
     TIM_Cmd(tdev,ENABLE);
@@ -113,7 +105,7 @@ bool Servo::detach() {
     TIM_TypeDef* tdev = PIN_MAP[this->pin].TIMx;
     uint8 tchan = PIN_MAP[this->pin].TimerChannel;
     //timer_set_mode(tdev, tchan, DISABLE);
-	TIM_CCxCmd(tdev, tchan, TIM_CCx_Disable);
+    TMR_CCxCmd(tdev, tchan, TMR_CCx_Disable);
     this->resetFields();
 
     return true;

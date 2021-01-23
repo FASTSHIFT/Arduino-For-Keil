@@ -60,7 +60,7 @@
 
 //#define FULL_SPEED_I2C
 
-#ifndef FULL_SPEED_I2C
+#ifdef FULL_SPEED_I2C
 #define I2C_DELAY(x) {}
 #else
 #define I2C_DELAY(x) {delayMicroseconds(x);}

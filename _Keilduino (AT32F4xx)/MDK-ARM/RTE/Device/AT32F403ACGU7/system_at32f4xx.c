@@ -1,21 +1,9 @@
 /**
   ******************************************************************************
-  * @file    system_at32f4xx.c
-  * @author  Artery Technology
-  * @version V1.0.0
-  * @date    2019-05-27
-  * @brief   CMSIS Cortex-M4 system source file
-  ******************************************************************************
-  * @attention
-  *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, ARTERYTEK SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
-  *
-  * <h2><center>&copy; COPYRIGHT 2018 ArteryTek</center></h2>
+  * File   : system_at32f4xx.c
+  * Version: V1.2.5
+  * Date   : 2020-10-16
+  * Brief  : CMSIS Cortex-M4 system source file
   ******************************************************************************
   */ 
 
@@ -67,29 +55,29 @@
      If you are using different crystal you have to adapt those functions accordingly.
 
       Clock (MHz)
-          PLL from HSE or HSI
-          SYSCLK	    HCLK	PCLK2	PCLK1
-          24	        24	    24	    24
-          36	        36	    36	    36
-          48	        48	    48	    24
-          56	        56	    56	    28
-          72	        72	    72	    36
-          96	        96	    48	    48
-          108	        108	    54	    54
-          120	        120	    60	    60
-          144	        144	    72	    72
-          150	        150	    75	    75
-          168	        168	    84	    84
-          176	        176	    88	    88
-          192	        192	    96	    96
-          200	        200	    100	    100
-          224	        224	    112	    112
-          240	        240	    120	    120
+          PLL from HSE or HSI                      F421 PLL from HSE or HSI
+          SYSCLK        HCLK    PCLK2   PCLK1      SYSCLK       HCLK    PCLK2   PCLK1
+          24            24      24      24         24           24      24      24
+          36            36      36      36         36           36      36      36
+          48            48      48      24         48           48      48      48
+          56            56      56      28         56           56      56      56
+          72            72      72      36         72           72      72      72
+          96            96      48      48         96           96      96      96
+          108           108     54      54         108          108     108     108
+          120           120     60      60         120          120     120     120
+          144           144     72      72
+          150           150     75      75
+          168           168     84      84
+          176           176     88      88
+          192           192     96      96
+          200           200     100     100
+          224           224     112     112
+          240           240     120     120
     */
 
 #if defined (AT32F403xx) || defined (AT32F413xx) || \
     defined (AT32F415xx) || defined (AT32F403Axx)|| \
-    defined (AT32F407xx)
+    defined (AT32F407xx) || defined (AT32F421xx)
 /* #define SYSCLK_FREQ_HSE          HSE_VALUE */
 /* #define SYSCLK_FREQ_24MHz        24000000 */
 /* #define SYSCLK_FREQ_36MHz        36000000 */
@@ -99,7 +87,6 @@
 /* #define SYSCLK_FREQ_96MHz        96000000 */
 /* #define SYSCLK_FREQ_108MHz       108000000 */
 /* #define SYSCLK_FREQ_120MHz       120000000 */
-/* #define SYSCLK_FREQ_144MHz       144000000 */
 /* #define SYSCLK_FREQ_24MHz_HSI    24000000 */
 /* #define SYSCLK_FREQ_36MHz_HSI    36000000 */
 /* #define SYSCLK_FREQ_48MHz_HSI    48000000 */
@@ -108,6 +95,12 @@
 /* #define SYSCLK_FREQ_96MHz_HSI    96000000 */
 /* #define SYSCLK_FREQ_108MHz_HSI   108000000 */
 /* #define SYSCLK_FREQ_120MHz_HSI   120000000 */
+#endif
+
+#if defined (AT32F403xx) || defined (AT32F413xx) || \
+    defined (AT32F415xx) || defined (AT32F403Axx)|| \
+    defined (AT32F407xx)
+/* #define SYSCLK_FREQ_144MHz       144000000 */
 /* #define SYSCLK_FREQ_144MHz_HSI   144000000 */
 #endif
 
@@ -132,7 +125,7 @@
 /* #define SYSCLK_FREQ_224MHz       224000000 */
 /* #define SYSCLK_FREQ_240MHz       240000000 */
 /* #define SYSCLK_FREQ_224MHz_HSI   224000000 */
-/* #define SYSCLK_FREQ_240MHz_HSI   240000000 */
+#define SYSCLK_FREQ_240MHz_HSI   240000000
 #endif
 
 /*!< Uncomment the following line if you need to use external SRAM mounted
@@ -150,7 +143,11 @@ This value must be a multiple of 0x200. */
 /**
   * @}
   */
-
+#if defined (AT32F415xx)
+#define  FLASH_ACR_DEFAULT(latency)              ((uint32_t)FLASH_ACR_PRFTBE | (latency))
+#elif defined (AT32F421xx)
+#define  FLASH_ACR_DEFAULT(latency)              ((uint32_t)FLASH_ACR_PRFTB_HITCYC | FLASH_ACR_PRFTBE2 | FLASH_ACR_PRFTBE | (latency))
+#endif
 /** @addtogroup at32f4xx_System_Private_Macros
   * @{
   */
@@ -432,13 +429,27 @@ void SystemCoreClockUpdate (void)
 {
   uint32_t tmp = 0, pllmult = 0, pllrefclk = 0, tempcfg = 0;
 
+#if defined (AT32F415xx) || defined (AT32F421xx)
+  uint32_t pllcfgen = 0, pllns = 0, pllms = 0, pllfr = 0;
+  uint32_t pllsrcfreq = 0, retfr = 0; 
+#endif
+#if defined (AT32F403Axx)|| defined (AT32F407xx)
+  uint32_t prediv = 0;
+#endif
   /* Get SYSCLK source -------------------------------------------------------*/
   tmp = RCC->CFG & RCC_CFG_SYSCLKSTS;
 
   switch (tmp)
   {
   case RCC_CFG_SYSCLKSTS_HSI:  /* HSI used as system clock */
+#if !defined (AT32F403xx)
+    if(BIT_READ(RCC->MISC, RCC_HSI_DIV_EN) && BIT_READ(RCC->MISC2, RCC_HSI_SYS_CTRL))
+      SystemCoreClock = HSI_VALUE * 6;
+    else
+      SystemCoreClock = HSI_VALUE;
+#else
     SystemCoreClock = HSI_VALUE;
+#endif
     break;
 
   case RCC_CFG_SYSCLKSTS_HSE:  /* HSE used as system clock */
@@ -451,22 +462,69 @@ void SystemCoreClockUpdate (void)
     tempcfg = RCC->CFG;
     pllmult = RCC_GET_PLLMULT(tempcfg);
 
-    if (pllrefclk == RCC_PLLRefClk_HSI_Div2)
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    /* Get_ClocksFreq for PLLconfig2 */
+    pllcfgen = BIT_READ(RCC->PLL, PLL_CFGEN_MASK);
+
+    if(pllcfgen == PLL_CFGEN_ENABLE)
     {
-      /* HSI oscillator clock divided by 2 selected as PLL clock entry */
-      SystemCoreClock = (HSI_VALUE >> 1) * pllmult;
-    }
-    else
-    {
-      /* HSE selected as PLL clock entry */
-      if ((RCC->CFG & RCC_CFG_PLLHSEPSC) != (uint32_t)RESET)
+      pllns = BIT_READ(RCC->PLL, PLL_NS_MASK);
+      pllms = BIT_READ(RCC->PLL, PLL_MS_MASK);
+      pllfr = BIT_READ(RCC->PLL, PLL_FR_MASK);
+
+      RCC_FR_VALUE(pllfr, retfr);
+
+      if (pllrefclk == 0x00)
       {
-        /* HSE oscillator clock divided by 2 */
-        SystemCoreClock = (HSE_VALUE >> 1) * pllmult;
+        /* HSI oscillator clock divided by 2 selected as PLL clock entry */
+        pllsrcfreq = (HSI_VALUE >> 1);
       }
       else
       {
-        SystemCoreClock = HSE_VALUE * pllmult;
+        /* HSE selected as PLL clock entry */
+        if ((RCC->CFG & RCC_CFG_PLLHSEPSC) != (uint32_t)RESET)
+        {
+          pllsrcfreq = (HSE_VALUE >> 1);
+        }
+        else
+        {
+          pllsrcfreq = HSE_VALUE;
+        }
+      }
+
+      SystemCoreClock = (pllsrcfreq * (pllns >> PLL_NS_POS)) / \
+      ((pllms >> PLL_MS_POS) * retfr);
+    }else
+#endif
+    {
+      /* Get PLL clock source and multiplication factor ----------------------*/
+      pllmult = BIT_READ(RCC->CFG, RCC_CFG_PLLMULT);
+      pllmult = RCC_GET_PLLMULT(pllmult);
+  
+      if (pllrefclk == 0x00)
+      {
+        /* HSI oscillator clock divided by 2 selected as PLL clock entry */
+        SystemCoreClock = (HSI_VALUE >> 1) * pllmult;
+      }
+      else
+      {
+        /* HSE selected as PLL clock entry */
+        if ((RCC->CFG & RCC_CFG_PLLHSEPSC) != (uint32_t)RESET)
+        {
+#if defined (AT32F403Axx)|| defined (AT32F407xx)
+          prediv = (RCC->MISC2 & RCC_HSE_DIV_MASK);
+          prediv = prediv >> RCC_HSE_DIV_POS;
+          /* HSE oscillator clock divided by prediv */
+          SystemCoreClock = (HSE_VALUE / (prediv + 2)) * pllmult;
+#else
+          /* HSE oscillator clock divided by 2 */
+          SystemCoreClock = (HSE_VALUE >> 1) * pllmult;
+#endif
+        }
+        else
+        {
+          SystemCoreClock = HSE_VALUE * pllmult;
+        }
       }
     }
 
@@ -668,13 +726,8 @@ static void SetSysClockToHSE(void)
 
   if (HSEStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_0);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
@@ -739,13 +792,8 @@ static void SetSysClockTo24M(void)
 
   if (HSEStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_0);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
@@ -762,6 +810,10 @@ static void SetSysClockTo24M(void)
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLHSEPSC_HSE_DIV2 | RCC_CFG_PLLMULT6);
 
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    /* Config PLL clock resource frequency */
+    RCC_PLLFrefTableConfig(HSE_VALUE);
+#endif
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;
 
@@ -825,13 +877,8 @@ static void SetSysClockTo36M(void)
 
   if (HSEStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_1);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
@@ -848,6 +895,10 @@ static void SetSysClockTo36M(void)
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLHSEPSC_HSE_DIV2 | RCC_CFG_PLLMULT9);
 
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    /* Config PLL clock resource frequency */
+    RCC_PLLFrefTableConfig(HSE_VALUE);
+#endif
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;
 
@@ -911,17 +962,13 @@ static void SetSysClockTo48M(void)
 
   if (HSEStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_1);	
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
@@ -929,11 +976,24 @@ static void SetSysClockTo48M(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = HSE * 6 = 48 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLMULT6);
 
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    /* Config PLL clock resource frequency */
+    RCC_PLLFrefTableConfig(HSE_VALUE);
+#endif
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;
 
@@ -998,17 +1058,13 @@ static void SetSysClockTo56M(void)
 
   if (HSEStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_1);	
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
@@ -1016,11 +1072,24 @@ static void SetSysClockTo56M(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /* PLL configuration: PLLCLK = HSE * 7 = 56 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLMULT7);
 
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    /* Config PLL clock resource frequency */
+    RCC_PLLFrefTableConfig(HSE_VALUE);
+#endif
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;
 
@@ -1085,17 +1154,13 @@ static void SetSysClockTo72M(void)
 
   if (HSEStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_2);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
@@ -1103,11 +1168,24 @@ static void SetSysClockTo72M(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = HSE * 9 = 72 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLMULT9);
 
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    /* Config PLL clock resource frequency */
+    RCC_PLLFrefTableConfig(HSE_VALUE);
+#endif
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;
 
@@ -1172,17 +1250,13 @@ static void SetSysClockTo96M(void)
 
   if (HSEStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_2);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK/2 */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV2;
@@ -1190,15 +1264,28 @@ static void SetSysClockTo96M(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = HSE * 12 = 96 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
-#if defined (AT32F415xx)
+#if defined (AT32F415xx) || defined (AT32F421xx)
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLMULT12);
 #else
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLMULT12 | RCC_CFG_PLLRANGE_GT72MHZ);
 #endif
 
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    /* Config PLL clock resource frequency */
+    RCC_PLLFrefTableConfig(HSE_VALUE);
+#endif
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;
 
@@ -1263,17 +1350,13 @@ static void SetSysClockTo108M(void)
 
   if (HSEStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_3;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_3);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK/2 */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV2;
@@ -1281,15 +1364,29 @@ static void SetSysClockTo108M(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = (HSE/2) * 27 = 108 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
 
-#if defined (AT32F415xx)
+#if defined (AT32F415xx) || defined (AT32F421xx)
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLHSEPSC_HSE_DIV2 | RCC_CFG_PLLMULT27);
 #else
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLHSEPSC_HSE_DIV2 | RCC_CFG_PLLMULT27 \
                            | RCC_CFG_PLLRANGE_GT72MHZ);
+#endif
+
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    /* Config PLL clock resource frequency */
+    RCC_PLLFrefTableConfig(HSE_VALUE);
 #endif
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;
@@ -1355,17 +1452,13 @@ static void SetSysClockTo120M(void)
 
   if (HSEStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_3;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_3);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK/2 */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV2;
@@ -1373,16 +1466,29 @@ static void SetSysClockTo120M(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = HSE * 15 = 120 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
 
-#if defined (AT32F415xx)
+#if defined (AT32F415xx) || defined (AT32F421xx)
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLMULT15);
 #else
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLMULT15 | RCC_CFG_PLLRANGE_GT72MHZ);
 #endif
 
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    /* Config PLL clock resource frequency */
+    RCC_PLLFrefTableConfig(HSE_VALUE);
+#endif
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;
 
@@ -1391,7 +1497,8 @@ static void SetSysClockTo120M(void)
     {
     }
 #if defined (AT32F413xx) || defined (AT32F403Axx)|| \
-    defined (AT32F407xx) || defined (AT32F415xx)
+    defined (AT32F407xx) || defined (AT32F415xx) || \
+    defined (AT32F421xx)
     RCC_StepModeCmd(ENABLE);
 #endif
     /* Select PLL as system clock source */
@@ -1406,7 +1513,8 @@ static void SetSysClockTo120M(void)
     WaitHseStbl(PLL_STABLE_DELAY);
 #endif
 #if defined (AT32F413xx) || defined (AT32F403Axx)|| \
-    defined (AT32F407xx) || defined (AT32F415xx)
+    defined (AT32F407xx) || defined (AT32F415xx) || \
+    defined (AT32F421xx)
     RCC_StepModeCmd(DISABLE);
 #endif
   }
@@ -1482,6 +1590,10 @@ static void SetSysClockTo144M(void)
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE | RCC_CFG_PLLMULT18 | RCC_CFG_PLLRANGE_GT72MHZ);
 #endif
 
+#if defined (AT32F415xx)
+    /* Config PLL clock resource frequency */
+    RCC_PLLFrefTableConfig(HSE_VALUE);
+#endif
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;
 
@@ -1539,9 +1651,7 @@ static void SetSysClockTo150M(void)
     StartUpCounter++;
   }
   while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
-#ifdef AT32F403xx 
-  WaitHseStbl(HSE_STABLE_DELAY);
-#endif
+
   if ((RCC->CTRL & RCC_CTRL_HSESTBL) != RESET)
   {
     HSEStatus = (uint32_t)0x01;
@@ -1553,14 +1663,13 @@ static void SetSysClockTo150M(void)
 
   if (HSEStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
     /* Enable Prefetch Buffer */
     FLASH->ACR |= FLASH_ACR_PRFTBE;
 
     /* Flash 1 wait state */
     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_4;    
-#endif
+
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
@@ -1575,7 +1684,7 @@ static void SetSysClockTo150M(void)
     /*  PLL configuration: PLLCLK = (HSE * 75) / (1 * 4) = 150 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSE);
-    RCC_PLLconfig2(PLL_FREF_8M, 75, 1, PLL_FR_4);
+    RCC_PLLconfig2(75, 1, PLL_FR_4);
 
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;
@@ -1584,10 +1693,9 @@ static void SetSysClockTo150M(void)
     while((RCC->CTRL & RCC_CTRL_PLLSTBL) == 0)
     {
     }
-#if defined (AT32F413xx) || defined (AT32F403Axx)|| \
-    defined (AT32F407xx) || defined (AT32F415xx)
+
     RCC_StepModeCmd(ENABLE);
-#endif
+
     /* Select PLL as system clock source */
     RCC->CFG &= (uint32_t)((uint32_t)~(RCC_CFG_SYSCLKSEL));
     RCC->CFG |= (uint32_t)RCC_CFG_SYSCLKSEL_PLL;
@@ -1596,13 +1704,8 @@ static void SetSysClockTo150M(void)
     while ((RCC->CFG & (uint32_t)RCC_CFG_SYSCLKSTS) != RCC_CFG_SYSCLKSTS_PLL)
     {
     }
-#ifdef AT32F403xx
-    WaitHseStbl(PLL_STABLE_DELAY);
-#endif
-#if defined (AT32F413xx) || defined (AT32F403Axx)|| \
-    defined (AT32F407xx) || defined (AT32F415xx)
+
     RCC_StepModeCmd(DISABLE);
-#endif
   }
   else
   {
@@ -2162,13 +2265,8 @@ static void SetSysClockTo24MHSI(void)
 
   if (HSIStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_0);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
@@ -2242,13 +2340,8 @@ static void SetSysClockTo36MHSI(void)
 
   if (HSIStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_1);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
@@ -2322,17 +2415,13 @@ static void SetSysClockTo48MHSI(void)
 
   if (HSIStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_1);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
@@ -2340,6 +2429,15 @@ static void SetSysClockTo48MHSI(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = (HSI/2) * 12 = 48 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
@@ -2402,17 +2500,13 @@ static void SetSysClockTo56MHSI(void)
 
   if (HSIStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_1);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
@@ -2420,6 +2514,15 @@ static void SetSysClockTo56MHSI(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = (HSI/2) * 14 = 56 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
@@ -2482,17 +2585,13 @@ static void SetSysClockTo72MHSI(void)
 
   if (HSIStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_2);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
@@ -2500,6 +2599,15 @@ static void SetSysClockTo72MHSI(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = (HSI/2) * 18 = 72 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
@@ -2562,17 +2670,13 @@ static void SetSysClockTo96MHSI(void)
 
   if (HSIStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_2);    
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK/2 */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV2;
@@ -2580,11 +2684,20 @@ static void SetSysClockTo96MHSI(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = (HSI/2) * 24 = 96 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
 
-#if defined (AT32F415xx)
+#if defined (AT32F415xx) || defined (AT32F421xx)
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSI_DIV2 | RCC_CFG_PLLMULT24);
 #else
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSI_DIV2 | RCC_CFG_PLLMULT24 | RCC_CFG_PLLRANGE_GT72MHZ);
@@ -2647,17 +2760,13 @@ static void SetSysClockTo108MHSI(void)
 
   if (HSIStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_3;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_3);
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK/2 */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV2;
@@ -2665,11 +2774,20 @@ static void SetSysClockTo108MHSI(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = (HSI/2) * 27 = 108 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
 
-#if defined (AT32F415xx)
+#if defined (AT32F415xx) || defined (AT32F421xx)
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSI_DIV2 | RCC_CFG_PLLMULT27);
 #else
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSI_DIV2 | RCC_CFG_PLLMULT27 | RCC_CFG_PLLRANGE_GT72MHZ);
@@ -2732,17 +2850,13 @@ static void SetSysClockTo120MHSI(void)
 
   if (HSIStatus == (uint32_t)0x01)
   {
-#if defined (AT32F415xx)
-    /* Enable Prefetch Buffer */
-    FLASH->ACR |= FLASH_ACR_PRFTBE;
-
-    /* Flash 1 wait state */
-    FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_3;    
+#if defined (AT32F415xx) || defined (AT32F421xx)
+    FLASH->ACR = FLASH_ACR_DEFAULT(FLASH_ACR_LATENCY_3);    
 #endif
     /* HCLK = SYSCLK */
     RCC->CFG |= (uint32_t)RCC_CFG_AHBPSC_DIV1;
 
+#if !defined (AT32F421xx)
     /* PCLK2 = HCLK/2 */
     RCC->CFG &= 0xFFFFC7FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV2;
@@ -2750,11 +2864,20 @@ static void SetSysClockTo120MHSI(void)
     /* PCLK1 = HCLK/2 */
     RCC->CFG &= 0xFFFFF8FF;
     RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV2;
+#else
+    /* PCLK2 = HCLK */
+    RCC->CFG &= 0xFFFFC7FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB2PSC_DIV1;
+
+    /* PCLK1 = HCLK */
+    RCC->CFG &= 0xFFFFF8FF;
+    RCC->CFG |= (uint32_t)RCC_CFG_APB1PSC_DIV1;
+#endif
 
     /*  PLL configuration: PLLCLK = (HSI/2) * 30 = 120 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
 
-#if defined (AT32F415xx)
+#if defined (AT32F415xx) || defined (AT32F421xx)
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSI_DIV2 | RCC_CFG_PLLMULT30);
 #else
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSI_DIV2 | RCC_CFG_PLLMULT30 | RCC_CFG_PLLRANGE_GT72MHZ);
@@ -2768,7 +2891,8 @@ static void SetSysClockTo120MHSI(void)
     {
     }
 #if defined (AT32F413xx) || defined (AT32F403Axx)|| \
-    defined (AT32F407xx) || defined (AT32F415xx)
+    defined (AT32F407xx) || defined (AT32F415xx) || \
+    defined (AT32F421xx)
     RCC_StepModeCmd(ENABLE);
 #endif
     /* Select PLL as system clock source */
@@ -2783,7 +2907,8 @@ static void SetSysClockTo120MHSI(void)
     WaitHseStbl(PLL_STABLE_DELAY);
 #endif
 #if defined (AT32F413xx) || defined (AT32F403Axx)|| \
-    defined (AT32F407xx) || defined (AT32F415xx)
+    defined (AT32F407xx) || defined (AT32F415xx) || \
+    defined (AT32F421xx)
     RCC_StepModeCmd(DISABLE);
 #endif
   }
@@ -2938,7 +3063,7 @@ static void SetSysClockTo150MHSI(void)
     /*  PLL configuration: PLLCLK = ((HSI/2) * 150) / (1 * 4) = 150 MHz */
     RCC->CFG &= RCC_CFG_PLLCFG_MASK;
     RCC->CFG |= (uint32_t)(RCC_CFG_PLLRC_HSI_DIV2);
-    RCC_PLLconfig2(PLL_FREF_4M, 150, 1, PLL_FR_4);
+    RCC_PLLconfig2(150, 1, PLL_FR_4);
 
     /* Enable PLL */
     RCC->CTRL |= RCC_CTRL_PLLEN;

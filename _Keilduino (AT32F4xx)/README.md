@@ -56,3 +56,8 @@
 * 1.更新标准库AT32F4xx_DFP.1.3.4.pack
 * 2.更新硬件i2c库
 
+## [v2.2] - 2021.1.23
+* 1.Servo库适配
+* 2.NVIC_SetPriorityGrouping -> NVIC_PriorityGroupConfig
+* 3.添加extend_SRAM
+* 4.Wire库FULL_SPEED_I2C修改

@@ -1,8 +1,8 @@
 ;**************************************************************************
-;* File Name    : startup_at32f403accu7.s
-;* Description  : at32f4xx startup file for keil
-;* Date         : 2019-09-26
-;* Version      : V1.0.4
+;* File   : startup_at32f403acgu7.s
+;* Version: V1.2.5
+;* Date   : 2020-10-16
+;* Brief  : at32f4xx startup file for keil
 ;**************************************************************************
 ;
 
