@@ -238,7 +238,7 @@ size_t HardwareSerial::write(uint8_t n)
 {
     while(!USART_GetFlagStatus(USARTx, USART_FLAG_TXE)) {};
     USART_SendData(USARTx, n);
-    return n;
+    return 1;
 }
 
 //Creat object for user
