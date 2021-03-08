@@ -240,7 +240,7 @@ size_t HardwareSerial::write(uint8_t n)
 {
     while(!USART_GetFlagStatus(USARTx, USART_FLAG_TDE)) {}; //循环发送,直到发送完毕
     USART_SendData(USARTx, n);
-    return n;
+    return 1;
 }
 
 //Creat Object For User
