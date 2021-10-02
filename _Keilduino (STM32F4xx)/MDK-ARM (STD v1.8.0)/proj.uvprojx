@@ -335,7 +335,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_STDPERIPH_DRIVER,HES_VALUE=8000000,ARDUINO=111,STM32F412xG</Define>
+              <Define>USE_STDPERIPH_DRIVER,HSE_VALUE=8000000,ARDUINO=111,STM32F412xG</Define>
               <Undefine></Undefine>
               <IncludePath>..\USER;..\ArduinoAPI;..\Core;..\Libraries;..\Core\STM32F4xx_StdPeriph_Driver\inc;..\Core\CMSIS\Device\ST\STM32F4xx\Include</IncludePath>
             </VariousControls>
