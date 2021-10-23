@@ -41,5 +41,14 @@
 #define WIRE_SDA_PIN                PB7
 #define WIRE_SCL_PIN                PB6
 #define WIRE_BEGIN_TIMEOUT          100 // ms
+#define WIRE_BUFF_SIZE              32
+
+/* WString memory allocator */
+#define WSTRING_MEM_CUSTOM          0
+#if WSTRING_MEM_CUSTOM
+#  define WSTRING_MEM_INCLUDE       <stdlib.h>
+#  define WSTRING_MEM_REALLOC       realloc
+#  define WSTRING_MEM_FREE          free
+#endif
 
 #endif

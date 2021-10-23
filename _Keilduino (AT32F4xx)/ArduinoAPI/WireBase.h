@@ -44,7 +44,9 @@
 
 #include "Arduino.h"
 
-#define WIRE_BUFSIZ 32
+#ifndef WIRE_BUFF_SIZE
+#  define WIRE_BUFF_SIZE 32
+#endif
 
 /* return codes from endTransmission() */
 #define SUCCESS   0        /* transmission was successful */
@@ -74,11 +76,11 @@ typedef struct i2c_msg {
 class WireBase { // Abstraction is awesome!
 protected:
     i2c_msg itc_msg;
-    uint8_t rx_buf[WIRE_BUFSIZ];      /* receive buffer */
+    uint8_t rx_buf[WIRE_BUFF_SIZE];      /* receive buffer */
     uint8_t rx_buf_idx;               /* first unread idx in rx_buf */
     uint8_t rx_buf_len;               /* number of bytes read */
 
-    uint8_t tx_buf[WIRE_BUFSIZ];      /* transmit buffer */
+    uint8_t tx_buf[WIRE_BUFF_SIZE];      /* transmit buffer */
     uint8_t tx_buf_idx;  // next idx available in tx_buf, -1 overflow
     boolean tx_buf_overflow;
 

@@ -243,6 +243,12 @@ static void Timer_TimeFactorization(
     *factor2 = fct2;
 }
 
+/**
+  * @brief  定时器使能
+  * @param  TIMx: 定时器地址
+  * @param  enable: 使能
+  * @retval 无
+  */
 void Timer_SetEnable(TIM_TypeDef* TIMx, bool enable)
 {
     TMR_Cmd(TIMx, enable ? ENABLE : DISABLE);

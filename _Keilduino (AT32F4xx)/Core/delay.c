@@ -23,7 +23,7 @@
 #include "delay.h"
 
 #ifndef SYSTICK_TICK_FREQ
-#  define SYSTICK_TICK_FREQ     100U // Hz
+#  define SYSTICK_TICK_FREQ     1000U // Hz
 #endif
 
 #define SYSTICK_TICK_INTERVAL   (1000U / SYSTICK_TICK_FREQ)

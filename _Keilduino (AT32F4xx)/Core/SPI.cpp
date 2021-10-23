@@ -22,9 +22,9 @@
  */
 #include "SPI.h"
 
-#define SPI1_CLOCK (F_CPU)
-#define SPI2_CLOCK (F_CPU)
-#define SPI3_CLOCK (F_CPU)
+#define SPI1_CLOCK                     (F_CPU)
+#define SPI2_CLOCK                     (F_CPU)
+#define SPI3_CLOCK                     (F_CPU)
 
 #define SPI_I2S_GET_FLAG(SPI_I2S_FLAG) (SPIx->STS & SPI_I2S_FLAG)
 #define SPI_I2S_RXDATA()               (SPIx->DT)

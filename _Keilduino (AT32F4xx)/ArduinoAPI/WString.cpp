@@ -22,6 +22,14 @@
 #include "WString.h"
 #include "itoa.h"
 #include "dtostrf.h"
+#include "mcu_config.h"
+
+#if WSTRING_MEM_CUSTOM
+#  include WSTRING_MEM_INCLUDE
+#else
+#  define WSTRING_MEM_REALLOC realloc
+#  define WSTRING_MEM_FREE    free
+#endif
 
 /*********************************************/
 /*  Constructors                             */
@@ -123,7 +131,7 @@ String::String(double value, unsigned char decimalPlaces)
 
 String::~String()
 {
-    if (buffer) free(buffer);
+    if (buffer) WSTRING_MEM_FREE(buffer);
 }
 
 /*********************************************/
@@ -139,7 +147,7 @@ inline void String::init(void)
 
 void String::invalidate(void)
 {
-    if (buffer) free(buffer);
+    if (buffer) WSTRING_MEM_FREE(buffer);
     buffer = NULL;
     capacity = len = 0;
 }
@@ -157,7 +165,7 @@ unsigned char String::reserve(unsigned int size)
 
 unsigned char String::changeBuffer(unsigned int maxStrLen)
 {
-    char *newbuffer = (char *)realloc(buffer, maxStrLen + 1);
+    char *newbuffer = (char *)WSTRING_MEM_REALLOC(buffer, maxStrLen + 1);
     if (newbuffer)
     {
         buffer = newbuffer;
@@ -209,7 +217,7 @@ void String::move(String &rhs)
         }
         else
         {
-            free(buffer);
+            WSTRING_MEM_FREE(buffer);
         }
     }
     buffer = rhs.buffer;

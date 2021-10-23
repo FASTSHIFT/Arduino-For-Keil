@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "exti.h"
+#include "gpio.h"
 
 #define EXTI_GetPortSourceGPIOx(Pin) GPIO_GetPortNum(Pin)
 #define EXTI_GetPinSourcex(Pin)      GPIO_GetPinNum(Pin)
