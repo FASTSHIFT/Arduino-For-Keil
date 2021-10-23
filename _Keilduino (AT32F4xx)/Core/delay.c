@@ -41,7 +41,7 @@ void Delay_Init(void)
 {
     SystemCoreClockUpdate();
     SysTick_Config(SYSTICK_LOAD_VALUE);
-    NVIC_SetPriority(SysTick_IRQn, 0);
+    NVIC_SetPriority(SysTick_IRQn, SYSTICK_PRIORITY);
 }
 
 /**

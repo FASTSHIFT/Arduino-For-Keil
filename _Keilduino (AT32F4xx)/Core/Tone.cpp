@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "Tone.h"
+#include "Arduino.h"
 
 #define TONE_FREQ_MAX 500000U
 
@@ -56,7 +57,14 @@ static void Tone_TimerHandler()
   */
 void toneSetTimer(TIM_TypeDef* TIMx)
 {
-    Timer_SetInterruptBase(TIMx, 0xFF, 0xFF, Tone_TimerHandler, 0, 0);
+    Timer_SetInterruptBase(
+        TIMx, 
+        0xFF, 
+        0xFF, 
+        Tone_TimerHandler, 
+        TONE_PREEMPTIONPRIORITY_DEFAULT, 
+        TONE_SUBPRIORITY_DEFAULT
+    );
     Tone_Timer = TIMx;
 }
 

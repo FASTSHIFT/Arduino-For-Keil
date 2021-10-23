@@ -30,8 +30,6 @@
 extern "C" {
 #endif
 
-#define TINER_PREEMPTIONPRIORITY_DEFAULT    0
-#define TIMER_SUBPRIORITY_DEFAULT           3
 #define Timer_GetClockMax(TIMx)             F_CPU
    
 typedef void(*Timer_CallbackFunction_t)(void);

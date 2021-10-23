@@ -25,12 +25,6 @@
 
 #include "Arduino.h"
 
-/**
-  *@SPI1: SCK->PA5  MISO->PA6  MOSI->PA7
-  *@SPI2: SCK->PB13 MISO->PB14 MOSI->PB15
-  *@SPI3: SCK->PB3  MISO->PB4  MOSI->PB5
-  */
-
 #ifndef LSBFIRST
 #define LSBFIRST 0
 #endif
@@ -47,7 +41,7 @@ typedef enum
     SPI_MODE3
 } SPI_MODE_TypeDef;
 
-#define DATA_SIZE_8BIT SPI_FRAMESIZE_8BIT
+#define DATA_SIZE_8BIT  SPI_FRAMESIZE_8BIT
 #define DATA_SIZE_16BIT SPI_FRAMESIZE_16BIT
 
 typedef uint16_t BitOrder;
@@ -152,8 +146,8 @@ private:
     uint32_t SPI_Clock;
 };
 
-extern SPIClass SPI;
-extern SPIClass SPI_2;
-extern SPIClass SPI_3;
+extern SPIClass SPI;    /* SCK->PA5  MISO->PA6  MOSI->PA7 */
+extern SPIClass SPI_2;  /* SCK->PB13 MISO->PB14 MOSI->PB15 */
+extern SPIClass SPI_3;  /* SCK->PB3  MISO->PB4  MOSI->PB5 */
 
 #endif

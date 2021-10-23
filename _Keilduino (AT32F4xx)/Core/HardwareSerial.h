@@ -32,8 +32,6 @@
 #endif
 
 #define SERIAL_CONFIG_DEFAULT             SERIAL_8N1
-#define SERIAL_PREEMPTIONPRIORITY_DEFAULT 1
-#define SERIAL_SUBPRIORITY_DEFAULT        3
 
 typedef enum
 {

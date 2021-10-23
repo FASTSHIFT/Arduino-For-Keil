@@ -33,9 +33,6 @@ extern "C" {
 #define FALLING EXTI_Trigger_Falling
 #define RISING  EXTI_Trigger_Rising
 
-#define EXTI_PREEMPTIONPRIORITY_DEFAULT 2
-#define EXTI_SUBPRIORITY_DEFAULT        1
-
 typedef void(*EXTI_CallbackFunction_t)(void);
 
 void EXTIx_Init(

@@ -285,7 +285,7 @@ void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction
         period,
         prescaler,
         function,
-        TINER_PREEMPTIONPRIORITY_DEFAULT,
+        TIMER_PREEMPTIONPRIORITY_DEFAULT,
         TIMER_SUBPRIORITY_DEFAULT
     );
 }

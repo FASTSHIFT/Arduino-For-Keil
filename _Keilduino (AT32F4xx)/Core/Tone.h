@@ -23,10 +23,8 @@
 #ifndef __TONE_H
 #define __TONE_H
 
-#include "Arduino.h"
 #include "timer.h"
 
-#define TONE_TIMER_DEFAULT      TIM1
 #define TONE_DURATION_INFINITE  0xFFFFFFFFU
 
 

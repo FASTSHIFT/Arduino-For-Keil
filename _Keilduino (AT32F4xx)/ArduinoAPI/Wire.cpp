@@ -43,14 +43,6 @@
 
 #include "Wire.h"
 
-#ifndef WIRE_SDA_PIN
-#  define WIRE_SDA_PIN PB7
-#endif
-
-#ifndef WIRE_SCL_PIN
-#  define WIRE_SCL_PIN PB6
-#endif
-
 #if WIRE_USE_FULL_SPEED_I2C
 #  define I2C_DELAY(x)
 #  define SET_SDA(state)    digitalWrite_##state(this->sda_pin)

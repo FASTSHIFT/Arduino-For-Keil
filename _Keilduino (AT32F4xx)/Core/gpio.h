@@ -30,7 +30,7 @@ extern "C" {
 #endif
 
 #ifndef NULL
-#  define NULL 0
+#  define NULL ((void*)0)
 #endif
 
 #define ADC_Channel_X ((uint8_t)0xFF)
