@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2019 _VIFEXTech
+ * Copyright (c) 2019 - 2021 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -112,6 +112,8 @@ void ADC_DMA_Init(void)
     DMA_Reset(DMA1_Channel1);
 
     // 配置 DMA 初始化结构体
+    DMA_DefaultInitParaConfig(&DMA_InitStructure);
+    
     // 外设基址为：ADC 数据寄存器地址
     DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t) (&(ADC1->RDOR));
 

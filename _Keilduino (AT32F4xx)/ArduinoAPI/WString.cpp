@@ -20,7 +20,8 @@
 */
 
 #include "WString.h"
-
+#include "itoa.h"
+#include "dtostrf.h"
 
 /*********************************************/
 /*  Constructors                             */
@@ -122,7 +123,7 @@ String::String(double value, unsigned char decimalPlaces)
 
 String::~String()
 {
-    free(buffer);
+    if (buffer) free(buffer);
 }
 
 /*********************************************/
@@ -190,7 +191,7 @@ String & String::copy(const __FlashStringHelper *pstr, unsigned int length)
         return *this;
     }
     len = length;
-    strcpy(buffer, (PGM_P)pstr);//strcpy_P
+    strcpy_P(buffer, (PGM_P)pstr);
     return *this;
 }
 
@@ -254,7 +255,7 @@ String & String::operator = (const char *cstr)
 
 String & String::operator = (const __FlashStringHelper *pstr)
 {
-    if (pstr) copy(pstr, strlen((PGM_P)pstr));//strlen_P
+    if (pstr) copy(pstr, strlen_P((PGM_P)pstr));
     else invalidate();
 
     return *this;
@@ -346,11 +347,11 @@ unsigned char String::concat(double num)
 unsigned char String::concat(const __FlashStringHelper * str)
 {
     if (!str) return 0;
-    int length = strlen((const char *) str);
+    int length = strlen_P((const char *) str);
     if (length == 0) return 1;
     unsigned int newlen = len + length;
     if (!reserve(newlen)) return 0;
-    strcpy(buffer + len, (const char *) str);
+    strcpy_P(buffer + len, (const char *) str);
     len = newlen;
     return 1;
 }
@@ -778,31 +779,11 @@ long String::toInt(void) const
 
 float String::toFloat(void) const
 {
-    if (buffer) return float(atof(buffer));
+    return float(toDouble());
+}
+
+double String::toDouble(void) const
+{
+    if (buffer) return atof(buffer);
     return 0;
 }
-
-#ifdef SUPPORTS_WSTRING_SPRINTF
-extern "C" {
-#include <stdio.h>
-#include <stdarg.h>
-}
-
-#define SPRINTF_BUFFER_LENGTH 100
-
-// Work in progress to support printf.
-// Need to implement stream FILE to write individual chars to chosen serial port
-int String::sprintf (const char *__restrict __format, ...)
-{
-    char printf_buff[SPRINTF_BUFFER_LENGTH];
-
-    va_list args;
-    va_start(args, __format);
-    int ret_status = vsnprintf(printf_buff, sizeof(printf_buff), __format, args);
-    va_end(args);
-    copy(printf_buff, strlen(printf_buff));
-
-    return ret_status;
-}
-
-#endif

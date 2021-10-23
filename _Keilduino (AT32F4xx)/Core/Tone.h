@@ -20,23 +20,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DELAY_H
-#define __DELAY_H
+#ifndef __TONE_H
+#define __TONE_H
 
-#include "mcu_type.h"
+#include "Arduino.h"
+#include "timer.h"
 
-#ifdef __cplusplus
-extern "C" {
+#define TONE_TIMER_DEFAULT      TIM1
+#define TONE_DURATION_INFINITE  0xFFFFFFFFU
+
+
+void toneSetTimer(TIM_TypeDef* TIMx);
+void tone(uint8_t pin, uint32_t freq, uint32_t duration = TONE_DURATION_INFINITE);
+void noTone(uint8_t pin);
+
 #endif
-
-void Delay_Init(void);
-uint32_t millis(void);
-uint32_t micros(void);
-void delay_ms(uint32_t ms);
-void delay_us(uint32_t us);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* __DELAY_H */

@@ -14,29 +14,34 @@
 /* Includes ------------------------------------------------------------------*/
 #include "mcu_type.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Exported types ------------------------------------------------------------*/
 typedef struct
 {
-    __IO uint8_t hour;
-    __IO uint8_t min;
-    __IO uint8_t sec;
-    __IO uint16_t w_year;
-    __IO uint8_t  w_month;
-    __IO uint8_t  w_date;
-    __IO uint8_t  week;
-} _calendar_obj;
+    uint8_t hour;
+    uint8_t min;
+    uint8_t sec;
+    uint16_t w_year;
+    uint8_t  w_month;
+    uint8_t  w_date;
+    uint8_t  week;
+} RTC_Calendar_TypeDef;
 
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-extern _calendar_obj calendar;
-extern uint8_t const mon_table[12];
 void RTC_Init(void);
-void RTC_Get(void);
-uint8_t Is_Leap_Year(uint16_t year);
-uint8_t RTC_Alarm_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
-uint8_t RTC_Get_Week(uint16_t year, uint8_t month, uint8_t day);
+void RTC_GetCalendar(RTC_Calendar_TypeDef* calendar);
+uint8_t RTC_SetAlarm(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
+uint8_t RTC_GetWeek(uint16_t year, uint8_t month, uint8_t day);
 uint8_t RTC_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

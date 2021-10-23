@@ -20,23 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DELAY_H
-#define __DELAY_H
+#ifndef __MCU_CORE_H
+#define __MCU_CORE_H
 
-#include "mcu_type.h"
+#define sei() __set_PRIMASK(0)
+#define cli() __set_PRIMASK(1)
 
-#ifdef __cplusplus
-extern "C" {
+#include "adc.h"
+#include "delay.h"
+#include "exti.h"
+#include "gpio.h"
+#include "pwm.h"
+#include "timer.h"
+
 #endif
-
-void Delay_Init(void);
-uint32_t millis(void);
-uint32_t micros(void);
-void delay_ms(uint32_t ms);
-void delay_us(uint32_t us);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* __DELAY_H */

@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * File   : RTC/Calendar/rtc.h
+  * File   : rtc.h
   * Version: V1.2.3
   * Date   : 2020-08-15
   * Brief  : This file provides template for calendar API.
@@ -22,9 +22,8 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-const uint8_t table_week[12] = {0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};            //Monthly correction data sheet.
-const uint8_t mon_table[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; //Month data table of Pingnian
-_calendar_obj calendar;
+static const uint8_t table_week[12] = {0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};            //Monthly correction data sheet.
+static const uint8_t mon_table[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; //Month data table of Pingnian
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -97,7 +96,7 @@ void RTC_Init(void)
   * @retval 1: Leap year
             2: Pingnian
   */
-uint8_t Is_Leap_Year(uint16_t year)
+static uint8_t Is_Leap_Year(uint16_t year)
 {
     if(year % 4 == 0)
     {
@@ -175,7 +174,7 @@ uint8_t RTC_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_
   * @retval 0: Set Alarm right.
   *         1: Set Alarm failed.
   */
-uint8_t RTC_Alarm_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec)
+uint8_t RTC_SetAlarm(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec)
 {
     uint16_t t;
     uint8_t seccount = 0;
@@ -218,8 +217,9 @@ uint8_t RTC_Alarm_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, 
   * @param  None.
   * @retval None.
   */
-void RTC_Get(void)
+void RTC_GetCalendar(RTC_Calendar_TypeDef* calendar)
 {
+    static RTC_Calendar_TypeDef _calendar;
     static uint16_t daycnt = 0;
     uint32_t timecount = 0;
     uint32_t temp = 0;
@@ -245,11 +245,11 @@ void RTC_Get(void)
             else temp -= 365;
             temp1++;
         }
-        calendar.w_year = temp1;
+        _calendar.w_year = temp1;
         temp1 = 0;
         while(temp >= 28)
         {
-            if(Is_Leap_Year(calendar.w_year) && temp1 == 1)
+            if(Is_Leap_Year(_calendar.w_year) && temp1 == 1)
             {
                 if(temp >= 29)temp -= 29;
                 else break;
@@ -261,14 +261,16 @@ void RTC_Get(void)
             }
             temp1++;
         }
-        calendar.w_month = temp1 + 1;
-        calendar.w_date = temp + 1;
+        _calendar.w_month = temp1 + 1;
+        _calendar.w_date = temp + 1;
     }
     temp = timecount % 86400;
-    calendar.hour = temp / 3600;
-    calendar.min = (temp % 3600) / 60;
-    calendar.sec = (temp % 3600) % 60;
-    calendar.week = RTC_Get_Week(calendar.w_year, calendar.w_month, calendar.w_date);
+    _calendar.hour = temp / 3600;
+    _calendar.min = (temp % 3600) / 60;
+    _calendar.sec = (temp % 3600) % 60;
+    _calendar.week = RTC_GetWeek(_calendar.w_year, _calendar.w_month, _calendar.w_date);
+    
+    *calendar = _calendar;
 }
 
 /**
@@ -278,7 +280,7 @@ void RTC_Get(void)
   *         sday  : Day
   * @retval week number.
   */
-uint8_t RTC_Get_Week(uint16_t year, uint8_t month, uint8_t day)
+uint8_t RTC_GetWeek(uint16_t year, uint8_t month, uint8_t day)
 {
     uint16_t temp2;
     uint8_t yearH, yearL;
