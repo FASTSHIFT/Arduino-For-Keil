@@ -88,12 +88,7 @@ void tone(uint8_t pin, uint32_t freq, uint32_t duration)
 
     if(!Tone_IsContinuousModeEnable)
     {
-        Tone_Counter = freq * 2 * duration / 1000;
-
-        if(Tone_Counter % 2 != 0)
-        {
-            Tone_Counter++;
-        }
+        Tone_Counter = freq * duration / 1000 * 2;
     }
 
     if(Tone_Timer == NULL)

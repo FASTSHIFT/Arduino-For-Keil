@@ -28,7 +28,7 @@
  *=========================*/
 
 /* System tick */
-#define SYSTICK_TICK_FREQ                   1000U // Hz
+#define SYSTICK_TICK_FREQ                   1000 // Hz
 #define SYSTICK_PRIORITY                    0
 
 /* Hardware Serial */
@@ -54,17 +54,17 @@
 #  define WSTRING_MEM_FREE                  free
 #endif
 
-/* EXTI Interrupt priority  */
+/* External Interrupt  */
 #define EXTI_PREEMPTIONPRIORITY_DEFAULT     2
 #define EXTI_SUBPRIORITY_DEFAULT            1
 
-/* Timer Interrupt priority  */
+/* Timer Interrupt */
 #define TIMER_PREEMPTIONPRIORITY_DEFAULT    0
 #define TIMER_SUBPRIORITY_DEFAULT           3
 
-/* Tone Interrupt priority  */
+/* Tone */
 #define TONE_TIMER_DEFAULT                  TIM1
 #define TONE_PREEMPTIONPRIORITY_DEFAULT     0
-#define TONE_SUBPRIORITY_DEFAULT            3
+#define TONE_SUBPRIORITY_DEFAULT            1
 
 #endif

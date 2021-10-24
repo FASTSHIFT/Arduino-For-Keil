@@ -23,12 +23,12 @@
 #include "delay.h"
 
 #ifndef SYSTICK_TICK_FREQ
-#  define SYSTICK_TICK_FREQ     1000U // Hz
+#  define SYSTICK_TICK_FREQ     1000 // Hz
 #endif
 
-#define SYSTICK_TICK_INTERVAL   (1000U / SYSTICK_TICK_FREQ)
+#define SYSTICK_TICK_INTERVAL   (1000 / SYSTICK_TICK_FREQ)
 #define SYSTICK_LOAD_VALUE      (F_CPU / SYSTICK_TICK_FREQ)
-#define SYSTICK_MS              (SystemTickCount * SYSTICK_TICK_INTERVAL)
+#define SYSTICK_MILLIS          (SystemTickCount * SYSTICK_TICK_INTERVAL)
 
 static volatile uint32_t SystemTickCount = 0;
 
@@ -61,7 +61,7 @@ void SysTick_Handler(void)
   */
 uint32_t millis(void)
 {
-    return SYSTICK_MS;
+    return SYSTICK_MILLIS;
 }
 
 /**
@@ -71,7 +71,7 @@ uint32_t millis(void)
   */
 uint32_t micros(void)
 {
-    return (SYSTICK_MS * 1000U + (SYSTICK_LOAD_VALUE - SysTick->VAL) / CYCLES_PER_MICROSECOND);
+    return (SYSTICK_MILLIS * 1000 + (SYSTICK_LOAD_VALUE - SysTick->VAL) / CYCLES_PER_MICROSECOND);
 }
 
 /**
