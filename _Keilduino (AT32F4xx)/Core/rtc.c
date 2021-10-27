@@ -1,32 +1,29 @@
-/**
-  ******************************************************************************
-  * File   : rtc.h
-  * Version: V1.2.3
-  * Date   : 2020-08-15
-  * Brief  : This file provides template for calendar API.
-  ******************************************************************************
-  */
-
-/* Includes ------------------------------------------------------------------*/
+/*
+ * MIT License
+ * Copyright (c) 2019 - 2021 _VIFEXTech
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 #include "rtc.h"
 
-/** @addtogroup AT32F403A_StdPeriph_Examples
-  * @{
-  */
-
-/** @addtogroup RTC_Calendar
-  * @{
-  */
-
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
 static const uint8_t table_week[12] = {0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};            //Monthly correction data sheet.
 static const uint8_t mon_table[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; //Month data table of Pingnian
-
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
 
 /**
   * @brief  RTC Init.
@@ -269,7 +266,7 @@ void RTC_GetCalendar(RTC_Calendar_TypeDef* calendar)
     _calendar.min = (temp % 3600) / 60;
     _calendar.sec = (temp % 3600) % 60;
     _calendar.week = RTC_GetWeek(_calendar.w_year, _calendar.w_month, _calendar.w_date);
-    
+
     *calendar = _calendar;
 }
 
@@ -295,13 +292,3 @@ uint8_t RTC_GetWeek(uint16_t year, uint8_t month, uint8_t day)
         temp2--;
     return(temp2 % 7);
 }
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
-/******************* (C) COPYRIGHT 2018 ArteryTek *****END OF FILE****/

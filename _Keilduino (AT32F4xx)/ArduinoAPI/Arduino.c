@@ -47,7 +47,7 @@ void pinMode(uint8_t pin, PinMode_TypeDef PinMode_x)
     }
     else if(PinMode_x == PWM)
     {
-        PWM_Init(pin, 1000, 10000);
+        PWM_Init(pin, PWM_DUTYCYCLE_DEFAULT, PWM_FREQUENCY_DEFAULT);
     }
     else
     {
@@ -55,7 +55,7 @@ void pinMode(uint8_t pin, PinMode_TypeDef PinMode_x)
             PIN_MAP[pin].GPIOx,
             PIN_MAP[pin].GPIO_Pin_x,
             PinMode_x,
-            GPIO_MAX_SPEED_FREQ
+            GPIO_MAX_SPEED_DEFAULT
         );
     }
 }

@@ -35,8 +35,6 @@ extern "C" {
 
 #define ADC_Channel_X ((uint8_t)0xFF)
 
-#define GPIO_MAX_SPEED_FREQ GPIO_MaxSpeed_50MHz
-
 #define IS_PIN(Pin)     (Pin < PIN_MAX)
 #define IS_ADC_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].ADCx != NULL && PIN_MAP[Pin].ADC_Channel  != ADC_Channel_X)
 #define IS_PWM_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].TIMx != NULL && PIN_MAP[Pin].TimerChannel != 0)

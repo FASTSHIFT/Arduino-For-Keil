@@ -53,35 +53,97 @@ static int16_t ADC_DMA_SearchChannel(uint16_t ADC_Channel)
 }
 
 /**
+  * @brief  ADC 配置
+  * @param  ADCx: ADC地址
+  * @retval 无
+  */
+void ADCx_Init(ADC_Type* ADCx)
+{
+    ADC_InitType ADC_InitStructure;
+
+    if(ADCx == ADC1)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_ADC1, ENABLE);
+    }
+    else if(ADCx == ADC2)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_ADC2, ENABLE);
+    }
+#ifdef ADC3
+    else if(ADCx == ADC3)
+    {
+        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_ADC3, ENABLE);
+    }
+#endif
+    else
+    {
+        return;
+    }
+
+    RCC_ADCCLKConfig(RCC_APB2CLK_Div8);
+
+    ADC_Reset(ADCx);
+    ADC_StructInit(&ADC_InitStructure);
+    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+    ADC_InitStructure.ADC_ScanMode = DISABLE;
+    ADC_InitStructure.ADC_ContinuousMode = DISABLE;
+    ADC_InitStructure.ADC_ExternalTrig = ADC_ExternalTrig_None;
+    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+    ADC_InitStructure.ADC_NumOfChannel = 1;
+    ADC_Init(ADCx, &ADC_InitStructure);
+
+    ADC_Ctrl(ADCx, ENABLE);
+    ADC_RstCalibration(ADCx);
+    while(ADC_GetResetCalibrationStatus(ADCx));
+    ADC_StartCalibration(ADCx);
+    while(ADC_GetCalibrationStatus(ADCx));
+}
+
+/**
+  * @brief  获取 ADC 值
+  * @param  ADCx: ADC地址
+  * @param  ADC_Channel: ADC通道
+  * @retval 无
+  */
+uint16_t ADCx_GetValue(ADC_Type* ADCx, uint16_t ADC_Channel)
+{
+    ADC_RegularChannelConfig(ADCx, ADC_Channel, 1, ADC_SampleTime_41_5);
+
+    ADC_SoftwareStartConvCtrl(ADCx, ENABLE);
+    while(!ADC_GetFlagStatus(ADCx, ADC_FLAG_EC));
+    return ADC_GetConversionValue(ADCx);
+}
+
+/**
   * @brief  注册需要DMA搬运的ADC通道
   * @param  ADC_Channel:ADC通道号
-  * @retval 引脚注册列表对应索引号，-1:不支持ADC，-2:引脚重复注册，-3:超出最大注册个数
+  * @retval 见ADC_DMA_Res_Type
   */
-int16_t ADC_DMA_Register(uint8_t ADC_Channel)
+ADC_DMA_Res_Type ADC_DMA_Register(uint8_t ADC_Channel)
 {
     /*初始化ADC通道列表*/
-    static uint8_t IsInit = 0;
-    if(!IsInit)
+    static uint8_t isInit = 0;
+    if(!isInit)
     {
         uint8_t i;
         for(i = 0; i < ADC_DMA_REGMAX; i++)
         {
             ADC_DMA_RegChannelList[i] = 0xFF;
         }
-        IsInit = 1;
+        isInit = 1;
     }
 
     /*是否是合法ADC通道*/
     if(!IS_ADC_CHANNEL(ADC_Channel))
-        return -1;
+        return ADC_DMA_RES_NOT_ADC_CHANNEL;
 
     /*是否已在引脚列表重复注册*/
     if(ADC_DMA_SearchChannel(ADC_Channel) != -1)
-        return -2;
+        return ADC_DMA_RES_DUPLICATE_REGISTRATION;
 
     /*是否超出最大注册个数*/
     if(ADC_DMA_RegCnt >= ADC_DMA_REGMAX)
-        return -3;
+        return ADC_DMA_RES_MAX_NUM_OF_REGISTRATIONS_EXCEEDED;
 
     /*写入注册列表*/
     ADC_DMA_RegChannelList[ADC_DMA_RegCnt] = ADC_Channel;
@@ -89,7 +151,17 @@ int16_t ADC_DMA_Register(uint8_t ADC_Channel)
     /*注册个数+1*/
     ADC_DMA_RegCnt++;
 
-    return ADC_DMA_RegCnt - 1;
+    return ADC_DMA_RES_OK;
+}
+
+/**
+  * @brief  获取已注册的ADC DMA通道数量
+  * @param  无
+  * @retval ADC DMA通道数量
+  */
+uint8_t ADC_DMA_GetRegisterCount(void)
+{
+    return ADC_DMA_RegCnt;
 }
 
 /**
@@ -113,7 +185,7 @@ void ADC_DMA_Init(void)
 
     // 配置 DMA 初始化结构体
     DMA_DefaultInitParaConfig(&DMA_InitStructure);
-    
+
     // 外设基址为：ADC 数据寄存器地址
     DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t) (&(ADC1->RDOR));
 
@@ -234,66 +306,4 @@ uint16_t ADC_DMA_GetValue(uint8_t ADC_Channel)
         return 0;
 
     return ADC_DMA_ConvertedValue[index];
-}
-
-/**
-  * @brief  ADC 配置
-  * @param  ADCx: ADC地址
-  * @retval 无
-  */
-void ADCx_Init(ADC_Type* ADCx)
-{
-    ADC_InitType ADC_InitStructure;
-
-    if(ADCx == ADC1)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_ADC1, ENABLE);
-    }
-    else if(ADCx == ADC2)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_ADC2, ENABLE);
-    }
-#ifdef ADC3
-    else if(ADCx == ADC3)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_ADC3, ENABLE);
-    }
-#endif
-    else
-    {
-        return;
-    }
-
-    RCC_ADCCLKConfig(RCC_APB2CLK_Div8);
-
-    ADC_Reset(ADCx);
-    ADC_StructInit(&ADC_InitStructure);
-    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
-    ADC_InitStructure.ADC_ScanMode = DISABLE;
-    ADC_InitStructure.ADC_ContinuousMode = DISABLE;
-    ADC_InitStructure.ADC_ExternalTrig = ADC_ExternalTrig_None;
-    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-    ADC_InitStructure.ADC_NumOfChannel = 1;
-    ADC_Init(ADCx, &ADC_InitStructure);
-
-    ADC_Ctrl(ADCx, ENABLE);
-    ADC_RstCalibration(ADCx);
-    while(ADC_GetResetCalibrationStatus(ADCx));
-    ADC_StartCalibration(ADCx);
-    while(ADC_GetCalibrationStatus(ADCx));
-}
-
-/**
-  * @brief  获取 ADC 值
-  * @param  ADCx: ADC地址
-  * @param  ADC_Channel: ADC通道
-  * @retval 无
-  */
-uint16_t ADCx_GetValue(ADC_Type* ADCx, uint16_t ADC_Channel)
-{
-    ADC_RegularChannelConfig(ADCx, ADC_Channel, 1, ADC_SampleTime_41_5);
-
-    ADC_SoftwareStartConvCtrl(ADCx, ENABLE);
-    while(!ADC_GetFlagStatus(ADCx, ADC_FLAG_EC));
-    return ADC_GetConversionValue(ADCx);
 }

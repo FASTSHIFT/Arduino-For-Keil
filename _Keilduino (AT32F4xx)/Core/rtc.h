@@ -1,24 +1,34 @@
-/**
-  ******************************************************************************
-  * File   : RTC/Calendar/rtc.h
-  * Version: V1.2.3
-  * Date   : 2020-08-15
-  * Brief  : This file contains the headers of the calendar API.
-  ******************************************************************************
-  */
-
-/* Define to prevent recursive inclusion -------------------------------------*/
+/*
+ * MIT License
+ * Copyright (c) 2019 - 2021 _VIFEXTech
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 #ifndef __RTC_H
 #define __RTC_H
 
-/* Includes ------------------------------------------------------------------*/
 #include "mcu_type.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* Exported types ------------------------------------------------------------*/
 typedef struct
 {
     uint8_t hour;
@@ -30,9 +40,6 @@ typedef struct
     uint8_t  week;
 } RTC_Calendar_TypeDef;
 
-/* Exported constants --------------------------------------------------------*/
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
 void RTC_Init(void);
 void RTC_GetCalendar(RTC_Calendar_TypeDef* calendar);
 uint8_t RTC_SetAlarm(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
@@ -44,5 +51,3 @@ uint8_t RTC_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_
 #endif
 
 #endif
-
-/******************* (C) COPYRIGHT 2018 ArteryTek *****END OF FILE****/

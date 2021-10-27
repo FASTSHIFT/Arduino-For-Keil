@@ -234,37 +234,29 @@ size_t HardwareSerial::write(uint8_t n)
     return 1;
 }
 
-#if SERIAL_USART1_ENABLE
-HardwareSerial Serial(USART1); //TX-PA9 RX-PA10
-#endif
+#if SERIAL_1_ENABLE
+HardwareSerial Serial(SERIAL_1_USART);
 
-#if SERIAL_USART2_ENABLE
-HardwareSerial Serial2(USART2);//TX-PA2 RX-PA3
-#endif
-
-#if SERIAL_USART3_ENABLE
-HardwareSerial Serial3(USART3);//TX-PB10 RX-PB11
-#endif
-
-extern "C" {
-#if SERIAL_USART1_ENABLE
-    void USART1_IRQHandler(void)
-    {
-        Serial.IRQHandler();
-    }
-#endif
-
-#if SERIAL_USART2_ENABLE
-    void USART2_IRQHandler(void)
-    {
-        Serial2.IRQHandler();
-    }
-#endif
-
-#if SERIAL_USART3_ENABLE
-    void USART3_IRQHandler(void)
-    {
-        Serial3.IRQHandler();
-    }
-#endif
+extern "C" SERIAL_1_IRQ_HANDLER_DEF()
+{
+    Serial.IRQHandler();
 }
+#endif
+
+#if SERIAL_2_ENABLE
+HardwareSerial Serial2(SERIAL_2_USART);
+
+extern "C" SERIAL_2_IRQ_HANDLER_DEF()
+{
+    Serial2.IRQHandler();
+}
+#endif
+
+#if SERIAL_3_ENABLE
+HardwareSerial Serial3(SERIAL_3_USART);
+
+extern "C" SERIAL_3_IRQ_HANDLER_DEF()
+{
+    Serial3.IRQHandler();
+}
+#endif

@@ -53,10 +53,6 @@
 #  define SET_SCL(state)    set_scl(state)
 #endif
 
-#ifndef WIRE_BEGIN_TIMEOUT
-#  define WIRE_BEGIN_TIMEOUT    100 // ms
-#endif
-
 #define I2C_WRITE 0
 #define I2C_READ  1
 
@@ -243,4 +239,4 @@ uint8_t TwoWire::process(void)
 }
 
 // Declare the instance that the users of the library can use
-TwoWire Wire(WIRE_SCL_PIN, WIRE_SDA_PIN, WIRE_SOFT_FAST);
+TwoWire Wire(WIRE_SCL_PIN, WIRE_SDA_PIN, WIRE_DELAY);

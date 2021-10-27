@@ -27,8 +27,8 @@
 
 static TIM_TypeDef* Tone_Timer = NULL;
 static bool Tone_IsContinuousModeEnable = false;
-static uint8_t Tone_Pin = 0;
-static uint32_t Tone_Counter = 0;
+static uint8_t Tone_Pin = NOT_A_PIN;
+static uint32_t Tone_ToggleCounter = 0;
 
 /**
   * @brief  tone中断入口，被定时中断调用
@@ -41,9 +41,9 @@ static void Tone_TimerHandler()
 
     if(!Tone_IsContinuousModeEnable)
     {
-        Tone_Counter--;
+        Tone_ToggleCounter--;
 
-        if(Tone_Counter == 0)
+        if(Tone_ToggleCounter == 0)
         {
             noTone(Tone_Pin);
         }
@@ -58,11 +58,11 @@ static void Tone_TimerHandler()
 void toneSetTimer(TIM_TypeDef* TIMx)
 {
     Timer_SetInterruptBase(
-        TIMx, 
-        0xFF, 
-        0xFF, 
-        Tone_TimerHandler, 
-        TONE_PREEMPTIONPRIORITY_DEFAULT, 
+        TIMx,
+        0xFF,
+        0xFF,
+        Tone_TimerHandler,
+        TONE_PREEMPTIONPRIORITY_DEFAULT,
         TONE_SUBPRIORITY_DEFAULT
     );
     Tone_Timer = TIMx;
@@ -88,7 +88,7 @@ void tone(uint8_t pin, uint32_t freq, uint32_t duration)
 
     if(!Tone_IsContinuousModeEnable)
     {
-        Tone_Counter = freq * duration / 1000 * 2;
+        Tone_ToggleCounter = freq * duration / 1000 * 2;
     }
 
     if(Tone_Timer == NULL)
@@ -109,4 +109,7 @@ void noTone(uint8_t pin)
 {
     Timer_SetEnable(Tone_Timer, false);
     digitalWrite(pin, LOW);
+    Tone_IsContinuousModeEnable = false;
+    Tone_Pin = NOT_A_PIN;
+    Tone_ToggleCounter = 0;
 }

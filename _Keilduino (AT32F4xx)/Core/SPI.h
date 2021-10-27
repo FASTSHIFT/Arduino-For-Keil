@@ -146,8 +146,16 @@ private:
     uint32_t SPI_Clock;
 };
 
-extern SPIClass SPI;    /* SCK->PA5  MISO->PA6  MOSI->PA7 */
-extern SPIClass SPI_2;  /* SCK->PB13 MISO->PB14 MOSI->PB15 */
-extern SPIClass SPI_3;  /* SCK->PB3  MISO->PB4  MOSI->PB5 */
+#if SPI_CLASS_1_ENABLE
+extern SPIClass SPI;
+#endif
+
+#if SPI_CLASS_2_ENABLE
+extern SPIClass SPI_2;
+#endif
+
+#if SPI_CLASS_3_ENABLE
+extern SPIClass SPI_3;
+#endif
 
 #endif

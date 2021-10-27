@@ -185,7 +185,8 @@ void GPIOx_Init(
     GPIO_TypeDef* GPIOx,
     uint16_t GPIO_Pin_x,
     PinMode_TypeDef PinMode_x,
-    GPIOMaxSpeed_Type GPIO_Speed_x)
+    GPIOMaxSpeed_Type GPIO_Speed_x
+)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     uint32_t RCC_APB2PERIPH_GPIOx;

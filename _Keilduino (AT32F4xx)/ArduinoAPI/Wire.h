@@ -47,9 +47,6 @@
  * pins
  */
 
-#define WIRE_SOFT_STANDARD  27
-#define WIRE_SOFT_FAST      0
-
 class TwoWire : public WireBase
 {
 public:

@@ -67,7 +67,7 @@ extern "C" {
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
 #ifndef _BV
-#define _BV(bit) (1 << (bit))
+#  define _BV(bit)              (1 << (bit))
 #endif 
 
 #define clockCyclesPerMicrosecond()  (F_CPU / 1000000L)
@@ -80,9 +80,9 @@ extern "C" {
 #define interrupts()                 sei()
 #define noInterrupts()               cli()
 
-#define NOT_A_PIN 0
-#define NOT_A_PORT 0
-#define NOT_AN_INTERRUPT -1
+#define NOT_A_PIN                    0xFF
+#define NOT_A_PORT                   0xFF
+#define NOT_AN_INTERRUPT             -1
 
 #define boolean bool
 typedef unsigned char byte;

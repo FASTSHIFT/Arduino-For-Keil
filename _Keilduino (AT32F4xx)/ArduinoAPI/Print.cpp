@@ -24,8 +24,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "Print.h"
-
-#define PRINTF_BUFFER_LENGTH 128
+#include "mcu_config.h"
 
 // Public Methods //////////////////////////////////////////////////////////////
 
@@ -277,7 +276,7 @@ size_t Print::printFloat(double number, uint8_t digits)
 
 int Print::printf (const char *__restrict __format, ...)
 {
-    char printf_buff[PRINTF_BUFFER_LENGTH];
+    char printf_buff[PRINT_PRINTF_BUFFER_LENGTH];
 
     va_list args;
     va_start(args, __format);

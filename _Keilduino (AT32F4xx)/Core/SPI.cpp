@@ -403,9 +403,14 @@ uint8_t SPIClass::recv(void)
     return this->read();
 }
 
-SPIClass SPI(SPI1);//SCK-PA5 MISO-PA6 MOSI-PA7
-SPIClass SPI_2(SPI2);//SCK-PB13 MISO-PB14 MOSI-PB15
+#if SPI_CLASS_1_ENABLE
+SPIClass SPI(SPI_CLASS_1_SPI);
+#endif
 
-#ifdef SPI3
-SPIClass SPI_3(SPI3);//SCK-PB3 MISO-PB4 MOSI-PB5
+#if SPI_CLASS_2_ENABLE
+SPIClass SPI_2(SPI_CLASS_2_SPI);
+#endif
+
+#if SPI_CLASS_3_ENABLE
+SPIClass SPI_3(SPI_CLASS_3_SPI);
 #endif

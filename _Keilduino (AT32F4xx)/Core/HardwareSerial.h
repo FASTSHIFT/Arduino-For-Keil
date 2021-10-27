@@ -27,12 +27,6 @@
 #include "Print.h"
 #include "Stream.h"
 
-#ifndef SERIAL_RX_BUFFER_SIZE
-#  define SERIAL_RX_BUFFER_SIZE           128
-#endif
-
-#define SERIAL_CONFIG_DEFAULT             SERIAL_8N1
-
 typedef enum
 {
     SERIAL_8N1 = USART_WordLength_8b | USART_Parity_No | (USART_StopBits_1 >> 8),
@@ -68,6 +62,11 @@ class HardwareSerial : public Stream
 
 public:
     HardwareSerial(USART_Type* usart);
+
+    USART_Type* getUSART()
+    {
+        return _USARTx;
+    }
 
     void begin(
         uint32_t baudRate,
@@ -106,10 +105,6 @@ public:
     }
 
     void IRQHandler();
-    USART_Type* getUSART()
-    {
-        return _USARTx;
-    }
 
 private:
     USART_Type* _USARTx;
@@ -119,15 +114,15 @@ private:
     uint8_t _rxBuffer[SERIAL_RX_BUFFER_SIZE];
 };
 
-#if SERIAL_USART1_ENABLE
+#if SERIAL_1_ENABLE
 extern HardwareSerial Serial;
 #endif
 
-#if SERIAL_USART2_ENABLE
+#if SERIAL_2_ENABLE
 extern HardwareSerial Serial2;
 #endif
 
-#if SERIAL_USART3_ENABLE
+#if SERIAL_3_ENABLE
 extern HardwareSerial Serial3;
 #endif
 

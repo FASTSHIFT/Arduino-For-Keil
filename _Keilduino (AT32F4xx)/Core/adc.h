@@ -29,11 +29,21 @@
 extern "C" {
 #endif
 
-void ADC_DMA_Init(void);
+typedef enum
+{
+    ADC_DMA_RES_OK                                = 0,
+    ADC_DMA_RES_NOT_ADC_CHANNEL                   = -1,
+    ADC_DMA_RES_DUPLICATE_REGISTRATION            = -2,
+    ADC_DMA_RES_MAX_NUM_OF_REGISTRATIONS_EXCEEDED = -3,
+} ADC_DMA_Res_Type;
+
 void ADCx_Init(ADC_Type* ADCx);
-int16_t ADC_DMA_Register(uint8_t ADC_Channel);
-uint16_t ADC_DMA_GetValue(uint8_t ADC_Channel);
 uint16_t ADCx_GetValue(ADC_Type* ADCx, uint16_t ADC_Channel);
+
+void ADC_DMA_Init(void);
+ADC_DMA_Res_Type ADC_DMA_Register(uint8_t ADC_Channel);
+uint16_t ADC_DMA_GetValue(uint8_t ADC_Channel);
+uint8_t ADC_DMA_GetRegisterCount(void);
 
 #ifdef __cplusplus
 }

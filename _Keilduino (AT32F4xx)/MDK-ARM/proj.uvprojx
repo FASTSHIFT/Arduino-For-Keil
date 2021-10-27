@@ -449,6 +449,16 @@
           <GroupName>Core</GroupName>
           <Files>
             <File>
+              <FileName>mcu_type.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\mcu_type.h</FilePath>
+            </File>
+            <File>
+              <FileName>mcu_config_template.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\mcu_config_template.h</FilePath>
+            </File>
+            <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\adc.c</FilePath>

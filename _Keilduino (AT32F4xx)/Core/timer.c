@@ -264,7 +264,7 @@ void Timer_SetEnable(TIM_TypeDef* TIMx, bool enable)
 void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction_t function)
 {
     uint16_t period, prescaler;
-    uint32_t clock = Timer_GetClockMax(TIMx);
+    uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
 
     if(!IS_TMR_ALL_PERIPH(TIMx) || time == 0)
     {
@@ -299,7 +299,7 @@ void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction
 bool Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t freq)
 {
     uint16_t period, prescaler;
-    uint32_t clock = Timer_GetClockMax(TIMx);
+    uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
     int32_t error;
 
     if(!IS_TMR_ALL_PERIPH(TIMx) || freq == 0)
@@ -330,7 +330,7 @@ bool Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t freq)
   */
 uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx)
 {
-    uint32_t clock = Timer_GetClockMax(TIMx);
+    uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
     if(!IS_TMR_ALL_PERIPH(TIMx))
         return 0;
 
@@ -346,7 +346,7 @@ uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx)
 void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t time)
 {
     uint16_t period, prescaler;
-    uint32_t clock = Timer_GetClockMax(TIMx);
+    uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
 
     if(!IS_TMR_ALL_PERIPH(TIMx))
         return;

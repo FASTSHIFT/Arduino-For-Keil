@@ -30,7 +30,7 @@
 extern "C" {
 #endif
 
-#define Timer_GetClockMax(TIMx)             F_CPU
+#define TIMER_GET_CLOCK_MAX(TIMx)             F_CPU
    
 typedef void(*Timer_CallbackFunction_t)(void);
 
