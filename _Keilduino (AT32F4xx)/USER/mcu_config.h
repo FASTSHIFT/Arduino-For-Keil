@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2019 - 2021 _VIFEXTech
+ * Copyright (c) 2019-2021 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -64,6 +64,8 @@
 #define WIRE_BUFF_SIZE                      32
 
 /* SPI Class */
+#define SPI_CLASS_AVR_COMPATIBILITY_MODE    1
+
 #define SPI_CLASS_1_ENABLE                  1
 #if SPI_CLASS_1_ENABLE
 #  define SPI_CLASS_1_SPI                   SPI1

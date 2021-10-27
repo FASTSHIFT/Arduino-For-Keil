@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2019 - 2021 _VIFEXTech
+ * Copyright (c) 2019-2021 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 
 static void setup()
 {
-    Serial.begin(115200);
     // put your setup code here, to run once:
 }
 

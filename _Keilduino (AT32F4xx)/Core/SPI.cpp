@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2019 - 2021 _VIFEXTech
+ * Copyright (c) 2019-2021 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -188,23 +188,22 @@ void SPIClass::setClock(uint32_t clock)
     SPI_Enable(SPIx, ENABLE);
 }
 
-void SPIClass::setClockDivider(uint32_t Div) //For AVR compatibility
+void SPIClass::setClockDivider(uint32_t Div)
 {
-    // AVR:16MHz
     if(Div == 0)
     {
-        setClock(16000000);
+        Div = 1;
     }
-    else
-    {
-        setClock(16000000 / Div);
-    }
+#if SPI_CLASS_AVR_COMPATIBILITY_MODE
+    setClock(16000000 / Div); // AVR:16MHz
+#else
+    setClock(SPI_Clock / Div);
+#endif
 }
 
 void SPIClass::setBitOrder(uint16_t bitOrder)
 {
-    if(bitOrder == MSBFIRST)SPI_InitStructure.SPI_FirstBit = SPI_FIRSTBIT_MSB;//MSBFIRST 1
-    else SPI_InitStructure.SPI_FirstBit = SPI_FIRSTBIT_LSB;
+    SPI_InitStructure.SPI_FirstBit = (bitOrder == MSBFIRST) ? SPI_FIRSTBIT_MSB : SPI_FIRSTBIT_LSB;
     SPI_Init(SPIx, &SPI_InitStructure);
     SPI_Enable(SPIx, ENABLE);
 }
