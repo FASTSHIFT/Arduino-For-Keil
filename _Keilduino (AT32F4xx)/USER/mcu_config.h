@@ -20,6 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#if 1
+ 
 #ifndef __MCU_CONFIG_H
 #define __MCU_CONFIG_H
 
@@ -111,5 +113,7 @@
 /* PWM */
 #define PWM_DUTYCYCLE_DEFAULT               1000
 #define PWM_FREQUENCY_DEFAULT               10000
+
+#endif
 
 #endif

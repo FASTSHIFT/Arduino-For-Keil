@@ -66,6 +66,8 @@
 #define WIRE_BUFF_SIZE                      32
 
 /* SPI Class */
+#define SPI_CLASS_AVR_COMPATIBILITY_MODE    1
+
 #define SPI_CLASS_1_ENABLE                  1
 #if SPI_CLASS_1_ENABLE
 #  define SPI_CLASS_1_SPI                   SPI1

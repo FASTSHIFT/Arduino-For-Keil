@@ -37,17 +37,18 @@ static uint32_t Tone_ToggleCounter = 0;
   */
 static void Tone_TimerHandler()
 {
-    togglePin(Tone_Pin);
-
     if(!Tone_IsContinuousModeEnable)
     {
-        Tone_ToggleCounter--;
-
         if(Tone_ToggleCounter == 0)
         {
             noTone(Tone_Pin);
+            return;
         }
+
+        Tone_ToggleCounter--;
     }
+
+    togglePin(Tone_Pin);
 }
 
 /**
@@ -77,9 +78,10 @@ void toneSetTimer(TIM_TypeDef* TIMx)
   */
 void tone(uint8_t pin, uint32_t freq, uint32_t duration)
 {
+    noTone(pin);
+
     if(duration == 0 || freq == 0 || freq > TONE_FREQ_MAX)
     {
-        noTone(pin);
         return;
     }
 
@@ -89,6 +91,13 @@ void tone(uint8_t pin, uint32_t freq, uint32_t duration)
     if(!Tone_IsContinuousModeEnable)
     {
         Tone_ToggleCounter = freq * duration / 1000 * 2;
+
+        if(Tone_ToggleCounter == 0)
+        {
+            return;
+        }
+
+        Tone_ToggleCounter--;
     }
 
     if(Tone_Timer == NULL)
