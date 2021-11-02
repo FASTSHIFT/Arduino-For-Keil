@@ -57,7 +57,8 @@
 
 struct i2c_msg;
 
-typedef struct i2c_msg {
+typedef struct i2c_msg
+{
     uint16_t addr;                /**< Address */
 
 #define I2C_MSG_READ            0x1
@@ -73,7 +74,8 @@ typedef struct i2c_msg {
     uint8_t *data;                /**< Data */
 } i2c_msg;
 
-class WireBase { // Abstraction is awesome!
+class WireBase   // Abstraction is awesome!
+{
 protected:
     i2c_msg itc_msg;
     uint8_t rx_buf[WIRE_BUFF_SIZE];      /* receive buffer */
@@ -113,6 +115,11 @@ public:
      * buffer has not overflowed.
      */
     uint8_t endTransmission(void);
+
+    inline uint8_t endTransmission(uint8_t)
+    {
+        return endTransmission();
+    }
 
     /*
      * Request bytes from a slave device and process the request,

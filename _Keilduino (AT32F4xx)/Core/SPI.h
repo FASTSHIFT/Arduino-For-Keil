@@ -32,6 +32,15 @@
 #define MSBFIRST 1
 #endif
 
+#if SPI_CLASS_PIN_DEFINE_ENABLE
+#  define SS      PA4
+#  define SCK     PA5
+#  define MISO    PA6
+#  define MOSI    PA7
+#endif
+
+#define DATA_SIZE_8BIT  SPI_FRAMESIZE_8BIT
+#define DATA_SIZE_16BIT SPI_FRAMESIZE_16BIT
 
 typedef enum
 {
@@ -40,12 +49,6 @@ typedef enum
     SPI_MODE2,
     SPI_MODE3
 } SPI_MODE_TypeDef;
-
-#define DATA_SIZE_8BIT  SPI_FRAMESIZE_8BIT
-#define DATA_SIZE_16BIT SPI_FRAMESIZE_16BIT
-
-typedef uint16_t BitOrder;
-typedef SPI_Type spi_dev;
 
 typedef enum
 {
@@ -59,11 +62,11 @@ typedef enum
 class SPISettings
 {
 public:
-    SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode)
+    SPISettings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode)
     {
         init_AlwaysInline(clock, bitOrder, dataMode, DATA_SIZE_8BIT);
     }
-    SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode, uint32_t dataSize)
+    SPISettings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode, uint32_t dataSize)
     {
         init_AlwaysInline(clock, bitOrder, dataMode, dataSize);
     }
@@ -76,11 +79,11 @@ public:
         init_AlwaysInline(4000000, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT);
     }
 private:
-    void init_MightInline(uint32_t clock, BitOrder bitOrder, uint8_t dataMode, uint32_t dataSize)
+    void init_MightInline(uint32_t clock, uint16_t bitOrder, uint8_t dataMode, uint32_t dataSize)
     {
         init_AlwaysInline(clock, bitOrder, dataMode, dataSize);
     }
-    void init_AlwaysInline(uint32_t clock, BitOrder bitOrder, uint8_t dataMode, uint32_t dataSize) __attribute__((__always_inline__))
+    void init_AlwaysInline(uint32_t clock, uint16_t bitOrder, uint8_t dataMode, uint32_t dataSize) __attribute__((__always_inline__))
     {
         this->clock = clock;
         this->bitOrder = bitOrder;
@@ -90,7 +93,7 @@ private:
     uint32_t clock;
     uint32_t dataSize;
     uint32_t clockDivider;
-    BitOrder bitOrder;
+    uint16_t bitOrder;
     uint8_t dataMode;
     uint8_t _SSPin;
     volatile spi_mode_t state;

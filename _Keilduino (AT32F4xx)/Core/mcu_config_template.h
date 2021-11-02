@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 #if 0
-
+ 
 #ifndef __MCU_CONFIG_H
 #define __MCU_CONFIG_H
 
@@ -67,6 +67,7 @@
 
 /* SPI Class */
 #define SPI_CLASS_AVR_COMPATIBILITY_MODE    1
+#define SPI_CLASS_PIN_DEFINE_ENABLE         1
 
 #define SPI_CLASS_1_ENABLE                  1
 #if SPI_CLASS_1_ENABLE
