@@ -184,7 +184,7 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
 void GPIOx_Init(
     GPIO_TypeDef* GPIOx,
     uint16_t GPIO_Pin_x,
-    PinMode_TypeDef PinMode_x,
+    PinMode_TypeDef Mode,
     GPIOMaxSpeed_Type GPIO_Speed_x
 )
 {
@@ -207,35 +207,35 @@ void GPIOx_Init(
 #endif /*GPIOG*/
     else return;
 
-    if(PinMode_x == INPUT)
+    if(Mode == INPUT)
     {
         GPIO_Mode_x  = GPIO_Mode_IN_FLOATING;
     }
-    else if(PinMode_x == INPUT_PULLUP)
+    else if(Mode == INPUT_PULLUP)
     {
         GPIO_Mode_x  = GPIO_Mode_IN_PU;
     }
-    else if(PinMode_x == INPUT_PULLDOWN)
+    else if(Mode == INPUT_PULLDOWN)
     {
         GPIO_Mode_x  = GPIO_Mode_IN_PD;
     }
-    else if(PinMode_x == INPUT_ANALOG)
+    else if(Mode == INPUT_ANALOG)
     {
         GPIO_Mode_x  = GPIO_Mode_IN_ANALOG;
     }
-    else if(PinMode_x == OUTPUT)
+    else if(Mode == OUTPUT)
     {
         GPIO_Mode_x  = GPIO_Mode_OUT_PP;
     }
-    else if(PinMode_x == OUTPUT_OPEN_DRAIN)
+    else if(Mode == OUTPUT_OPEN_DRAIN)
     {
         GPIO_Mode_x  = GPIO_Mode_OUT_OD;
     }
-    else if(PinMode_x == OUTPUT_AF_PP)
+    else if(Mode == OUTPUT_AF_PP)
     {
         GPIO_Mode_x  = GPIO_Mode_AF_PP;
     }
-    else if(PinMode_x == OUTPUT_AF_OD)
+    else if(Mode == OUTPUT_AF_OD)
     {
         GPIO_Mode_x  = GPIO_Mode_AF_OD;
     }
@@ -271,20 +271,37 @@ void GPIO_JTAG_Disable(void)
   */
 uint8_t GPIO_GetPortNum(uint8_t Pin)
 {
-    if(PIN_MAP[Pin].GPIOx == GPIOA)return 0;
-    else if(PIN_MAP[Pin].GPIOx == GPIOB)return 1;
-    else if(PIN_MAP[Pin].GPIOx == GPIOC)return 2;
-    else if(PIN_MAP[Pin].GPIOx == GPIOD)return 3;
+    uint8_t retval = 0xFF;
+    uint8_t index;
+    GPIO_Type* GPIOx = PIN_MAP[Pin].GPIOx;
+
+    GPIO_Type* GPIO_Map[] =
+    {
+        GPIOA,
+        GPIOB,
+        GPIOC,
+        GPIOD,
 #ifdef GPIOE
-    else if(PIN_MAP[Pin].GPIOx == GPIOE)return 4;
-#endif /*GPIOE*/
+        GPIOE,
+#endif
 #ifdef GPIOF
-    else if(PIN_MAP[Pin].GPIOx == GPIOF)return 5;
-#endif /*GPIOF*/
+        GPIOF,
+#endif
 #ifdef GPIOG
-    else if(PIN_MAP[Pin].GPIOx == GPIOG)return 6;
-#endif /*GPIOG*/
-    else return 0xFF;
+        GPIOG
+#endif
+    };
+
+    for(index = 0; index < sizeof(GPIO_Map) / sizeof(GPIO_Map[0]); index++)
+    {
+        if(GPIOx == GPIO_Map[index])
+        {
+            retval = index;
+            break;
+        }
+    }
+
+    return retval;
 }
 
 /**
@@ -294,7 +311,7 @@ uint8_t GPIO_GetPortNum(uint8_t Pin)
   */
 uint8_t GPIO_GetPinSource(uint16_t GPIO_Pin_x)
 {
-    uint16_t PinSource = 0;
+    uint8_t PinSource = 0;
     while(GPIO_Pin_x > 1)
     {
         GPIO_Pin_x >>= 1;

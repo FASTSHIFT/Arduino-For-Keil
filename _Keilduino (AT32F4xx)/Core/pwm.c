@@ -85,11 +85,11 @@ static void TIMx_OCxInit(TIM_TypeDef* TIMx, uint32_t arr, uint16_t psc, uint8_t 
 /**
   * @brief  PWM输出初始化
   * @param  Pin:引脚编号
-  * @param  PWM_DutyCycle: PWM分级数
-  * @param  PWM_Frequency: PWM频率
+  * @param  Resolution: PWM分辨率
+  * @param  Frequency: PWM频率
   * @retval 引脚对应的定时器通道
   */
-uint8_t PWM_Init(uint8_t Pin, uint32_t PWM_DutyCycle, uint32_t PWM_Frequency)
+uint8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency)
 {
     uint32_t arr, psc;
 
@@ -98,15 +98,15 @@ uint8_t PWM_Init(uint8_t Pin, uint32_t PWM_DutyCycle, uint32_t PWM_Frequency)
         return 0;
     }
 
-    if(PWM_DutyCycle == 0 || PWM_Frequency == 0 || (PWM_DutyCycle * PWM_Frequency) > F_CPU)
+    if(Resolution == 0 || Frequency == 0 || (Resolution * Frequency) > F_CPU)
     {
         return 0;
     }
 
     pinMode(Pin, OUTPUT_AF_PP);
 
-    arr = PWM_DutyCycle;
-    psc = TIMER_GET_CLOCK_MAX(PIN_MAP[Pin].TIMx) / PWM_DutyCycle / PWM_Frequency;
+    arr = Resolution;
+    psc = TIMER_GET_CLOCK_MAX(PIN_MAP[Pin].TIMx) / Resolution / Frequency;
 
     TMR_Cmd(PIN_MAP[Pin].TIMx, DISABLE);
     TIMx_OCxInit(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
@@ -116,10 +116,10 @@ uint8_t PWM_Init(uint8_t Pin, uint32_t PWM_DutyCycle, uint32_t PWM_Frequency)
 /**
   * @brief  输出PWM信号
   * @param  Pin: 引脚编号
-  * @param  val: PWM输出值
+  * @param  Value: PWM输出值
   * @retval PWM占空比值
   */
-void PWM_Write(uint8_t Pin, uint32_t val)
+void PWM_Write(uint8_t Pin, uint32_t Value)
 {
-    Timer_SetCompare(PIN_MAP[Pin].TIMx, PIN_MAP[Pin].TimerChannel, val);
+    Timer_SetCompare(PIN_MAP[Pin].TIMx, PIN_MAP[Pin].TimerChannel, Value);
 }

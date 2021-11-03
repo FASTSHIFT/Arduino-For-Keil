@@ -37,14 +37,14 @@ typedef void(*EXTI_CallbackFunction_t)(void);
 
 void EXTIx_Init(
     uint8_t Pin,
-    EXTI_CallbackFunction_t function,
+    EXTI_CallbackFunction_t Function,
     EXTITrigger_Type Trigger_Mode,
     uint8_t PreemptionPriority,
     uint8_t SubPriority
 );
 void attachInterrupt(
     uint8_t Pin,
-    EXTI_CallbackFunction_t function,
+    EXTI_CallbackFunction_t Function,
     EXTITrigger_Type Trigger_Mode
 );
 void detachInterrupt(uint8_t Pin);

@@ -87,10 +87,10 @@ extern "C" {
 #define boolean bool
 typedef unsigned char byte;
 
-void     pinMode(uint8_t pin, PinMode_TypeDef PinMode_x);
-void     digitalWrite(uint8_t pin, uint8_t val);
+void     pinMode(uint8_t pin, PinMode_TypeDef mode);
+void     digitalWrite(uint8_t pin, uint8_t value);
 uint8_t  digitalRead(uint8_t pin);
-void     analogWrite(uint8_t pin, uint16_t val);
+void     analogWrite(uint8_t pin, uint16_t value);
 uint16_t analogRead(uint8_t pin);
 uint16_t analogRead_DMA(uint8_t pin);
 void     shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value);

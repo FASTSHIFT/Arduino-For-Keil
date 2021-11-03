@@ -28,14 +28,14 @@
   * @param  PinMode_x: 模式
   * @retval 无
   */
-void pinMode(uint8_t pin, PinMode_TypeDef PinMode_x)
+void pinMode(uint8_t pin, PinMode_TypeDef mode)
 {
     if(!IS_PIN(pin))
     {
         return;
     }
 
-    if(PinMode_x == INPUT_ANALOG_DMA)
+    if(mode == INPUT_ANALOG_DMA)
     {
         if(!IS_ADC_PIN(pin))
         {
@@ -45,7 +45,7 @@ void pinMode(uint8_t pin, PinMode_TypeDef PinMode_x)
         pinMode(pin, INPUT_ANALOG);
         ADC_DMA_Register(PIN_MAP[pin].ADC_Channel);
     }
-    else if(PinMode_x == PWM)
+    else if(mode == PWM)
     {
         PWM_Init(pin, PWM_DUTYCYCLE_DEFAULT, PWM_FREQUENCY_DEFAULT);
     }
@@ -54,7 +54,7 @@ void pinMode(uint8_t pin, PinMode_TypeDef PinMode_x)
         GPIOx_Init(
             PIN_MAP[pin].GPIOx,
             PIN_MAP[pin].GPIO_Pin_x,
-            PinMode_x,
+            mode,
             GPIO_MAX_SPEED_DEFAULT
         );
     }
@@ -63,17 +63,17 @@ void pinMode(uint8_t pin, PinMode_TypeDef PinMode_x)
 /**
   * @brief  将数字HIGH(1)或LOW(0)值写入数字引脚
   * @param  pin:引脚编号
-  * @param  val: 写入值
+  * @param  value: 写入值
   * @retval 无
   */
-void digitalWrite(uint8_t pin, uint8_t val)
+void digitalWrite(uint8_t pin, uint8_t value)
 {
     if(!IS_PIN(pin))
     {
         return;
     }
 
-    val ? digitalWrite_HIGH(pin) : digitalWrite_LOW(pin);
+    value ? digitalWrite_HIGH(pin) : digitalWrite_LOW(pin);
 }
 
 /**
@@ -94,17 +94,17 @@ uint8_t digitalRead(uint8_t pin)
 /**
   * @brief  将模拟值(PWM占空比)写入引脚
   * @param  pin: 引脚编号
-  * @param  val: PWM占空比
+  * @param  value: PWM占空比
   * @retval 无
   */
-void analogWrite(uint8_t pin, uint16_t val)
+void analogWrite(uint8_t pin, uint16_t value)
 {
     if(!IS_PWM_PIN(pin))
     {
         return;
     }
 
-    pwmWrite(pin, val);
+    PWM_Write(pin, value);
 }
 
 /**

@@ -26,7 +26,6 @@
 #define EXTI_GetPortSourceGPIOx(Pin) GPIO_GetPortNum(Pin)
 #define EXTI_GetPinSourcex(Pin)      GPIO_GetPinNum(Pin)
 
-/*外部中断回调函数指针数组*/
 static EXTI_CallbackFunction_t EXTI_Function[16] = {0};
 
 /**
@@ -75,7 +74,7 @@ static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
 /**
   * @brief  外部中断初始化
   * @param  Pin: 引脚编号
-  * @param  function: 回调函数
+  * @param  Function: 回调函数
   * @param  Trigger_Mode: 触发方式
   * @param  PreemptionPriority: 抢占优先级
   * @param  SubPriority: 子优先级
@@ -83,7 +82,7 @@ static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
   */
 void EXTIx_Init(
     uint8_t Pin,
-    EXTI_CallbackFunction_t function,
+    EXTI_CallbackFunction_t Function,
     EXTITrigger_Type Trigger_Mode,
     uint8_t PreemptionPriority,
     uint8_t SubPriority
@@ -101,7 +100,7 @@ void EXTIx_Init(
     if(Pinx > 15)
         return;
 
-    EXTI_Function[Pinx] = function;
+    EXTI_Function[Pinx] = Function;
 
     RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_AFIO, ENABLE);
     GPIO_EXTILineConfig(GPIO_GetPortNum(Pin), Pinx);
@@ -127,9 +126,15 @@ void EXTIx_Init(
   * @param  Trigger_Mode: 触发方式
   * @retval 无
   */
-void attachInterrupt(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_Type Trigger_Mode)
+void attachInterrupt(uint8_t Pin, EXTI_CallbackFunction_t Function, EXTITrigger_Type Trigger_Mode)
 {
-    EXTIx_Init(Pin, function, Trigger_Mode, EXTI_PREEMPTIONPRIORITY_DEFAULT, EXTI_SUBPRIORITY_DEFAULT);
+    EXTIx_Init(
+        Pin,
+        Function,
+        Trigger_Mode,
+        EXTI_PREEMPTIONPRIORITY_DEFAULT,
+        EXTI_SUBPRIORITY_DEFAULT
+    );
 }
 
 /**

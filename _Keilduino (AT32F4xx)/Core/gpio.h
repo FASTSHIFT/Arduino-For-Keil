@@ -104,7 +104,7 @@ extern const PinInfo_TypeDef PIN_MAP[PIN_MAX];
 void GPIOx_Init(
     GPIO_TypeDef* GPIOx,
     uint16_t GPIO_Pin_x,
-    PinMode_TypeDef PinMode_x,
+    PinMode_TypeDef Mode,
     GPIOMaxSpeed_Type GPIO_Speed_x
 );
 void GPIO_JTAG_Disable(void);

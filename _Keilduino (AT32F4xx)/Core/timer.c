@@ -22,7 +22,6 @@
  */
 #include "timer.h"
 
-/*定时器编号枚举*/
 typedef enum
 {
     TIMER1, TIMER2, TIMER3, TIMER4, TIMER5, TIMER6, TIMER7, TIMER8,
@@ -114,7 +113,6 @@ void Timer_ClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState)
 #endif
 }
 
-/*快速求平方根*/
 static float Qsqrt(float number)
 {
     long i;
@@ -246,34 +244,35 @@ static void Timer_TimeFactorization(
 /**
   * @brief  定时器使能
   * @param  TIMx: 定时器地址
-  * @param  enable: 使能
+  * @param  Enable: 使能
   * @retval 无
   */
-void Timer_SetEnable(TIM_TypeDef* TIMx, bool enable)
+void Timer_SetEnable(TIM_TypeDef* TIMx, bool Enable)
 {
-    TMR_Cmd(TIMx, enable ? ENABLE : DISABLE);
+    TMR_Cmd(TIMx, Enable ? ENABLE : DISABLE);
 }
 
 /**
   * @brief  定时中断配置
   * @param  TIMx:定时器地址
-  * @param  time: 中断时间(微秒)
-  * @param  function: 定时中断回调函数
+  * @param  Time: 中断时间(微秒)
+  * @param  Function: 定时中断回调函数
   * @retval 无
   */
-void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction_t function)
+void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t Time, Timer_CallbackFunction_t Function)
 {
-    uint16_t period, prescaler;
+    uint16_t period = 0;
+    uint16_t prescaler = 0;
     uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
 
-    if(!IS_TMR_ALL_PERIPH(TIMx) || time == 0)
+    if(!IS_TMR_ALL_PERIPH(TIMx) || Time == 0)
     {
         return;
     }
 
     /*将定时中断时间转换为重装值和时钟分频值*/
     Timer_TimeFactorization(
-        time,
+        Time,
         clock,
         &period,
         &prescaler
@@ -284,7 +283,7 @@ void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction
         TIMx,
         period,
         prescaler,
-        function,
+        Function,
         TIMER_PREEMPTIONPRIORITY_DEFAULT,
         TIMER_SUBPRIORITY_DEFAULT
     );
@@ -293,20 +292,20 @@ void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction
 /**
   * @brief  更新定时中断频率
   * @param  TIMx:定时器地址
-  * @param  freq:中断频率
+  * @param  Freq:中断频率
   * @retval true: 设置成功
   */
-bool Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t freq)
+bool Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t Freq)
 {
     uint16_t period, prescaler;
     uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
     int32_t error;
 
-    if(!IS_TMR_ALL_PERIPH(TIMx) || freq == 0)
+    if(!IS_TMR_ALL_PERIPH(TIMx) || Freq == 0)
         return false;
 
     bool success = Timer_FreqFactorization(
-                       freq,
+                       Freq,
                        clock,
                        &period,
                        &prescaler,
@@ -340,10 +339,10 @@ uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx)
 /**
   * @brief  更新定时中断时间
   * @param  TIMx:定时器地址
-  * @param  time: 中断时间(微秒)
+  * @param  Time: 中断时间(微秒)
   * @retval 无
   */
-void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t time)
+void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t Time)
 {
     uint16_t period, prescaler;
     uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
@@ -352,7 +351,7 @@ void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t time)
         return;
 
     Timer_TimeFactorization(
-        time,
+        Time,
         clock,
         &period,
         &prescaler
@@ -365,20 +364,20 @@ void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t time)
 /**
   * @brief  定时中断基本配置
   * @param  TIMx:定时器地址
-  * @param  period:重装值
-  * @param  prescaler:时钟分频值
-  * @param  function: 定时中断回调函数
+  * @param  Period:重装值
+  * @param  Prescaler:时钟分频值
+  * @param  Function: 定时中断回调函数
   * @param  PreemptionPriority: 抢占优先级
   * @param  SubPriority: 子优先级
   * @retval 无
   */
 void Timer_SetInterruptBase(
     TIM_TypeDef* TIMx,
-    uint16_t period,
-    uint16_t prescaler,
-    Timer_CallbackFunction_t func,
-    uint8_t preemptionPriority,
-    uint8_t subPriority
+    uint16_t Period,
+    uint16_t Prescaler,
+    Timer_CallbackFunction_t Function,
+    uint8_t PreemptionPriority,
+    uint8_t SubPriority
 )
 {
     TMR_TimerBaseInitType  TMR_TimeBaseStructure;
@@ -410,26 +409,38 @@ while(0)
     TMRx_IRQ_DEF(3, TMR3_GLOBAL_IRQn);
     TMRx_IRQ_DEF(4, TMR4_GLOBAL_IRQn);
     TMRx_IRQ_DEF(5, TMR5_GLOBAL_IRQn);
+
 #ifdef TMR6
     TMRx_IRQ_DEF(6, TMR6_GLOBAL_IRQn);
 #endif
+
 #ifdef TMR7
     TMRx_IRQ_DEF(7, TMR7_GLOBAL_IRQn);
 #endif
+
     TMRx_IRQ_DEF(8, TMR8_OV_TMR13_IRQn);
     TMRx_IRQ_DEF(9, TMR1_BRK_TMR9_IRQn);
     TMRx_IRQ_DEF(10, TMR1_OV_TMR10_IRQn);
-    //TMRx_IRQ_DEF(11, TMR1_TRG_HALL_TMR11_IRQn);
+
+#ifdef TMR11
+    TMRx_IRQ_DEF(11, TMR1_TRG_COM_TMR11_IRQn);
+#endif
+
 #ifdef TMR12
     TMRx_IRQ_DEF(12, TMR8_BRK_TMR12_IRQn);
 #endif
+
 #ifdef TMR13
     TMRx_IRQ_DEF(13, TMR8_OV_TMR13_IRQn);
 #endif
+
 #ifdef TMR14
-    //TMRx_IRQ_DEF(14, TMR8_TRG_HALL_TMR14_IRQn);
+    TMRx_IRQ_DEF(14, TMR8_TRG_COM_TMR14_IRQn);
 #endif
-    //TMRx_IRQ_DEF(15, TMR15_OV_IRQn);
+
+#ifdef TMR15
+    TMRx_IRQ_DEF(15, TMR15_OV_IRQn);
+#endif
 
 match:
 
@@ -438,22 +449,22 @@ match:
         return;
     }
 
-    Timer_CallbackFunction[TIMERx] = func;
+    Timer_CallbackFunction[TIMERx] = Function;
 
     TMR_Reset(TIMx);
     Timer_ClockCmd(TIMx, ENABLE);
 
     TMR_TimeBaseStructInit(&TMR_TimeBaseStructure);
     TMR_TimeBaseStructure.TMR_RepetitionCounter = 0;
-    TMR_TimeBaseStructure.TMR_Period = period - 1;
-    TMR_TimeBaseStructure.TMR_DIV = prescaler - 1;
+    TMR_TimeBaseStructure.TMR_Period = Period - 1;
+    TMR_TimeBaseStructure.TMR_DIV = Prescaler - 1;
     TMR_TimeBaseStructure.TMR_ClockDivision = TMR_CKD_DIV1;
     TMR_TimeBaseStructure.TMR_CounterMode = TMR_CounterDIR_Up;
     TMR_TimeBaseInit(TIMx, &TMR_TimeBaseStructure);
 
     NVIC_InitStructure.NVIC_IRQChannel = TMRx_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = preemptionPriority;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = subPriority;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
@@ -465,7 +476,7 @@ match:
   * @brief  设置输出比较值
   * @param  TIMx: 定时器地址
   * @param  TimerChannel: 定时器通道
-  * @param  val:输出比较值
+  * @param  Compare:输出比较值
   * @retval 无
   */
 void Timer_SetCompare(TIM_TypeDef* TIMx, uint8_t TimerChannel, uint32_t Compare)
@@ -521,23 +532,23 @@ uint16_t Timer_GetCompare(TIM_TypeDef* TIMx, uint8_t TimerChannel)
 /**
   * @brief  更新定时器时钟预分频数
   * @param  TIMx: 定时器地址
-  * @param  psc: 时钟预分频数
+  * @param  rescaler: 时钟预分频数
   * @retval 无
   */
-void Timer_SetPrescaler(TIM_TypeDef* TIMx, uint16_t psc)
+void Timer_SetPrescaler(TIM_TypeDef* TIMx, uint16_t rescaler)
 {
-    TIMx->DIV = psc;
+    TIMx->DIV = rescaler;
 }
 
 /**
   * @brief  更新定时器自动重装值
   * @param  TIMx: 定时器地址
-  * @param  arr: 自动重装值
+  * @param  Reload: 自动重装值
   * @retval 无
   */
-void Timer_SetReload(TIM_TypeDef* TIMx, uint16_t arr)
+void Timer_SetReload(TIM_TypeDef* TIMx, uint16_t Reload)
 {
-    TIMx->AR = arr;
+    TIMx->AR = Reload;
 }
 
 /**
