@@ -61,3 +61,7 @@
 * 2.NVIC_SetPriorityGrouping -> NVIC_PriorityGroupConfig
 * 3.添加extend_SRAM
 * 4.Wire库FULL_SPEED_I2C修改
+
+## [v2.3] - 2021.10.23
+* 1.ArduinoAPI 重构
+* 2.Core 重构

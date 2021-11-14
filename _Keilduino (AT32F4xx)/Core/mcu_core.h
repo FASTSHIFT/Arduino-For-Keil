@@ -20,34 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __RTC_H
-#define __RTC_H
+#ifndef __MCU_CORE_H
+#define __MCU_CORE_H
 
-#include "mcu_type.h"
+#define sei() __set_PRIMASK(0)
+#define cli() __set_PRIMASK(1)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-typedef struct
-{
-    uint8_t hour;
-    uint8_t min;
-    uint8_t sec;
-    uint16_t w_year;
-    uint8_t  w_month;
-    uint8_t  w_date;
-    uint8_t  week;
-} RTC_Calendar_TypeDef;
-
-void RTC_Init(void);
-void RTC_GetCalendar(RTC_Calendar_TypeDef* calendar);
-uint8_t RTC_SetAlarm(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
-uint8_t RTC_GetWeek(uint16_t year, uint8_t month, uint8_t day);
-uint8_t RTC_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
-
-#ifdef __cplusplus
-}
-#endif
+#include "adc.h"
+#include "delay.h"
+#include "exti.h"
+#include "gpio.h"
+#include "pwm.h"
+#include "timer.h"
 
 #endif

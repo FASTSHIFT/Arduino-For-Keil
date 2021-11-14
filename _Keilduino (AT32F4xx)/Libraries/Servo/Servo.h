@@ -28,8 +28,6 @@
 #define _SERVO_H_
 
 #include "Arduino.h"
-#include "libmaple_types.h"
-#include "wirish_math.h"
 
 /*
  * Note on Arduino compatibility:
@@ -69,7 +67,8 @@
 #define SERVO_DEFAULT_MAX_ANGLE         180
 
 /** Class for interfacing with RC servomotors. */
-class Servo {
+class Servo
+{
 public:
     /**
      * @brief Construct a new Servo instance.
@@ -112,18 +111,21 @@ public:
      *
      * @return true if successful, false when pin doesn't support PWM.
      */
-    bool attach(uint8 pin,
-                uint16 minPulseWidth=SERVO_DEFAULT_MIN_PW,
-                uint16 maxPulseWidth=SERVO_DEFAULT_MAX_PW,
-                int16 minAngle=SERVO_DEFAULT_MIN_ANGLE,
-                int16 maxAngle=SERVO_DEFAULT_MAX_ANGLE);
+    bool attach(uint8_t pin,
+                uint16_t minPulseWidth = SERVO_DEFAULT_MIN_PW,
+                uint16_t maxPulseWidth = SERVO_DEFAULT_MAX_PW,
+                int16_t minAngle = SERVO_DEFAULT_MIN_ANGLE,
+                int16_t maxAngle = SERVO_DEFAULT_MAX_ANGLE);
 
     /**
      * @brief Check if this instance is attached to a servo.
      * @return true if this instance is attached to a servo, false otherwise.
      * @see Servo::attachedPin()
      */
-    bool attached() const { return this->pin != NOT_ATTACHED; }
+    bool attached() const
+    {
+        return this->pin != NOT_ATTACHED;
+    }
 
     /**
      * @brief Get the pin this instance is attached to.
@@ -131,7 +133,10 @@ public:
      *         otherwise.
      * @see Servo::attach()
      */
-    int attachedPin() const { return this->pin; }
+    int attachedPin() const
+    {
+        return this->pin;
+    }
 
     /**
      * @brief Stop driving the servo pulse train.
@@ -152,7 +157,7 @@ public:
      * @see Servo::attach()
      */
     void write(int degrees);
-	void write(float degrees);
+    void write(float degrees);
 
     /**
      * Get the servomotor's target angle, in degrees.  This will
@@ -161,7 +166,7 @@ public:
      * @see Servo::attach()
      */
     int read() const;
-	float read_f() const;
+    float read_f() const;
 
     /**
      * @brief Set the pulse width, in microseconds.
@@ -173,8 +178,8 @@ public:
      *
      * @see Servo::attach()
      */
-    void writeMicroseconds(uint16 pulseWidth);
-	void writeMicroseconds(float pulseWidth);
+    void writeMicroseconds(uint16_t pulseWidth);
+    void writeMicroseconds(float pulseWidth);
 
     /**
      * Get the current pulse width, in microseconds.  This will
@@ -182,15 +187,15 @@ public:
      *
      * @see Servo::attach()
      */
-    uint16 readMicroseconds() const;
-	float readMicroseconds_f() const;
+    uint16_t readMicroseconds() const;
+    float readMicroseconds_f() const;
 
 private:
-    int16 pin;
-    uint16 minPW;
-    uint16 maxPW;
-    int16 minAngle;
-    int16 maxAngle;
+    int16_t pin;
+    uint16_t minPW;
+    uint16_t maxPW;
+    int16_t minAngle;
+    int16_t maxAngle;
 
     void resetFields(void);
 };

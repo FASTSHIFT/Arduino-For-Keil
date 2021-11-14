@@ -20,34 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __RTC_H
-#define __RTC_H
+#ifndef __TONE_H
+#define __TONE_H
 
-#include "mcu_type.h"
+#include "timer.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#define TONE_DURATION_INFINITE  0xFFFFFFFFU
 
-typedef struct
-{
-    uint8_t hour;
-    uint8_t min;
-    uint8_t sec;
-    uint16_t w_year;
-    uint8_t  w_month;
-    uint8_t  w_date;
-    uint8_t  week;
-} RTC_Calendar_TypeDef;
-
-void RTC_Init(void);
-void RTC_GetCalendar(RTC_Calendar_TypeDef* calendar);
-uint8_t RTC_SetAlarm(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
-uint8_t RTC_GetWeek(uint16_t year, uint8_t month, uint8_t day);
-uint8_t RTC_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
-
-#ifdef __cplusplus
-}
-#endif
+void toneSetTimer(TIM_TypeDef* TIMx);
+void tone(uint8_t pin, uint32_t freq, uint32_t duration = TONE_DURATION_INFINITE);
+void noTone(uint8_t pin);
 
 #endif
