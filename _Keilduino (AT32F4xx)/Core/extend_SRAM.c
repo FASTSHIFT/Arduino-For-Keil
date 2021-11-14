@@ -12,25 +12,28 @@
 #include "at32f4xx.h"     
 
 #define EXTEND_SRAM_224K
-//; Reset handler
-//Reset_Handler   PROC
-//                EXPORT  Reset_Handler                       [WEAK]
-//                IMPORT  __main
-//                IMPORT  SystemInit
-//                IMPORT  extend_SRAM
 
-//                MOV32   R0, #0x20001000
-//                MOV     SP, R0
-//                LDR     R0, =extend_SRAM
-//                BLX     R0
-//                MOV32   R0, #0x08000000
-//                LDR     SP, [R0]
+#if 0
+; Reset handler
+Reset_Handler   PROC
+                EXPORT  Reset_Handler                       [WEAK]
+                IMPORT  __main
+                IMPORT  SystemInit
+                IMPORT  extend_SRAM
 
-//                LDR     R0, =SystemInit
-//                BLX     R0
-//                LDR     R0, =__main
-//                BX      R0
-//                ENDP
+                MOV32   R0, #0x20001000
+                MOV     SP, R0
+                LDR     R0, =extend_SRAM
+                BLX     R0
+                MOV32   R0, #0x08000000
+                LDR     SP, [R0]
+
+                LDR     R0, =SystemInit
+                BLX     R0
+                LDR     R0, =__main
+                BX      R0
+                ENDP
+#endif
 
 /** @addtogroup AT32F403A_StdPeriph_Examples
   * @{
