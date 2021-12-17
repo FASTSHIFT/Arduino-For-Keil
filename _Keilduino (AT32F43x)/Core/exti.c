@@ -35,7 +35,7 @@ static EXTI_CallbackFunction_t EXTI_Function[16] = {0};
   */
 static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
 {
-    IRQn_Type EXTIx_IRQn = EXTI0_IRQn;
+    IRQn_Type EXINTx_IRQn = EXINT0_IRQn;
     uint8_t Pinx = GPIO_GetPinNum(Pin);
 
     if(Pinx <= 4)
@@ -43,39 +43,39 @@ static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
         switch(Pinx)
         {
         case 0:
-            EXTIx_IRQn = EXTI0_IRQn;
+            EXINTx_IRQn = EXINT0_IRQn;
             break;
         case 1:
-            EXTIx_IRQn = EXTI1_IRQn;
+            EXINTx_IRQn = EXINT1_IRQn;
             break;
         case 2:
-            EXTIx_IRQn = EXTI2_IRQn;
+            EXINTx_IRQn = EXINT2_IRQn;
             break;
         case 3:
-            EXTIx_IRQn = EXTI3_IRQn;
+            EXINTx_IRQn = EXINT3_IRQn;
             break;
         case 4:
-            EXTIx_IRQn = EXTI4_IRQn;
+            EXINTx_IRQn = EXINT4_IRQn;
             break;
         }
     }
     else if(Pinx >= 5 && Pinx <= 9)
     {
-        EXTIx_IRQn = EXTI9_5_IRQn;
+        EXINTx_IRQn = EXINT9_5_IRQn;
     }
     else if(Pinx >= 10 && Pinx <= 15)
     {
-        EXTIx_IRQn = EXTI15_10_IRQn;
+        EXINTx_IRQn = EXINT15_10_IRQn;
     }
 
-    return EXTIx_IRQn;
+    return EXINTx_IRQn;
 }
 
 /**
   * @brief  外部中断初始化
   * @param  Pin: 引脚编号
   * @param  Function: 回调函数
-  * @param  Trigger_Mode: 触发方式
+  * @param  polarity_config: 触发方式
   * @param  PreemptionPriority: 抢占优先级
   * @param  SubPriority: 子优先级
   * @retval 无
@@ -83,13 +83,12 @@ static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
 void EXTIx_Init(
     uint8_t Pin,
     EXTI_CallbackFunction_t Function,
-    EXTITrigger_Type Trigger_Mode,
+    exint_polarity_config_type line_polarity,
     uint8_t PreemptionPriority,
     uint8_t SubPriority
 )
 {
-    EXTI_InitType EXTI_InitStructure;
-    NVIC_InitType NVIC_InitStructure;
+    exint_init_type exint_init_struct;
     uint8_t Pinx;
 
     if(!IS_PIN(Pin))
@@ -102,36 +101,32 @@ void EXTIx_Init(
 
     EXTI_Function[Pinx] = Function;
 
-    RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_AFIO, ENABLE);
-    GPIO_EXTILineConfig(GPIO_GetPortNum(Pin), Pinx);
+    crm_periph_clock_enable(CRM_SCFG_PERIPH_CLOCK, TRUE);
+    scfg_exint_line_config(GPIO_GetPortNum(Pin), (scfg_pins_source_type)Pinx);
 
-    EXTI_StructInit(&EXTI_InitStructure);
-    EXTI_InitStructure.EXTI_Line = 1 << Pinx;
-    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-    EXTI_InitStructure.EXTI_Trigger = Trigger_Mode;
-    EXTI_InitStructure.EXTI_LineEnable = ENABLE;
-    EXTI_Init(&EXTI_InitStructure);
+    exint_default_para_init(&exint_init_struct);
+    exint_init_struct.line_select = 1 << Pinx;
+    exint_init_struct.line_mode = EXINT_LINE_INTERRUPUT;
+    exint_init_struct.line_polarity = line_polarity;
+    exint_init_struct.line_enable = TRUE;
+    exint_init(&exint_init_struct);
 
-    NVIC_InitStructure.NVIC_IRQChannel = EXTI_GetIRQn(Pin);
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
+    nvic_irq_enable(EXTI_GetIRQn(Pin), PreemptionPriority, SubPriority);
 }
 
 /**
   * @brief  外部中断初始化 (Arduino)
   * @param  Pin: 引脚编号
   * @param  function: 回调函数
-  * @param  Trigger_Mode: 触发方式
+  * @param  line_polarity: 触发方式
   * @retval 无
   */
-void attachInterrupt(uint8_t Pin, EXTI_CallbackFunction_t Function, EXTITrigger_Type Trigger_Mode)
+void attachInterrupt(uint8_t Pin, EXTI_CallbackFunction_t Function, exint_polarity_config_type line_polarity)
 {
     EXTIx_Init(
         Pin,
         Function,
-        Trigger_Mode,
+        line_polarity,
         EXTI_PREEMPTIONPRIORITY_DEFAULT,
         EXTI_SUBPRIORITY_DEFAULT
     );
@@ -147,15 +142,15 @@ void detachInterrupt(uint8_t Pin)
     if(!IS_PIN(Pin))
         return;
 
-    NVIC_DisableIRQ(EXTI_GetIRQn(Pin));
+    nvic_irq_disable(EXTI_GetIRQn(Pin));
 }
 
 #define EXTIx_IRQHANDLER(n) \
 do{\
-    if(EXTI_GetIntStatus(EXTI_Line##n) != RESET)\
+    if(exint_flag_get(EXINT_LINE_##n) != RESET)\
     {\
         if(EXTI_Function[n]) EXTI_Function[n]();\
-        EXTI_ClearIntPendingBit(EXTI_Line##n);\
+        exint_flag_clear(EXINT_LINE_##n);\
     }\
 }while(0)
 
@@ -164,7 +159,7 @@ do{\
   * @param  无
   * @retval 无
   */
-void EXTI0_IRQHandler(void)
+void EXINT0_IRQHandler(void)
 {
     EXTIx_IRQHANDLER(0);
 }
@@ -174,7 +169,7 @@ void EXTI0_IRQHandler(void)
   * @param  无
   * @retval 无
   */
-void EXTI1_IRQHandler(void)
+void EXINT1_IRQHandler(void)
 {
     EXTIx_IRQHANDLER(1);
 }
@@ -184,7 +179,7 @@ void EXTI1_IRQHandler(void)
   * @param  无
   * @retval 无
   */
-void EXTI2_IRQHandler(void)
+void EXINT2_IRQHandler(void)
 {
     EXTIx_IRQHANDLER(2);
 }
@@ -194,7 +189,7 @@ void EXTI2_IRQHandler(void)
   * @param  无
   * @retval 无
   */
-void EXTI3_IRQHandler(void)
+void EXINT3_IRQHandler(void)
 {
     EXTIx_IRQHANDLER(3);
 }
@@ -204,7 +199,7 @@ void EXTI3_IRQHandler(void)
   * @param  无
   * @retval 无
   */
-void EXTI4_IRQHandler(void)
+void EXINT4_IRQHandler(void)
 {
     EXTIx_IRQHANDLER(4);
 }
@@ -214,7 +209,7 @@ void EXTI4_IRQHandler(void)
   * @param  无
   * @retval 无
   */
-void EXTI9_5_IRQHandler(void)
+void EXINT9_5_IRQHandler(void)
 {
     EXTIx_IRQHANDLER(5);
     EXTIx_IRQHANDLER(6);
@@ -228,7 +223,7 @@ void EXTI9_5_IRQHandler(void)
   * @param  无
   * @retval 无
   */
-void EXTI15_10_IRQHandler(void)
+void EXINT15_10_IRQHandler(void)
 {
     EXTIx_IRQHANDLER(10);
     EXTIx_IRQHANDLER(11);

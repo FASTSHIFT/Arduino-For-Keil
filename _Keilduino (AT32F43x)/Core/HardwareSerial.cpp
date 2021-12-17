@@ -22,16 +22,61 @@
  */
 #include "HardwareSerial.h"
 
-#define SERIAL_GET_WORDLENGTH(SERIAL_x)    ((uint16_t)(SERIAL_x&0xF000))
-#define SERIAL_GET_PARITY(SERIAL_x)        ((uint16_t)(SERIAL_x&0x0F00))
-#define SERIAL_GET_STOPBITS(SERIAL_x)      ((uint16_t)((SERIAL_x&0x00F0) << 8))
+typedef struct
+{
+    usart_data_bit_num_type data_bit;
+    usart_parity_selection_type parity_selection;
+    usart_stop_bit_num_type stop_bit;
+} SERIAL_ConfigGrp_t;
+
+static const SERIAL_ConfigGrp_t SERIAL_ConfigGrp[] =
+{
+    {USART_DATA_7BITS, USART_PARITY_NONE, USART_STOP_1_BIT},   // SERIAL_7N1
+    {USART_DATA_7BITS, USART_PARITY_NONE, USART_STOP_2_BIT},   // SERIAL_7N2
+    {USART_DATA_7BITS, USART_PARITY_EVEN, USART_STOP_1_BIT},   // SERIAL_7E1
+    {USART_DATA_7BITS, USART_PARITY_EVEN, USART_STOP_2_BIT},   // SERIAL_7E2
+    {USART_DATA_7BITS, USART_PARITY_ODD,  USART_STOP_1_BIT},   // SERIAL_7O1
+    {USART_DATA_7BITS, USART_PARITY_ODD,  USART_STOP_2_BIT},   // SERIAL_7O2
+    {USART_DATA_7BITS, USART_PARITY_NONE, USART_STOP_0_5_BIT}, // SERIAL_7N0_5
+    {USART_DATA_7BITS, USART_PARITY_NONE, USART_STOP_1_5_BIT}, // SERIAL_7N1_5
+    {USART_DATA_7BITS, USART_PARITY_EVEN, USART_STOP_0_5_BIT}, // SERIAL_7E0_5
+    {USART_DATA_7BITS, USART_PARITY_EVEN, USART_STOP_1_5_BIT}, // SERIAL_7E1_5
+    {USART_DATA_7BITS, USART_PARITY_ODD,  USART_STOP_0_5_BIT}, // SERIAL_7O0_5
+    {USART_DATA_7BITS, USART_PARITY_ODD,  USART_STOP_1_5_BIT}, // SERIAL_7O1_5
+
+    {USART_DATA_8BITS, USART_PARITY_NONE, USART_STOP_1_BIT},   // SERIAL_8N1
+    {USART_DATA_8BITS, USART_PARITY_NONE, USART_STOP_2_BIT},   // SERIAL_8N2
+    {USART_DATA_8BITS, USART_PARITY_EVEN, USART_STOP_1_BIT},   // SERIAL_8E1
+    {USART_DATA_8BITS, USART_PARITY_EVEN, USART_STOP_2_BIT},   // SERIAL_8E2
+    {USART_DATA_8BITS, USART_PARITY_ODD,  USART_STOP_1_BIT},   // SERIAL_8O1
+    {USART_DATA_8BITS, USART_PARITY_ODD,  USART_STOP_2_BIT},   // SERIAL_8O2
+    {USART_DATA_8BITS, USART_PARITY_NONE, USART_STOP_0_5_BIT}, // SERIAL_8N0_5
+    {USART_DATA_8BITS, USART_PARITY_NONE, USART_STOP_1_5_BIT}, // SERIAL_8N1_5
+    {USART_DATA_8BITS, USART_PARITY_EVEN, USART_STOP_0_5_BIT}, // SERIAL_8E0_5
+    {USART_DATA_8BITS, USART_PARITY_EVEN, USART_STOP_1_5_BIT}, // SERIAL_8E1_5
+    {USART_DATA_8BITS, USART_PARITY_ODD,  USART_STOP_0_5_BIT}, // SERIAL_8O0_5
+    {USART_DATA_8BITS, USART_PARITY_ODD,  USART_STOP_1_5_BIT}, // SERIAL_8O1_5
+
+    {USART_DATA_9BITS, USART_PARITY_NONE, USART_STOP_1_BIT},   // SERIAL_9N1
+    {USART_DATA_9BITS, USART_PARITY_NONE, USART_STOP_2_BIT},   // SERIAL_9N2
+    {USART_DATA_9BITS, USART_PARITY_EVEN, USART_STOP_1_BIT},   // SERIAL_9E1
+    {USART_DATA_9BITS, USART_PARITY_EVEN, USART_STOP_2_BIT},   // SERIAL_9E2
+    {USART_DATA_9BITS, USART_PARITY_ODD,  USART_STOP_1_BIT},   // SERIAL_9O1
+    {USART_DATA_9BITS, USART_PARITY_ODD,  USART_STOP_2_BIT},   // SERIAL_9O2
+    {USART_DATA_9BITS, USART_PARITY_NONE, USART_STOP_0_5_BIT}, // SERIAL_9N0_5
+    {USART_DATA_9BITS, USART_PARITY_NONE, USART_STOP_1_5_BIT}, // SERIAL_9N1_5
+    {USART_DATA_9BITS, USART_PARITY_EVEN, USART_STOP_0_5_BIT}, // SERIAL_9E0_5
+    {USART_DATA_9BITS, USART_PARITY_EVEN, USART_STOP_1_5_BIT}, // SERIAL_9E1_5
+    {USART_DATA_9BITS, USART_PARITY_ODD,  USART_STOP_0_5_BIT}, // SERIAL_9O0_5
+    {USART_DATA_9BITS, USART_PARITY_ODD,  USART_STOP_1_5_BIT}, // SERIAL_9O1_5
+};
 
 /**
   * @brief  串口对象构造函数
   * @param  串口外设地址
   * @retval 无
   */
-HardwareSerial::HardwareSerial(USART_Type* usart) :
+HardwareSerial::HardwareSerial(usart_type* usart) :
     _USARTx(usart),
     _callbackFunction(NULL),
     _rxBufferHead(0),
@@ -46,9 +91,9 @@ HardwareSerial::HardwareSerial(USART_Type* usart) :
   */
 void HardwareSerial::IRQHandler()
 {
-    if(USART_GetITStatus(_USARTx, USART_INT_RDNE) != RESET)
+    if(usart_flag_get(_USARTx, USART_RDBF_FLAG) != RESET)
     {
-        uint8_t c = USART_ReceiveData(_USARTx);
+        uint8_t c = usart_data_receive(_USARTx);
         uint16_t i = (uint16_t)(_rxBufferHead + 1) % SERIAL_RX_BUFFER_SIZE;
         if (i != _rxBufferTail)
         {
@@ -60,8 +105,7 @@ void HardwareSerial::IRQHandler()
         {
             _callbackFunction(this);
         }
-
-        USART_ClearITPendingBit(_USARTx, USART_INT_RDNE);
+        usart_flag_clear(_USARTx, USART_RDBF_FLAG);
     }
 }
 
@@ -80,69 +124,66 @@ void HardwareSerial::begin(
     uint8_t subPriority
 )
 {
-    GPIO_InitType GPIO_InitStructure;
-    USART_InitType USART_InitStructure;
-    NVIC_InitType NVIC_InitStructure;
+    gpio_type *GPIOx;
+    gpio_init_type gpio_init_struct;
     uint16_t Tx_Pin, Rx_Pin;
-    uint16_t ItChannel;
-    GPIO_TypeDef *GPIOx;
+    uint16_t USARTx_IRQn;
 
     if(_USARTx == USART1)
     {
+        GPIOx = GPIOA;
         Tx_Pin = GPIO_Pin_9;
         Rx_Pin = GPIO_Pin_10;
-        GPIOx = GPIOA;
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_GPIOA, ENABLE);
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_USART1, ENABLE);
-        ItChannel = USART1_IRQn;
+        USARTx_IRQn = USART1_IRQn;
+
+        crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
+        crm_periph_clock_enable(CRM_USART1_PERIPH_CLOCK, TRUE);
     }
     else if(_USARTx == USART2)
     {
+        GPIOx = GPIOA;
         Tx_Pin = GPIO_Pin_2;
         Rx_Pin = GPIO_Pin_3;
-        GPIOx = GPIOA;
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_GPIOA, ENABLE);
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_USART2, ENABLE);
-        ItChannel = USART2_IRQn;
+        USARTx_IRQn = USART2_IRQn;
+
+        crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
+        crm_periph_clock_enable(CRM_USART2_PERIPH_CLOCK, TRUE);
     }
     else if(_USARTx == USART3)
     {
+        GPIOx = GPIOB;
         Tx_Pin = GPIO_Pin_10;
         Rx_Pin = GPIO_Pin_11;
-        GPIOx = GPIOB;
+        USARTx_IRQn = USART3_IRQn;
 
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_GPIOB, ENABLE);
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_USART3, ENABLE);
-        ItChannel = USART3_IRQn;
+        crm_periph_clock_enable(CRM_GPIOB_PERIPH_CLOCK, TRUE);
+        crm_periph_clock_enable(CRM_USART3_PERIPH_CLOCK, TRUE);
     }
     else
     {
         return;
     }
 
-    GPIO_StructInit(&GPIO_InitStructure);
-    GPIO_InitStructure.GPIO_Pins =  Tx_Pin | Rx_Pin;
-    GPIO_InitStructure.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_Init(GPIOx, &GPIO_InitStructure);
+    gpio_default_para_init(&gpio_init_struct);
+    gpio_init_struct.gpio_pins =  Tx_Pin | Rx_Pin;
+    gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
+    gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
+    gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
+    gpio_init_struct.gpio_out_type  = GPIO_OUTPUT_PUSH_PULL;
+    gpio_init(GPIOx, &gpio_init_struct);
 
-    NVIC_InitStructure.NVIC_IRQChannel = ItChannel;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = preemptionPriority ;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = subPriority;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
+    gpio_pin_mux_config(GPIOx, GPIO_GetPinSource(Tx_Pin), GPIO_MUX_7);
+    gpio_pin_mux_config(GPIOx, GPIO_GetPinSource(Rx_Pin), GPIO_MUX_7);
 
-    USART_StructInit(&USART_InitStructure);
-    USART_InitStructure.USART_BaudRate = baudRate;
-    USART_InitStructure.USART_WordLength = SERIAL_GET_WORDLENGTH(config);
-    USART_InitStructure.USART_StopBits = SERIAL_GET_STOPBITS(config);
-    USART_InitStructure.USART_Parity = SERIAL_GET_PARITY(config);
-    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-    USART_Init(_USARTx, &USART_InitStructure);
+    usart_init(_USARTx, baudRate, SERIAL_ConfigGrp[config].data_bit, SERIAL_ConfigGrp[config].stop_bit);
+    usart_parity_selection_config(_USARTx, SERIAL_ConfigGrp[config].parity_selection);
+    usart_transmitter_enable(_USARTx, TRUE);
+    usart_receiver_enable(_USARTx, TRUE);
 
-    USART_INTConfig(_USARTx, USART_INT_RDNE, ENABLE);
-    USART_Cmd(_USARTx, ENABLE);
+    nvic_irq_enable(USARTx_IRQn, preemptionPriority, subPriority);
+    usart_interrupt_enable(_USARTx, USART_RDBF_INT, TRUE);
+
+    usart_enable(_USARTx, TRUE);
 }
 
 /**
@@ -152,7 +193,8 @@ void HardwareSerial::begin(
   */
 void HardwareSerial::end(void)
 {
-    USART_Cmd(_USARTx, DISABLE);
+    usart_interrupt_enable(_USARTx, USART_RDBF_INT, FALSE);
+    usart_enable(_USARTx, FALSE);
 }
 
 /**
@@ -229,8 +271,8 @@ void HardwareSerial::flush(void)
   */
 size_t HardwareSerial::write(uint8_t n)
 {
-    while(!USART_GetFlagStatus(_USARTx, USART_FLAG_TDE)) {};
-    USART_SendData(_USARTx, n);
+    while(usart_flag_get(_USARTx, USART_TDBE_FLAG) == RESET) {};
+    usart_data_transmit(_USARTx, n);
     return 1;
 }
 

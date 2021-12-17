@@ -22,29 +22,13 @@
  */
 #include "Arduino.h"
 
-static uint8_t pin_grp[] =
-{
-    PD13,
-    PD14,
-    PD15
-};
-
 static void setup()
 {
-    for(int i = 0; i < sizeof(pin_grp); i++)
-    {
-        pinMode(pin_grp[i], OUTPUT);
-    }
     // put your setup code here, to run once:
 }
 
 static void loop()
 {
-    for(int i = 0; i < sizeof(pin_grp); i++)
-    {
-        togglePin(pin_grp[i]);
-        delay(200);
-    }
     // put your main code here, to run repeatedly:
 }
 
@@ -58,7 +42,7 @@ int main(void)
     system_clock_config();
     nvic_priority_group_config(NVIC_PRIORITY_GROUP_2);
     Delay_Init();
-    //ADCx_Init(ADC1);
+    ADCx_Init(ADC1);
     setup();
     for(;;)loop();
 }

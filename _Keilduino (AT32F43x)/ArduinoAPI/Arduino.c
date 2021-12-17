@@ -43,11 +43,11 @@ void pinMode(uint8_t pin, PinMode_TypeDef mode)
         }
 
         pinMode(pin, INPUT_ANALOG);
-        //ADC_DMA_Register(PIN_MAP[pin].ADC_Channel);
+        ADC_DMA_Register(PIN_MAP[pin].ADC_Channel);
     }
     else if(mode == PWM)
     {
-        //PWM_Init(pin, PWM_RESOLUTION_DEFAULT, PWM_FREQUENCY_DEFAULT);
+        PWM_Init(pin, PWM_RESOLUTION_DEFAULT, PWM_FREQUENCY_DEFAULT);
     }
     else
     {
@@ -104,7 +104,7 @@ void analogWrite(uint8_t pin, uint16_t value)
         return;
     }
 
-    //PWM_Write(pin, value);
+    PWM_Write(pin, value);
 }
 
 /**
@@ -119,7 +119,7 @@ uint16_t analogRead(uint8_t pin)
         return 0;
     }
 
-    return 0;//ADCx_GetValue(PIN_MAP[pin].ADCx, PIN_MAP[pin].ADC_Channel);
+    return ADCx_GetValue(PIN_MAP[pin].ADCx, PIN_MAP[pin].ADC_Channel);
 }
 
 /**
@@ -134,7 +134,7 @@ uint16_t analogRead_DMA(uint8_t pin)
         return 0;
     }
 
-    return 0;//ADC_DMA_GetValue(PIN_MAP[pin].ADC_Channel);
+    return ADC_DMA_GetValue(PIN_MAP[pin].ADC_Channel);
 }
 
 /**
@@ -183,7 +183,7 @@ uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
     for (i = 0 ; i < 8 ; ++i)
     {
         digitalWrite_HIGH(clockPin) ;
-        if (bitOrder == LSBFIRST )
+        if (bitOrder == LSBFIRST)
         {
             value |= digitalRead(dataPin) << i ;
         }

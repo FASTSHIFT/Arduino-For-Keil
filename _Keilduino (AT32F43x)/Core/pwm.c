@@ -32,55 +32,49 @@
   * @param  TimerChannel: 定时器通道
   * @retval 无
   */
-static void TIMx_OCxInit(TIM_TypeDef* TIMx, uint32_t arr, uint16_t psc, uint8_t TimerChannel)
+static void TIMx_OCxInit(tmr_type* TIMx, uint32_t arr, uint16_t psc, uint8_t TimerChannel)
 {
-    TMR_TimerBaseInitType TMR_TimeBaseStructure;
-    TMR_OCInitType TMR_OCInitStructure;
+    tmr_output_config_type tmr_output_struct;
 
-    Timer_ClockCmd(TIMx, ENABLE);
+    Timer_ClockCmd(TIMx, true);
 
-    TMR_TimeBaseStructInit(&TMR_TimeBaseStructure);
-    TMR_TimeBaseStructure.TMR_Period = arr;
-    TMR_TimeBaseStructure.TMR_DIV = psc;
-    TMR_TimeBaseStructure.TMR_ClockDivision = TMR_CKD_DIV1;
-    TMR_TimeBaseStructure.TMR_CounterMode = TMR_CounterDIR_Up;
-    TMR_TimeBaseInit(TIMx, &TMR_TimeBaseStructure);
+    tmr_base_init(TIMx, arr, psc);
+    tmr_cnt_dir_set(TIMx, TMR_COUNT_UP);
 
-    TMR_OCStructInit(&TMR_OCInitStructure);
-    TMR_OCInitStructure.TMR_OCMode = TMR_OCMode_PWM2;
-    TMR_OCInitStructure.TMR_OCPolarity = TMR_OCPolarity_Low;
-    TMR_OCInitStructure.TMR_OCIdleState = TMR_OCIdleState_Reset;
-    TMR_OCInitStructure.TMR_OCNPolarity = TMR_OCNPolarity_Low;
-    TMR_OCInitStructure.TMR_OCNIdleState = TMR_OCNIdleState_Reset;
-    TMR_OCInitStructure.TMR_OutputState = TMR_OutputState_Enable;
-    TMR_OCInitStructure.TMR_OutputNState = TMR_OutputNState_Disable;
-    TMR_OCInitStructure.TMR_Pulse = 0;
+    tmr_output_default_para_init(&tmr_output_struct);
+    tmr_output_struct.oc_mode = TMR_OUTPUT_CONTROL_PWM_MODE_B;
+    tmr_output_struct.oc_polarity = TMR_OUTPUT_ACTIVE_LOW;
+    tmr_output_struct.oc_idle_state = TRUE;
+    tmr_output_struct.occ_polarity = TMR_OUTPUT_ACTIVE_HIGH;
+    tmr_output_struct.occ_idle_state = FALSE;
+    tmr_output_struct.oc_output_state = TRUE;
+    tmr_output_struct.occ_output_state = TRUE;
 
     switch(TimerChannel)
     {
     case 1:
-        TMR_OC1Init(TIMx, &TMR_OCInitStructure);
-        TMR_OC1PreloadConfig(TIMx, TMR_OCPreload_Enable);
+        tmr_output_channel_config(TIMx, TMR_SELECT_CHANNEL_1, &tmr_output_struct);
         break;
     case 2:
-        TMR_OC2Init(TIMx, &TMR_OCInitStructure);
-        TMR_OC2PreloadConfig(TIMx, TMR_OCPreload_Enable);
+        tmr_output_channel_config(TIMx, TMR_SELECT_CHANNEL_2, &tmr_output_struct);
         break;
     case 3:
-        TMR_OC3Init(TIMx, &TMR_OCInitStructure);
-        TMR_OC3PreloadConfig(TIMx, TMR_OCPreload_Enable);
+        tmr_output_channel_config(TIMx, TMR_SELECT_CHANNEL_3, &tmr_output_struct);
         break;
     case 4:
-        TMR_OC4Init(TIMx, &TMR_OCInitStructure);
-        TMR_OC4PreloadConfig(TIMx, TMR_OCPreload_Enable);
+        tmr_output_channel_config(TIMx, TMR_SELECT_CHANNEL_4, &tmr_output_struct);
+        break;
+    case 5:
+        tmr_output_channel_config(TIMx, TMR_SELECT_CHANNEL_5, &tmr_output_struct);
         break;
     default:
         return;
     }
 
-    TMR_CtrlPWMOutputs(TIMx, ENABLE);
-    TMR_Cmd(TIMx, ENABLE);
+    tmr_output_enable(TIMx, TRUE);
+    tmr_counter_enable(TIMx, TRUE);
 }
+
 
 /**
   * @brief  PWM输出初始化
@@ -103,13 +97,18 @@ uint8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency)
         return 0;
     }
 
+    tmr_type* TIMx = PIN_MAP[Pin].TIMx;
+
     pinMode(Pin, OUTPUT_AF_PP);
 
-    arr = Resolution;
-    psc = TIMER_GET_CLOCK_MAX(PIN_MAP[Pin].TIMx) / Resolution / Frequency;
+    gpio_pin_mux_config(PIN_MAP[Pin].GPIOx, GPIO_GetPinSource(PIN_MAP[Pin].GPIO_Pin_x), Timer_GetGPIO_MUX(Pin));
 
-    TMR_Cmd(PIN_MAP[Pin].TIMx, DISABLE);
-    TIMx_OCxInit(PIN_MAP[Pin].TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
+    arr = Resolution;
+    psc = Timer_GetClockMax(TIMx) / Resolution / Frequency;
+
+    Timer_SetEnable(TIMx, false);
+    TIMx_OCxInit(TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
+
     return PIN_MAP[Pin].TimerChannel;
 }
 

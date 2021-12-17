@@ -25,7 +25,7 @@
 
 #define TONE_FREQ_MAX 500000U
 
-static TIM_TypeDef* Tone_Timer = NULL;
+static tmr_type* Tone_Timer = NULL;
 static bool Tone_IsContinuousModeEnable = false;
 static uint8_t Tone_Pin = NOT_A_PIN;
 static uint32_t Tone_ToggleCounter = 0;
@@ -56,7 +56,7 @@ static void Tone_TimerHandler()
   * @param  TIMx: 定时器地址
   * @retval 无
   */
-void toneSetTimer(TIM_TypeDef* TIMx)
+void toneSetTimer(tmr_type* TIMx)
 {
     Timer_SetInterruptBase(
         TIMx,
@@ -116,7 +116,11 @@ void tone(uint8_t pin, uint32_t freq, uint32_t duration)
   */
 void noTone(uint8_t pin)
 {
-    Timer_SetEnable(Tone_Timer, false);
+    if(Tone_Timer)
+    {
+        Timer_SetEnable(Tone_Timer, false);
+    }
+
     digitalWrite(pin, LOW);
     Tone_IsContinuousModeEnable = false;
     Tone_Pin = NOT_A_PIN;

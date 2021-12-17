@@ -29,23 +29,23 @@
 extern "C" {
 #endif
 
-#define CHANGE  EXTI_Trigger_Rising_Falling
-#define FALLING EXTI_Trigger_Falling
-#define RISING  EXTI_Trigger_Rising
+#define CHANGE  EXINT_TRIGGER_BOTH_EDGE
+#define FALLING EXINT_TRIGGER_FALLING_EDGE
+#define RISING  EXINT_TRIGGER_RISING_EDGE
 
 typedef void(*EXTI_CallbackFunction_t)(void);
 
 void EXTIx_Init(
     uint8_t Pin,
     EXTI_CallbackFunction_t Function,
-    exint_polarity_config_type Trigger_Mode,
+    exint_polarity_config_type line_polarity,
     uint8_t PreemptionPriority,
     uint8_t SubPriority
 );
 void attachInterrupt(
     uint8_t Pin,
     EXTI_CallbackFunction_t Function,
-    exint_polarity_config_type Trigger_Mode
+    exint_polarity_config_type polarity_config
 );
 void detachInterrupt(uint8_t Pin);
 
