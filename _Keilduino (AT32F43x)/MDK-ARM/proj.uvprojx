@@ -336,7 +336,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--gnu --diag_warning=4017</MiscControls>
-              <Define>LIBRARY_VERSION,ARDUINO=111</Define>
+              <Define>ARDUINO=111</Define>
               <Undefine></Undefine>
               <IncludePath>..\ArduinoAPI;..\Core;..\Libraries;..\USER</IncludePath>
             </VariousControls>
@@ -454,11 +454,6 @@
               <FileName>mcu_type.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Core\mcu_type.h</FilePath>
-            </File>
-            <File>
-              <FileName>mcu_core.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\mcu_core.h</FilePath>
             </File>
             <File>
               <FileName>mcu_config_template.h</FileName>
