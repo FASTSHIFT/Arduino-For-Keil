@@ -10,7 +10,7 @@
       <TargetName>AT32F4xx</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -336,7 +336,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--gnu</MiscControls>
-              <Define>LIBRARY_VERSION,ARDUINO=111</Define>
+              <Define>ARDUINO=111</Define>
               <Undefine></Undefine>
               <IncludePath>..\ArduinoAPI;..\Core;..\Libraries;..\USER</IncludePath>
             </VariousControls>
