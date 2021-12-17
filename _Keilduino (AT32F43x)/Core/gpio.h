@@ -102,9 +102,9 @@ void GPIOx_Init(
     PinMode_TypeDef Mode,
     gpio_drive_type GPIO_Driver_x
 );
-uint8_t GPIO_GetPortNum(uint8_t Pin);
+scfg_port_source_type GPIO_GetPortNum(uint8_t Pin);
 uint8_t GPIO_GetPinNum(uint8_t Pin);
-uint8_t GPIO_GetPinSource(uint16_t GPIO_Pin_x);
+gpio_pins_source_type GPIO_GetPinSource(uint16_t GPIO_Pin_x);
 
 #ifdef __cplusplus
 }// extern "C"

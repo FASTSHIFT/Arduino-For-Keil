@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f435_437_clock.c
-  * @version  v2.0.0
-  * @date     2021-09-06
   * @brief    system clock config program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -27,30 +25,21 @@
 /* includes ------------------------------------------------------------------*/
 #include "at32f435_437_clock.h"
 
-/** @addtogroup AT32F435_periph_template
-  * @{
-  */
-
-/** @addtogroup 435_System_clock_configuration System_clock_configuration
-  * @{
-  */
-  
 /**
   * @brief  system clock config program
   * @note   the system clock is configured as follow:
-  *         system clock        = (hext * pll_ns)/(pll_ms * pll_fr)
-  *         system clock source = pll (hext)
-  *         hext                = 8000000
-  *         sclk                = 288000000
-  *         ahbdiv              = 1
-  *         ahbclk              = 288000000
-  *         apb2div             = 2
-  *         apb2clk             = 144000000
-  *         apb1div             = 2
-  *         apb1clk             = 144000000
-  *         pll_ns              = 72
-  *         pll_ms              = 1
-  *         pll_fr              = 2
+  *         - system clock        = (hick / 6 * pll_ns)/(pll_ms * pll_fr)
+  *         - system clock source = pll (hick)
+  *         - sclk                = 288000000
+  *         - ahbdiv              = 1
+  *         - ahbclk              = 288000000
+  *         - apb1div             = 2
+  *         - apb1clk             = 144000000
+  *         - apb2div             = 2
+  *         - apb2clk             = 144000000
+  *         - pll_ns              = 72
+  *         - pll_ms              = 1
+  *         - pll_fr              = 2
   * @param  none
   * @retval none
   */
@@ -64,19 +53,21 @@ void system_clock_config(void)
  
   /* set the flash clock divider */
   flash_clock_divider_set(FLASH_CLOCK_DIV_3);
- 
+
   /* reset crm */
   crm_reset();
 
-  crm_clock_source_enable(CRM_CLOCK_SOURCE_HEXT, TRUE);
+  /* enable hick */
+  crm_clock_source_enable(CRM_CLOCK_SOURCE_HICK, TRUE);
 
-  /* wait till hext is ready */
-  while(crm_hext_stable_wait() == ERROR)
+   /* wait till hick is ready */
+  while(crm_flag_get(CRM_HICK_STABLE_FLAG) != SET)
   {
   }
 
+
   /* config pll clock resource */
-  crm_pll_config(CRM_PLL_SOURCE_HEXT, 72, 1, CRM_PLL_FR_2);
+  crm_pll_config(CRM_PLL_SOURCE_HICK, 72, 1, CRM_PLL_FR_2);
 
   /* enable pll */
   crm_clock_source_enable(CRM_CLOCK_SOURCE_PLL, TRUE);
@@ -85,6 +76,7 @@ void system_clock_config(void)
   while(crm_flag_get(CRM_PLL_STABLE_FLAG) != SET)
   {
   }
+
 
   /* config ahbclk */
   crm_ahb_div_set(CRM_AHB_DIV_1);
@@ -98,6 +90,7 @@ void system_clock_config(void)
   /* enable auto step mode */
   crm_auto_step_mode_enable(TRUE);
 
+
   /* select pll as system clock source */
   crm_sysclk_switch(CRM_SCLK_PLL);
 
@@ -106,18 +99,12 @@ void system_clock_config(void)
   {
   }
 
+
   /* disable auto step mode */
   crm_auto_step_mode_enable(FALSE);
+
 
   /* update system_core_clock global variable */
   system_core_clock_update();
 }
-
-/**
-  * @}
-  */ 
-
-/**
-  * @}
-  */ 
 

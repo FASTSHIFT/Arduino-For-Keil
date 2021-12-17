@@ -27,7 +27,7 @@
 #include "at32f435_437_conf.h"
 #include "mcu_config.h"
 
-#define __KEILDUINO__               100
+#define __KEILDUINO__               110
 
 #define __AT32__
 #define __AT32F4__
@@ -35,6 +35,9 @@
 #define __STM32F4__
 #define F_CPU                       system_core_clock
 #define CYCLES_PER_MICROSECOND      (F_CPU / 1000000U)
+
+typedef gpio_type                   GPIO_TypeDef;
+typedef spi_type                    SPI_TypeDef;
 
 #define GPIO_Pin_0                  GPIO_PINS_0
 #define GPIO_Pin_1                  GPIO_PINS_1
@@ -68,6 +71,7 @@
 #define TIM12                       TMR12
 #define TIM13                       TMR13
 #define TIM14                       TMR14
-#define TIM15                       TMR15
+#define TIM20                       TMR20
+
 
 #endif

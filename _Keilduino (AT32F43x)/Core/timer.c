@@ -21,11 +21,12 @@
  * SOFTWARE.
  */
 #include "timer.h"
+#include "gpio.h"
 
 typedef enum
 {
     TIMER1, TIMER2, TIMER3, TIMER4, TIMER5, TIMER6, TIMER7, TIMER8,
-    TIMER9, TIMER10, TIMER11, TIMER12, TIMER13, TIMER14, TIMER15,
+    TIMER9, TIMER10, TIMER11, TIMER12, TIMER13, TIMER14, TIMER20,
     TIMER_MAX
 } TIMER_Type;
 
@@ -34,83 +35,46 @@ static Timer_CallbackFunction_t Timer_CallbackFunction[TIMER_MAX] = { 0 };
 /**
   * @brief  启动或关闭指定定时器的时钟
   * @param  TIMx:定时器地址
-  * @param  NewState: ENABLE启动，DISABLE关闭
+  * @param  Enable: true启动，false关闭
   * @retval 无
   */
-void Timer_ClockCmd(TIM_TypeDef* TIMx, FunctionalState NewState)
+void Timer_ClockCmd(tmr_type* TIMx, bool Enable)
 {
-    if(TIMx == TIM1)
+    int index;
+    typedef struct
     {
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_TMR1, NewState);
-    }
-    else if(TIMx == TIM2)
+        tmr_type* tmr;
+        crm_periph_clock_type crm_periph_clock;
+    } crm_tmr_clock_map_t;
+
+#   define CLOCK_MAP_DEF(n) {TMR##n, CRM_TMR##n##_PERIPH_CLOCK}
+
+    static const crm_tmr_clock_map_t clock_map[] =
     {
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR2, NewState);
-    }
-    else if(TIMx == TIM3)
+        CLOCK_MAP_DEF(1),
+        CLOCK_MAP_DEF(2),
+        CLOCK_MAP_DEF(3),
+        CLOCK_MAP_DEF(4),
+        CLOCK_MAP_DEF(5),
+        CLOCK_MAP_DEF(6),
+        CLOCK_MAP_DEF(7),
+        CLOCK_MAP_DEF(8),
+        CLOCK_MAP_DEF(9),
+        CLOCK_MAP_DEF(10),
+        CLOCK_MAP_DEF(11),
+        CLOCK_MAP_DEF(12),
+        CLOCK_MAP_DEF(13),
+        CLOCK_MAP_DEF(14),
+        CLOCK_MAP_DEF(20)
+    };
+
+    for(index = 0; index < sizeof(clock_map) / sizeof(crm_tmr_clock_map_t); index++)
     {
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR3, NewState);
+        if(TIMx == clock_map[index].tmr)
+        {
+            crm_periph_clock_enable(clock_map[index].crm_periph_clock, Enable ? TRUE : FALSE);
+        }
     }
-    else if(TIMx == TIM4)
-    {
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR4, NewState);
-    }
-    else if(TIMx == TIM5)
-    {
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR5, NewState);
-    }
-#ifdef TMR12
-    else if(TIMx == TIM6)
-    {
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR6, NewState);
-    }
-#endif
-#ifdef TMR7
-    else if(TIMx == TIM7)
-    {
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR7, NewState);
-    }
-#endif
-    else if(TIMx == TIM8)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_TMR8, NewState);
-    }
-    else if(TIMx == TIM9)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_TMR9, NewState);
-    }
-    else if(TIMx == TIM10)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_TMR10, NewState);
-    }
-    else if(TIMx == TIM11)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_TMR11, NewState);
-    }
-#ifdef TMR12
-    else if(TIMx == TIM12)
-    {
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR12, NewState);
-    }
-#endif
-#ifdef TMR13
-    else if(TIMx == TIM13)
-    {
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR13, NewState);
-    }
-#endif
-#ifdef TMR14
-    else if(TIMx == TIM14)
-    {
-        RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR14, NewState);
-    }
-#endif
-#ifdef TMR15
-    else if(TIMx == TIM15)
-    {
-        RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_TMR15, NewState);
-    }
-#endif
 }
 
 static float Qsqrt(float number)
@@ -247,9 +211,9 @@ static void Timer_TimeFactorization(
   * @param  Enable: 使能
   * @retval 无
   */
-void Timer_SetEnable(TIM_TypeDef* TIMx, bool Enable)
+void Timer_SetEnable(tmr_type* TIMx, bool Enable)
 {
-    TMR_Cmd(TIMx, Enable ? ENABLE : DISABLE);
+    tmr_counter_enable(TIMx, Enable ? TRUE : FALSE);
 }
 
 /**
@@ -259,13 +223,13 @@ void Timer_SetEnable(TIM_TypeDef* TIMx, bool Enable)
   * @param  Function: 定时中断回调函数
   * @retval 无
   */
-void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t Time, Timer_CallbackFunction_t Function)
+void Timer_SetInterrupt(tmr_type* TIMx, uint32_t Time, Timer_CallbackFunction_t Function)
 {
     uint16_t period = 0;
     uint16_t prescaler = 0;
-    uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
+    uint32_t clock = Timer_GetClockMax(TIMx);
 
-    if(!IS_TMR_ALL_PERIPH(TIMx) || Time == 0)
+    if(Time == 0)
     {
         return;
     }
@@ -295,13 +259,13 @@ void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t Time, Timer_CallbackFunction
   * @param  Freq:中断频率
   * @retval true: 设置成功
   */
-bool Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t Freq)
+bool Timer_SetInterruptFreqUpdate(tmr_type* TIMx, uint32_t Freq)
 {
     uint16_t period, prescaler;
-    uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
+    uint32_t clock = Timer_GetClockMax(TIMx);
     int32_t error;
 
-    if(!IS_TMR_ALL_PERIPH(TIMx) || Freq == 0)
+    if(Freq == 0)
         return false;
 
     bool success = Timer_FreqFactorization(
@@ -317,9 +281,24 @@ bool Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t Freq)
         return false;
     }
 
-    TMR_SetAutoreload(TIMx, period - 1);
-    TMR_DIVConfig(TIMx, prescaler - 1, TMR_DIVReloadMode_Immediate);
+    tmr_base_init(TIMx, period - 1, prescaler - 1);
     return true;
+}
+
+/**
+  * @brief  获取定时器最大频率
+  * @param  TIMx:定时器地址
+  * @retval 最大频率
+  */
+uint32_t Timer_GetClockMax(tmr_type* TIMx)
+{
+    static crm_clocks_freq_type crm_clocks_freq_struct = {0};
+    if(!crm_clocks_freq_struct.sclk_freq)
+    {
+        crm_clocks_freq_get(&crm_clocks_freq_struct);
+    }
+
+    return crm_clocks_freq_struct.apb1_freq * 2;
 }
 
 /**
@@ -327,13 +306,11 @@ bool Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t Freq)
   * @param  TIMx:定时器地址
   * @retval 中断频率
   */
-uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx)
+uint32_t Timer_GetClockOut(tmr_type* TIMx)
 {
-    uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
-    if(!IS_TMR_ALL_PERIPH(TIMx))
-        return 0;
+    uint32_t clock = Timer_GetClockMax(TIMx);
 
-    return (clock / ((TIMx->AR + 1) * (TIMx->DIV + 1)));
+    return (clock / ((TIMx->pr + 1) * (TIMx->div + 1)));
 }
 
 /**
@@ -342,13 +319,10 @@ uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx)
   * @param  Time: 中断时间(微秒)
   * @retval 无
   */
-void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t Time)
+void Timer_SetInterruptTimeUpdate(tmr_type* TIMx, uint32_t Time)
 {
     uint16_t period, prescaler;
-    uint32_t clock = TIMER_GET_CLOCK_MAX(TIMx);
-
-    if(!IS_TMR_ALL_PERIPH(TIMx))
-        return;
+    uint32_t clock = Timer_GetClockMax(TIMx);
 
     Timer_TimeFactorization(
         Time,
@@ -357,8 +331,7 @@ void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t Time)
         &prescaler
     );
 
-    TMR_SetAutoreload(TIMx, period - 1);
-    TMR_DIVConfig(TIMx, prescaler - 1, TMR_DIVReloadMode_Immediate);
+    tmr_base_init(TIMx, period - 1, prescaler - 1);
 }
 
 /**
@@ -372,7 +345,7 @@ void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t Time)
   * @retval 无
   */
 void Timer_SetInterruptBase(
-    TIM_TypeDef* TIMx,
+    tmr_type* TIMx,
     uint16_t Period,
     uint16_t Prescaler,
     Timer_CallbackFunction_t Function,
@@ -380,15 +353,8 @@ void Timer_SetInterruptBase(
     uint8_t SubPriority
 )
 {
-    TMR_TimerBaseInitType  TMR_TimeBaseStructure;
-    NVIC_InitType NVIC_InitStructure;
     uint8_t TMRx_IRQn = 0;
     TIMER_Type TIMERx = TIMER1;
-
-    if(!IS_TMR_ALL_PERIPH(TIMx))
-    {
-        return;
-    }
 
 #define TMRx_IRQ_DEF(n,x_IRQn)\
 do{\
@@ -404,43 +370,21 @@ while(0)
     /*如果编译器提示：identifier "xxx_IRQn" is undefined
      *把未定义的注释掉即可
      */
-    TMRx_IRQ_DEF(1, TMR1_OV_TMR10_IRQn);
+    TMRx_IRQ_DEF(1, TMR1_OVF_TMR10_IRQn);
     TMRx_IRQ_DEF(2, TMR2_GLOBAL_IRQn);
     TMRx_IRQ_DEF(3, TMR3_GLOBAL_IRQn);
     TMRx_IRQ_DEF(4, TMR4_GLOBAL_IRQn);
     TMRx_IRQ_DEF(5, TMR5_GLOBAL_IRQn);
-
-#ifdef TMR6
-    TMRx_IRQ_DEF(6, TMR6_GLOBAL_IRQn);
-#endif
-
-#ifdef TMR7
+    TMRx_IRQ_DEF(6, TMR6_DAC_GLOBAL_IRQn);
     TMRx_IRQ_DEF(7, TMR7_GLOBAL_IRQn);
-#endif
-
-    TMRx_IRQ_DEF(8, TMR8_OV_TMR13_IRQn);
+    TMRx_IRQ_DEF(8, TMR8_OVF_TMR13_IRQn);
     TMRx_IRQ_DEF(9, TMR1_BRK_TMR9_IRQn);
-    TMRx_IRQ_DEF(10, TMR1_OV_TMR10_IRQn);
-
-#ifdef TMR11
-    TMRx_IRQ_DEF(11, TMR1_TRG_COM_TMR11_IRQn);
-#endif
-
-#ifdef TMR12
+    TMRx_IRQ_DEF(10, TMR1_OVF_TMR10_IRQn);
+    TMRx_IRQ_DEF(11, TMR1_TRG_HALL_TMR11_IRQn);
     TMRx_IRQ_DEF(12, TMR8_BRK_TMR12_IRQn);
-#endif
-
-#ifdef TMR13
-    TMRx_IRQ_DEF(13, TMR8_OV_TMR13_IRQn);
-#endif
-
-#ifdef TMR14
-    TMRx_IRQ_DEF(14, TMR8_TRG_COM_TMR14_IRQn);
-#endif
-
-#ifdef TMR15
-    TMRx_IRQ_DEF(15, TMR15_OV_IRQn);
-#endif
+    TMRx_IRQ_DEF(13, TMR8_OVF_TMR13_IRQn);
+    TMRx_IRQ_DEF(14, TMR8_TRG_HALL_TMR14_IRQn);
+    TMRx_IRQ_DEF(20, TMR20_OVF_IRQn);
 
 match:
 
@@ -451,25 +395,17 @@ match:
 
     Timer_CallbackFunction[TIMERx] = Function;
 
-    TMR_Reset(TIMx);
-    Timer_ClockCmd(TIMx, ENABLE);
+    tmr_reset(TIMx);
+    Timer_ClockCmd(TIMx, true);
 
-    TMR_TimeBaseStructInit(&TMR_TimeBaseStructure);
-    TMR_TimeBaseStructure.TMR_RepetitionCounter = 0;
-    TMR_TimeBaseStructure.TMR_Period = Period - 1;
-    TMR_TimeBaseStructure.TMR_DIV = Prescaler - 1;
-    TMR_TimeBaseStructure.TMR_ClockDivision = TMR_CKD_DIV1;
-    TMR_TimeBaseStructure.TMR_CounterMode = TMR_CounterDIR_Up;
-    TMR_TimeBaseInit(TIMx, &TMR_TimeBaseStructure);
+    tmr_repetition_counter_set(TIMx, 0);
+    tmr_cnt_dir_set(TIMx, TMR_COUNT_UP);
+    tmr_base_init(TIMx, Period - 1, Prescaler - 1);
 
-    NVIC_InitStructure.NVIC_IRQChannel = TMRx_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
+    nvic_irq_enable(TMRx_IRQn, PreemptionPriority, SubPriority);
 
-    TMR_ClearFlag(TIMx, TMR_FLAG_Update);
-    TMR_INTConfig(TIMx, TMR_INT_Overflow, ENABLE);
+    tmr_flag_clear(TIMx, TMR_OVF_FLAG);
+    tmr_interrupt_enable(TIMx, TMR_OVF_INT, TRUE);
 }
 
 /**
@@ -479,21 +415,24 @@ match:
   * @param  Compare:输出比较值
   * @retval 无
   */
-void Timer_SetCompare(TIM_TypeDef* TIMx, uint8_t TimerChannel, uint32_t Compare)
+void Timer_SetCompare(tmr_type* TIMx, uint8_t TimerChannel, uint32_t Compare)
 {
     switch(TimerChannel)
     {
     case 1:
-        TMR_SetCompare1(TIMx, Compare);
+        tmr_channel_value_set(TIMx, TMR_SELECT_CHANNEL_1, Compare);
         break;
     case 2:
-        TMR_SetCompare2(TIMx, Compare);
+        tmr_channel_value_set(TIMx, TMR_SELECT_CHANNEL_2, Compare);
         break;
     case 3:
-        TMR_SetCompare3(TIMx, Compare);
+        tmr_channel_value_set(TIMx, TMR_SELECT_CHANNEL_3, Compare);
         break;
     case 4:
-        TMR_SetCompare4(TIMx, Compare);
+        tmr_channel_value_set(TIMx, TMR_SELECT_CHANNEL_4, Compare);
+        break;
+    case 5:
+        tmr_channel_value_set(TIMx, TMR_SELECT_CHANNEL_5, Compare);
         break;
     default:
         break;
@@ -506,27 +445,31 @@ void Timer_SetCompare(TIM_TypeDef* TIMx, uint8_t TimerChannel, uint32_t Compare)
   * @param  TimerChannel: 定时器通道
   * @retval 捕获值
   */
-uint16_t Timer_GetCompare(TIM_TypeDef* TIMx, uint8_t TimerChannel)
+uint16_t Timer_GetCompare(tmr_type* TIMx, uint8_t TimerChannel)
 {
-    uint16_t compare = 0;
+    uint16_t retval = 0;
     switch(TimerChannel)
     {
     case 1:
-        compare = TMR_GetCapture1(TIMx);
+        retval = tmr_channel_value_get(TIMx, TMR_SELECT_CHANNEL_1);
         break;
     case 2:
-        compare = TMR_GetCapture2(TIMx);
+        retval = tmr_channel_value_get(TIMx, TMR_SELECT_CHANNEL_2);
         break;
     case 3:
-        compare = TMR_GetCapture3(TIMx);
+        retval = tmr_channel_value_get(TIMx, TMR_SELECT_CHANNEL_3);
         break;
     case 4:
-        compare = TMR_GetCapture4(TIMx);
+        retval = tmr_channel_value_get(TIMx, TMR_SELECT_CHANNEL_4);
+        break;
+    case 5:
+        retval = tmr_channel_value_get(TIMx, TMR_SELECT_CHANNEL_5);
         break;
     default:
         break;
     }
-    return compare;
+
+    return retval;
 }
 
 /**
@@ -535,9 +478,9 @@ uint16_t Timer_GetCompare(TIM_TypeDef* TIMx, uint8_t TimerChannel)
   * @param  rescaler: 时钟预分频数
   * @retval 无
   */
-void Timer_SetPrescaler(TIM_TypeDef* TIMx, uint16_t rescaler)
+void Timer_SetPrescaler(tmr_type* TIMx, uint16_t rescaler)
 {
-    TIMx->DIV = rescaler;
+    TIMx->div = rescaler;
 }
 
 /**
@@ -546,9 +489,9 @@ void Timer_SetPrescaler(TIM_TypeDef* TIMx, uint16_t rescaler)
   * @param  Reload: 自动重装值
   * @retval 无
   */
-void Timer_SetReload(TIM_TypeDef* TIMx, uint16_t Reload)
+void Timer_SetReload(tmr_type* TIMx, uint16_t Reload)
 {
-    TIMx->AR = Reload;
+    TIMx->pr = Reload;
 }
 
 /**
@@ -556,20 +499,88 @@ void Timer_SetReload(TIM_TypeDef* TIMx, uint16_t Reload)
   * @param  TIMx: 定时器地址
   * @retval 无
   */
-void Timer_GenerateUpdate(TIM_TypeDef* TIMx)
+void Timer_GenerateUpdate(tmr_type* TIMx)
 {
-    TIMx->EVEG = TMR_DIVReloadMode_Immediate;
+    TIMx->swevt_bit.ovfswtr = TRUE;
+}
+
+/**
+  * @brief  获取引脚对应的定时器复用编号
+  * @param  Pin: 引脚编号
+  * @retval 定时器复用编号
+  */
+gpio_mux_sel_type Timer_GetGPIO_MUX(uint8_t Pin)
+{
+    gpio_mux_sel_type GPIO_MUX_x = GPIO_MUX_0;
+    tmr_type* TIMx = PIN_MAP[Pin].TIMx;
+    uint8_t TimerChannel = PIN_MAP[Pin].TimerChannel;
+
+#define TIMER_GPIO_MUX_DEF(mux, timx, channel) \
+do { \
+    if(TIMx == timx && TimerChannel == channel) \
+    { \
+        GPIO_MUX_x = GPIO_MUX_##mux; \
+    } \
+}while(0)
+
+    /* GPIO_MUX_1 */
+    TIMER_GPIO_MUX_DEF(1, TIM2, 1);
+    TIMER_GPIO_MUX_DEF(1, TIM2, 2);
+    TIMER_GPIO_MUX_DEF(1, TIM2, 3);
+    TIMER_GPIO_MUX_DEF(1, TIM2, 4);
+    TIMER_GPIO_MUX_DEF(1, TIM1, 1);
+    TIMER_GPIO_MUX_DEF(1, TIM1, 2);
+    TIMER_GPIO_MUX_DEF(1, TIM1, 3);
+    TIMER_GPIO_MUX_DEF(1, TIM1, 4);
+
+    /* GPIO_MUX_2 */
+    TIMER_GPIO_MUX_DEF(2, TIM3, 1);
+    TIMER_GPIO_MUX_DEF(2, TIM3, 2);
+    TIMER_GPIO_MUX_DEF(2, TIM3, 3);
+    TIMER_GPIO_MUX_DEF(2, TIM3, 4);
+    TIMER_GPIO_MUX_DEF(2, TIM4, 1);
+    TIMER_GPIO_MUX_DEF(2, TIM4, 2);
+    TIMER_GPIO_MUX_DEF(2, TIM4, 3);
+    TIMER_GPIO_MUX_DEF(2, TIM4, 4);
+    TIMER_GPIO_MUX_DEF(2, TIM5, 1);
+    TIMER_GPIO_MUX_DEF(2, TIM5, 2);
+    TIMER_GPIO_MUX_DEF(2, TIM5, 3);
+    TIMER_GPIO_MUX_DEF(2, TIM5, 4);
+
+    /* GPIO_MUX_3 */
+    TIMER_GPIO_MUX_DEF(2, TIM8, 1);
+    TIMER_GPIO_MUX_DEF(2, TIM8, 2);
+    TIMER_GPIO_MUX_DEF(2, TIM8, 3);
+    TIMER_GPIO_MUX_DEF(2, TIM8, 4);
+    TIMER_GPIO_MUX_DEF(3, TIM9, 1);
+    TIMER_GPIO_MUX_DEF(3, TIM9, 2);
+    TIMER_GPIO_MUX_DEF(3, TIM10, 1);
+    TIMER_GPIO_MUX_DEF(3, TIM11, 1);
+
+    /* GPIO_MUX_6 */
+    TIMER_GPIO_MUX_DEF(6, TIM20, 1);
+    TIMER_GPIO_MUX_DEF(6, TIM20, 2);
+    TIMER_GPIO_MUX_DEF(6, TIM20, 3);
+    TIMER_GPIO_MUX_DEF(6, TIM20, 4);
+
+    /* GPIO_MUX_9 */
+    TIMER_GPIO_MUX_DEF(9, TIM12, 1);
+    TIMER_GPIO_MUX_DEF(9, TIM12, 2);
+    TIMER_GPIO_MUX_DEF(9, TIM13, 1);
+    TIMER_GPIO_MUX_DEF(9, TIM14, 1);
+
+    return GPIO_MUX_x;
 }
 
 #define TMRx_IRQHANDLER(n) \
 do{\
-    if (TMR_GetINTStatus(TMR##n, TMR_INT_Overflow) != RESET)\
+    if (tmr_flag_get(TMR##n, TMR_OVF_FLAG) != RESET)\
     {\
         if(Timer_CallbackFunction[TIMER##n])\
         {\
             Timer_CallbackFunction[TIMER##n]();\
         }\
-        TMR_ClearITPendingBit(TMR##n, TMR_INT_Overflow);\
+        tmr_flag_clear(TMR##n, TMR_OVF_FLAG);\
     }\
 }while(0)
 
@@ -578,8 +589,9 @@ do{\
   * @param  无
   * @retval 无
   */
-void TMR1_OV_TMR10_IRQHandler(void)
+void TMR1_OVF_TMR10_IRQHandler(void)
 {
+
     TMRx_IRQHANDLER(1);
     TMRx_IRQHANDLER(10);
 }
@@ -629,11 +641,9 @@ void TMR5_GLOBAL_IRQHandler(void)
   * @param  无
   * @retval 无
   */
-void TMR6_GLOBAL_IRQHandler(void)
+void TMR6_DAC_GLOBAL_IRQHandler(void)
 {
-#ifdef TMR6
     TMRx_IRQHANDLER(6);
-#endif
 }
 
 /**
@@ -643,9 +653,7 @@ void TMR6_GLOBAL_IRQHandler(void)
   */
 void TMR7_GLOBAL_IRQHandler(void)
 {
-#ifdef TMR7
     TMRx_IRQHANDLER(7);
-#endif
 }
 
 /**
@@ -653,12 +661,10 @@ void TMR7_GLOBAL_IRQHandler(void)
   * @param  无
   * @retval 无
   */
-void TMR8_OV_TMR13_IRQHandler(void)
+void TMR8_OVF_TMR13_IRQHandler(void)
 {
     TMRx_IRQHANDLER(8);
-#ifdef TMR13
     TMRx_IRQHANDLER(13);
-#endif
 }
 
 /**
@@ -666,9 +672,7 @@ void TMR8_OV_TMR13_IRQHandler(void)
   * @param  无
   * @retval 无
   */
-void TMR15_OV_IRQHandler(void)
+void TMR20_OVF_IRQHandler(void)
 {
-#ifdef TMR15
-    TMRx_IRQHANDLER(15);
-#endif
+    TMRx_IRQHANDLER(20);
 }

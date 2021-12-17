@@ -109,8 +109,8 @@ void     yield(void);
 #  include "WCharacter.h"
 #  include "WString.h"
 #  include "WMath.h"
-//#  include "Tone.h"
-//#  include "HardwareSerial.h"
+#  include "Tone.h"
+#  include "HardwareSerial.h"
 #endif
 
 #endif

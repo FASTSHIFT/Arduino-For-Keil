@@ -28,11 +28,11 @@
 
 #include "at32f435_437_clock.h"
 
-//#include "adc.h"
+#include "adc.h"
 #include "delay.h"
-//#include "exti.h"
+#include "exti.h"
 #include "gpio.h"
-//#include "pwm.h"
-//#include "timer.h"
+#include "pwm.h"
+#include "timer.h"
 
 #endif

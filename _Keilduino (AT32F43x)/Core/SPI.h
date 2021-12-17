@@ -26,10 +26,10 @@
 #include "Arduino.h"
 
 #ifndef LSBFIRST
-#define LSBFIRST 0
+#  define LSBFIRST 0
 #endif
 #ifndef MSBFIRST
-#define MSBFIRST 1
+#  define MSBFIRST 1
 #endif
 
 #if SPI_CLASS_PIN_DEFINE_ENABLE
@@ -39,8 +39,16 @@
 #  define MOSI    PA7
 #endif
 
-#define DATA_SIZE_8BIT  SPI_FRAMESIZE_8BIT
-#define DATA_SIZE_16BIT SPI_FRAMESIZE_16BIT
+#define DATA_SIZE_8BIT  SPI_FRAME_8BIT
+#define DATA_SIZE_16BIT SPI_FRAME_16BIT
+
+#define SPI_I2S_GET_FLAG(spix, SPI_I2S_FLAG) (spix->sts & SPI_I2S_FLAG)
+#define SPI_I2S_RXDATA(spix)                 (spix->dt)
+#define SPI_I2S_RXDATA_VOLATILE(spix)        volatile uint16_t vn = SPI_I2S_RXDATA(spix)
+#define SPI_I2S_TXDATA(spix, data)           (spix->dt = (data))
+#define SPI_I2S_WAIT_RX(spix)                do{ while (!SPI_I2S_GET_FLAG(spix, SPI_I2S_RDBF_FLAG)); } while(0)
+#define SPI_I2S_WAIT_TX(spix)                do{ while (!SPI_I2S_GET_FLAG(spix, SPI_I2S_TDBE_FLAG)); } while(0)
+#define SPI_I2S_WAIT_BUSY(spix)              do{ while (SPI_I2S_GET_FLAG(spix,  SPI_I2S_BF_FLAG));   } while(0)
 
 typedef enum
 {
@@ -91,12 +99,9 @@ private:
         this->dataSize = dataSize;
     }
     uint32_t clock;
-    uint32_t dataSize;
-    uint32_t clockDivider;
     uint16_t bitOrder;
     uint8_t dataMode;
-    uint8_t _SSPin;
-    volatile spi_mode_t state;
+    uint32_t dataSize;
 
     friend class SPIClass;
 };
@@ -104,15 +109,14 @@ private:
 class SPIClass
 {
 public:
-    SPIClass(SPI_Type* _SPIx);
+    SPIClass(spi_type* spix);
     void SPI_Settings(
-        SPI_Type* SPIx,
-        uint16_t SPI_Mode_x,
-        uint16_t SPI_DataSize_x,
+        spi_master_slave_mode_type master_slave_mode,
+        spi_frame_bit_num_type frame_bit_num,
         uint16_t SPI_MODEx,
-        uint16_t SPI_NSS_x,
-        uint16_t SPI_BaudRatePrescaler_x,
-        uint16_t SPI_FirstBit_x
+        spi_cs_mode_type cs_mode,
+        spi_mclk_freq_div_type mclk_freq_div,
+        spi_first_bit_type first_bit
     );
     void begin(void);
     void begin(uint32_t clock, uint16_t dataOrder, uint16_t dataMode);
@@ -129,7 +133,7 @@ public:
     void setClockDivider(uint32_t Div);
     void setBitOrder(uint16_t bitOrder);
     void setDataMode(uint8_t dataMode);
-    void setDataSize(uint16_t datasize);
+    void setDataSize(uint32_t datasize);
 
     uint16_t read(void);
     void read(uint8_t *buffer, uint32_t length);
@@ -142,10 +146,15 @@ public:
     uint8_t send(uint8_t data);
     uint8_t send(uint8_t *data, uint32_t length);
     uint8_t recv(void);
+    
+    spi_type* getSPI()
+    {
+        return SPIx;
+    }
 
 private:
-    SPI_Type* SPIx;
-    SPI_InitType  SPI_InitStructure;
+    spi_type* SPIx;
+    spi_init_type spi_init_struct;
     uint32_t SPI_Clock;
 };
 

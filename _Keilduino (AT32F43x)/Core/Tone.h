@@ -27,7 +27,7 @@
 
 #define TONE_DURATION_INFINITE  0xFFFFFFFFU
 
-void toneSetTimer(TIM_TypeDef* TIMx);
+void toneSetTimer(tmr_type* TIMx);
 void tone(uint8_t pin, uint32_t freq, uint32_t duration = TONE_DURATION_INFINITE);
 void noTone(uint8_t pin);
 
