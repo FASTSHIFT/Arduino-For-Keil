@@ -1,0 +1,893 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_projx.xsd">
+
+  <SchemaVersion>2.1</SchemaVersion>
+
+  <Header>### uVision Project, (C) Keil Software</Header>
+
+  <Targets>
+    <Target>
+      <TargetName>AT32F4xx</TargetName>
+      <ToolsetNumber>0x4</ToolsetNumber>
+      <ToolsetName>ARM-ADS</ToolsetName>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
+      <uAC6>0</uAC6>
+      <TargetOption>
+        <TargetCommonOption>
+          <Device>-AT32F435CGU7</Device>
+          <Vendor>ArteryTek</Vendor>
+          <PackID>ArteryTek.AT32F435_437_DFP.2.0.1</PackID>
+          <Cpu>IRAM(0x20000000,0x60000) IROM(0x08000000,0x100000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
+          <FlashUtilSpec></FlashUtilSpec>
+          <StartupFile></StartupFile>
+          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0AT32F435_1024 -FS08000000 -FL0100000 -FP0($$Device:-AT32F435CGU7$Flash\AT32F435_1024.FLM))</FlashDriverDll>
+          <DeviceId>0</DeviceId>
+          <RegisterFile>$$Device:-AT32F435CGU7$Device\Include\at32f435_437.h</RegisterFile>
+          <MemoryEnv></MemoryEnv>
+          <Cmp></Cmp>
+          <Asm></Asm>
+          <Linker></Linker>
+          <OHString></OHString>
+          <InfinionOptionDll></InfinionOptionDll>
+          <SLE66CMisc></SLE66CMisc>
+          <SLE66AMisc></SLE66AMisc>
+          <SLE66LinkerMisc></SLE66LinkerMisc>
+          <SFDFile>$$Device:-AT32F435CGU7$SVD\AT32F435xx_v2.svd</SFDFile>
+          <bCustSvd>0</bCustSvd>
+          <UseEnv>0</UseEnv>
+          <BinPath></BinPath>
+          <IncludePath></IncludePath>
+          <LibPath></LibPath>
+          <RegisterFilePath></RegisterFilePath>
+          <DBRegisterFilePath></DBRegisterFilePath>
+          <TargetStatus>
+            <Error>0</Error>
+            <ExitCodeStop>0</ExitCodeStop>
+            <ButtonStop>0</ButtonStop>
+            <NotGenerated>0</NotGenerated>
+            <InvalidFlash>1</InvalidFlash>
+          </TargetStatus>
+          <OutputDirectory>.\Objects\</OutputDirectory>
+          <OutputName>proj</OutputName>
+          <CreateExecutable>1</CreateExecutable>
+          <CreateLib>0</CreateLib>
+          <CreateHexFile>0</CreateHexFile>
+          <DebugInformation>1</DebugInformation>
+          <BrowseInformation>1</BrowseInformation>
+          <ListingPath>.\Listings\</ListingPath>
+          <HexFormatSelection>1</HexFormatSelection>
+          <Merge32K>0</Merge32K>
+          <CreateBatchFile>0</CreateBatchFile>
+          <BeforeCompile>
+            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg2>0</RunUserProg2>
+            <UserProg1Name></UserProg1Name>
+            <UserProg2Name></UserProg2Name>
+            <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
+            <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopU1X>0</nStopU1X>
+            <nStopU2X>0</nStopU2X>
+          </BeforeCompile>
+          <BeforeMake>
+            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg2>0</RunUserProg2>
+            <UserProg1Name></UserProg1Name>
+            <UserProg2Name></UserProg2Name>
+            <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
+            <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopB1X>0</nStopB1X>
+            <nStopB2X>0</nStopB2X>
+          </BeforeMake>
+          <AfterMake>
+            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg2>0</RunUserProg2>
+            <UserProg1Name></UserProg1Name>
+            <UserProg2Name></UserProg2Name>
+            <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
+            <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopA1X>0</nStopA1X>
+            <nStopA2X>0</nStopA2X>
+          </AfterMake>
+          <SelectedForBatchBuild>0</SelectedForBatchBuild>
+          <SVCSIdString></SVCSIdString>
+        </TargetCommonOption>
+        <CommonProperty>
+          <UseCPPCompiler>0</UseCPPCompiler>
+          <RVCTCodeConst>0</RVCTCodeConst>
+          <RVCTZI>0</RVCTZI>
+          <RVCTOtherData>0</RVCTOtherData>
+          <ModuleSelection>0</ModuleSelection>
+          <IncludeInBuild>1</IncludeInBuild>
+          <AlwaysBuild>0</AlwaysBuild>
+          <GenerateAssemblyFile>0</GenerateAssemblyFile>
+          <AssembleAssemblyFile>0</AssembleAssemblyFile>
+          <PublicsOnly>0</PublicsOnly>
+          <StopOnExitCode>3</StopOnExitCode>
+          <CustomArgument></CustomArgument>
+          <IncludeLibraryModules></IncludeLibraryModules>
+          <ComprImg>1</ComprImg>
+        </CommonProperty>
+        <DllOption>
+          <SimDllName>SARMCM3.DLL</SimDllName>
+          <SimDllArguments> -REMAP -MPU</SimDllArguments>
+          <SimDlgDll>DCM.DLL</SimDlgDll>
+          <SimDlgDllArguments>-pCM4</SimDlgDllArguments>
+          <TargetDllName>SARMCM3.DLL</TargetDllName>
+          <TargetDllArguments> -MPU</TargetDllArguments>
+          <TargetDlgDll>TCM.DLL</TargetDlgDll>
+          <TargetDlgDllArguments>-pCM4</TargetDlgDllArguments>
+        </DllOption>
+        <DebugOption>
+          <OPTHX>
+            <HexSelection>1</HexSelection>
+            <HexRangeLowAddress>0</HexRangeLowAddress>
+            <HexRangeHighAddress>0</HexRangeHighAddress>
+            <HexOffset>0</HexOffset>
+            <Oh166RecLen>16</Oh166RecLen>
+          </OPTHX>
+        </DebugOption>
+        <Utilities>
+          <Flash1>
+            <UseTargetDll>1</UseTargetDll>
+            <UseExternalTool>0</UseExternalTool>
+            <RunIndependent>0</RunIndependent>
+            <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
+            <Capability>1</Capability>
+            <DriverSelection>-1</DriverSelection>
+          </Flash1>
+          <bUseTDR>1</bUseTDR>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
+          <Flash3></Flash3>
+          <Flash4></Flash4>
+          <pFcarmOut></pFcarmOut>
+          <pFcarmGrp></pFcarmGrp>
+          <pFcArmRoot></pFcArmRoot>
+          <FcArmLst>0</FcArmLst>
+        </Utilities>
+        <TargetArmAds>
+          <ArmAdsMisc>
+            <GenerateListings>0</GenerateListings>
+            <asHll>1</asHll>
+            <asAsm>1</asAsm>
+            <asMacX>1</asMacX>
+            <asSyms>1</asSyms>
+            <asFals>1</asFals>
+            <asDbgD>1</asDbgD>
+            <asForm>1</asForm>
+            <ldLst>0</ldLst>
+            <ldmm>1</ldmm>
+            <ldXref>1</ldXref>
+            <BigEnd>0</BigEnd>
+            <AdsALst>1</AdsALst>
+            <AdsACrf>1</AdsACrf>
+            <AdsANop>0</AdsANop>
+            <AdsANot>0</AdsANot>
+            <AdsLLst>1</AdsLLst>
+            <AdsLmap>1</AdsLmap>
+            <AdsLcgr>1</AdsLcgr>
+            <AdsLsym>1</AdsLsym>
+            <AdsLszi>1</AdsLszi>
+            <AdsLtoi>1</AdsLtoi>
+            <AdsLsun>1</AdsLsun>
+            <AdsLven>1</AdsLven>
+            <AdsLsxf>1</AdsLsxf>
+            <RvctClst>0</RvctClst>
+            <GenPPlst>0</GenPPlst>
+            <AdsCpuType>"Cortex-M4"</AdsCpuType>
+            <RvctDeviceName></RvctDeviceName>
+            <mOS>0</mOS>
+            <uocRom>0</uocRom>
+            <uocRam>0</uocRam>
+            <hadIROM>1</hadIROM>
+            <hadIRAM>1</hadIRAM>
+            <hadXRAM>0</hadXRAM>
+            <uocXRam>0</uocXRam>
+            <RvdsVP>2</RvdsVP>
+            <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
+            <hadIRAM2>0</hadIRAM2>
+            <hadIROM2>0</hadIROM2>
+            <StupSel>8</StupSel>
+            <useUlib>0</useUlib>
+            <EndSel>0</EndSel>
+            <uLtcg>0</uLtcg>
+            <nSecure>0</nSecure>
+            <RoSelD>3</RoSelD>
+            <RwSelD>3</RwSelD>
+            <CodeSel>0</CodeSel>
+            <OptFeed>0</OptFeed>
+            <NoZi1>0</NoZi1>
+            <NoZi2>0</NoZi2>
+            <NoZi3>0</NoZi3>
+            <NoZi4>0</NoZi4>
+            <NoZi5>0</NoZi5>
+            <Ro1Chk>0</Ro1Chk>
+            <Ro2Chk>0</Ro2Chk>
+            <Ro3Chk>0</Ro3Chk>
+            <Ir1Chk>1</Ir1Chk>
+            <Ir2Chk>0</Ir2Chk>
+            <Ra1Chk>0</Ra1Chk>
+            <Ra2Chk>0</Ra2Chk>
+            <Ra3Chk>0</Ra3Chk>
+            <Im1Chk>1</Im1Chk>
+            <Im2Chk>0</Im2Chk>
+            <OnChipMemories>
+              <Ocm1>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </Ocm1>
+              <Ocm2>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </Ocm2>
+              <Ocm3>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </Ocm3>
+              <Ocm4>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </Ocm4>
+              <Ocm5>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </Ocm5>
+              <Ocm6>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </Ocm6>
+              <IRAM>
+                <Type>0</Type>
+                <StartAddress>0x20000000</StartAddress>
+                <Size>0x60000</Size>
+              </IRAM>
+              <IROM>
+                <Type>1</Type>
+                <StartAddress>0x8000000</StartAddress>
+                <Size>0x100000</Size>
+              </IROM>
+              <XRAM>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </XRAM>
+              <OCR_RVCT1>
+                <Type>1</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </OCR_RVCT1>
+              <OCR_RVCT2>
+                <Type>1</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </OCR_RVCT2>
+              <OCR_RVCT3>
+                <Type>1</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </OCR_RVCT3>
+              <OCR_RVCT4>
+                <Type>1</Type>
+                <StartAddress>0x8000000</StartAddress>
+                <Size>0x100000</Size>
+              </OCR_RVCT4>
+              <OCR_RVCT5>
+                <Type>1</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </OCR_RVCT5>
+              <OCR_RVCT6>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </OCR_RVCT6>
+              <OCR_RVCT7>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </OCR_RVCT7>
+              <OCR_RVCT8>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </OCR_RVCT8>
+              <OCR_RVCT9>
+                <Type>0</Type>
+                <StartAddress>0x20000000</StartAddress>
+                <Size>0x60000</Size>
+              </OCR_RVCT9>
+              <OCR_RVCT10>
+                <Type>0</Type>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
+              </OCR_RVCT10>
+            </OnChipMemories>
+            <RvctStartVector></RvctStartVector>
+          </ArmAdsMisc>
+          <Cads>
+            <interw>1</interw>
+            <Optim>4</Optim>
+            <oTime>0</oTime>
+            <SplitLS>0</SplitLS>
+            <OneElfS>1</OneElfS>
+            <Strict>0</Strict>
+            <EnumInt>0</EnumInt>
+            <PlainCh>0</PlainCh>
+            <Ropi>0</Ropi>
+            <Rwpi>0</Rwpi>
+            <wLevel>2</wLevel>
+            <uThumb>0</uThumb>
+            <uSurpInc>0</uSurpInc>
+            <uC99>1</uC99>
+            <uGnu>0</uGnu>
+            <useXO>0</useXO>
+            <v6Lang>3</v6Lang>
+            <v6LangP>3</v6LangP>
+            <vShortEn>1</vShortEn>
+            <vShortWch>1</vShortWch>
+            <v6Lto>0</v6Lto>
+            <v6WtE>0</v6WtE>
+            <v6Rtti>0</v6Rtti>
+            <VariousControls>
+              <MiscControls>--gnu --diag_warning=4017</MiscControls>
+              <Define>ARDUINO=111</Define>
+              <Undefine></Undefine>
+              <IncludePath>..\ArduinoAPI;..\Core;..\Libraries;..\USER</IncludePath>
+            </VariousControls>
+          </Cads>
+          <Aads>
+            <interw>1</interw>
+            <Ropi>0</Ropi>
+            <Rwpi>0</Rwpi>
+            <thumb>0</thumb>
+            <SplitLS>0</SplitLS>
+            <SwStkChk>0</SwStkChk>
+            <NoWarn>0</NoWarn>
+            <uSurpInc>0</uSurpInc>
+            <useXO>0</useXO>
+            <ClangAsOpt>4</ClangAsOpt>
+            <VariousControls>
+              <MiscControls></MiscControls>
+              <Define></Define>
+              <Undefine></Undefine>
+              <IncludePath></IncludePath>
+            </VariousControls>
+          </Aads>
+          <LDads>
+            <umfTarg>1</umfTarg>
+            <Ropi>0</Ropi>
+            <Rwpi>0</Rwpi>
+            <noStLib>0</noStLib>
+            <RepFail>1</RepFail>
+            <useFile>0</useFile>
+            <TextAddressRange>0x08000000</TextAddressRange>
+            <DataAddressRange>0x20000000</DataAddressRange>
+            <pXoBase></pXoBase>
+            <ScatterFile></ScatterFile>
+            <IncludeLibs></IncludeLibs>
+            <IncludeLibsPath></IncludeLibsPath>
+            <Misc></Misc>
+            <LinkerInputFile></LinkerInputFile>
+            <DisabledWarnings></DisabledWarnings>
+          </LDads>
+        </TargetArmAds>
+      </TargetOption>
+      <Groups>
+        <Group>
+          <GroupName>USER</GroupName>
+          <Files>
+            <File>
+              <FileName>mcu_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\mcu_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\main.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Libraries</GroupName>
+        </Group>
+        <Group>
+          <GroupName>ArduinoAPI</GroupName>
+          <Files>
+            <File>
+              <FileName>Arduino.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ArduinoAPI\Arduino.c</FilePath>
+            </File>
+            <File>
+              <FileName>dtostrf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ArduinoAPI\dtostrf.c</FilePath>
+            </File>
+            <File>
+              <FileName>itoa.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ArduinoAPI\itoa.c</FilePath>
+            </File>
+            <File>
+              <FileName>Print.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\ArduinoAPI\Print.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Stream.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\ArduinoAPI\Stream.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Wire.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\ArduinoAPI\Wire.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>WireBase.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\ArduinoAPI\WireBase.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>WMath.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\ArduinoAPI\WMath.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>WString.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\ArduinoAPI\WString.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Core</GroupName>
+          <Files>
+            <File>
+              <FileName>mcu_type.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\mcu_type.h</FilePath>
+            </File>
+            <File>
+              <FileName>mcu_config_template.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\mcu_config_template.h</FilePath>
+            </File>
+            <File>
+              <FileName>at32f435_437_clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\at32f435_437_clock.c</FilePath>
+            </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>HardwareSerial.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\HardwareSerial.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SPI.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\SPI.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Tone.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\Tone.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>README</GroupName>
+          <Files>
+            <File>
+              <FileName>README.md</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\README.md</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>::CMSIS</GroupName>
+        </Group>
+        <Group>
+          <GroupName>::Device</GroupName>
+        </Group>
+      </Groups>
+    </Target>
+  </Targets>
+
+  <RTE>
+    <apis/>
+    <components>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.3.0" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.6.0"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_conf" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 CMSIS">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="adc" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="crm" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS MISC">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="dma" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="exint" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="gpio" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="misc" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 CMSIS">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="scfg" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="spi" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="tmr" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="usart" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="startup" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437">
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </component>
+    </components>
+    <files>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_adc.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_adc.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="adc" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="header" name="Device\Include\at32f435_437_conf.h" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_conf.h</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_conf" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 CMSIS"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_crm.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_crm.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="crm" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS MISC"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_dma.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_dma.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="dma" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_exint.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_exint.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="exint" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_gpio.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_gpio.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="gpio" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_misc.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_misc.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="misc" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 CMSIS"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_scfg.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_scfg.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="scfg" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_spi.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_spi.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="spi" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_tmr.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_tmr.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="tmr" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_usart.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_usart.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="usart" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" condition="AT32F435xx ARMCC" name="Device\Source\ARM\startup_at32f435_437.s" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\startup_at32f435_437.s</instance>
+        <component Cclass="Device" Cgroup="startup" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f435_437.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F435CGU7\system_at32f435_437.c</instance>
+        <component Cclass="Device" Cgroup="startup" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.3" url="" vendor="ArteryTek" version="2.0.1"/>
+        <targetInfos>
+          <targetInfo name="AT32F4xx"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ACCU7\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="AT32F403ACCU7" name="Device\Source\ARM\startup_at32f403accu7.s" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ACCU7\startup_at32f403accu7.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ACCU7\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ACGT7\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="AT32F403ACGT7" name="Device\Source\ARM\startup_at32f403acgt7.s" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ACGT7\startup_at32f403acgt7.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ACGT7\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ACGU7\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="AT32F403ACGU7" name="Device\Source\ARM\startup_at32f403acgu7.s" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ACGU7\startup_at32f403acgu7.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ACGU7\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403CE\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="AT32F403 CX HD" name="Device\Source\ARM\startup_at32f403cx_hd.s" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403CE\startup_at32f403cx_hd.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403CE\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403CG\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="AT32F403 CX XL" name="Device\Source\ARM\startup_at32f403cx_xl.s" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403CG\startup_at32f403cx_xl.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403CG\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ZE\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="AT32F403 ZX HD" name="Device\Source\ARM\startup_at32f403zx_hd.s" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ZE\startup_at32f403zx_hd.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F403ZE\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F413C8\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="AT32F413 CX MD" name="Device\Source\ARM\startup_at32f413cx_md.s" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F413C8\startup_at32f413cx_md.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F413C8\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F413CB\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="AT32F413 CX MD" name="Device\Source\ARM\startup_at32f413cx_md.s" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F413CB\startup_at32f413cx_md.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F413CB\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.1"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F413RC\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.2.0"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F421C8T7\at32f4xx_conf.h</instance>
+        <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.5"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="AT32F421C8T7" name="Device\Source\ARM\startup_at32f421c8t7.s" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F421C8T7\startup_at32f421c8t7.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.5"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
+        <instance index="0" removed="1">RTE\Device\AT32F421C8T7\system_at32f4xx.c</instance>
+        <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.5"/>
+        <targetInfos/>
+      </file>
+    </files>
+  </RTE>
+
+</Project>
