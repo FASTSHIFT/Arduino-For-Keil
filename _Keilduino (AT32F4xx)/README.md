@@ -65,3 +65,11 @@
 ## [v2.3] - 2021.10.23
 * 1.ArduinoAPI 重构
 * 2.Core 重构
+
+## [v2.4] - 2021.12.6
+* 1.PWM库 PWM_DUTYCYCLE_DEFAULT -> PWM_RESOLUTION_DEFAULT
+* 2.更新SPI库，新的分频计算方法以及通用的寄存区快速操作API
+* 3.去除GPIO_InitTypeDef
+
+## [v2.5] - 2021.12.17
+* 1.修复Tone空指针操作
