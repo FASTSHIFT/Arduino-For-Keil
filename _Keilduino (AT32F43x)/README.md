@@ -10,3 +10,11 @@
 * 2.添加内部的时钟初始化，默认主频288MHz
 * 3.HardSerial新的SERIAL_Config_t
 * 4.SPI库导出寄存器快速操作接口
+
+## [v1.2] - 2022.1.2
+* 1.GPIO_DRIVE_STRENGTH_DEFAULT -> GPIO_DRIVE_DEFAULT
+* 2.去除extern_SRAM
+* 3.去除i2c
+* 4.添加wdg看门狗支持
+* 5.优化TIMER_GPIO_MUX匹配
+

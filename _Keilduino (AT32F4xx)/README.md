@@ -73,3 +73,8 @@
 
 ## [v2.5] - 2021.12.17
 * 1.修复Tone空指针操作
+
+## [v2.6] - 2022.1.2
+* 1.GPIO_MAX_SPEED_DEFAULT -> GPIO_DRIVE_DEFAULT
+* 2.添加wdg看门狗支持
+* 3.更新RTC库，规范RTC_Calendar_TypeDef成员命名，RTC_Set -> RTC_SetTime

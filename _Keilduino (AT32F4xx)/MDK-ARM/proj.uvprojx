@@ -456,6 +456,11 @@
               <FilePath>..\Core\mcu_type.h</FilePath>
             </File>
             <File>
+              <FileName>mcu_core.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\mcu_core.h</FilePath>
+            </File>
+            <File>
               <FileName>mcu_config_template.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Core\mcu_config_template.h</FilePath>

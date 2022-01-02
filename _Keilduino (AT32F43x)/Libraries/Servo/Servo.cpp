@@ -111,7 +111,7 @@ bool Servo::detach()
     TIM_TypeDef* tdev = PIN_MAP[this->pin].TIMx;
     uint8_t tchan = PIN_MAP[this->pin].TimerChannel;
     //timer_set_mode(tdev, tchan, DISABLE);
-    TMR_CCxCmd(tdev, tchan, TMR_CCx_Disable);
+    tmr_output_channel_mode_select(tdev, (tmr_channel_select_type)tchan, TMR_OUTPUT_CONTROL_OFF);
     this->resetFields();
 
     return true;
