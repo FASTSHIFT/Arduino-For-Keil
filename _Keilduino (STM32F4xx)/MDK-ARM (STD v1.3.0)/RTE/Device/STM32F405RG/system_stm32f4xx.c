@@ -253,7 +253,7 @@
 /* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N */
 #define PLL_M      8
 /* USB OTG FS, SDIO and RNG Clock =  PLL_VCO / PLLQ */
-#define PLL_Q      4
+#define PLL_Q      7
 
 #if defined (STM32F40_41xxx)
 #define PLL_N      336

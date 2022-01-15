@@ -123,6 +123,10 @@ void SPIClass::begin(void)
         RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPI3, ENABLE);
         RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPI3, DISABLE);
     }
+    else
+    {
+        return;
+    }
 
     SPI_Settings(   SPIx,
                     SPI_Mode_Master,

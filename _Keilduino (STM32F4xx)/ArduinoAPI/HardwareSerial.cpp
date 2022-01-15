@@ -1,17 +1,17 @@
 /*
  * MIT License
  * Copyright (c) 2019 _VIFEXTech
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -146,24 +146,22 @@ void HardwareSerial::begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t Pree
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
     GPIO_Init(GPIOx, &GPIO_InitStructure);
 
-    //Usart NVIC 配置
     NVIC_InitStructure.NVIC_IRQChannel = ItChannel;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority ;//抢占优先级
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;        //子优先级
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;         //IRQ通道使能
-    NVIC_Init(&NVIC_InitStructure); //根据指定的参数初始化VIC寄存器
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority ;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 
-    //USART 初始化设置
-    USART_InitStructure.USART_BaudRate = BaudRate;//串口波特率
-    USART_InitStructure.USART_WordLength = USART_GetWordLength(Config);//字长为8位数据格式
-    USART_InitStructure.USART_StopBits = USART_GetParity(Config);//一个停止位
-    USART_InitStructure.USART_Parity = USART_GetStopBits(Config);//无奇偶校验位
-    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
-    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx; //收发模式
+    USART_InitStructure.USART_BaudRate = BaudRate;
+    USART_InitStructure.USART_WordLength = USART_GetWordLength(Config);
+    USART_InitStructure.USART_StopBits = USART_GetStopBits(Config);
+    USART_InitStructure.USART_Parity = USART_GetParity(Config);
+    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 
-    USART_Init(USARTx, &USART_InitStructure); //初始化串口
-    USART_ITConfig(USARTx, USART_IT_RXNE, ENABLE);//开启串口接受中断
-    USART_Cmd(USARTx, ENABLE);                    //使能串口
+    USART_Init(USARTx, &USART_InitStructure);
+    USART_ITConfig(USARTx, USART_IT_RXNE, ENABLE);
+    USART_Cmd(USARTx, ENABLE);
 }
 
 /**
@@ -250,7 +248,7 @@ void HardwareSerial::flush(void)
   */
 size_t HardwareSerial::write(uint8_t n)
 {
-    while(!USART_GetFlagStatus(USARTx, USART_FLAG_TXE)){};
+    while(!USART_GetFlagStatus(USARTx, USART_FLAG_TXE)) {};
     USART_SendData(USARTx, n);
     return 1;
 }

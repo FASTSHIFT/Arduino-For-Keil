@@ -514,10 +514,25 @@
   </Targets>
 
   <RTE>
+    <packages>
+      <filter>
+        <targetInfos/>
+      </filter>
+      <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.8.0">
+        <targetInfos>
+          <targetInfo name="Project" versionMatchMode="fixed"/>
+        </targetInfos>
+      </package>
+      <package name="STM32F4xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack" vendor="Keil" version="1.0.8">
+        <targetInfos>
+          <targetInfo name="Project" versionMatchMode="fixed"/>
+        </targetInfos>
+      </package>
+    </packages>
     <apis/>
     <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.2.0" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.5.1"/>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.5.0" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.8.0"/>
         <targetInfos>
           <targetInfo name="Project"/>
         </targetInfos>
@@ -789,6 +804,12 @@
         <targetInfos>
           <targetInfo name="Project"/>
         </targetInfos>
+      </file>
+      <file attr="config" category="source" condition="STM32F405xx_ARMCC" name="Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f405xx.s" version="2.6.2">
+        <instance index="0" removed="1">RTE\Device\STM32F405RG\startup_stm32f405xx.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="2.6.3" condition="STM32F4 CMSIS"/>
+        <package name="STM32F4xx_DFP" schemaVersion="1.6.3" url="http://www.keil.com/pack/" vendor="Keil" version="2.15.0"/>
+        <targetInfos/>
       </file>
       <file attr="config" category="source" condition="STM32F40_41x_ARMCC" name="Device\Source\ARM\startup_stm32f40_41xxx.s" version="1.0.0">
         <instance index="0">RTE\Device\STM32F405RG\startup_stm32f40_41xxx.s</instance>

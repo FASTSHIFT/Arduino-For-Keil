@@ -375,7 +375,7 @@
  #if defined(USE_HSE_BYPASS)
   #define PLL_M      8    
  #else /* !USE_HSE_BYPASS */
-  #define PLL_M      16
+  #define PLL_M      8
  #endif /* USE_HSE_BYPASS */
 #else
 #endif /* STM32F40_41xxx || STM32F427_437xx || STM32F429_439xx || STM32F401xx || STM32F469_479xx */  
