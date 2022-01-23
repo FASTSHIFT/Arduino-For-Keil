@@ -2,8 +2,16 @@
 > https://github.com/FASTSHIFT/Arduino-For-Keil
 
 # 注意: 
-1. 标准外设库默认晶振频率是25MHz。若板载晶振为8MHz,需要将system_stm32f4xx.c 的 PLL_M 定义 25 改为 8。
-2. 该项目模板包括三个工程：
+1. 下载前务必确认硬件晶振频率是否和程序设置**相匹配**，其中：
+   > 8M晶振：`HSE_VALUE=8000000`   `#define PLL_M 8`
+   > 
+   > 25M晶振：`HSE_VALUE=25000000` `#define PLL_M 25`
+   
+   ![image](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/Images/HSE_VALUE.png)
+   
+   ![image](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/Images/PLL_M.png)
+2. 如果忘记修改设置，会导致芯片启动超频锁死(提示`Invalid ROM Table`)，可以尝试将将**BOOT0脚置1** **BOOT1脚置0**，将程序的晶振设置修改后重新下载。详细操作方法请自行上网搜索关键词：**STM32 Invalid ROM Table**。
+4. 该项目模板包括三个工程：
  - (1)**GCC**: 使用Keil调用GCC(arm-none-eabi)编译器进行编译，前提是您的电脑必须安装有这个编译器。"xxx.ld"文件可以使用CubeMX生成，需要在Linker菜单里重新选择。
  - (2)**STD v1.3.0**: 使用pack安装到Keil内的v1.3.0的标准库，用这个配置工程比较方便，但是STM32F4的很多新型号不支持。
  - (3)**STD v1.8.0**: 使用工程自带的v1.8.0的标准库，对新型号支持较好，工程打开后会提示安装pack，安装后就可以正常使用芯片选型。缺点是要手动配置工程增删文件。
