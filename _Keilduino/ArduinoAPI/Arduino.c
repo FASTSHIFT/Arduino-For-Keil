@@ -35,28 +35,29 @@ void pinMode(uint8_t pin, PinMode_TypeDef mode)
         return;
     }
 
-    if(mode == INPUT_ANALOG_DMA)
+    switch(mode)
     {
+    case INPUT_ANALOG_DMA:
         if(!IS_ADC_PIN(pin))
         {
             return;
         }
-
         pinMode(pin, INPUT_ANALOG);
         ADC_DMA_Register(PIN_MAP[pin].ADC_Channel);
-    }
-    else if(mode == PWM)
-    {
+        break;
+
+    case PWM:
         PWM_Init(pin, PWM_RESOLUTION_DEFAULT, PWM_FREQUENCY_DEFAULT);
-    }
-    else
-    {
+        break;
+
+    default:
         GPIOx_Init(
             PIN_MAP[pin].GPIOx,
             PIN_MAP[pin].GPIO_Pin_x,
             mode,
             GPIO_DRIVE_DEFAULT
         );
+        break;
     }
 }
 
@@ -147,7 +148,7 @@ uint16_t analogRead_DMA(uint8_t pin)
   */
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value)
 {
-    uint8_t i;
+    int i;
     if(!(IS_PIN(dataPin) && IS_PIN(clockPin)))
     {
         return;
@@ -173,7 +174,7 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value
 uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
 {
     uint8_t value = 0;
-    uint8_t i;
+    int i;
 
     if(!(IS_PIN(dataPin) && IS_PIN(clockPin)))
     {
@@ -206,18 +207,19 @@ uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
   */
 uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout)
 {
-    // cache the IDR address and bit of the pin in order to speed up the
-    // pulse width measuring loop and achieve finer resolution.  calling
-    // digitalRead() instead yields much coarser resolution.
-
+    /** cache the IDR address and bit of the pin in order to speed up the
+      * pulse width measuring loop and achieve finer resolution.  calling
+      * digitalRead() instead yields much coarser resolution.
+      */
     volatile uint32_t *idr = portInputRegister(digitalPinToPort(pin));
     const uint32_t bit = digitalPinToBitMask(pin);
     const uint32_t stateMask = (state ? bit : 0);
 
     uint32_t width = 0; // keep initialization out of time critical area
 
-    // convert the timeout from microseconds to a number of times through
-    // the initial loop; it takes 16 clock cycles per iteration.
+    /** convert the timeout from microseconds to a number of times through
+      * the initial loop; it takes 16 clock cycles per iteration.
+      */
     uint32_t numloops = 0;
     uint32_t maxloops =  timeout * ( F_CPU / 16000000);
     volatile uint32_t dummyWidth = 0;
@@ -225,7 +227,7 @@ uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout)
     if(!IS_PIN(pin))
         return 0;
 
-    // wait for any previous pulse to end
+    /* wait for any previous pulse to end */
     while ((*idr & bit) == stateMask)
     {
         if (numloops++ == maxloops)
@@ -235,7 +237,7 @@ uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout)
         dummyWidth++;
     }
 
-    // wait for the pulse to start
+    /* wait for the pulse to start */
     while ((*idr & bit) != stateMask)
     {
         if (numloops++ == maxloops)
@@ -245,7 +247,7 @@ uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout)
         dummyWidth++;
     }
 
-    // wait for the pulse to stop
+    /* wait for the pulse to stop */
     while ((*idr & bit) == stateMask)
     {
         if (numloops++ == maxloops)
@@ -255,9 +257,9 @@ uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout)
         width++;
     }
 
-    // Excluding time taking up by the interrupts, it needs 16 clock cycles to look through the last while loop
-    // 5 is added as a fiddle factor to correct for interrupts etc. But ultimately this would only be accurate if it was done ona hardware timer
-
+    /** Excluding time taking up by the interrupts, it needs 16 clock cycles to look through the last while loop
+      * 5 is added as a fiddle factor to correct for interrupts etc. But ultimately this would only be accurate if it was done ona hardware timer
+      */
     return (uint32_t)( ( (unsigned long long)(width + 5) *  (unsigned long long) 16000000.0) / (unsigned long long)F_CPU );
 }
 

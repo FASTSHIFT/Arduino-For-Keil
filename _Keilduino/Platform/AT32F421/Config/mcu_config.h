@@ -43,16 +43,10 @@
 #  define SERIAL_1_IRQ_HANDLER_DEF()        void USART1_IRQHandler(void)
 #endif
 
-#define SERIAL_2_ENABLE                     0
+#define SERIAL_2_ENABLE                     1
 #if SERIAL_2_ENABLE
 #  define SERIAL_2_USART                    USART2
 #  define SERIAL_2_IRQ_HANDLER_DEF()        void USART2_IRQHandler(void)
-#endif
-
-#define SERIAL_3_ENABLE                     0
-#if SERIAL_3_ENABLE
-#  define SERIAL_3_USART                    USART3
-#  define SERIAL_3_IRQ_HANDLER_DEF()        void USART3_IRQHandler(void)
 #endif
 
 /* Wire (Software I2C) */
@@ -75,11 +69,6 @@
 #define SPI_CLASS_2_ENABLE                  1
 #if SPI_CLASS_2_ENABLE
 #  define SPI_CLASS_2_SPI                   SPI2
-#endif
-
-#define SPI_CLASS_3_ENABLE                  1
-#if SPI_CLASS_3_ENABLE
-#  define SPI_CLASS_3_SPI                   SPI3
 #endif
 
 /* WString */

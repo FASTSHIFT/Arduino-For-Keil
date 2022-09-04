@@ -25,8 +25,8 @@
 
 typedef enum
 {
-    TIMER1, TIMER2, TIMER3, TIMER4, TIMER5, TIMER6, TIMER7, TIMER8,
-    TIMER9, TIMER10, TIMER11, TIMER12, TIMER13, TIMER14, TIMER20,
+    TIMER1, TIMER3, TIMER6,
+    TIMER14, TIMER15, TIMER16, TIMER17,
     TIMER_MAX
 } TIMER_Type;
 
@@ -515,46 +515,55 @@ gpio_mux_sel_type Timer_GetGPIO_MUX(uint8_t Pin)
     return GPIO_MUX_x;
 }
 
-#define TMRx_IRQHANDLER(n) \
-do{\
-    if (tmr_flag_get(TMR##n, TMR_OVF_FLAG) != RESET)\
-    {\
-        if(Timer_CallbackFunction[TIMER##n])\
-        {\
-            Timer_CallbackFunction[TIMER##n]();\
-        }\
-        tmr_flag_clear(TMR##n, TMR_OVF_FLAG);\
-    }\
+#define TMRx_IRQHANDLER(n)                              \
+do{                                                     \
+    if (tmr_flag_get(TMR##n, TMR_OVF_FLAG) != RESET)    \
+    {                                                   \
+        if(Timer_CallbackFunction[TIMER##n])            \
+        {                                               \
+            Timer_CallbackFunction[TIMER##n]();         \
+        }                                               \
+        tmr_flag_clear(TMR##n, TMR_OVF_FLAG);           \
+    }                                                   \
 }while(0)
 
 /**
-  * @brief  定时中断入口，定时器1、10
+  * @brief  定时中断入口
   * @param  无
   * @retval 无
   */
-void TMR1_OVF_TMR10_IRQHandler(void)
+void TMR1_BRK_OVF_TRG_HALL_IRQHandler(void)
 {
-
     TMRx_IRQHANDLER(1);
 }
 
-/**
-  * @brief  定时中断入口，定时器3
-  * @param  无
-  * @retval 无
-  */
+
 void TMR3_GLOBAL_IRQHandler(void)
 {
     TMRx_IRQHANDLER(3);
 }
 
-
-/**
-  * @brief  定时中断入口，定时器6
-  * @param  无
-  * @retval 无
-  */
-void TMR6_DAC_GLOBAL_IRQHandler(void)
+void TMR6_GLOBAL_IRQHandler(void)
 {
     TMRx_IRQHANDLER(6);
+}
+
+void TMR14_GLOBAL_IRQHandler(void)
+{
+    TMRx_IRQHANDLER(14);
+}
+
+void TMR15_GLOBAL_IRQHandler(void)
+{
+    TMRx_IRQHANDLER(15);
+}
+
+void TMR16_GLOBAL_IRQHandler(void)
+{
+    TMRx_IRQHANDLER(16);
+}
+
+void TMR17_GLOBAL_IRQHandler(void)
+{
+    TMRx_IRQHANDLER(17);
 }

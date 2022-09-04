@@ -24,23 +24,23 @@
 
 const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
 {
-    /*GPIO_Type* GPIOx;  //对应GPIOx地址
-    TIM_Type* TIMx;      //对应TIMx地址
-    ADC_Type* ADCx;      //对应ADCx地址
-
-    uint16_t GPIO_Pin_x;    //对应GPIO_Pin位
-    uint8_t TimerChannel;   //对应定时器通道
-    uint8_t ADC_CHANNEL;*/  //对应ADC通道
-    {GPIOA, NULL, ADC1,  GPIO_Pin_0, 1, ADC_CHANNEL_0}, /* PA0 */
-    {GPIOA, NULL, ADC1,  GPIO_Pin_1, 2, ADC_CHANNEL_1}, /* PA1 */
-    {GPIOA, NULL, ADC1,  GPIO_Pin_2, 3, ADC_CHANNEL_2}, /* PA2 */
-    {GPIOA, NULL, ADC1,  GPIO_Pin_3, 4, ADC_CHANNEL_3}, /* PA3 */
-    {GPIOA, NULL, ADC1,  GPIO_Pin_4, 0, ADC_CHANNEL_4}, /* PA4 */
-    {GPIOA, NULL, ADC1,  GPIO_Pin_5, 1, ADC_CHANNEL_5}, /* PA5 */
-    {GPIOA, TIM3, ADC1,  GPIO_Pin_6, 1, ADC_CHANNEL_6}, /* PA6 */
-    {GPIOA, TIM3, ADC1,  GPIO_Pin_7, 2, ADC_CHANNEL_7}, /* PA7 */
-    {GPIOA, TIM1, NULL,  GPIO_Pin_8, 1, ADC_CHANNEL_X}, /* PA8 */
-    {GPIOA, TIM1, NULL,  GPIO_Pin_9, 2, ADC_CHANNEL_X}, /* PA9 */
+    /** GPIO_Type* GPIOx;        GPIOx地址
+      * TIM_Type* TIMx;          TIMx地址
+      * ADC_Type* ADCx;          ADCx地址
+      * uint16_t GPIO_Pin_x;     GPIO_Pin位
+      * uint8_t TimerChannel;    定时器通道
+      * uint8_t ADC_CHANNEL;     ADC通道
+      */
+    {GPIOA, NULL, ADC1, GPIO_Pin_0, 1, ADC_CHANNEL_0},  /* PA0 */
+    {GPIOA, NULL, ADC1, GPIO_Pin_1, 2, ADC_CHANNEL_1},  /* PA1 */
+    {GPIOA, NULL, ADC1, GPIO_Pin_2, 3, ADC_CHANNEL_2},  /* PA2 */
+    {GPIOA, NULL, ADC1, GPIO_Pin_3, 4, ADC_CHANNEL_3},  /* PA3 */
+    {GPIOA, NULL, ADC1, GPIO_Pin_4, 0, ADC_CHANNEL_4},  /* PA4 */
+    {GPIOA, NULL, ADC1, GPIO_Pin_5, 1, ADC_CHANNEL_5},  /* PA5 */
+    {GPIOA, TIM3, ADC1, GPIO_Pin_6, 1, ADC_CHANNEL_6},  /* PA6 */
+    {GPIOA, TIM3, ADC1, GPIO_Pin_7, 2, ADC_CHANNEL_7},  /* PA7 */
+    {GPIOA, TIM1, NULL, GPIO_Pin_8, 1, ADC_CHANNEL_X},  /* PA8 */
+    {GPIOA, TIM1, NULL, GPIO_Pin_9, 2, ADC_CHANNEL_X},  /* PA9 */
     {GPIOA, TIM1, NULL, GPIO_Pin_10, 3, ADC_CHANNEL_X}, /* PA10 */
     {GPIOA, TIM1, NULL, GPIO_Pin_11, 4, ADC_CHANNEL_X}, /* PA11 */
     {GPIOA, NULL, NULL, GPIO_Pin_12, 0, ADC_CHANNEL_X}, /* PA12 */
@@ -128,52 +128,52 @@ void GPIOx_Init(
     gpio_init_struct.gpio_pins = GPIO_Pin_x;
     gpio_init_struct.gpio_drive_strength = GPIO_Drive_x;
 
-    if(Mode == INPUT)
+    switch(Mode)
     {
+    case INPUT:
         gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
         gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
-    }
-    else if(Mode == INPUT_PULLUP)
-    {
+        break;
+
+    case INPUT_PULLUP:
         gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
         gpio_init_struct.gpio_pull = GPIO_PULL_UP;
-    }
-    else if(Mode == INPUT_PULLDOWN)
-    {
+        break;
+
+    case INPUT_PULLDOWN:
         gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
         gpio_init_struct.gpio_pull = GPIO_PULL_DOWN;
-    }
-    else if(Mode == INPUT_ANALOG)
-    {
+
+    case INPUT_ANALOG:
         gpio_init_struct.gpio_mode = GPIO_MODE_ANALOG;
         gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
-    }
-    else if(Mode == OUTPUT)
-    {
+        break;
+
+    case OUTPUT:
         gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
         gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
         gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
-    }
-    else if(Mode == OUTPUT_OPEN_DRAIN)
-    {
+        break;
+
+    case OUTPUT_OPEN_DRAIN:
         gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
         gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
         gpio_init_struct.gpio_out_type = GPIO_OUTPUT_OPEN_DRAIN;
-    }
-    else if(Mode == OUTPUT_AF_PP)
-    {
+        break;
+
+    case OUTPUT_AF_PP:
         gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
         gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
         gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
-    }
-    else if(Mode == OUTPUT_AF_OD)
-    {
+        break;
+
+    case OUTPUT_AF_OD:
         gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
         gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
         gpio_init_struct.gpio_out_type = GPIO_OUTPUT_OPEN_DRAIN;
-    }
-    else
-    {
+        break;
+
+    default:
         return;
     }
 
@@ -190,7 +190,7 @@ void GPIOx_Init(
 scfg_port_source_type GPIO_GetPortNum(uint8_t Pin)
 {
     uint8_t retval = 0xFF;
-    uint8_t index;
+    int i;
     gpio_type* GPIOx = PIN_MAP[Pin].GPIOx;
 
     static const gpio_type* GPIO_Map[] =
@@ -201,11 +201,11 @@ scfg_port_source_type GPIO_GetPortNum(uint8_t Pin)
         GPIOF
     };
 
-    for(index = 0; index < sizeof(GPIO_Map) / sizeof(GPIO_Map[0]); index++)
+    for(i = 0; i < sizeof(GPIO_Map) / sizeof(GPIO_Map[0]); i++)
     {
-        if(GPIOx == GPIO_Map[index])
+        if(GPIOx == GPIO_Map[i])
         {
-            retval = index;
+            retval = i;
             break;
         }
     }

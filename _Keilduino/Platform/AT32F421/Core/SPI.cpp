@@ -24,7 +24,6 @@
 
 #define SPI1_CLOCK                     (F_CPU)
 #define SPI2_CLOCK                     (F_CPU)
-#define SPI3_CLOCK                     (F_CPU)
 
 SPIClass::SPIClass(spi_type* spix)
     : SPIx(spix)

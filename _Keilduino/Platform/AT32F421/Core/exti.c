@@ -35,7 +35,7 @@ static EXTI_CallbackFunction_t EXTI_Function[16] = {0};
   */
 static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
 {
-    IRQn_Type EXINTx_IRQn = EXINT1_0_IRQn;
+    IRQn_Type EXINTx_IRQn;
     uint8_t Pinx = GPIO_GetPinNum(Pin);
 
     if(Pinx <= 1)
@@ -46,7 +46,7 @@ static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
     {
         EXINTx_IRQn = EXINT3_2_IRQn;
     }
-    else if(Pinx >= 4 && Pinx <= 15)
+    else
     {
         EXINTx_IRQn = EXINT15_4_IRQn;
     }
@@ -128,86 +128,40 @@ void detachInterrupt(uint8_t Pin)
     nvic_irq_disable(EXTI_GetIRQn(Pin));
 }
 
-#define EXTIx_IRQHANDLER(n) \
-do{\
-    if(exint_flag_get(EXINT_LINE_##n) != RESET)\
-    {\
-        if(EXTI_Function[n]) EXTI_Function[n]();\
-        exint_flag_clear(EXINT_LINE_##n);\
-    }\
+#define EXTIx_IRQHANDLER(n)                         \
+do{                                                 \
+    if(exint_flag_get(EXINT_LINE_##n) != RESET)     \
+    {                                               \
+        if(EXTI_Function[n]) EXTI_Function[n]();    \
+        exint_flag_clear(EXINT_LINE_##n);           \
+    }                                               \
 }while(0)
 
 /**
-  * @brief  外部中断入口，通道0
+  * @brief  外部中断入口
   * @param  无
   * @retval 无
   */
-void EXINT0_IRQHandler(void)
+void EXINT1_0_IRQHandler(void)
 {
     EXTIx_IRQHANDLER(0);
-}
-
-/**
-  * @brief  外部中断入口，通道1
-  * @param  无
-  * @retval 无
-  */
-void EXINT1_IRQHandler(void)
-{
     EXTIx_IRQHANDLER(1);
 }
 
-/**
-  * @brief  外部中断入口，通道2
-  * @param  无
-  * @retval 无
-  */
-void EXINT2_IRQHandler(void)
+void EXINT3_2_IRQHandler(void)
 {
     EXTIx_IRQHANDLER(2);
-}
-
-/**
-  * @brief  外部中断入口，通道3
-  * @param  无
-  * @retval 无
-  */
-void EXINT3_IRQHandler(void)
-{
     EXTIx_IRQHANDLER(3);
 }
 
-/**
-  * @brief  外部中断入口，通道4
-  * @param  无
-  * @retval 无
-  */
-void EXINT4_IRQHandler(void)
+void EXINT15_4_IRQHandler(void)
 {
     EXTIx_IRQHANDLER(4);
-}
-
-/**
-  * @brief  外部中断入口，通道9~5
-  * @param  无
-  * @retval 无
-  */
-void EXINT9_5_IRQHandler(void)
-{
     EXTIx_IRQHANDLER(5);
     EXTIx_IRQHANDLER(6);
     EXTIx_IRQHANDLER(7);
     EXTIx_IRQHANDLER(8);
     EXTIx_IRQHANDLER(9);
-}
-
-/**
-  * @brief  外部中断入口，通道15~10
-  * @param  无
-  * @retval 无
-  */
-void EXINT15_10_IRQHandler(void)
-{
     EXTIx_IRQHANDLER(10);
     EXTIx_IRQHANDLER(11);
     EXTIx_IRQHANDLER(12);

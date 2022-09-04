@@ -57,20 +57,11 @@ typedef tmr_type                    TIM_TypeDef;
 #define GPIO_Pin_All                GPIO_PINS_All
 
 #define TIM1                        TMR1
-#define TIM2                        TMR2
 #define TIM3                        TMR3
-#define TIM4                        TMR4
-#define TIM5                        TMR5
 #define TIM6                        TMR6
-#define TIM7                        TMR7
-#define TIM8                        TMR8
-#define TIM9                        TMR9
-#define TIM10                       TMR10
-#define TIM11                       TMR11
-#define TIM12                       TMR12
-#define TIM13                       TMR13
 #define TIM14                       TMR14
-#define TIM20                       TMR20
-
+#define TIM15                       TMR15
+#define TIM16                       TMR16
+#define TIM17                       TMR17
 
 #endif
