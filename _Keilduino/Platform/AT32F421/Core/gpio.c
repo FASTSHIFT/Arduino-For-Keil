@@ -143,6 +143,7 @@ void GPIOx_Init(
     case INPUT_PULLDOWN:
         gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
         gpio_init_struct.gpio_pull = GPIO_PULL_DOWN;
+        break;
 
     case INPUT_ANALOG:
         gpio_init_struct.gpio_mode = GPIO_MODE_ANALOG;
@@ -152,7 +153,6 @@ void GPIOx_Init(
     case OUTPUT:
         gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
         gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
-        gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
         break;
 
     case OUTPUT_OPEN_DRAIN:
@@ -164,7 +164,6 @@ void GPIOx_Init(
     case OUTPUT_AF_PP:
         gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
         gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
-        gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
         break;
 
     case OUTPUT_AF_OD:

@@ -160,6 +160,16 @@ void HardwareSerial::begin(
         crm_periph_clock_enable(CRM_GPIOB_PERIPH_CLOCK, TRUE);
         crm_periph_clock_enable(CRM_USART3_PERIPH_CLOCK, TRUE);
     }
+    else if(_USARTx == UART4)
+    {
+        GPIOx = GPIOA;
+        Tx_Pin = GPIO_Pin_0;
+        Rx_Pin = GPIO_Pin_1;
+        USARTx_IRQn = UART4_IRQn;
+
+        crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
+        crm_periph_clock_enable(CRM_UART4_PERIPH_CLOCK, TRUE);
+    }
     else
     {
         return;
@@ -301,5 +311,14 @@ HardwareSerial Serial3(SERIAL_3_USART);
 extern "C" SERIAL_3_IRQ_HANDLER_DEF()
 {
     Serial3.IRQHandler();
+}
+#endif
+
+#if SERIAL_4_ENABLE
+HardwareSerial Serial4(SERIAL_4_USART);
+
+extern "C" SERIAL_4_IRQ_HANDLER_DEF()
+{
+    Serial4.IRQHandler();
 }
 #endif

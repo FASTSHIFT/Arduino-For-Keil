@@ -30,22 +30,22 @@
   * @note   the system clock is configured as follow:
   *         - system clock        = hick / 12 * pll_mult
   *         - system clock source = pll (hick)
-  *         - sclk                = 16000000
+  *         - sclk                = 120000000
   *         - ahbdiv              = 1
-  *         - ahbclk              = 16000000
+  *         - ahbclk              = 120000000
   *         - apb1div             = 1
-  *         - apb1clk             = 16000000
+  *         - apb1clk             = 120000000
   *         - apb2div             = 1
-  *         - apb2clk             = 16000000
-  *         - pll_mult            = 4
-  *         - flash_wtcyc         = 0 cycle
+  *         - apb2clk             = 120000000
+  *         - pll_mult            = 30
+  *         - flash_wtcyc         = 3 cycle
   * @param  none
   * @retval none
   */
 void system_clock_config(void)
 {
   /* config flash psr register */
-  flash_psr_set(FLASH_WAIT_CYCLE_0);
+  flash_psr_set(FLASH_WAIT_CYCLE_3);
 
   /* reset crm */
   crm_reset();
@@ -60,7 +60,7 @@ void system_clock_config(void)
 
 
   /* config pll clock resource */
-  crm_pll_config(CRM_PLL_SOURCE_HICK, CRM_PLL_MULT_4);
+  crm_pll_config(CRM_PLL_SOURCE_HICK, CRM_PLL_MULT_30);
 
   /* enable pll */
   crm_clock_source_enable(CRM_CLOCK_SOURCE_PLL, TRUE);
@@ -80,6 +80,10 @@ void system_clock_config(void)
   /* config apb1clk */
   crm_apb1_div_set(CRM_APB1_DIV_1);
 
+  /* enable auto step mode */
+  crm_auto_step_mode_enable(TRUE);
+
+
   /* select pll as system clock source */
   crm_sysclk_switch(CRM_SCLK_PLL);
 
@@ -87,6 +91,10 @@ void system_clock_config(void)
   while(crm_sysclk_switch_status_get() != CRM_SCLK_PLL)
   {
   }
+
+
+  /* disable auto step mode */
+  crm_auto_step_mode_enable(FALSE);
 
 
   /* update system_core_clock global variable */

@@ -139,4 +139,8 @@ extern HardwareSerial Serial2;
 extern HardwareSerial Serial3;
 #endif
 
+#if SERIAL_4_ENABLE
+extern HardwareSerial Serial4;
+#endif
+
 #endif

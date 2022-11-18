@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f435_437_ertc.c
-  * @version  v2.0.5
-  * @date     2022-02-11
+  * @version  v2.1.0
+  * @date     2022-08-16
   * @brief    contains all the functions for the ertc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -335,7 +335,7 @@ error_status ertc_date_set(uint8_t year, uint8_t month, uint8_t date, uint8_t we
   ERTC->date = reg.date;
 
   /* exit init mode */
-  ertc_init_mode_exit(); 
+  ertc_init_mode_exit();
 
   if(ERTC->ctrl_bit.dren == 0)
   {
@@ -406,7 +406,7 @@ void ertc_calendar_get(ertc_time_type* time)
   ertc_reg_time_type reg_tm;
   ertc_reg_date_type reg_dt;
 
-  (void) (ERTC->sts);
+  UNUSED(ERTC->sts);
 
   reg_tm.time = ERTC->time;
   reg_dt.date = ERTC->date;
@@ -547,7 +547,7 @@ void ertc_alarm_set(ertc_alarm_type alarm_x, uint8_t week_date, uint8_t hour, ui
   {
     reg.ala = ERTC->alb;
   }
-  
+
   reg.ala_bit.d = ertc_num_to_bcd(week_date);
   reg.ala_bit.h = ertc_num_to_bcd(hour);
   reg.ala_bit.m = ertc_num_to_bcd(min);
@@ -724,8 +724,8 @@ uint32_t ertc_alarm_sub_second_get(ertc_alarm_type alarm_x)
   *         - ERTC_WAT_CLK_ERTCCLK_DIV8: ERTC_CLK / 8.
   *         - ERTC_WAT_CLK_ERTCCLK_DIV4: ERTC_CLK / 4.
   *         - ERTC_WAT_CLK_ERTCCLK_DIV2: ERTC_CLK / 2.
-  *         - ERTC_WAT_CLK_CK_A_16BITS: CK_A, wakeup counter = ERTC_WAT
-  *         - ERTC_WAT_CLK_CK_A_17BITS: CK_A, wakeup counter = ERTC_WAT + 65535.
+  *         - ERTC_WAT_CLK_CK_B_16BITS: CK_B, wakeup counter = ERTC_WAT
+  *         - ERTC_WAT_CLK_CK_B_17BITS: CK_B, wakeup counter = ERTC_WAT + 65535.
   * @retval none.
   */
 void ertc_wakeup_clock_set(ertc_wakeup_clock_type clock)
@@ -779,7 +779,7 @@ error_status ertc_wakeup_enable(confirm_state new_state)
 
   if(new_state == FALSE)
   {
-    if(ertc_wait_flag(ERTC_ALAWF_FLAG, RESET) != SUCCESS)
+    if(ertc_wait_flag(ERTC_WATWF_FLAG, RESET) != SUCCESS)
     {
       return ERROR;
     }
@@ -1506,13 +1506,7 @@ flag_status ertc_flag_get(uint32_t flag)
   */
 void ertc_flag_clear(uint32_t flag)
 {
-  /* disable write protection */
-  ertc_write_protect_disable();
-
   ERTC->sts = ~(flag | 0x00000080) | (ERTC->sts_bit.imen << 7);
-
-  /* enable write protection */
-  ertc_write_protect_enable();
 }
 
 /**

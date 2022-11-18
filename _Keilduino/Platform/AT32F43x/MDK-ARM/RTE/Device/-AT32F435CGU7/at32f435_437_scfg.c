@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     at32f435_437_scfg.c
-  * @version  v2.0.5
-  * @date     2022-02-11
+  * @version  v2.1.0
+  * @date     2022-08-16
   * @brief    contains all the functions for the system config firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -41,19 +41,19 @@
   * @{
   */
 
-/** 
-  * @brief  scfg reset 
+/**
+  * @brief  scfg reset
   * @param  none
   * @retval none
   */
 void scfg_reset(void)
-{ 
+{
   crm_periph_reset(CRM_SCFG_PERIPH_RESET, TRUE);
   crm_periph_reset(CRM_SCFG_PERIPH_RESET, FALSE);
 }
 
-/** 
-  * @brief  scfg xmc address mapping swap set 
+/**
+  * @brief  scfg xmc address mapping swap set
   * @param  xmc_swap
   *         this parameter can be one of the following values:
   *         - SCFG_XMC_SWAP_NONE
@@ -67,7 +67,7 @@ void scfg_xmc_mapping_swap_set(scfg_xmc_swap_type xmc_swap)
   SCFG->cfg1_bit.swap_xmc = xmc_swap;
 }
 
-/** 
+/**
   * @brief  scfg infrared config
   * @param  source
   *         this parameter can be one of the following values:
@@ -86,8 +86,8 @@ void scfg_infrared_config(scfg_ir_source_type source, scfg_ir_polarity_type pola
   SCFG->cfg1_bit.ir_pol = polarity;
 }
 
-/** 
-  * @brief  scfg memory address mapping set 
+/**
+  * @brief  scfg memory address mapping set
   * @param  mem_map
   *         this parameter can be one of the following values:
   *         - SCFG_MEM_MAP_MAIN_MEMORY
@@ -102,11 +102,11 @@ void scfg_mem_map_set(scfg_mem_map_type mem_map)
   SCFG->cfg1_bit.mem_map_sel = mem_map;
 }
 
-/** 
-  * @brief  scfg emac interface set 
+/**
+  * @brief  scfg emac interface set
   * @param  mode
   *         this parameter can be one of the following values:
-  *         - SCFG_EMAC_SELECT_MII 
+  *         - SCFG_EMAC_SELECT_MII
   *         - SCFG_EMAC_SELECT_RMII
   * @retval none
   */
@@ -181,8 +181,8 @@ void scfg_exint_line_config(scfg_port_source_type port_source, scfg_pins_source_
   * @brief  enable or disable gpio pins ultra driven.
   * @param  value:
   *         this parameter can be one of the following values:
-  *         - SCFG_ULTRA_DRIVEN_PB3 
-  *         - SCFG_ULTRA_DRIVEN_PB9 
+  *         - SCFG_ULTRA_DRIVEN_PB3
+  *         - SCFG_ULTRA_DRIVEN_PB9
   *         - SCFG_ULTRA_DRIVEN_PB10
   *         - SCFG_ULTRA_DRIVEN_PD12
   *         - SCFG_ULTRA_DRIVEN_PD13

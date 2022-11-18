@@ -48,6 +48,8 @@
 #  define WIRE_BUFF_SIZE 32
 #endif
 
+#define BUFFER_LENGTH WIRE_BUFF_SIZE
+
 /* return codes from endTransmission() */
 #define SUCCESS   0        /* transmission was successful */
 #define EDATA     1        /* too much data */

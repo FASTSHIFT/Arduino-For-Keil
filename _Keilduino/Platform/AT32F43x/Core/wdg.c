@@ -24,9 +24,9 @@
 
 uint32_t WDG_Init(uint32_t timeout)
 {
-    uint32_t reload_value;
+    uint32_t reload_value = 0;
     uint32_t real_timeout = 0;
-    wdt_division_type division;
+    wdt_division_type division = WDT_CLK_DIV_256;
 
     static const wdt_division_type div_map[] =
     {

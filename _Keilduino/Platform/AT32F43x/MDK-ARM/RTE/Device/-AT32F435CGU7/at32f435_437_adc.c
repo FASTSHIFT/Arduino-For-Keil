@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f435_437_adc.c
-  * @version  v2.0.5
-  * @date     2022-02-11
+  * @version  v2.1.0
+  * @date     2022-08-16
   * @brief    contains all the functions for the adc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
