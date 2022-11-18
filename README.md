@@ -15,7 +15,7 @@
 
 [AT32F403A标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.4.zip)
 
-[AT32F435/421标准外设库](https://www.arterytek.com/download/PACK/Keil5_AT32MCU_AddOn_V2.1.7.zip)
+[AT32F43x/421标准外设库](https://www.arterytek.com/download/PACK/Keil5_AT32MCU_AddOn_V2.1.7.zip)
 
 [STM32F0xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F0xx_DFP.1.0.1.pack)
 
