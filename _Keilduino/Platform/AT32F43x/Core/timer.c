@@ -77,19 +77,32 @@ void Timer_ClockCmd(tmr_type* TIMx, bool Enable)
     }
 }
 
-static float Qsqrt(float number)
+static int fast_isqrt(int n)
 {
-    long i;
-    float x2, y;
-    const float threehalfs = 1.5f;
-    x2 = number * 0.5f;
-    y  = number;
-    i  = *(long*)&y;
-    i  = 0x5f3759df - (i >> 1);
-    y  = *(float*)&i;
-    y  = y * (threehalfs - (x2 * y * y));
-    y  = y * (threehalfs - (x2 * y * y));
-    return 1.0f / y;
+    int x = n;
+    int cm = 0;
+    int dm = 1 << 30;
+
+    while(dm > n)
+    {
+        dm >>= 2;
+    }
+
+    while (dm)
+    {
+        if (x >= cm + dm)
+        {
+            x -= cm + dm;
+            cm = (cm >> 1) + dm;
+        }
+        else
+        {
+            cm >>= 1;
+        }
+        dm >>= 2;
+    }
+
+    return cm;
 }
 
 /**
@@ -125,7 +138,7 @@ static bool Timer_FreqFactorization(
     targetProdect = clock / freq;
 
     /* 从targetProdect的平方根开始计算 */
-    fct1 = Qsqrt(targetProdect);
+    fct1 = fast_isqrt(targetProdect);
 
     /* 计算因数最大值，减少遍历次数 */
     fct_max = (targetProdect < 0xFFFF) ? targetProdect : 0xFFFF;

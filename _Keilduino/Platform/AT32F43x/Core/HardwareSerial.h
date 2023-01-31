@@ -71,7 +71,7 @@ typedef enum
 
 class HardwareSerial : public Stream
 {
-    typedef void(*CallbackFunction_t)(HardwareSerial* serial);
+    typedef void(*CallbackFunction_t)(HardwareSerial* serial, char c, void* userData);
 
 public:
     HardwareSerial(usart_type* usart);
@@ -88,7 +88,7 @@ public:
         uint8_t subPriority = SERIAL_SUBPRIORITY_DEFAULT
     );
     void end(void);
-    void attachInterrupt(CallbackFunction_t func);
+    void attachInterrupt(CallbackFunction_t func, void* userData);
     virtual int available(void);
     virtual int peek(void);
     virtual int read(void);
@@ -122,6 +122,7 @@ public:
 private:
     usart_type* _USARTx;
     CallbackFunction_t _callbackFunction;
+    void* _callbackUserData;
     volatile uint16_t _rxBufferHead;
     volatile uint16_t _rxBufferTail;
     uint8_t _rxBuffer[SERIAL_RX_BUFFER_SIZE];

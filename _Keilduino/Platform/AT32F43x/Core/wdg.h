@@ -29,7 +29,8 @@
 extern "C" {
 #endif
 
-uint32_t WDG_Init(uint32_t timeout);
+uint32_t WDG_SetTimeout(uint32_t timeout);
+void WDG_SetEnable(void);
 void WDG_ReloadCounter(void);
 
 #ifdef __cplusplus

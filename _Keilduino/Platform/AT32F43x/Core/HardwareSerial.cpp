@@ -104,7 +104,7 @@ void HardwareSerial::IRQHandler()
 
         if(_callbackFunction)
         {
-            _callbackFunction(this);
+            _callbackFunction(this, c, _callbackUserData);
         }
         usart_flag_clear(_USARTx, USART_RDBF_FLAG);
     }
@@ -125,16 +125,19 @@ void HardwareSerial::begin(
     uint8_t subPriority
 )
 {
-    gpio_type *GPIOx;
+    gpio_type *Tx_GPIOx, *Rx_GPIOx;
     gpio_init_type gpio_init_struct;
     uint16_t Tx_Pin, Rx_Pin;
+    gpio_mux_sel_type Tx_Mux, Rx_Mux;
     IRQn_Type USARTx_IRQn;
 
     if(_USARTx == USART1)
     {
-        GPIOx = GPIOA;
+        Tx_GPIOx = Rx_GPIOx = GPIOA;
         Tx_Pin = GPIO_Pin_9;
         Rx_Pin = GPIO_Pin_10;
+        Tx_Mux = GPIO_MUX_7;
+        Rx_Mux = GPIO_MUX_7;
         USARTx_IRQn = USART1_IRQn;
 
         crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
@@ -142,9 +145,11 @@ void HardwareSerial::begin(
     }
     else if(_USARTx == USART2)
     {
-        GPIOx = GPIOA;
+        Tx_GPIOx = Rx_GPIOx = GPIOA;
         Tx_Pin = GPIO_Pin_2;
         Rx_Pin = GPIO_Pin_3;
+        Tx_Mux = GPIO_MUX_7;
+        Rx_Mux = GPIO_MUX_7;
         USARTx_IRQn = USART2_IRQn;
 
         crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
@@ -152,9 +157,11 @@ void HardwareSerial::begin(
     }
     else if(_USARTx == USART3)
     {
-        GPIOx = GPIOB;
+        Tx_GPIOx = Rx_GPIOx = GPIOB;
         Tx_Pin = GPIO_Pin_10;
         Rx_Pin = GPIO_Pin_11;
+        Tx_Mux = GPIO_MUX_7;
+        Rx_Mux = GPIO_MUX_7;
         USARTx_IRQn = USART3_IRQn;
 
         crm_periph_clock_enable(CRM_GPIOB_PERIPH_CLOCK, TRUE);
@@ -162,13 +169,27 @@ void HardwareSerial::begin(
     }
     else if(_USARTx == UART4)
     {
-        GPIOx = GPIOA;
+        Tx_GPIOx = Rx_GPIOx = GPIOA;
         Tx_Pin = GPIO_Pin_0;
         Rx_Pin = GPIO_Pin_1;
+        Tx_Mux = GPIO_MUX_7;
+        Rx_Mux = GPIO_MUX_7;
         USARTx_IRQn = UART4_IRQn;
 
         crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
         crm_periph_clock_enable(CRM_UART4_PERIPH_CLOCK, TRUE);
+    }
+    else if(_USARTx == UART5)
+    {
+        Tx_GPIOx = Rx_GPIOx = GPIOB;
+        Tx_Pin = GPIO_Pin_9;
+        Rx_Pin = GPIO_Pin_8;
+        Tx_Mux = GPIO_MUX_7;
+        Rx_Mux = GPIO_MUX_7;
+        USARTx_IRQn = UART5_IRQn;
+
+        crm_periph_clock_enable(CRM_GPIOB_PERIPH_CLOCK, TRUE);
+        crm_periph_clock_enable(CRM_UART5_PERIPH_CLOCK, TRUE);
     }
     else
     {
@@ -176,15 +197,19 @@ void HardwareSerial::begin(
     }
 
     gpio_default_para_init(&gpio_init_struct);
-    gpio_init_struct.gpio_pins =  Tx_Pin | Rx_Pin;
     gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
     gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
     gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
     gpio_init_struct.gpio_out_type  = GPIO_OUTPUT_PUSH_PULL;
-    gpio_init(GPIOx, &gpio_init_struct);
 
-    gpio_pin_mux_config(GPIOx, GPIO_GetPinSource(Tx_Pin), GPIO_MUX_7);
-    gpio_pin_mux_config(GPIOx, GPIO_GetPinSource(Rx_Pin), GPIO_MUX_7);
+    gpio_init_struct.gpio_pins = Tx_Pin;
+    gpio_init(Tx_GPIOx, &gpio_init_struct);
+
+    gpio_init_struct.gpio_pins = Rx_Pin;
+    gpio_init(Rx_GPIOx, &gpio_init_struct);
+
+    gpio_pin_mux_config(Tx_GPIOx, GPIO_GetPinSource(Tx_Pin), Tx_Mux);
+    gpio_pin_mux_config(Rx_GPIOx, GPIO_GetPinSource(Rx_Pin), Rx_Mux);
 
     usart_init(_USARTx, baudRate, SERIAL_ConfigGrp[config].data_bit, SERIAL_ConfigGrp[config].stop_bit);
     usart_parity_selection_config(_USARTx, SERIAL_ConfigGrp[config].parity_selection);
@@ -211,11 +236,13 @@ void HardwareSerial::end(void)
 /**
   * @brief  串口中断回调
   * @param  Function: 回调函数
+  * @param  userData: 用户数据
   * @retval 无
   */
-void HardwareSerial::attachInterrupt(CallbackFunction_t func)
+void HardwareSerial::attachInterrupt(CallbackFunction_t func, void* userData)
 {
     _callbackFunction = func;
+    _callbackUserData = userData;
 }
 
 /**
@@ -320,5 +347,14 @@ HardwareSerial Serial4(SERIAL_4_USART);
 extern "C" SERIAL_4_IRQ_HANDLER_DEF()
 {
     Serial4.IRQHandler();
+}
+#endif
+
+#if SERIAL_5_ENABLE
+HardwareSerial Serial5(SERIAL_5_USART);
+
+extern "C" SERIAL_5_IRQ_HANDLER_DEF()
+{
+    Serial5.IRQHandler();
 }
 #endif

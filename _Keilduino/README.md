@@ -17,3 +17,7 @@
 * 4.修复F421 GPIO读取异常
 * 5.F43x添加Serial4、wdt看门狗支持
 * 6.修复F43x GCC警告
+
+## [v1.3] - 2023.1.31
+* 1.更新AT32F43x HardwareSerial添加UART5;callback添加userdata
+* 2.更新AT32F43x WatchDog接口
