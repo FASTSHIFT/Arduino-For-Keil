@@ -27,6 +27,7 @@
 
 #include "adc.h"
 #include "delay.h"
+#include "dwt.h"
 #include "exti.h"
 #include "gpio.h"
 #include "pwm.h"

@@ -431,6 +431,11 @@
               <FilePath>..\..\..\ArduinoAPI\Stream.cpp</FilePath>
             </File>
             <File>
+              <FileName>Tone.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\ArduinoAPI\Tone.cpp</FilePath>
+            </File>
+            <File>
               <FileName>Wire.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\..\ArduinoAPI\Wire.cpp</FilePath>
@@ -486,6 +491,11 @@
               <FilePath>..\Core\delay.c</FilePath>
             </File>
             <File>
+              <FileName>dwt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\dwt.c</FilePath>
+            </File>
+            <File>
               <FileName>exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\exti.c</FilePath>
@@ -519,11 +529,6 @@
               <FileName>SPI.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Core\SPI.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Tone.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Core\Tone.cpp</FilePath>
             </File>
             <File>
               <FileName>wdg.c</FileName>
@@ -676,6 +681,12 @@
         <targetInfos>
           <targetInfo name="AT32F43x"/>
         </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_debug.c" version="2.0.0">
+        <instance index="0" removed="1">RTE\Device\-AT32F435CGU7\at32f435_437_debug.c</instance>
+        <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="debug" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.1.1"/>
+        <targetInfos/>
       </file>
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_dma.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_dma.c</instance>

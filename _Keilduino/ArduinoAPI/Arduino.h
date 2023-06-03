@@ -25,7 +25,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
-#include <mcu_core.h>
+#include "mcu_core.h"
 #include "binary.h"
 #include "avr/pgmspace.h"
 

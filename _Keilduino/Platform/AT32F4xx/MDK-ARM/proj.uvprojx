@@ -426,6 +426,11 @@
               <FilePath>..\..\..\ArduinoAPI\Print.cpp</FilePath>
             </File>
             <File>
+              <FileName>Tone.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\ArduinoAPI\Tone.cpp</FilePath>
+            </File>
+            <File>
               <FileName>Stream.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\..\ArduinoAPI\Stream.cpp</FilePath>
@@ -524,11 +529,6 @@
               <FileName>SPI.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Core\SPI.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Tone.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Core\Tone.cpp</FilePath>
             </File>
           </Files>
         </Group>

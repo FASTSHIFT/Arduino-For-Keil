@@ -21,3 +21,9 @@
 ## [v1.3] - 2023.1.31
 * 1.更新AT32F43x HardwareSerial添加UART5;callback添加userdata
 * 2.更新AT32F43x WatchDog接口
+
+## [v1.4] - 2023.6.3
+* 1.移动Tone到ArduinoAPI作为公共组件
+* 2.更新STM32F4xx到新框架
+* 3.AT32F43x添加dwt高精度时间戳支持
+* 4.更新gitignore排除临时文件

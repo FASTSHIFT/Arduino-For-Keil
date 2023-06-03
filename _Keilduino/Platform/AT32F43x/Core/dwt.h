@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2017 - 2022 _VIFEXTech
+ * Copyright (c) 2017 - 2023 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __TONE_H
-#define __TONE_H
+#ifndef __DWT_H
+#define __DWT_H
 
-#include "timer.h"
+#include "mcu_type.h"
 
-#define TONE_DURATION_INFINITE  0xFFFFFFFFU
-
-void toneSetTimer(tmr_type* TIMx);
-void tone(uint8_t pin, uint32_t freq, uint32_t duration = TONE_DURATION_INFINITE);
-void noTone(uint8_t pin);
-
+#ifdef __cplusplus
+extern "C" {
 #endif
+
+#define DWT_CYCLE_CNT (DWT->CYCCNT)
+
+void DWT_Init(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __DWT_H */
