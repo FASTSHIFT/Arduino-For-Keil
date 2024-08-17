@@ -184,8 +184,8 @@ void HardwareSerial::begin(
         Tx_GPIOx = Rx_GPIOx = GPIOB;
         Tx_Pin = GPIO_Pin_9;
         Rx_Pin = GPIO_Pin_8;
-        Tx_Mux = GPIO_MUX_7;
-        Rx_Mux = GPIO_MUX_7;
+        Tx_Mux = GPIO_MUX_8;
+        Rx_Mux = GPIO_MUX_8;
         USARTx_IRQn = UART5_IRQn;
 
         crm_periph_clock_enable(CRM_GPIOB_PERIPH_CLOCK, TRUE);

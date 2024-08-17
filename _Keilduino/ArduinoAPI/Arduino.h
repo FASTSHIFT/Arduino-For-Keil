@@ -25,7 +25,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
-#include "mcu_core.h"
+#include <mcu_core.h>
 #include "binary.h"
 #include "avr/pgmspace.h"
 
@@ -51,11 +51,24 @@ extern "C" {
 #define LOW                     0x0
 #define HIGH                    0x1
 
-#define min(a,b)                ((a)<(b)?(a):(b))
-#define max(a,b)                ((a)>(b)?(a):(b))
-#define ABS(x)                  (((x)>0)?(x):-(x)) //abs(x) is define in stdlib.h
+#ifndef MIN
+#define MIN(a,b)                ((a)<(b)?(a):(b)) // min() is define in math.h
+#endif
+
+#ifndef MAX
+#define MAX(a,b)                ((a)>(b)?(a):(b)) // max() is define in math.h
+#endif
+
+#ifndef ABS
+#define ABS(x)                  (((x)>0)?(x):-(x)) // abs(x) is define in stdlib.h
+#endif
+
+#ifndef ROUND
+#define ROUND(x)                ((x)>=0?(long)((x)+0.5):(long)((x)-0.5)) // round() is define in math.h
+#endif
+
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
-#define round(x)                ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
+
 #define radians(deg)            ((deg)*DEG_TO_RAD)
 #define degrees(rad)            ((rad)*RAD_TO_DEG)
 #define sq(x)                   ((x)*(x))

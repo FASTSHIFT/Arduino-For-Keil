@@ -721,11 +721,7 @@ void String::remove(unsigned int index)
 
 void String::remove(unsigned int index, unsigned int count)
 {
-    if (index >= len)
-    {
-        return;
-    }
-    if (count == 0)
+    if (index >= len || count == 0)
     {
         return;
     }
@@ -734,9 +730,9 @@ void String::remove(unsigned int index, unsigned int count)
         count = len - index;
     }
     char *writeTo = buffer + index;
-    len = len - count;
-    strncpy(writeTo, buffer + index + count, len - index);
-    buffer[len] = 0;
+    memmove(writeTo, buffer + index + count, len - index - count);
+    len -= count;
+    buffer[len] = '\0';
 }
 
 void String::toLowerCase(void)
