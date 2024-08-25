@@ -388,6 +388,11 @@
               <FileType>8</FileType>
               <FilePath>..\..\..\Application\main.cpp</FilePath>
             </File>
+            <File>
+              <FileName>rt_sys.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\..\Application\rt_sys.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

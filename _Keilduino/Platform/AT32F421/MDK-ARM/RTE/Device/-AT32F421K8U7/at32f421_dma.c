@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f421_dma.c
-  * @version  v2.0.7
-  * @date     2022-06-28
   * @brief    contains all the functions for the dma firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -145,6 +143,36 @@ void dma_interrupt_enable(dma_channel_type* dmax_channely, uint32_t dma_int, con
 void dma_channel_enable(dma_channel_type* dmax_channely, confirm_state new_state)
 {
   dmax_channely->ctrl_bit.chen = new_state;
+}
+
+/**
+  * @brief  get dma interrupt flag
+  * @param  dmax_flag
+  *         this parameter can be one of the following values:
+  *         - DMA1_FDT1_FLAG        - DMA1_HDT1_FLAG        - DMA1_DTERR1_FLAG
+  *         - DMA1_FDT2_FLAG        - DMA1_HDT2_FLAG        - DMA1_DTERR2_FLAG
+  *         - DMA1_FDT3_FLAG        - DMA1_HDT3_FLAG        - DMA1_DTERR3_FLAG
+  *         - DMA1_FDT4_FLAG        - DMA1_HDT4_FLAG        - DMA1_DTERR4_FLAG
+  *         - DMA1_FDT5_FLAG        - DMA1_HDT5_FLAG        - DMA1_DTERR5_FLAG
+  * @retval state of dma flag
+  */
+flag_status dma_interrupt_flag_get(uint32_t dmax_flag)
+{
+  flag_status status = RESET;
+  uint32_t temp = 0;
+
+  temp = DMA1->sts;
+
+  if ((temp & dmax_flag) != (uint16_t)RESET)
+  {
+    status = SET;
+  }
+  else
+  {
+    status = RESET;
+  }
+
+  return status;
 }
 
 /**

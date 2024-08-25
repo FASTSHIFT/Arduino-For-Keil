@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f421_exint.c
-  * @version  v2.0.7
-  * @date     2022-06-28
   * @brief    contains all the functions for the exint firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -85,7 +83,7 @@ void exint_init(exint_init_type *exint_struct)
 
   if(exint_struct->line_enable != FALSE)
   {
-    if(exint_struct->line_mode == EXINT_LINE_INTERRUPUT)
+    if(exint_struct->line_mode == EXINT_LINE_INTERRUPT)
     {
       EXINT->inten |= line_index;
     }
@@ -142,6 +140,34 @@ flag_status exint_flag_get(uint32_t exint_line)
   flag_status status = RESET;
   uint32_t exint_flag =0;
   exint_flag = EXINT->intsts & exint_line;
+  if((exint_flag != (uint16_t)RESET))
+  {
+    status = SET;
+  }
+  else
+  {
+    status = RESET;
+  }
+  return status;
+}
+
+/**
+  * @brief  get exint interrupt flag
+  * @param  exint_line
+  *         this parameter can be one of the following values:
+  *         - EXINT_LINE_0
+  *         - EXINT_LINE_1
+  *         ...
+  *         - EXINT_LINE_21
+  * @retval state of exint flag
+  */
+flag_status exint_interrupt_flag_get(uint32_t exint_line)
+{
+  flag_status status = RESET;
+  uint32_t exint_flag =0;
+  exint_flag = EXINT->intsts & exint_line;
+  exint_flag = exint_flag & EXINT->inten;
+
   if((exint_flag != (uint16_t)RESET))
   {
     status = SET;

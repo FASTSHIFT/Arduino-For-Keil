@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f421_scfg.c
-  * @version  v2.0.7
-  * @date     2022-06-28
   * @brief    contains all the functions for the system config firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -57,8 +55,6 @@ void scfg_reset(void)
   * @param  source
   *         this parameter can be one of the following values:
   *         - SCFG_IR_SOURCE_TMR16
-  *         - SCFG_IR_SOURCE_USART1
-  *         - SCFG_IR_SOURCE_USART2
   * @param  polarity
   *         this parameter can be one of the following values:
   *         - SCFG_IR_POLARITY_NO_AFFECTE
@@ -169,6 +165,7 @@ void scfg_tmr17_dma_channel_remap(scfg_tmr17_dma_remap_type dma_channel)
   *         this parameter can be one of the following values:
   *         - SCFG_PORT_SOURCE_GPIOA
   *         - SCFG_PORT_SOURCE_GPIOB
+  *         - SCFG_PORT_SOURCE_GPIOC
   *         - SCFG_PORT_SOURCE_GPIOF
   * @param  pin_source:
   *         specifies the exint line to be configured.
