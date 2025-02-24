@@ -1,3 +1,5 @@
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/anilberg/Arduino-For-Keil/tree/main/How%20to%20use%20Arduino%20library/README.en.md)
+
 ## 第三方库移植示例
 * 1.从Arduino的安装库的文件夹中找到要调用的第三方库
 ![image](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/How%20to%20use%20Arduino%20library/1.png)
