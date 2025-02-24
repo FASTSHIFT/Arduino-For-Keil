@@ -31,11 +31,11 @@ Advantages compared to traditional development methods:
 
 **Note:** If you have already installed a higher version of the pack, you need to use the package manager provided by Keil to remove the higher version of the pack.
 
->The general usage can be directly referenced from [Arduino syntax](https://www.arduino.cc/reference/en/)。
+>The general usage can be directly referenced from [Arduino syntax](https://www.arduino.cc/reference/en/)
 >
->Advanced usage can be referenced in [Example](https://github.com/FASTSHIFT/Arduino-For-Keil/tree/master/Example)内的示例。
+>Advanced usage can be referenced in [Example](https://github.com/FASTSHIFT/Arduino-For-Keil/tree/master/Example)
 >
->For third-party library porting, refer to [Third-Party Library Porting Example](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/How%20to%20use%20Arduino%20library)。
+>For third-party library porting, refer to [Third-Party Library Porting Example](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/How%20to%20use%20Arduino%20library)
 
 Supports the mixed use of registers and functions from the standard peripheral library, **ensuring development flexibility**:
 ```C
