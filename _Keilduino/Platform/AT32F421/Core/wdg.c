@@ -22,12 +22,11 @@
  */
 #include "wdg.h"
 
-uint32_t WDG_Init(uint32_t timeout)
+uint32_t WDG_SetTimeout(uint32_t timeout)
 {
-    uint32_t reload_value;
+    uint32_t reload_value = 0;
     uint32_t real_timeout = 0;
-    wdt_division_type division;
-    int i;
+    wdt_division_type division = WDT_CLK_DIV_256;
 
     static const wdt_division_type div_map[] =
     {
@@ -47,7 +46,7 @@ uint32_t WDG_Init(uint32_t timeout)
      */
     const uint32_t lick_freq = 40000;
 
-    for(i = 0; i < sizeof(div_map) / sizeof(wdt_division_type); i++)
+    for(int i = 0; i < sizeof(div_map) / sizeof(wdt_division_type); i++)
     {
         int div = 4 << i;
         reload_value = (uint64_t)timeout * lick_freq / div / 1000;
@@ -80,10 +79,13 @@ uint32_t WDG_Init(uint32_t timeout)
     /* set reload value */
     wdt_reload_value_set(reload_value - 1);
 
+    return real_timeout;
+}
+
+void WDG_SetEnable(void)
+{
     /* enable wdt */
     wdt_enable();
-
-    return real_timeout;
 }
 
 void WDG_ReloadCounter(void)

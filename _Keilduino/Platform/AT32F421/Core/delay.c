@@ -44,6 +44,12 @@ void Delay_Init(void)
     NVIC_SetPriority(SysTick_IRQn, SYSTICK_PRIORITY);
 }
 
+void Delay_Deinit(void)
+{
+    SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
+    NVIC_DisableIRQ(SysTick_IRQn);
+}
+
 /**
   * @brief  系统滴答定时器中断入口
   * @param  无

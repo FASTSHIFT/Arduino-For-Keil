@@ -29,19 +29,6 @@
 
 typedef enum
 {
-    SERIAL_7N1,
-    SERIAL_7N2,
-    SERIAL_7E1,
-    SERIAL_7E2,
-    SERIAL_7O1,
-    SERIAL_7O2,
-    SERIAL_7N0_5,
-    SERIAL_7N1_5,
-    SERIAL_7E0_5,
-    SERIAL_7E1_5,
-    SERIAL_7O0_5,
-    SERIAL_7O1_5,
-
     SERIAL_8N1,
     SERIAL_8N2,
     SERIAL_8E1,

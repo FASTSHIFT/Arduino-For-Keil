@@ -55,6 +55,9 @@ void Timer_ClockCmd(tmr_type* TIMx, bool Enable)
         CLOCK_MAP_DEF(3),
         CLOCK_MAP_DEF(6),
         CLOCK_MAP_DEF(14),
+        CLOCK_MAP_DEF(15),
+        CLOCK_MAP_DEF(16),
+        CLOCK_MAP_DEF(17),
     };
 
     for(index = 0; index < sizeof(clock_map) / sizeof(crm_tmr_clock_map_t); index++)
@@ -62,6 +65,7 @@ void Timer_ClockCmd(tmr_type* TIMx, bool Enable)
         if(TIMx == clock_map[index].tmr)
         {
             crm_periph_clock_enable(clock_map[index].crm_periph_clock, Enable ? TRUE : FALSE);
+            break;
         }
     }
 }
@@ -288,7 +292,17 @@ uint32_t Timer_GetClockMax(tmr_type* TIMx)
         crm_clocks_freq_get(&crm_clocks_freq_struct);
     }
 
-    return crm_clocks_freq_struct.apb1_freq * 2;
+    if(TIMx == TIM3 || TIMx == TIM6 || TIMx == TIM14)
+    {
+        return crm_clocks_freq_struct.apb1_freq;
+    }
+
+    if(TIMx == TIM1 || TIMx == TIM15 || TIMx == TIM16 || TIMx == TIM17)
+    {
+        return crm_clocks_freq_struct.apb2_freq;
+    }
+
+    return 0;
 }
 
 /**
@@ -360,10 +374,13 @@ while(0)
     /*如果编译器提示：identifier "xxx_IRQn" is undefined
      *把未定义的注释掉即可
      */
-    TMRx_IRQ_DEF(1, TMR1_CH_IRQn);
+    TMRx_IRQ_DEF(1, TMR1_BRK_OVF_TRG_HALL_IRQn);
     TMRx_IRQ_DEF(3, TMR3_GLOBAL_IRQn);
     TMRx_IRQ_DEF(6, TMR6_GLOBAL_IRQn);
     TMRx_IRQ_DEF(14, TMR14_GLOBAL_IRQn);
+    TMRx_IRQ_DEF(15, TMR14_GLOBAL_IRQn);
+    TMRx_IRQ_DEF(16, TMR14_GLOBAL_IRQn);
+    TMRx_IRQ_DEF(17, TMR14_GLOBAL_IRQn);
 
 match:
 
@@ -494,23 +511,25 @@ gpio_mux_sel_type Timer_GetGPIO_MUX(uint8_t Pin)
 
     if(0) {}
 
+    /* GPIO_MUX_0 */
+    TIMER_GPIO_MUX_DEF(0, TIM15, 1);
+    TIMER_GPIO_MUX_DEF(0, TIM15, 2);
+    TIMER_GPIO_MUX_DEF(0, TIM14, 1);
+
     /* GPIO_MUX_1 */
-    TIMER_GPIO_MUX_DEF(1, TIM1, 1);
-    TIMER_GPIO_MUX_DEF(1, TIM1, 2);
-    TIMER_GPIO_MUX_DEF(1, TIM1, 3);
-    TIMER_GPIO_MUX_DEF(1, TIM1, 4);
+    TIMER_GPIO_MUX_DEF(1, TIM3, 1);
+    TIMER_GPIO_MUX_DEF(1, TIM3, 2);
+    TIMER_GPIO_MUX_DEF(1, TIM3, 3);
+    TIMER_GPIO_MUX_DEF(1, TIM3, 4);
 
     /* GPIO_MUX_2 */
-    TIMER_GPIO_MUX_DEF(2, TIM3, 1);
-    TIMER_GPIO_MUX_DEF(2, TIM3, 2);
-    TIMER_GPIO_MUX_DEF(2, TIM3, 3);
-    TIMER_GPIO_MUX_DEF(2, TIM3, 4);
+    TIMER_GPIO_MUX_DEF(2, TIM1, 1);
+    TIMER_GPIO_MUX_DEF(2, TIM1, 2);
+    TIMER_GPIO_MUX_DEF(2, TIM1, 3);
+    TIMER_GPIO_MUX_DEF(2, TIM1, 4);
 
-    /* GPIO_MUX_3 */;
-
-    /* GPIO_MUX_6 */
-
-    /* GPIO_MUX_9 */
+    /* GPIO_MUX_4 */
+    TIMER_GPIO_MUX_DEF(4, TIM14, 1);
 
     return GPIO_MUX_x;
 }
