@@ -18,9 +18,38 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "dtostrf.h"
+/*********************
+ *      INCLUDES
+ *********************/
 
-char *dtostrf(double val, signed char width, unsigned char prec, char *sout)
+#include "dtostrf.h"
+#include <stdio.h>
+
+/*********************
+ *      DEFINES
+ *********************/
+
+/**********************
+ *      TYPEDEFS
+ **********************/
+
+/**********************
+ *  STATIC PROTOTYPES
+ **********************/
+
+/**********************
+ *  STATIC VARIABLES
+ **********************/
+
+/**********************
+ *      MACROS
+ **********************/
+
+/**********************
+ *   GLOBAL FUNCTIONS
+ **********************/
+
+char* dtostrf(double val, signed char width, unsigned char prec, char* sout)
 {
     char fmt[20];
     snprintf(fmt, sizeof(fmt), "%%%d.%df", width, prec);
@@ -28,10 +57,14 @@ char *dtostrf(double val, signed char width, unsigned char prec, char *sout)
     return sout;
 }
 
-char *dtostrnf(double val, signed char width, unsigned char prec, char *sout, size_t sout_size)
+char* dtostrnf(double val, signed char width, unsigned char prec, char* sout, size_t sout_size)
 {
     char fmt[20];
     snprintf(fmt, sizeof(fmt), "%%%d.%df", width, prec);
     snprintf(sout, sout_size, fmt, val);
     return sout;
 }
+
+/**********************
+ *   STATIC FUNCTIONS
+ **********************/

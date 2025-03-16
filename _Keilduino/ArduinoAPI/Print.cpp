@@ -20,41 +20,70 @@
  Modified 03 August 2015 by Chuck Todd
  */
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <math.h>
+/*********************
+ *      INCLUDES
+ *********************/
+
 #include "Print.h"
 #include "mcu_config.h"
+#include <math.h>
+#include <stdarg.h>
+#include <stdio.h>
 
-// Public Methods //////////////////////////////////////////////////////////////
+/*********************
+ *      DEFINES
+ *********************/
+
+/**********************
+ *      TYPEDEFS
+ **********************/
+
+/**********************
+ *  STATIC PROTOTYPES
+ **********************/
+
+/**********************
+ *  STATIC VARIABLES
+ **********************/
+
+/**********************
+ *      MACROS
+ **********************/
+
+/**********************
+ *   GLOBAL FUNCTIONS
+ **********************/
 
 /* default implementation: may be overridden */
-size_t Print::write(const uint8_t *buffer, size_t size)
+size_t Print::write(const uint8_t* buffer, size_t size)
 {
     size_t n = 0;
-    while (size--)
-    {
-        if (write(*buffer++)) n++;
-        else break;
+    while (size--) {
+        if (write(*buffer++))
+            n++;
+        else
+            break;
     }
     return n;
 }
 
-size_t Print::print(const __FlashStringHelper *ifsh)
+size_t Print::print(const __FlashStringHelper* ifsh)
 {
     PGM_P p = reinterpret_cast<PGM_P>(ifsh);
     size_t n = 0;
-    while (1)
-    {
+    while (1) {
         unsigned char c = pgm_read_byte(p++);
-        if (c == 0) break;
-        if (write(c)) n++;
-        else break;
+        if (c == 0)
+            break;
+        if (write(c))
+            n++;
+        else
+            break;
     }
     return n;
 }
 
-size_t Print::print(const String &s)
+size_t Print::print(const String& s)
 {
     return write(s.c_str(), s.length());
 }
@@ -71,45 +100,41 @@ size_t Print::print(char c)
 
 size_t Print::print(unsigned char b, int base)
 {
-    return print((unsigned long) b, base);
+    return print((unsigned long)b, base);
 }
 
 size_t Print::print(int n, int base)
 {
-    return print((long) n, base);
+    return print((long)n, base);
 }
 
 size_t Print::print(unsigned int n, int base)
 {
-    return print((unsigned long) n, base);
+    return print((unsigned long)n, base);
 }
 
 size_t Print::print(long n, int base)
 {
-    if (base == 0)
-    {
+    if (base == 0) {
         return write(n);
-    }
-    else if (base == 10)
-    {
-        if (n < 0)
-        {
+    } else if (base == 10) {
+        if (n < 0) {
             int t = print('-');
             n = -n;
             return printNumber(n, 10) + t;
         }
         return printNumber(n, 10);
-    }
-    else
-    {
+    } else {
         return printNumber(n, base);
     }
 }
 
 size_t Print::print(unsigned long n, int base)
 {
-    if (base == 0) return write(n);
-    else return printNumber(n, base);
+    if (base == 0)
+        return write(n);
+    else
+        return printNumber(n, base);
 }
 
 size_t Print::print(double n, int digits)
@@ -117,7 +142,7 @@ size_t Print::print(double n, int digits)
     return printFloat(n, digits);
 }
 
-size_t Print::println(const __FlashStringHelper *ifsh)
+size_t Print::println(const __FlashStringHelper* ifsh)
 {
     size_t n = print(ifsh);
     n += println();
@@ -134,7 +159,7 @@ size_t Print::println(void)
     return write("\r\n");
 }
 
-size_t Print::println(const String &s)
+size_t Print::println(const String& s)
 {
     size_t n = print(s);
     n += println();
@@ -204,26 +229,23 @@ size_t Print::println(const Printable& x)
     return n;
 }
 
-// Private Methods /////////////////////////////////////////////////////////////
-
 size_t Print::printNumber(unsigned long n, uint8_t base)
 {
     char buf[8 * sizeof(long) + 1]; // Assumes 8-bit chars plus zero byte.
-    char *str = &buf[sizeof(buf) - 1];
+    char* str = &buf[sizeof(buf) - 1];
 
     *str = '\0';
 
     // prevent crash if called with base == 1
-    if (base < 2) base = 10;
+    if (base < 2)
+        base = 10;
 
-    do
-    {
+    do {
         char c = n % base;
         n /= base;
 
         *--str = c < 10 ? c + '0' : c + 'A' - 10;
-    }
-    while(n);
+    } while (n);
 
     return write(str);
 }
@@ -232,14 +254,17 @@ size_t Print::printFloat(double number, uint8_t digits)
 {
     size_t n = 0;
 
-    if (isnan(number)) return print("nan");
-    if (isinf(number)) return print("inf");
-    if (number > 4294967040.0) return print ("ovf");  // constant determined empirically
-    if (number < -4294967040.0) return print ("ovf"); // constant determined empirically
+    if (isnan(number))
+        return print("nan");
+    if (isinf(number))
+        return print("inf");
+    if (number > 4294967040.0)
+        return print("ovf"); // constant determined empirically
+    if (number < -4294967040.0)
+        return print("ovf"); // constant determined empirically
 
     // Handle negative numbers
-    if (number < 0.0)
-    {
+    if (number < 0.0) {
         n += print('-');
         number = -number;
     }
@@ -257,14 +282,12 @@ size_t Print::printFloat(double number, uint8_t digits)
     n += print(int_part);
 
     // Print the decimal point, but only if there are digits beyond
-    if (digits > 0)
-    {
+    if (digits > 0) {
         n += print('.');
     }
 
     // Extract digits from the remainder one at a time
-    while (digits-- > 0)
-    {
+    while (digits-- > 0) {
         remainder *= 10.0;
         unsigned int toPrint = (unsigned int)(remainder);
         n += print(toPrint);
@@ -274,7 +297,7 @@ size_t Print::printFloat(double number, uint8_t digits)
     return n;
 }
 
-int Print::printf (const char *__restrict __format, ...)
+int Print::printf(const char* __restrict __format, ...)
 {
     char printf_buff[PRINT_PRINTF_BUFFER_LENGTH];
 
@@ -286,3 +309,7 @@ int Print::printf (const char *__restrict __format, ...)
 
     return ret_status;
 }
+
+/**********************
+ *   STATIC FUNCTIONS
+ **********************/

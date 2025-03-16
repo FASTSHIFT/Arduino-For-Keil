@@ -18,20 +18,62 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef __DTOSTRF_H
-#define __DTOSTRF_H
-
-#include "stdio.h"
+#ifndef DTOSTRF_H
+#define DTOSTRF_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/**********************
+ *   STATIC FUNCTIONS
+ **********************/
+
+#include <stddef.h>
+
+/*********************
+ *      INCLUDES
+ *********************/
+
+/*********************
+ *      DEFINES
+ *********************/
+
+/**********************
+ *      TYPEDEFS
+ **********************/
+
+/**********************
+ * GLOBAL PROTOTYPES
+ **********************/
+
+/**
+ * @brief Convert a double to a string with a given width and precision.
+ * @param val The double value to convert.
+ * @param width The minimum width of the resulting string.
+ * @param prec The number of decimal places to include.
+ * @param sout The output buffer to write the string to.
+ * @return The output buffer.
+ */
 char *dtostrf(double val, signed char width, unsigned char prec, char *sout);
+
+/**
+ * @brief Convert a double to a string with a given width and precision, with a maximum size for the output buffer.
+ * @param val The double value to convert.
+ * @param width The minimum width of the resulting string.
+ * @param prec The number of decimal places to include.
+ * @param sout The output buffer to write the string to.
+ * @param sout_size The maximum size of the output buffer.
+ * @return The output buffer.
+ */
 char *dtostrnf(double val, signed char width, unsigned char prec, char *sout, size_t sout_size);
 
+/**********************
+ *      MACROS
+ **********************/
+
 #ifdef __cplusplus
-}
+} /*extern "C"*/
 #endif
 
-#endif
+#endif /* DTOSTRF_H */

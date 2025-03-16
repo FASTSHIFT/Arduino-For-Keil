@@ -17,10 +17,22 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef Printable_h
-#define Printable_h
+#ifndef PRINTABLE_H
+#define PRINTABLE_H
 
-#include <stdlib.h>
+/*********************
+ *      INCLUDES
+ *********************/
+
+#include <stddef.h>
+
+/*********************
+ *      DEFINES
+ *********************/
+
+/**********************
+ *      TYPEDEFS
+ **********************/
 
 class Print;
 
@@ -36,5 +48,12 @@ class Printable
     virtual size_t printTo(Print& p) const = 0;
 };
 
-#endif
+/**********************
+ * GLOBAL PROTOTYPES
+ **********************/
 
+/**********************
+ *      MACROS
+ **********************/
+
+#endif /* PRINTABLE_H */

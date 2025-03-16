@@ -16,20 +16,71 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef _ITOA_
-#define _ITOA_
+#ifndef ITOA_H
+#define ITOA_H
 
 #ifdef __cplusplus
 extern "C" {
-#endif // __cplusplus
+#endif
 
-char *itoa(int value, char *string, int radix);
-char *ltoa(long value, char *string, int radix);
-char *utoa(unsigned int value, char *string, int radix);
-char *ultoa(unsigned long value, char *string, int radix);
+/*********************
+ *      INCLUDES
+ *********************/
+
+/*********************
+ *      DEFINES
+ *********************/
+
+/**********************
+ *      TYPEDEFS
+ **********************/
+
+/**********************
+ * GLOBAL PROTOTYPES
+ **********************/
+
+/**
+ * @brief Convert an integer to a string.
+ * @param value The integer value to convert.
+ * @param string The output buffer to write the string to.
+ * @param radix The base of the number system to use.
+ * @return The output buffer.
+ */
+char* itoa(int value, char* string, int radix);
+
+/**
+ * @brief Convert a long integer to a string.
+ * @param value The long integer value to convert.
+ * @param string The output buffer to write the string to.
+ * @param radix The base of the number system to use.
+ * @return The output buffer.
+ */
+char* ltoa(long value, char* string, int radix);
+
+/**
+ * @brief Convert an unsigned integer to a string.
+ * @param value The unsigned integer value to convert.
+ * @param string The output buffer to write the string to.
+ * @param radix The base of the number system to use.
+ * @return The output buffer.
+ */
+char* utoa(unsigned int value, char* string, int radix);
+
+/**
+ * @brief Convert an unsigned long integer to a string.
+ * @param value The unsigned long integer value to convert.
+ * @param string The output buffer to write the string to.
+ * @param radix The base of the number system to use.
+ * @return The output buffer.
+ */
+char* ultoa(unsigned long value, char* string, int radix);
+
+/**********************
+ *      MACROS
+ **********************/
 
 #ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus
+} /*extern "C"*/
+#endif
 
-#endif // _ITOA_
+#endif /* ITOA_H */

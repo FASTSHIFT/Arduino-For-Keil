@@ -16,48 +16,70 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+/*********************
+ *      INCLUDES
+ *********************/
+
 #include "itoa.h"
+
+/*********************
+ *      DEFINES
+ *********************/
 
 #ifndef NULL
 #define NULL ((void*)0)
 #endif
 
-char *itoa(int value, char *string, int radix)
+/**********************
+ *      TYPEDEFS
+ **********************/
+
+/**********************
+ *  STATIC PROTOTYPES
+ **********************/
+
+/**********************
+ *  STATIC VARIABLES
+ **********************/
+
+/**********************
+ *      MACROS
+ **********************/
+
+/**********************
+ *   GLOBAL FUNCTIONS
+ **********************/
+
+char* itoa(int value, char* string, int radix)
 {
-    return ltoa(value, string, radix) ;
+    return ltoa(value, string, radix);
 }
 
-char *ltoa(long value, char *string, int radix)
+char* ltoa(long value, char* string, int radix)
 {
     char tmp[33];
-    char *tp = tmp;
+    char* tp = tmp;
     long i;
     unsigned long v;
     int sign;
-    char *sp;
+    char* sp;
 
-    if (string == NULL)
-    {
-        return 0 ;
+    if (string == NULL) {
+        return 0;
     }
 
-    if (radix > 36 || radix <= 1)
-    {
-        return 0 ;
+    if (radix > 36 || radix <= 1) {
+        return 0;
     }
 
     sign = (radix == 10 && value < 0);
-    if (sign)
-    {
+    if (sign) {
         v = -value;
-    }
-    else
-    {
+    } else {
         v = (unsigned long)value;
     }
 
-    while (v || tp == tmp)
-    {
+    while (v || tp == tmp) {
         i = v % radix;
         v = v / radix;
         if (i < 10)
@@ -77,31 +99,28 @@ char *ltoa(long value, char *string, int radix)
     return string;
 }
 
-char *utoa(unsigned int value, char *string, int radix)
+char* utoa(unsigned int value, char* string, int radix)
 {
-    return ultoa( value, string, radix ) ;
+    return ultoa(value, string, radix);
 }
 
-char *ultoa(unsigned long value, char *string, int radix)
+char* ultoa(unsigned long value, char* string, int radix)
 {
     char tmp[33];
-    char *tp = tmp;
+    char* tp = tmp;
     long i;
     unsigned long v = value;
-    char *sp;
+    char* sp;
 
-    if (string == NULL)
-    {
+    if (string == NULL) {
         return 0;
     }
 
-    if (radix > 36 || radix <= 1)
-    {
+    if (radix > 36 || radix <= 1) {
         return 0;
     }
 
-    while (v || tp == tmp)
-    {
+    while (v || tp == tmp) {
         i = v % radix;
         v = v / radix;
         if (i < 10)
@@ -112,10 +131,13 @@ char *ultoa(unsigned long value, char *string, int radix)
 
     sp = string;
 
-
     while (tp > tmp)
         *sp++ = *--tp;
     *sp = 0;
 
     return string;
 }
+
+/**********************
+ *   STATIC FUNCTIONS
+ **********************/
