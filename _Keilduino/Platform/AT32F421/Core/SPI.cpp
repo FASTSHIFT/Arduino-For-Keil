@@ -22,14 +22,14 @@
  */
 #include "SPI.h"
 
-#define SPI1_CLOCK                     (F_CPU)
-#define SPI2_CLOCK                     (F_CPU)
+#define SPI1_CLOCK (F_CPU)
+#define SPI2_CLOCK (F_CPU)
 
 SPIClass::SPIClass(spi_type* spix)
     : SPIx(spix)
     , SPI_Clock(0)
 {
-    memset(&spi_init_struct, 0, sizeof(spi_init_struct));
+    spi_default_para_init(&spi_init_struct);
 }
 
 void SPIClass::SPI_Settings(
@@ -44,7 +44,7 @@ void SPIClass::SPI_Settings(
     spi_clock_phase_type clock_phase;
     spi_enable(SPIx, FALSE);
 
-    switch(SPI_MODEx)
+    switch (SPI_MODEx)
     {
     case 0:
         clock_polarity = SPI_CLOCK_POLARITY_LOW;
@@ -83,29 +83,73 @@ void SPIClass::SPI_Settings(
 void SPIClass::begin(void)
 {
     spi_i2s_reset(SPIx);
-    if(SPIx == SPI1)
+    if (SPIx == SPI1)
     {
         SPI_Clock = SPI1_CLOCK;
         crm_periph_clock_enable(CRM_SPI1_PERIPH_CLOCK, TRUE);
-        pinMode(PA5, OUTPUT_AF_PP);
-        pinMode(PA6, OUTPUT_AF_PP);
-        pinMode(PA7, OUTPUT_AF_PP);
+        crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
 
-        gpio_pin_mux_config(GPIOA, GPIO_PINS_SOURCE5, GPIO_MUX_5);
-        gpio_pin_mux_config(GPIOA, GPIO_PINS_SOURCE6, GPIO_MUX_5);
-        gpio_pin_mux_config(GPIOA, GPIO_PINS_SOURCE7, GPIO_MUX_5);
+        gpio_pin_mux_config(GPIOA, GPIO_PINS_SOURCE5, GPIO_MUX_0);
+        gpio_pin_mux_config(GPIOA, GPIO_PINS_SOURCE6, GPIO_MUX_0);
+        gpio_pin_mux_config(GPIOA, GPIO_PINS_SOURCE7, GPIO_MUX_0);
+
+        gpio_init_type gpio_initstructure;
+        gpio_default_para_init(&gpio_initstructure);
+
+        gpio_initstructure.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
+        gpio_initstructure.gpio_pull = GPIO_PULL_DOWN;
+        gpio_initstructure.gpio_mode = GPIO_MODE_MUX;
+        gpio_initstructure.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
+        gpio_initstructure.gpio_pins = GPIO_PINS_5;
+        gpio_init(GPIOA, &gpio_initstructure);
+
+        gpio_initstructure.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
+        gpio_initstructure.gpio_pull = GPIO_PULL_UP;
+        gpio_initstructure.gpio_mode = GPIO_MODE_MUX;
+        gpio_initstructure.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
+        gpio_initstructure.gpio_pins = GPIO_PINS_6;
+        gpio_init(GPIOA, &gpio_initstructure);
+
+        gpio_initstructure.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
+        gpio_initstructure.gpio_pull = GPIO_PULL_UP;
+        gpio_initstructure.gpio_mode = GPIO_MODE_MUX;
+        gpio_initstructure.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
+        gpio_initstructure.gpio_pins = GPIO_PINS_7;
+        gpio_init(GPIOA, &gpio_initstructure);
     }
-    else if(SPIx == SPI2)
+    else if (SPIx == SPI2)
     {
         SPI_Clock = SPI2_CLOCK;
         crm_periph_clock_enable(CRM_SPI2_PERIPH_CLOCK, TRUE);
-        pinMode(PB13, OUTPUT_AF_PP);
-        pinMode(PB14, OUTPUT_AF_PP);
-        pinMode(PB15, OUTPUT_AF_PP);
+        crm_periph_clock_enable(CRM_GPIOB_PERIPH_CLOCK, TRUE);
 
-        gpio_pin_mux_config(GPIOB, GPIO_PINS_SOURCE13, GPIO_MUX_5);
-        gpio_pin_mux_config(GPIOB, GPIO_PINS_SOURCE14, GPIO_MUX_5);
-        gpio_pin_mux_config(GPIOB, GPIO_PINS_SOURCE15, GPIO_MUX_5);
+        gpio_pin_mux_config(GPIOB, GPIO_PINS_SOURCE13, GPIO_MUX_0);
+        gpio_pin_mux_config(GPIOB, GPIO_PINS_SOURCE14, GPIO_MUX_0);
+        gpio_pin_mux_config(GPIOB, GPIO_PINS_SOURCE15, GPIO_MUX_0);
+
+        gpio_init_type gpio_initstructure;
+        gpio_default_para_init(&gpio_initstructure);
+
+        gpio_initstructure.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
+        gpio_initstructure.gpio_pull = GPIO_PULL_DOWN;
+        gpio_initstructure.gpio_mode = GPIO_MODE_MUX;
+        gpio_initstructure.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
+        gpio_initstructure.gpio_pins = GPIO_PINS_13;
+        gpio_init(GPIOB, &gpio_initstructure);
+
+        gpio_initstructure.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
+        gpio_initstructure.gpio_pull = GPIO_PULL_UP;
+        gpio_initstructure.gpio_mode = GPIO_MODE_MUX;
+        gpio_initstructure.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
+        gpio_initstructure.gpio_pins = GPIO_PINS_14;
+        gpio_init(GPIOB, &gpio_initstructure);
+
+        gpio_initstructure.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
+        gpio_initstructure.gpio_pull = GPIO_PULL_UP;
+        gpio_initstructure.gpio_mode = GPIO_MODE_MUX;
+        gpio_initstructure.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
+        gpio_initstructure.gpio_pins = GPIO_PINS_15;
+        gpio_init(GPIOB, &gpio_initstructure);
     }
     else
     {
@@ -118,8 +162,7 @@ void SPIClass::begin(void)
         SPI_MODE0,
         SPI_CS_SOFTWARE_MODE,
         SPI_MCLK_DIV_8,
-        SPI_FIRST_BIT_MSB
-    );
+        SPI_FIRST_BIT_MSB);
 }
 
 void SPIClass::begin(uint32_t clock, uint16_t dataOrder, uint16_t dataMode)
@@ -149,8 +192,7 @@ void SPIClass::beginSlave(void)
         SPI_MODE0,
         SPI_CS_SOFTWARE_MODE,
         SPI_MCLK_DIV_16,
-        SPI_FIRST_BIT_MSB
-    );
+        SPI_FIRST_BIT_MSB);
     spi_enable(SPIx, TRUE);
 }
 
@@ -161,7 +203,7 @@ void SPIClass::end(void)
 
 void SPIClass::setClock(uint32_t clock)
 {
-    if(clock == 0)
+    if (clock == 0)
     {
         return;
     }
@@ -184,13 +226,13 @@ void SPIClass::setClock(uint32_t clock)
     uint32_t clockDiv = SPI_Clock / clock;
     uint8_t mapIndex = 0;
 
-    while(clockDiv > 1)
+    while (clockDiv > 1)
     {
         clockDiv = clockDiv >> 1;
         mapIndex++;
     }
 
-    if(mapIndex >= mapSize)
+    if (mapIndex >= mapSize)
     {
         mapIndex = mapSize - 1;
     }
@@ -202,7 +244,7 @@ void SPIClass::setClock(uint32_t clock)
 
 void SPIClass::setClockDivider(uint32_t Div)
 {
-    if(Div == 0)
+    if (Div == 0)
     {
         Div = 1;
     }
@@ -262,7 +304,7 @@ void SPIClass::setDataMode(uint8_t dataMode)
     spi_clock_phase_type clock_phase;
     spi_enable(SPIx, FALSE);
 
-    switch(dataMode)
+    switch (dataMode)
     {
     case 0:
         clock_polarity = SPI_CLOCK_POLARITY_LOW;
@@ -318,7 +360,7 @@ uint16_t SPIClass::read(void)
     return (uint16_t)(SPI_I2S_RXDATA(SPIx));
 }
 
-void SPIClass::read(uint8_t *buf, uint32_t len)
+void SPIClass::read(uint8_t* buf, uint32_t len)
 {
     if (len == 0)
         return;
@@ -326,7 +368,7 @@ void SPIClass::read(uint8_t *buf, uint32_t len)
     SPI_I2S_RXDATA_VOLATILE(SPIx);
     SPI_I2S_TXDATA(SPIx, 0x00FF);
 
-    while((--len))
+    while ((--len))
     {
         SPI_I2S_WAIT_TX(SPIx);
         noInterrupts();
@@ -357,7 +399,7 @@ void SPIClass::write(uint16_t data, uint32_t n)
     SPI_I2S_WAIT_BUSY(SPIx); // wait until BSY=0 before returning
 }
 
-void SPIClass::write(const uint8_t *data, uint32_t length)
+void SPIClass::write(const uint8_t* data, uint32_t length)
 {
     while (length--)
     {
@@ -368,7 +410,7 @@ void SPIClass::write(const uint8_t *data, uint32_t length)
     SPI_I2S_WAIT_BUSY(SPIx);
 }
 
-void SPIClass::write(const uint16_t *data, uint32_t length)
+void SPIClass::write(const uint16_t* data, uint32_t length)
 {
     while (length--)
     {
@@ -403,7 +445,7 @@ uint8_t SPIClass::send(uint8_t data)
     return 1;
 }
 
-uint8_t SPIClass::send(uint8_t *buf, uint32_t len)
+uint8_t SPIClass::send(uint8_t* buf, uint32_t len)
 {
     this->write(buf, len);
     return len;
