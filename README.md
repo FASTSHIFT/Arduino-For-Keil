@@ -1,3 +1,5 @@
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/README.en.md)
+
 # Arduino for Keil
 ## 1.概要
 >这是一个轻量级的Arduino框架，使**STM32**系列单片机兼容Arduino语法，在Keil上进行编译调试。
@@ -52,7 +54,7 @@ void loop()
 ```
 
 ## 3.系统框架
-![image](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/Framework.png)
+![image](https://github.com/anilberg/Arduino-For-Keil/blob/master/Framework.png)
 
 ## 4.注意
      1.请不要删除"main.cpp"中的main函数。 
