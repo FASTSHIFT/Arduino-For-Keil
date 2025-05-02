@@ -13,7 +13,7 @@ Arduino for Keil 是一个轻量级的 Arduino 框架，旨在使 AT32/STM32 系
 
 **注意事项**：如果您已安装了更高版本的固件包，请使用 Keil 自带的包管理工具进行卸载（Remove）操作。
 
-2. 打开 [_Keilduino/Platform](_Keilduino/Platform) 文件夹，选择对应的 MCU 型号。
+2. 打开 [Keilduino/Platform](Keilduino/Platform) 文件夹，选择对应的 MCU 型号。
 3. 打开 MDK-ARM 文件夹内的 Keil 工程，进行开发:
 
 > - 对于基本应用，用户可以直接参考 [Arduino 官方文档](https://www.arduino.cc/reference/en/)。
