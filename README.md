@@ -1,61 +1,46 @@
 # Arduino for Keil
-## 1.概要
->这是一个轻量级的Arduino框架，使**STM32**系列单片机兼容Arduino语法，在Keil上进行编译调试。
+## 1. 概述
+Arduino for Keil 是一个轻量级的 Arduino 框架，旨在使 AT32/STM32 系列单片机能够支持 Arduino 语法，并在 Keil 环境中进行高效的编译与调试。
 
-相对于传统开发方式的优势:
->
->   1.与Arduino共用[生态](https://github.com/topics/arduino-library)，降低学习门槛，简化开发过程。
->
->   2.关键部分使用了 **寄存器+宏** 的优化方式，减少函数调用开销，提升运行效率。
->
->   3.简化的Arduino框架，相对[stm32duino](https://github.com/stm32duino)与HAL库，拥有更小的代码体积、更快的编译和执行速度。
+### 相对于传统开发方法的优势
 
-## 2.使用
->   底层基于 **AT32/STM32标准外设库** 二次封装，安装之后才能正常编译，下载链接位于下方。
+1. **共享Arduino生态**：通过利用广泛的 Arduino 库资源（详见 [Arduino Libraries](https://github.com/topics/arduino-library)），降低了学习曲线，简化了开发流程。
+2. **优化的硬件操控方式**：采用 **寄存器 + 宏** 的优化策略，减少了函数调用的开销，从而提升了程序的运行效率。
+3. **精简的框架设计**：相较于 [stm32duino](https://github.com/stm32duino) 和 HAL 库，本项目拥有更小的代码体积和更快的编译与执行速度，实现了资源与性能的最佳平衡。
 
-[AT32F403A标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.4.zip)
+## 2. 使用方法
+1. 安装对应平台的固件包（详见 [Packs](Packs)）。
 
-[AT32F43x/421标准外设库](https://www.arterytek.com/download/PACK/Keil5_AT32MCU_AddOn_V2.1.7.zip)
+**注意事项**：如果您已安装了更高版本的固件包，请使用 Keil 自带的包管理工具进行卸载（Remove）操作。
 
-[STM32F0xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F0xx_DFP.1.0.1.pack)
+2. 打开 [_Keilduino/Platform](_Keilduino/Platform) 文件夹，选择对应的 MCU 型号。
+3. 打开 MDK-ARM 文件夹内的 Keil 工程，进行开发:
 
-[STM32F10x标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F1xx_DFP.1.1.0.pack)
+> - 对于基本应用，用户可以直接参考 [Arduino 官方文档](https://www.arduino.cc/reference/en/)。
+> - 对于更复杂的开发需求，可以参考 [Example](Example) 中的示例代码。
+> - 第三方库的移植请参考 [Arduino 库移植指南](Arduino%20Library%20Porting%20Guide)。
 
-[STM32F3xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F3xx_DFP.1.2.0.pack)
-
-[STM32F4xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32F4xx_DFP.1.0.8.pack)
-
-[STM32L1xx标准外设库](https://keilpack.azureedge.net/pack/Keil.STM32L1xx_DFP.1.0.2.pack)
-
-**注意** 如果您已经安装了更高版本的pack，需要使用keil自带的包管理器将高版本的pack进行Remove
-
->一般用法可以直接参照[Arduino语法](https://www.arduino.cc/reference/en/)。
->
->高级用法参考[Example](https://github.com/FASTSHIFT/Arduino-For-Keil/tree/master/Example)内的示例。
->
->第三方库移植参考[第三方库移植示例](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/How%20to%20use%20Arduino%20library)。
-
-支持与寄存器和标准外设库的函数混用，**保证开发的灵活性**:
+### 灵活的开发模式
+支持与寄存器和标准外设库函数的混合使用，**确保开发的灵活性**：
 ```C
 void setup()
 {
-    pinMode(PA0,OUTPUT);                //使用Arduino函数将配置PA0为输出模式
+    pinMode(PA0, OUTPUT);                // 使用 Arduino 的 pinMode() 函数配置 PA0 为输出模式
 }
 
 void loop()
 {
-    GPIOA->BSRR = GPIO_Pin_0;           //使用寄存器将PA0电平拉高
-    delay(1000);                        //延时一秒
-    GPIO_ResetBits(GPIOA, GPIO_Pin_0);  //使用标准外设库的函数将PA0电平拉低
-    delay(1000);                        //延时一秒
+    GPIOA->BSRR = GPIO_Pin_0;           // 直接通过寄存器设置 PA0 电平拉高
+    delay(1000);                        // 延时 1 秒
+    GPIO_ResetBits(GPIOA, GPIO_Pin_0);  // 使用标准外设库的 GPIO_ResetBits() 函数将 PA0 电平拉低
+    delay(1000);                        // 延时 1 秒
 }
 ```
 
-## 3.系统框架
-![image](https://github.com/FASTSHIFT/Arduino-For-Keil/blob/master/Framework.png)
+## 3.系统框架图
+![image](Framework.png)
 
-## 4.注意
-     1.请不要删除"main.cpp"中的main函数。 
-     2.添加第三方库函数的时候要加入完整的路径，以及.cpp源文件. 
-     3.由于平台的不同，有的函数库可能要进行修改才能正常编译，具体修改方式请按照编译器的提示，或者可以提交Issues。 
-
+## 4.注意事项
+ - 保留主函数：请勿删除 `main.cpp` 文件中的 `main` 函数。
+ - 第三方库管理：在添加第三方库时，请确保提供完整的路径，并包含 `.cpp` 源文件。
+ - 兼容性与调试：由于不同平台的差异性，部分函数库可能需要进行适当的修改以满足编译需求。具体修改方法可参考编译器错误提示，或在 [issues](https://github.com/FASTSHIFT/Arduino-For-Keil/issues) 中提交问题。
