@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2017 - 2022 _VIFEXTech
+ * Copyright (c) 2017 - 2025 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __TONE_H
-#define __TONE_H
+#ifndef TONE_H
+#define TONE_H
+
+/*********************
+ *      INCLUDES
+ *********************/
 
 #include "timer.h"
 
+/*********************
+ *      DEFINES
+ *********************/
+
 #define TONE_DURATION_INFINITE  0xFFFFFFFFU
 
-void toneSetTimer(TIM_TypeDef* TIMx);
+/**********************
+ * GLOBAL PROTOTYPES
+ **********************/
+
+/**
+ * @brief  Generate a square wave on the specified pin at the specified frequency.
+ * @param  pin       The pin on which to generate the square wave.
+ * @param  freq      The frequency of the square wave in Hz.
+ * @param  duration  The duration of the tone in milliseconds.
+ * @note   If duration is set to TONE_DURATION_INFINITE, the tone will continue until noTone() is called.
+ */
 void tone(uint8_t pin, uint32_t freq, uint32_t duration = TONE_DURATION_INFINITE);
+
+/**
+ * @brief  Stop generating the tone on the specified pin.
+ * @param  pin  The pin on which the tone is being generated.
+ */
 void noTone(uint8_t pin);
+
+/**
+ * @brief  Set the timer used for generating tones.
+ * @param  timer  The timer to be used for tone generation.
+ * @note   This function should be called before using the tone() function.
+ */
+void toneSetTimer(TIM_TypeDef* timer);
 
 #endif
