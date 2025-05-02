@@ -24,6 +24,7 @@
  *      INCLUDES
  *********************/
 
+#include <stdarg.h>
 #include <stddef.h>
 #include "Printable.h"
 #include "WString.h"
@@ -117,6 +118,7 @@ public:
     size_t println(void);
 
     int printf(const char* format, ...);
+    int vprintf(const char* __restrict __format, va_list args);
 
     virtual void flush() { /* Empty implementation for backward compatibility */ }
 };

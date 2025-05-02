@@ -27,7 +27,6 @@
 #include "Print.h"
 #include "mcu_config.h"
 #include <math.h>
-#include <stdarg.h>
 #include <stdio.h>
 
 /*********************
@@ -305,6 +304,16 @@ int Print::printf(const char* __restrict __format, ...)
     va_start(args, __format);
     int ret_status = vsnprintf(printf_buff, sizeof(printf_buff), __format, args);
     va_end(args);
+    print(printf_buff);
+
+    return ret_status;
+}
+
+int Print::vprintf(const char* __restrict __format, va_list args)
+{
+    char printf_buff[PRINT_PRINTF_BUFFER_LENGTH];
+
+    int ret_status = vsnprintf(printf_buff, sizeof(printf_buff), __format, args);
     print(printf_buff);
 
     return ret_status;
