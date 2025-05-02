@@ -20,13 +20,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/*********************
+ *      INCLUDES
+ *********************/
+
 #include "WMath.h"
 #include <stdlib.h>
 
+/*********************
+ *      DEFINES
+ *********************/
+
+/**********************
+ *      TYPEDEFS
+ **********************/
+
+/**********************
+ *  STATIC PROTOTYPES
+ **********************/
+
+/**********************
+ *  STATIC VARIABLES
+ **********************/
+
+/**********************
+ *      MACROS
+ **********************/
+
+/**********************
+ *   GLOBAL FUNCTIONS
+ **********************/
+
 void randomSeed(unsigned long seed)
 {
-    if (seed == 0)
-    {
+    if (seed == 0) {
         return;
     }
 
@@ -35,8 +63,7 @@ void randomSeed(unsigned long seed)
 
 long random(long howbig)
 {
-    if (howbig == 0)
-    {
+    if (howbig == 0) {
         return 0;
     }
 
@@ -45,21 +72,10 @@ long random(long howbig)
 
 long random(long howsmall, long howbig)
 {
-    if (howsmall >= howbig)
-    {
+    if (howsmall >= howbig) {
         return howsmall;
     }
 
     long diff = howbig - howsmall;
     return random(diff) + howsmall;
-}
-
-unsigned int makeWord(unsigned int w)
-{
-    return w;
-}
-
-unsigned int makeWord(unsigned char h, unsigned char l)
-{
-    return (h << 8) | l;
 }

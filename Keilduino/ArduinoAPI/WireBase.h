@@ -38,61 +38,60 @@
  * whether it is I2C hardware or emulating software.
  */
 
-#ifndef _WIREBASE_H_
-#define _WIREBASE_H_
-
+#ifndef WIREBASE_H
+#define WIREBASE_H
 
 #include "Arduino.h"
 
 #ifndef WIRE_BUFF_SIZE
-#  define WIRE_BUFF_SIZE 32
+#define WIRE_BUFF_SIZE 32
 #endif
 
 #define BUFFER_LENGTH WIRE_BUFF_SIZE
 
 /* return codes from endTransmission() */
-#define SUCCESS   0        /* transmission was successful */
-#define EDATA     1        /* too much data */
-#define ENACKADDR 2        /* received nack on transmit of address */
-#define ENACKTRNS 3        /* received nack on transmit of data */
-#define EOTHER    4        /* other error */
+#define SUCCESS 0 /* transmission was successful */
+#define EDATA 1 /* too much data */
+#define ENACKADDR 2 /* received nack on transmit of address */
+#define ENACKTRNS 3 /* received nack on transmit of data */
+#define EOTHER 4 /* other error */
 
 struct i2c_msg;
 
-typedef struct i2c_msg
-{
-    uint16_t addr;                /**< Address */
+typedef struct i2c_msg {
+    uint16_t addr; /**< Address */
 
-#define I2C_MSG_READ            0x1
-#define I2C_MSG_10BIT_ADDR      0x2
+#define I2C_MSG_READ 0x1
+#define I2C_MSG_10BIT_ADDR 0x2
     /**
      * Bitwise OR of:
      * - I2C_MSG_READ (write is default)
      * - I2C_MSG_10BIT_ADDR (7-bit is default) */
     uint16_t flags;
 
-    uint16_t length;              /**< Message length */
-    uint16_t xferred;             /**< Messages transferred */
-    uint8_t *data;                /**< Data */
+    uint16_t length; /**< Message length */
+    uint16_t xferred; /**< Messages transferred */
+    uint8_t* data; /**< Data */
 } i2c_msg;
 
-class WireBase   // Abstraction is awesome!
+class WireBase // Abstraction is awesome!
 {
 protected:
     i2c_msg itc_msg;
-    uint8_t rx_buf[WIRE_BUFF_SIZE];      /* receive buffer */
-    uint8_t rx_buf_idx;               /* first unread idx in rx_buf */
-    uint8_t rx_buf_len;               /* number of bytes read */
+    uint8_t rx_buf[WIRE_BUFF_SIZE]; /* receive buffer */
+    uint8_t rx_buf_idx; /* first unread idx in rx_buf */
+    uint8_t rx_buf_len; /* number of bytes read */
 
-    uint8_t tx_buf[WIRE_BUFF_SIZE];      /* transmit buffer */
-    uint8_t tx_buf_idx;  // next idx available in tx_buf, -1 overflow
+    uint8_t tx_buf[WIRE_BUFF_SIZE]; /* transmit buffer */
+    uint8_t tx_buf_idx; // next idx available in tx_buf, -1 overflow
     boolean tx_buf_overflow;
 
     // Force derived classes to define process function
     virtual uint8_t process() = 0;
+
 public:
-    WireBase() {}
-    virtual ~WireBase() {}
+    WireBase() { }
+    virtual ~WireBase() { }
 
     /*
      * Initialises the class interface
@@ -171,4 +170,4 @@ public:
     uint8_t read();
 };
 
-#endif // _WIREBASE_H_
+#endif /* WIREBASE_H */

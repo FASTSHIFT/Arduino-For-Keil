@@ -50,7 +50,6 @@ void WireBase::begin(uint8_t self_addr)
 
 void WireBase::setClock(uint32_t clock)
 {
-
 }
 
 void WireBase::beginTransmission(uint8_t slave_address)
@@ -69,23 +68,21 @@ void WireBase::beginTransmission(int slave_address)
 uint8_t WireBase::endTransmission(void)
 {
     uint8_t retVal;
-    if (tx_buf_overflow)
-    {
+    if (tx_buf_overflow) {
         return EDATA;
     }
-    retVal = process();// Changed so that the return value from process is returned by this function see also the return line below
+    retVal = process(); // Changed so that the return value from process is returned by this function see also the return line below
     tx_buf_idx = 0;
     tx_buf_overflow = false;
-    return retVal;//SUCCESS;
+    return retVal; // SUCCESS;
 }
 
-//TODO: Add the ability to queue messages (adding a boolean to end of function
-// call, allows for the Arduino style to stay while also giving the flexibility
-// to bulk send
+// TODO: Add the ability to queue messages (adding a boolean to end of function
+//  call, allows for the Arduino style to stay while also giving the flexibility
+//  to bulk send
 uint8_t WireBase::requestFrom(uint8_t address, int num_bytes)
 {
-    if (num_bytes > WIRE_BUFF_SIZE)
-    {
+    if (num_bytes > WIRE_BUFF_SIZE) {
         num_bytes = WIRE_BUFF_SIZE;
     }
     itc_msg.addr = address;
@@ -105,8 +102,7 @@ uint8_t WireBase::requestFrom(int address, int numBytes)
 
 void WireBase::write(uint8_t value)
 {
-    if (tx_buf_idx == WIRE_BUFF_SIZE)
-    {
+    if (tx_buf_idx == WIRE_BUFF_SIZE) {
         tx_buf_overflow = true;
         return;
     }
@@ -116,8 +112,7 @@ void WireBase::write(uint8_t value)
 
 void WireBase::write(uint8_t* buf, int len)
 {
-    for (int i = 0; i < len; i++)
-    {
+    for (int i = 0; i < len; i++) {
         write(buf[i]);
     }
 }
@@ -134,9 +129,8 @@ void WireBase::write(int* buf, int len)
 
 void WireBase::write(char* buf)
 {
-    uint8_t *ptr = (uint8_t*)buf;
-    while (*ptr)
-    {
+    uint8_t* ptr = (uint8_t*)buf;
+    while (*ptr) {
         write(*ptr);
         ptr++;
     }
@@ -149,14 +143,11 @@ uint8_t WireBase::available()
 
 uint8_t WireBase::read()
 {
-    if (rx_buf_idx == rx_buf_len)
-    {
+    if (rx_buf_idx == rx_buf_len) {
         rx_buf_idx = 0;
         rx_buf_len = 0;
         return 0;
-    }
-    else if (rx_buf_idx == (rx_buf_len - 1))
-    {
+    } else if (rx_buf_idx == (rx_buf_len - 1)) {
         uint8_t temp = rx_buf[rx_buf_idx];
         rx_buf_idx = 0;
         rx_buf_len = 0;

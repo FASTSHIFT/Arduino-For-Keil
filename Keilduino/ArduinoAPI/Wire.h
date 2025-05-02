@@ -37,8 +37,8 @@
  * modifications by gke and ala42.
  */
 
-#ifndef _WIRE_H_
-#define _WIRE_H_
+#ifndef WIRE_H
+#define WIRE_H
 
 #include "WireBase.h"
 
@@ -47,8 +47,7 @@
  * pins
  */
 
-class TwoWire : public WireBase
-{
+class TwoWire : public WireBase {
 public:
     /*
      * Accept pin numbers for SCL and SDA lines. Set the delay needed
@@ -67,10 +66,11 @@ public:
      * .begin(uint8_t) in WireBase
      */
     bool begin(uint8_t self_addr = 0x00);
+
 public:
-    uint8_t       i2c_delay;
-    uint8_t       scl_pin;
-    uint8_t       sda_pin;
+    uint8_t i2c_delay;
+    uint8_t scl_pin;
+    uint8_t sda_pin;
 
     /*
      * Sets the SCL line to HIGH/LOW and allow for clock stretching by slave
@@ -92,7 +92,7 @@ public:
     /*
      * Creates a Stop condition on the bus
      */
-    void  i2c_stop();
+    void i2c_stop();
 
     /*
      * Gets an ACK condition from a slave device on the bus
@@ -118,6 +118,7 @@ public:
      * Shifts out the data through SDA and clocks SCL for the slave device
      */
     void i2c_shift_out(uint8_t val);
+
 protected:
     /*
      * Processes the incoming I2C message defined by WireBase
@@ -128,4 +129,4 @@ protected:
 
 extern TwoWire Wire;
 
-#endif // _WIRE_H_
+#endif /* WIRE_H */

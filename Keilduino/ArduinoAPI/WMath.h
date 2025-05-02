@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2017 - 2022 _VIFEXTech
+ * Copyright (c) 2017 - 2025 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,65 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __WMATH_H
-#define __WMATH_H
+#ifndef WMATH_H
+#define WMATH_H
 
+/*********************
+ *      INCLUDES
+ *********************/
+
+/*********************
+ *      DEFINES
+ *********************/
+
+/**********************
+ *      TYPEDEFS
+ **********************/
+
+/**********************
+ * GLOBAL PROTOTYPES
+ **********************/
+
+/**
+ * @brief  Seed the random number generator with a specific seed value.
+ * @param  seed  The seed value to initialize the random number generator.
+ */
 void randomSeed(unsigned long seed);
-long random(long howbig);
-long random(long howsmall, long howbig);
-unsigned int makeWord(unsigned int w);
-unsigned int makeWord(unsigned char h, unsigned char l);
 
-#endif
+/**
+ * @brief  Generate a random number between 0 and the specified maximum value.
+ * @param  howbig  The upper limit for the random number (exclusive).
+ * @return A random number between 0 and howbig - 1.
+ */
+long random(long howbig);
+
+/**
+ * @brief  Generate a random number between the specified minimum and maximum values.
+ * @param  howsmall  The lower limit for the random number (inclusive).
+ * @param  howbig    The upper limit for the random number (exclusive).
+ * @return A random number between howsmall and howbig - 1.
+ */
+long random(long howsmall, long howbig);
+
+/**
+ * @brief  Create a word (16-bit value) from a single unsigned integer.
+ * @param  w  The unsigned integer to convert to a word.
+ * @return The word created from the input integer.
+ */
+static inline unsigned int makeWord(unsigned int w)
+{
+    return w;
+}
+
+/**
+ * @brief  Create a word (16-bit value) from two unsigned char values.
+ * @param  h  The high byte of the word.
+ * @param  l  The low byte of the word.
+ * @return The word created from the input bytes.
+ */
+static inline unsigned int makeWord(unsigned char h, unsigned char l)
+{
+    return (h << 8) | l;
+}
+
+#endif /* WMATH_H */
