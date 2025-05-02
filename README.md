@@ -38,7 +38,7 @@ void loop()
 ```
 
 ## 3.系统框架图
-![image](Framework.png)
+![image](Images/Framework.png)
 
 ## 4.注意事项
  - 保留主函数：请勿删除 `main.cpp` 文件中的 `main` 函数。
