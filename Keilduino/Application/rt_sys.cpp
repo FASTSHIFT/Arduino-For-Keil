@@ -20,16 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include "Arduino.h"
 #include <rt_sys.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <time.h>
-#include "Arduino.h"
 
-#pragma import(__use_no_semihosting)
+#ifdef __MICROLIB
+#pragma import(__use_no_semihosting_swi)
+#include <stdio.h>
 
-enum
+extern "C" int fputc(int ch, FILE* stream)
 {
+    (void)stream;
+    Serial.write(ch);
+    return ch;
+}
+#else
+#pragma import(__use_no_semihosting)
+#endif
+
+enum {
     STDIN,
     STDOUT,
     STDERR,
@@ -43,28 +54,28 @@ enum
  * As we define _sys_open() to always return the same file handle,
  * these can be left as their default values.
  */
-const char __stdin_name[] =  "__stdin";
-const char __stdout_name[] =  "__stdout";
-const char __stderr_name[] =  "__stderr";
+const char __stdin_name[] = "__stdin";
+const char __stdout_name[] = "__stdout";
+const char __stderr_name[] = "__stderr";
+
 /*
  * Open a file. May return -1 if the file failed to open.
  */
-FILEHANDLE _sys_open(const char *name, int openmode)
+FILEHANDLE _sys_open(const char* name, int openmode)
 {
-    if (name == __stdin_name)
-    {
+    if (name == __stdin_name) {
         return STDIN;
     }
-    else if (name == __stdout_name)
-    {
+
+    if (name == __stdout_name) {
         return STDOUT;
     }
-    else if (name == __stderr_name)
-    {
+
+    if (name == __stderr_name) {
         return STDERR;
     }
 
-    return (FILEHANDLE) - 1;
+    return (FILEHANDLE)-1;
 }
 
 /*
@@ -72,12 +83,11 @@ FILEHANDLE _sys_open(const char *name, int openmode)
  */
 int _sys_close(FILEHANDLE fh)
 {
-    if(IS_STD_FILEHANDLE(fh))
-    {
+    if (IS_STD_FILEHANDLE(fh)) {
         return 0;
     }
 
-    return  -1;
+    return -1;
 }
 
 /*
@@ -85,13 +95,14 @@ int _sys_close(FILEHANDLE fh)
  * the number of characters _not_ written on partial success.
  * `mode' exists for historical reasons and must be ignored.
  */
-int _sys_write(FILEHANDLE fh, const unsigned char *buf,
-               unsigned len, int mode)
+int _sys_write(
+    FILEHANDLE fh,
+    const unsigned char* buf,
+    unsigned len,
+    int mode)
 {
-    if(IS_STD_FILEHANDLE(fh))
-    {
-        if(fh == STDOUT || fh == STDERR)
-        {
+    if (IS_STD_FILEHANDLE(fh)) {
+        if (fh == STDOUT || fh == STDERR) {
             Serial.write(buf, len);
         }
         return len;
@@ -125,11 +136,13 @@ int _sys_write(FILEHANDLE fh, const unsigned char *buf,
  *
  * `mode' exists for historical reasons and must be ignored.
  */
-int _sys_read(FILEHANDLE fh, unsigned char *buf,
-              unsigned len, int mode)
+int _sys_read(
+    FILEHANDLE fh,
+    unsigned char* buf,
+    unsigned len,
+    int mode)
 {
-    if(IS_STD_FILEHANDLE(fh))
-    {
+    if (IS_STD_FILEHANDLE(fh)) {
         return 0;
     }
 
@@ -188,7 +201,7 @@ long _sys_flen(FILEHANDLE fh)
  * name. Returns 0 on failure. maxlen is the maximum name length
  * allowed.
  */
-int _sys_tmpnam(char *name, int sig, unsigned maxlen)
+int _sys_tmpnam(char* name, int sig, unsigned maxlen)
 {
     return 0;
 }
@@ -200,7 +213,8 @@ int _sys_tmpnam(char *name, int sig, unsigned maxlen)
 void _sys_exit(int status)
 {
     /*main return*/
-    while(1);
+    while (1)
+        ;
 }
 
 /*
@@ -208,34 +222,35 @@ void _sys_exit(int status)
  * The supplied buffer may be used to store the string, but need
  * not be.
  */
-char *_sys_command_string(char *cmd, int len)
+char* _sys_command_string(char* cmd, int len)
 {
     return cmd;
 }
 
 extern "C" {
-    time_t time(time_t *time)
-    {
-        return millis();
-    }
+time_t time(time_t* time)
+{
+    return (time_t)millis();
+}
 
-    void exit(int status)
-    {
-        while(1);
-    }
+void exit(int status)
+{
+    while (1)
+        ;
+}
 
-    int system(const char *string)
-    {
-        return 0;
-    }
+int system(const char* string)
+{
+    return 0;
+}
 
-    int remove(const char *filename)
-    {
-        return 0;
-    }
+int remove(const char* filename)
+{
+    return 0;
+}
 
-    clock_t clock()
-    {
-        return millis();
-    }
+clock_t clock()
+{
+    return (clock_t)millis();
+}
 }

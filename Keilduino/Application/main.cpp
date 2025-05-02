@@ -33,13 +33,12 @@ static void loop()
 }
 
 /**
-  * @brief  Main Function
-  * @param  None
-  * @retval None
-  */
+ * @brief  Main Function
+ */
 int main(void)
 {
     Core_Init();
     setup();
-    for(;;)loop();
+    for (;;)
+        loop();
 }
