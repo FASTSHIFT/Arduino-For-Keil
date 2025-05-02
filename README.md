@@ -1,12 +1,12 @@
 # Arduino for Keil
 ## 1. 概述
-Arduino for Keil 是一个轻量级的 Arduino 框架，旨在使 AT32/STM32 系列单片机能够支持 Arduino 语法，并在 Keil 环境中进行高效的编译与调试。
+Arduino for Keil 是 [Arduino](https://www.arduino.cc) 框架的一个轻量级实现，旨在使 [AT32](https://www.arterytek.com)/[STM32](https://www.st.com.cn) 系列单片机能够支持 [Arduino 语法](https://www.arduino.cc/reference/en)，并在 [Keil](https://www.keil.com) 环境中进行高效的编译与调试。
 
 ### 相对于传统开发方法的优势
 
 1. **共享Arduino生态**：通过利用广泛的 Arduino 库资源（详见 [Arduino Libraries](https://github.com/topics/arduino-library)），降低了学习曲线，简化了开发流程。
 2. **优化的硬件操控方式**：采用 **寄存器 + 宏** 的优化策略，减少了函数调用的开销，从而提升了程序的运行效率。
-3. **精简的框架设计**：相较于 [stm32duino](https://github.com/stm32duino) 和 HAL 库，本项目拥有更小的代码体积和更快的编译与执行速度，实现了资源与性能的最佳平衡。
+3. **精简的框架设计**：相较于 [stm32duino](https://github.com/stm32duino) 和 [HAL](https://github.com/STMicroelectronics/stm32f1xx-hal-driver/tree/master) 库，本项目拥有更小的代码体积和更快的编译与执行速度，实现了资源与性能的最佳平衡。
 
 ## 2. 使用方法
 1. 安装对应平台的固件包（详见 [Packs](Packs)）。
