@@ -1,4 +1,7 @@
 # Arduino for Keil
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/FASTSHIFT/Arduino-For-Keil)
+
 ## 1. 概述
 Arduino for Keil 是 [Arduino](https://www.arduino.cc) 框架的一个轻量级实现，旨在使 [AT32](https://www.arterytek.com)/[STM32](https://www.st.com.cn) 系列单片机能够支持 [Arduino 语法](https://www.arduino.cc/reference/en)，并在 [Keil](https://www.keil.com) 环境中进行高效的编译与调试。
 
